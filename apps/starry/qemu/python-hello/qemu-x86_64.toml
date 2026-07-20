@@ -11,8 +11,8 @@ args = [
     "-netdev",
     "user,id=net0",
 ]
-uefi = false
-to_bin = false
+uefi = true
+to_bin = true
 shell_prefix = "root@starry:"
 shell_init_cmd = "python3 /usr/bin/test_hello.py"
 success_regex = ['(?m)^TEST PASSED\s*$']

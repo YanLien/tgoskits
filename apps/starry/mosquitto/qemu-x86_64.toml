@@ -14,8 +14,8 @@ args = [
     "user,id=net0",
     "-snapshot",
 ]
-uefi = false
-to_bin = false
+uefi = true
+to_bin = true
 shell_prefix = "root@starry:"
 shell_init_cmd = "/usr/bin/test_mosquitto.sh"
 success_regex = ["(?m)^ALL MOSQUITTO TESTS PASSED\\s*$"]

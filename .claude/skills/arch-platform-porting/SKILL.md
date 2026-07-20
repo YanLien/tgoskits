@@ -28,6 +28,8 @@ Current Axvisor LoongArch QEMU bring-up uses the dynamic UEFI platform path. The
   QEMU `uefi`, `to_bin`, acceleration, CPU feature, and device choices are part of each
   `qemu-*.toml` contract; axbuild must not infer or overwrite them from the target architecture
   or host `/dev/kvm` availability.
+  Starry app QEMU cases for x86_64 and loongarch64 use the dynamic UEFI handoff and must declare
+  `uefi = true` and `to_bin = true`; direct `-kernel` loading is not valid for their std/PIC images.
   Axvisor x86_64 selects the VMX or SVM backend at runtime from CPUID; the generic QEMU board
   and all Axvisor build configs remain backend-neutral. CI must retain separate Intel/VMX and
   AMD/SVM QEMU cases because their host CPU exposure differs, but neither case may select a

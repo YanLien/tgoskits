@@ -15,8 +15,8 @@ args = [
     "-netdev",
     "user,id=net1,net=10.0.3.0/24,dhcpstart=10.0.3.15",
 ]
-uefi = false
-to_bin = false
+uefi = true
+to_bin = true
 shell_prefix = "root@starry:"
 shell_init_cmd = "/usr/bin/dual-net-tests.sh"
 success_regex = ["(?m)^DUAL_NET_TEST_PASSED\\s*$"]

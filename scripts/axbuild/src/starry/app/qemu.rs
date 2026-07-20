@@ -54,7 +54,8 @@ pub(crate) async fn prepare_qemu_app_case(
         .as_deref()
         .map(|path| load_qemu_app_case_fields(workspace_root, app, path))
         .transpose()?;
-    let rootfs_path = prepare_qemu_app_rootfs(
+    let snapshot = fields.as_ref().is_none_or(|fields| fields.snapshot);
+    let prepared_rootfs = prepare_qemu_app_rootfs(
         workspace_root,
         app,
         &arch,
@@ -62,6 +63,7 @@ pub(crate) async fn prepare_qemu_app_case(
         fields
             .as_ref()
             .and_then(|fields| fields.rootfs_path.as_deref()),
+        snapshot,
     )
     .await?;
 
@@ -71,8 +73,10 @@ pub(crate) async fn prepare_qemu_app_case(
         target,
         build_config_path,
         qemu_config_path,
-        rootfs_path,
-        snapshot: fields.as_ref().is_none_or(|fields| fields.snapshot),
+        rootfs_path: prepared_rootfs.path,
+        rootfs_copy_to_remove: prepared_rootfs.copy_to_remove,
+        rootfs_run_dir_to_remove: prepared_rootfs.run_dir_to_remove,
+        snapshot,
         test_commands: fields
             .as_ref()
             .map(|fields| fields.test_case.test_commands.clone())

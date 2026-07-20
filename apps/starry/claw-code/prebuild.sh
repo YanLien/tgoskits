@@ -8,21 +8,7 @@ TARGET="x86_64-unknown-linux-musl"
 CLAW_BIN="$CACHE_DIR/claw"
 
 WORKSPACE="${STARRY_WORKSPACE:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)}"
-ROOTFS_DIR="$WORKSPACE/tmp/axbuild/rootfs"
 OVERLAY="${STARRY_OVERLAY_DIR:-$WORKSPACE/tmp/axbuild/starry-app/claw-code/overlay}"
-
-rootfs_image_file() {
-    local path="$1"
-    if [ -d "$path" ]; then
-        local name
-        name="$(basename "$path")"
-        if [ -f "$path/$name" ]; then
-            printf '%s\n' "$path/$name"
-            return
-        fi
-    fi
-    printf '%s\n' "$path"
-}
 
 echo "=== 1. Build claw from source ==="
 if [ -f "$CLAW_BIN" ]; then
@@ -45,19 +31,10 @@ else
 fi
 
 echo "=== 2. Prepare rootfs ==="
-# The app framework passes the canonical per-app image path through
-# STARRY_ROOTFS. Older cached rootfs storage may leave a directory at the
-# legacy tmp/axbuild/rootfs/*.img path, so resolve image-storage directories to
-# their contained image file instead of assuming flat files.
-BASE_ROOTFS="${STARRY_BASE_ROOTFS:-$ROOTFS_DIR/rootfs-${STARRY_ARCH:-x86_64}-alpine.img}"
-APP_ROOTFS="${STARRY_ROOTFS:-$ROOTFS_DIR/rootfs-${STARRY_ARCH:-x86_64}-claw-code.img}"
-ALPINE_IMG="$(rootfs_image_file "$BASE_ROOTFS")"
-CLAW_IMG="$(rootfs_image_file "$APP_ROOTFS")"
-if [ "$ALPINE_IMG" != "$CLAW_IMG" ]; then
-    mkdir -p "$(dirname "$CLAW_IMG")"
-    rm -rf "$CLAW_IMG"
-    cp "$ALPINE_IMG" "$CLAW_IMG"
-fi
+# The app runner resolves the fixed managed image named by qemu-x86_64.toml,
+# copies it into the per-run directory, and passes only that private copy here.
+CLAW_IMG="${STARRY_ROOTFS:?STARRY_ROOTFS must point to the private app rootfs copy}"
+test -f "$CLAW_IMG"
 
 echo "=== 3. Inject claw into rootfs ==="
 inject_claw() {

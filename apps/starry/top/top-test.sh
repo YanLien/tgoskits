@@ -1,7 +1,4 @@
 #!/bin/sh
-echo "=== install procps ==="
-apk add procps || { echo "TOP_TEST_FAILED"; exit 1; }
-
 echo "=== test top requires TERM ==="
 output="/tmp/top_output.txt"
 top -n 1 > "$output" 2> /dev/null

@@ -16,7 +16,7 @@ args = [
   "user,id=net0",
 ]
 to_bin = true
-uefi = false
+uefi = true
 shell_prefix = "root@starry:"
 shell_init_cmd = "/usr/bin/apk-curl-tests.sh"
 success_regex = ["(?m)^APK_CURL_TEST_PASSED\\s*$"]

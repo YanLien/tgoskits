@@ -5,7 +5,7 @@ args = [
     "la464",
     "-nographic",
     "-m",
-    "128M",
+  "512M",
     "-device",
     "virtio-blk-pci,drive=disk0",
     "-drive",
@@ -15,10 +15,10 @@ args = [
     "-netdev",
     "user,id=net0",
 ]
-uefi = false
+uefi = true
 to_bin = true
 shell_prefix = "root@starry:"
 shell_init_cmd = "/usr/bin/rust-hello"
 success_regex = ['(?m)^TEST PASSED\s*$']
-fail_regex = ['(?i)\bpanic(?:ked)?\b']
+fail_regex = ['(?i)\bpanic(?:ked)?\b', '(?m)^memory allocation of \d+ bytes failed\s*$']
 timeout = 60

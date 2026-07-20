@@ -11,8 +11,8 @@ args = [
     "-netdev",
     "user,id=net0",
 ]
-uefi = false
-to_bin = false
+uefi = true
+to_bin = true
 shell_prefix = "root@starry:"
 shell_init_cmd = "/usr/bin/diffutils-tests.sh"
 success_regex = ["(?m)^DIFFUTILS_TEST_PASSED\\s*$"]

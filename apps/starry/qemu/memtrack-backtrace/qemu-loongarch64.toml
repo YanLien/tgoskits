@@ -5,7 +5,7 @@ args = [
     "la464",
     "-nographic",
     "-m",
-    "128M",
+    "512M",
     "-device",
     "virtio-blk-pci,drive=disk0",
     "-drive",
@@ -15,7 +15,7 @@ args = [
     "-netdev",
     "user,id=net0",
 ]
-uefi = false
+uefi = true
 to_bin = true
 shell_prefix = "root@starry:/root #"
 shell_init_cmd = "printf 'start\\n' > /dev/memtrack && printf 'sample\\n' > /dev/memtrack && printf 'sample_hard\\n' > /dev/memtrack && printf 'symbolize\\n' > /dev/memtrack && printf 'end\\n' > /dev/memtrack && echo STARRY_MEMTRACK_BACKTRACE_OK"
@@ -28,5 +28,5 @@ success_regex = [
 host_symbolize_success_regex = [
     "(?ms)^=== host backtrace symbolize ===$.*^BACKTRACE_BLOCK\\s+\\d+\\s+kind=alloc\\b.*^BT\\s+0\\s+ip=0x[0-9a-fA-F]+\\s+fp=0x0\\s+starry_memtrack_symbolize_probe\\b",
 ]
-fail_regex = ['(?i)\bpanic(?:ked)?\b']
+fail_regex = ['(?i)\bpanic(?:ked)?\b', '(?m)^memory allocation of \d+ bytes failed\s*$']
 timeout = 180

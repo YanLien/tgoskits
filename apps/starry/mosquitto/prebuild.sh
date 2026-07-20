@@ -66,11 +66,18 @@ find_qemu_runner() {
 run_guest_apk_with_retry() {
     local attempt
     local max_attempts=4
+    local guest_loader="$staging_root/lib/ld-musl-${arch}.so.1"
+
+    if [[ ! -x "$guest_loader" ]]; then
+        echo "error: staging root is missing guest musl loader: $guest_loader" >&2
+        return 1
+    fi
 
     for attempt in $(seq 1 "$max_attempts"); do
         if env -u LD_LIBRARY_PATH \
-            QEMU_LD_PREFIX="$staging_root" \
-            "$qemu_runner" -L "$staging_root" "$staging_root/sbin/apk" "$@"; then
+            "$qemu_runner" "$guest_loader" \
+            --library-path "$staging_root/lib:$staging_root/usr/lib" \
+            "$staging_root/sbin/apk" "$@"; then
             return 0
         fi
 

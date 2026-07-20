@@ -6,8 +6,8 @@ args = [
     "-device", "virtio-net-pci,netdev=net0",
     "-netdev", "user,id=net0"
 ]
-uefi = false
-to_bin = false
+uefi = true
+to_bin = true
 shell_prefix = "root@starry:"
 shell_init_cmd = "/usr/bin/claw-robust-04"
 success_regex = ["ALL_TESTS_DONE", "CLAW_SKIP"]

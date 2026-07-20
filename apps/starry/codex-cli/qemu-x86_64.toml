@@ -15,8 +15,8 @@ args = [
     "user,id=net0",
     "-snapshot",
 ]
-uefi = false
-to_bin = false
+uefi = true
+to_bin = true
 shell_prefix = "root@starry:"
 shell_init_cmd = "/usr/bin/codex-offline-smoke.sh"
 success_regex = ["(?m)^STARRY_CODEX_STAGE_G_CODEX_HELP_PASSED\\s*$"]

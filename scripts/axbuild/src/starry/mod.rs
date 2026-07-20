@@ -31,6 +31,27 @@ pub struct Starry {
     pub(super) app: AppContext,
 }
 
+struct AppRootfsCleanup {
+    rootfs_copy: Option<PathBuf>,
+    run_dir: Option<PathBuf>,
+}
+
+impl AppRootfsCleanup {
+    fn new(case: &app::StarryAppQemuCase) -> Self {
+        Self {
+            rootfs_copy: case.rootfs_copy_to_remove.clone(),
+            run_dir: case.rootfs_run_dir_to_remove.clone(),
+        }
+    }
+}
+
+impl Drop for AppRootfsCleanup {
+    fn drop(&mut self) {
+        qemu_case::remove_case_rootfs_copy(self.rootfs_copy.as_deref());
+        qemu_case::remove_case_run_dir(self.run_dir.as_deref());
+    }
+}
+
 impl Starry {
     pub fn new() -> anyhow::Result<Self> {
         let app = AppContext::new()?;
@@ -221,6 +242,7 @@ impl Starry {
             args.qemu_config.as_deref(),
         )
         .await?;
+        let _rootfs_cleanup = AppRootfsCleanup::new(&case);
         let request = self.prepare_request(
             StarryCliArgs {
                 config: case.build_config_path.clone(),
@@ -319,6 +341,9 @@ impl Starry {
             rootfs::RootfsPatchMode::EnsureDiskBootNet,
         );
         qemu.args.extend(prepared_assets.extra_qemu_args.clone());
+        if qemu.uefi {
+            qemu::apply_drive_snapshot_without_global_snapshot(&mut qemu);
+        }
         println!(
             "  prepare assets: {:.2?} (pipeline={}, cache={})",
             prepare_started.elapsed(),

@@ -12,7 +12,7 @@ args = [
   "nvme,serial=starry-nvme-rootfs,drive=nvm",
 ]
 to_bin = true
-uefi = false
+uefi = true
 shell_prefix = "root@starry:"
 shell_init_cmd = '''
 fail() {

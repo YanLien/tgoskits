@@ -64,6 +64,27 @@ cargo xtask starry app qemu [options]
 
 `--all` 与 `-t` 互斥。每个选中的应用使用其目录内的 `qemu-{arch}.toml` 和 `build-*.toml` 配置，复用 StarryOS 测试的资产准备流程（rootfs 注入、ELF 依赖同步、Grouped runner 生成）。
 
+### QEMU rootfs 隔离
+
+应用运行不会直接修改共享的 managed rootfs。默认的 `snapshot = true` 流程会先通过
+reflink（不支持时退化为普通复制）创建本次运行的私有 rootfs，再执行 `prebuild.sh` 和
+overlay 注入；QEMU 退出后删除运行副本和临时目录。QEMU 的 snapshot 继续负责隔离
+guest 启动后的块设备写入。
+
+声明 `snapshot = false` 的应用需要跨运行保留 guest 写入。未显式指定独立 rootfs 时，
+runner 使用：
+
+```text
+target/<target>/starry-app/<case>/persistent/rootfs.img
+```
+
+显式指定的非默认 rootfs 仍被视为该应用自己的持久镜像。默认 managed rootfs 即使被
+配置文件引用，也不会作为持久写入目标。
+
+QEMU 配置中的 rootfs 名称只表示基础文件系统来源。runner 按该固定 managed image
+名称从镜像注册表准备文件系统，再基于它创建私有副本并执行 `prebuild.sh`；应用不得在
+配置中使用 `rootfs-<arch>-<app>.img` 之类的派生输出名。
+
 ## app board
 
 ```bash

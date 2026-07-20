@@ -47,4 +47,12 @@ pub(super) fn write_test_image_config(workspace_root: &Path) {
         auto_sync_threshold: 60,
     };
     crate::image::config::ImageConfig::write_config(workspace_root, &config).unwrap();
+    fs::create_dir_all(&config.local_storage).unwrap();
+    fs::write(
+        config
+            .local_storage
+            .join(crate::image::storage::REGISTRY_FILENAME),
+        toml::to_string(&crate::image::registry::ImageRegistry { images: Vec::new() }).unwrap(),
+    )
+    .unwrap();
 }

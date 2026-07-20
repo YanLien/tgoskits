@@ -1,7 +1,7 @@
 timeout = 420
 shell_prefix = "root@starry:"
-uefi = false
-to_bin = false
+uefi = true
+to_bin = true
 success_regex = ["(?m)^STARRY_PICOCLAW_OFFLINE_PASSED\\s*$"]
 fail_regex = [
   "(?i)\\bpanic(?:ked)?\\b",

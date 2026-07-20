@@ -395,7 +395,7 @@ async fn pull_rootfs_image_returns_extracted_rootfs_file() {
 }
 
 #[tokio::test]
-async fn pull_rootfs_image_skips_download_when_archive_matches() {
+async fn pull_rootfs_image_restores_modified_extracted_image_from_verified_archive() {
     let image_name = "rootfs-riscv64-alpine.img";
     let archive = make_tar_xz(&[(image_name, b"rootfs")]);
     let sha256 = sha256_hex(&archive);
@@ -428,7 +428,7 @@ async fn pull_rootfs_image_skips_download_when_archive_matches() {
         .unwrap();
 
     assert_eq!(rootfs_again, rootfs);
-    assert_eq!(fs::read(rootfs_again).unwrap(), b"patched rootfs");
+    assert_eq!(fs::read(rootfs_again).unwrap(), b"rootfs");
     assert_eq!(archive_url.request_count(), 1);
 }
 

@@ -38,6 +38,8 @@ pub(crate) struct StarryAppQemuCase {
     pub(crate) build_config_path: Option<PathBuf>,
     pub(crate) qemu_config_path: Option<PathBuf>,
     pub(crate) rootfs_path: PathBuf,
+    pub(crate) rootfs_copy_to_remove: Option<PathBuf>,
+    pub(crate) rootfs_run_dir_to_remove: Option<PathBuf>,
     pub(crate) snapshot: bool,
     pub(crate) test_commands: Vec<String>,
     pub(crate) host_symbolize_success_regex: Vec<String>,

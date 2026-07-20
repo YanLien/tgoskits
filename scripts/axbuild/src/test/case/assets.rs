@@ -77,8 +77,12 @@ pub(crate) fn copy_shared_rootfs_for_case(
     shared_rootfs: &Path,
     layout: &CaseAssetLayout,
 ) -> anyhow::Result<()> {
-    copy_file_fast(shared_rootfs, &layout.case_rootfs_copy)?;
-    Ok(())
+    copy_rootfs_image(shared_rootfs, &layout.case_rootfs_copy)
+}
+
+/// Copies a rootfs image, preferring a copy-on-write reflink when available.
+pub(crate) fn copy_rootfs_image(source: &Path, destination: &Path) -> anyhow::Result<()> {
+    copy_file_fast(source, destination)
 }
 
 /// Removes the per-case rootfs copy after a test run completes, if one was

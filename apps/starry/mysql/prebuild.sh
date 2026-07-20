@@ -184,6 +184,12 @@ prepare_debian_rootfs_archive() {
 prepare_mysql_rootfs_image() {
     local extract_dir extracted fallback
 
+    # The app runner has already downloaded the Debian image selected by the
+    # QEMU config and copied it to this private per-run path.
+    if [[ -f "$rootfs" ]]; then
+        return
+    fi
+
     if [[ -n "$base_rootfs" && "$rootfs" == "$base_rootfs" ]]; then
         return
     fi

@@ -21,6 +21,7 @@ use crate::support::download::{download_file_verified_sha256, http_client};
 pub const REGISTRY_FILENAME: &str = "images.toml";
 const LAST_SYNC_FILENAME: &str = ".last_sync";
 const EXTRACTED_SHA256_FILENAME: &str = ".archive.sha256";
+const EXTRACTED_ROOTFS_METADATA_FILENAME: &str = ".rootfs.metadata";
 
 #[derive(Debug)]
 pub struct Storage {
@@ -143,7 +144,12 @@ impl Storage {
         }
 
         let extract_dir = output_dir.join(image_extract_dir_name(spec));
-        if extracted_archive_matches(&extract_dir, &image.sha256)? {
+        let extracted_rootfs_matches = if is_rootfs_image_name(&image.name) {
+            extracted_rootfs_metadata_matches(&extract_dir, &image.name)?
+        } else {
+            true
+        };
+        if extracted_archive_matches(&extract_dir, &image.sha256)? && extracted_rootfs_matches {
             println!(
                 "image already extracted and up to date at {}",
                 extract_dir.display()
@@ -151,7 +157,13 @@ impl Storage {
             return Ok(extract_dir);
         }
 
-        extract_archive(&archive_path, &extract_dir, &image.sha256).await?;
+        extract_archive(
+            &archive_path,
+            &extract_dir,
+            &image.sha256,
+            is_rootfs_image_name(&image.name).then_some(image.name.as_str()),
+        )
+        .await?;
         println!("image extracted to {}", extract_dir.display());
         Ok(extract_dir)
     }
@@ -427,10 +439,58 @@ fn extracted_archive_matches(extract_dir: &Path, expected_sha256: &str) -> anyho
     Ok(actual_sha256.trim() == expected_sha256)
 }
 
+fn extracted_rootfs_metadata_matches(extract_dir: &Path, image_name: &str) -> anyhow::Result<bool> {
+    let marker_path = extract_dir.join(EXTRACTED_ROOTFS_METADATA_FILENAME);
+    let expected_metadata = match fs::read_to_string(&marker_path) {
+        Ok(metadata) => metadata,
+        Err(err) if err.kind() == std::io::ErrorKind::NotFound => return Ok(false),
+        Err(err) => {
+            return Err(anyhow!(
+                "failed to read rootfs metadata marker {}: {err}",
+                marker_path.display()
+            ));
+        }
+    };
+    let rootfs_path = match find_extracted_rootfs_image(extract_dir, image_name) {
+        Ok(path) => path,
+        Err(_) => return Ok(false),
+    };
+
+    Ok(expected_metadata == rootfs_metadata(&rootfs_path)?)
+}
+
+fn rootfs_metadata(rootfs_path: &Path) -> anyhow::Result<String> {
+    let metadata = fs::metadata(rootfs_path)
+        .with_context(|| format!("failed to read metadata for {}", rootfs_path.display()))?;
+    let modified = metadata
+        .modified()
+        .with_context(|| {
+            format!(
+                "failed to read modification time for {}",
+                rootfs_path.display()
+            )
+        })?
+        .duration_since(UNIX_EPOCH)
+        .with_context(|| {
+            format!(
+                "rootfs modification time predates the Unix epoch: {}",
+                rootfs_path.display()
+            )
+        })?;
+
+    Ok(format!(
+        "len={}\nmodified_secs={}\nmodified_nanos={}\n",
+        metadata.len(),
+        modified.as_secs(),
+        modified.subsec_nanos()
+    ))
+}
+
 async fn extract_archive(
     archive_path: &Path,
     extract_dir: &Path,
     expected_sha256: &str,
+    rootfs_image_name: Option<&str>,
 ) -> anyhow::Result<()> {
     if extract_dir.exists() {
         if extract_dir.is_dir() {
@@ -448,6 +508,7 @@ async fn extract_archive(
     let archive_path_for_task = archive_path.clone();
     let extract_dir_for_task = extract_dir.clone();
     let expected_sha256 = expected_sha256.to_string();
+    let rootfs_image_name = rootfs_image_name.map(str::to_string);
     let progress = ProgressBar::new_spinner();
     progress.set_message(format!("extracting {}", archive_path.display()));
     progress.enable_steady_tick(std::time::Duration::from_millis(100));
@@ -460,6 +521,19 @@ async fn extract_archive(
             &mut archive_file,
             &extract_dir_for_task,
         )?;
+        if let Some(image_name) = rootfs_image_name.as_deref() {
+            let rootfs_path = find_extracted_rootfs_image(&extract_dir_for_task, image_name)?;
+            fs::write(
+                extract_dir_for_task.join(EXTRACTED_ROOTFS_METADATA_FILENAME),
+                rootfs_metadata(&rootfs_path)?,
+            )
+            .with_context(|| {
+                format!(
+                    "failed to write rootfs metadata marker in {}",
+                    extract_dir_for_task.display()
+                )
+            })?;
+        }
         fs::write(
             extract_dir_for_task.join(EXTRACTED_SHA256_FILENAME),
             expected_sha256,
@@ -549,10 +623,14 @@ fn resolve_workspace_path(workspace_root: &Path, path: &Path) -> PathBuf {
 }
 
 fn ensure_rootfs_image_name(image_name: &str) -> anyhow::Result<()> {
-    if image_name.starts_with("rootfs-") && image_name.ends_with(".img") {
+    if is_rootfs_image_name(image_name) {
         return Ok(());
     }
     bail!("image `{image_name}` is not a managed rootfs image")
+}
+
+fn is_rootfs_image_name(image_name: &str) -> bool {
+    image_name.starts_with("rootfs-") && image_name.ends_with(".img")
 }
 
 fn find_extracted_rootfs_image(extract_dir: &Path, image_name: &str) -> anyhow::Result<PathBuf> {

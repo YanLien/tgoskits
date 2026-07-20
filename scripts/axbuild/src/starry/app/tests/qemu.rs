@@ -44,11 +44,25 @@ fn qemu_config_selection_prefers_exact_arch_config() {
 #[tokio::test]
 async fn qemu_case_uses_starry_default_arch_without_an_arch_argument() {
     let root = tempdir().unwrap();
+    write_test_image_config(root.path());
+    let rootfs_path = root
+        .path()
+        .join(".tgos-images/rootfs-riscv64-alpine.img/rootfs-riscv64-alpine.img");
+    fs::create_dir_all(rootfs_path.parent().unwrap()).unwrap();
+    fs::write(&rootfs_path, b"rootfs").unwrap();
     write_case_file(
         root.path(),
         "qemu/apt",
         "qemu-riscv64.toml",
-        "args = []\nuefi = false\nto_bin = true\nsuccess_regex = []\nfail_regex = []\n",
+        r#"args = [
+  "-drive",
+  "id=disk0,if=none,format=raw,file=${workspace}/.tgos-images/rootfs-riscv64-alpine.img/rootfs-riscv64-alpine.img",
+]
+uefi = false
+to_bin = true
+success_regex = []
+fail_regex = []
+"#,
     );
     let app = discover_apps(root.path())
         .unwrap()
@@ -220,6 +234,237 @@ fail_regex = []
 }
 
 #[test]
+fn qemu_x86_and_loongarch_apps_use_the_uefi_boot_contract() {
+    let repo = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .parent()
+        .and_then(Path::parent)
+        .expect("axbuild manifest should live under scripts/axbuild")
+        .to_path_buf();
+    let app_configs = [
+        "qemu/apk-add-fs-equivalence/qemu-x86_64.toml",
+        "qemu/apk-curl/qemu-loongarch64.toml",
+        "qemu/apk-curl/qemu-x86_64.toml",
+        "qemu/apk-net-equivalence/qemu-x86_64.toml",
+        "qemu/busybox/qemu-loongarch64.toml",
+        "qemu/busybox/qemu-x86_64.toml",
+        "qemu/coreutils/qemu-loongarch64.toml",
+        "qemu/coreutils/qemu-x86_64.toml",
+        "qemu/dhcp/qemu-loongarch64.toml",
+        "qemu/dhcp/qemu-x86_64.toml",
+        "qemu/dual-net/qemu-loongarch64.toml",
+        "qemu/dual-net/qemu-x86_64.toml",
+        "qemu/findutils/qemu-loongarch64.toml",
+        "qemu/findutils/qemu-x86_64.toml",
+        "qemu/grep/qemu-loongarch64.toml",
+        "qemu/grep/qemu-x86_64.toml",
+        "qemu/inotifywait/qemu-x86_64.toml",
+        "qemu/lua/qemu-x86_64.toml",
+        "qemu/memtrack-backtrace/qemu-loongarch64.toml",
+        "qemu/memtrack-backtrace/qemu-x86_64.toml",
+        "qemu/nvme/nvme-rootfs-rw-20m/qemu-loongarch64.toml",
+        "qemu/nvme/nvme-rootfs-rw-20m/qemu-x86_64.toml",
+        "qemu/procps/qemu-loongarch64.toml",
+        "qemu/procps/qemu-x86_64.toml",
+        "qemu/python-hello/qemu-loongarch64.toml",
+        "qemu/python-hello/qemu-x86_64.toml",
+        "qemu/rust-hello/qemu-loongarch64.toml",
+        "qemu/rust-hello/qemu-x86_64.toml",
+        "qemu/sqlite/qemu-loongarch64.toml",
+        "qemu/sqlite/qemu-x86_64.toml",
+        "qemu/syscall-test/qemu-loongarch64.toml",
+        "qemu/syscall-test/qemu-x86_64.toml",
+        "qemu/util-linux/qemu-loongarch64.toml",
+        "qemu/util-linux/qemu-x86_64.toml",
+    ];
+
+    for relative_path in app_configs {
+        let config_path = repo.join("apps/starry").join(relative_path);
+        let config: toml::Value =
+            toml::from_str(&fs::read_to_string(&config_path).unwrap()).unwrap();
+
+        assert_eq!(
+            config.get("uefi").and_then(toml::Value::as_bool),
+            Some(true),
+            "{} must use the dynamic UEFI handoff",
+            config_path.display()
+        );
+        assert_eq!(
+            config.get("to_bin").and_then(toml::Value::as_bool),
+            Some(true),
+            "{} must build the UEFI-loadable binary image",
+            config_path.display()
+        );
+    }
+}
+
+#[test]
+fn every_x86_and_loongarch_app_config_uses_the_uefi_boot_contract() {
+    let repo = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .parent()
+        .and_then(Path::parent)
+        .expect("axbuild manifest should live under scripts/axbuild")
+        .to_path_buf();
+    let mut config_paths = Vec::new();
+    collect_x86_and_loongarch_qemu_configs(&repo.join("apps/starry"), &mut config_paths);
+
+    assert!(!config_paths.is_empty());
+    for config_path in config_paths {
+        let config: toml::Value =
+            toml::from_str(&fs::read_to_string(&config_path).unwrap()).unwrap();
+        assert_eq!(
+            config.get("uefi").and_then(toml::Value::as_bool),
+            Some(true),
+            "{} must use the dynamic UEFI handoff",
+            config_path.display()
+        );
+        assert_eq!(
+            config.get("to_bin").and_then(toml::Value::as_bool),
+            Some(true),
+            "{} must build the UEFI-loadable binary image",
+            config_path.display()
+        );
+    }
+}
+
+#[test]
+fn managed_app_rootfs_references_use_registered_base_filesystems() {
+    let repo = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .parent()
+        .and_then(Path::parent)
+        .expect("axbuild manifest should live under scripts/axbuild")
+        .to_path_buf();
+    let mut config_paths = Vec::new();
+    collect_qemu_configs(&repo.join("apps/starry"), &mut config_paths);
+
+    for config_path in config_paths {
+        let config: toml::Value =
+            toml::from_str(&fs::read_to_string(&config_path).unwrap()).unwrap();
+        let Some(args) = config.get("args").and_then(toml::Value::as_array) else {
+            continue;
+        };
+        for arg in args.iter().filter_map(toml::Value::as_str) {
+            let Some(rootfs_reference) = arg.split(',').find(|part| part.contains("rootfs-"))
+            else {
+                continue;
+            };
+            let image_name = rootfs_reference
+                .rsplit('/')
+                .next()
+                .unwrap_or(rootfs_reference);
+            let image_name = image_name.strip_prefix("file=").unwrap_or(image_name);
+            assert!(
+                ["-alpine.img", "-busybox.img", "-debian.img"]
+                    .iter()
+                    .any(|suffix| image_name.ends_with(suffix)),
+                "{} selects derived rootfs `{image_name}`; select a registered base filesystem",
+                config_path.display()
+            );
+        }
+    }
+}
+
+#[test]
+fn loongarch_memtrack_has_enough_memory_and_rejects_allocator_abort() {
+    let repo = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .parent()
+        .and_then(Path::parent)
+        .expect("axbuild manifest should live under scripts/axbuild")
+        .to_path_buf();
+    let config_path = repo.join("apps/starry/qemu/memtrack-backtrace/qemu-loongarch64.toml");
+    let config: toml::Value = toml::from_str(&fs::read_to_string(&config_path).unwrap()).unwrap();
+    let args = config
+        .get("args")
+        .and_then(toml::Value::as_array)
+        .unwrap()
+        .iter()
+        .map(|arg| arg.as_str().unwrap())
+        .collect::<Vec<_>>();
+    let memory = args
+        .windows(2)
+        .find_map(|args| (args[0] == "-m").then_some(args[1]));
+    let fail_regex = config
+        .get("fail_regex")
+        .and_then(toml::Value::as_array)
+        .unwrap()
+        .iter()
+        .map(|regex| regex.as_str().unwrap())
+        .collect::<Vec<_>>();
+
+    assert_eq!(memory, Some("512M"));
+    assert!(
+        fail_regex
+            .iter()
+            .any(|regex| regex.contains("memory allocation of"))
+    );
+}
+
+#[test]
+fn loongarch_uefi_app_configs_do_not_use_128m() {
+    let repo = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .parent()
+        .and_then(Path::parent)
+        .expect("axbuild manifest should live under scripts/axbuild")
+        .to_path_buf();
+    let mut config_paths = Vec::new();
+    collect_x86_and_loongarch_qemu_configs(&repo.join("apps/starry"), &mut config_paths);
+
+    for config_path in config_paths.into_iter().filter(|path| {
+        path.file_name().and_then(|name| name.to_str()) == Some("qemu-loongarch64.toml")
+    }) {
+        let config: toml::Value =
+            toml::from_str(&fs::read_to_string(&config_path).unwrap()).unwrap();
+        let args = config
+            .get("args")
+            .and_then(toml::Value::as_array)
+            .unwrap()
+            .iter()
+            .map(|arg| arg.as_str().unwrap())
+            .collect::<Vec<_>>();
+        let memory = args
+            .windows(2)
+            .find_map(|args| (args[0] == "-m").then_some(args[1]));
+
+        assert_ne!(
+            memory,
+            Some("128M"),
+            "{} cannot boot the dynamic UEFI image with 128 MiB",
+            config_path.display()
+        );
+    }
+}
+
+fn collect_x86_and_loongarch_qemu_configs(directory: &Path, config_paths: &mut Vec<PathBuf>) {
+    for entry in fs::read_dir(directory).unwrap() {
+        let entry = entry.unwrap();
+        let path = entry.path();
+        if path.is_dir() {
+            collect_x86_and_loongarch_qemu_configs(&path, config_paths);
+        } else if matches!(
+            path.file_name().and_then(|name| name.to_str()),
+            Some("qemu-x86_64.toml" | "qemu-loongarch64.toml")
+        ) {
+            config_paths.push(path);
+        }
+    }
+}
+
+fn collect_qemu_configs(directory: &Path, config_paths: &mut Vec<PathBuf>) {
+    for entry in fs::read_dir(directory).unwrap() {
+        let entry = entry.unwrap();
+        let path = entry.path();
+        if path.is_dir() {
+            collect_qemu_configs(&path, config_paths);
+        } else if path
+            .file_name()
+            .and_then(|name| name.to_str())
+            .is_some_and(|name| name.starts_with("qemu-") && name.ends_with(".toml"))
+        {
+            config_paths.push(path);
+        }
+    }
+}
+
+#[test]
 fn selfhost_x86_app_preserves_the_persistent_build_contract() {
     let repo = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
         .parent()
@@ -266,8 +511,8 @@ fn selfhost_x86_app_preserves_the_persistent_build_contract() {
     assert!(
         fs::read_to_string(&config_path)
             .unwrap()
-            .contains("rootfs-x86_64-selfhost.img"),
-        "{} must select a managed per-app rootfs",
+            .contains("rootfs-x86_64-alpine.img"),
+        "{} must select a registered base rootfs; persistence belongs to the runner copy",
         config_path.display()
     );
 
@@ -313,6 +558,30 @@ fn selfhost_x86_app_preserves_the_persistent_build_contract() {
                 .contains("$SOURCE_DIR/target/x86_64-unknown-linux-musl/release/starryos"),
         "{} must build the canonical x86_64 path with a native musl host toolchain",
         guest_runner_path.display()
+    );
+}
+
+#[test]
+fn mysql_prebuild_preserves_the_runner_owned_debian_copy() {
+    let repo = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .parent()
+        .and_then(Path::parent)
+        .expect("axbuild manifest should live under scripts/axbuild")
+        .to_path_buf();
+    let script_path = repo.join("apps/starry/mysql/prebuild.sh");
+    let script = fs::read_to_string(&script_path).unwrap();
+    let prepare = script
+        .split("prepare_mysql_rootfs_image() {")
+        .nth(1)
+        .and_then(|body| body.split("resize_rootfs_if_needed() {").next())
+        .expect("mysql prebuild must define rootfs preparation before resizing");
+
+    assert!(
+        prepare.contains("if [[ -f \"$rootfs\" ]]; then")
+            && prepare.find("if [[ -f \"$rootfs\" ]]").unwrap()
+                < prepare.find("rm -f \"$rootfs\"").unwrap(),
+        "{} must preserve the private Debian base image prepared by the app runner",
+        script_path.display()
     );
 }
 
@@ -380,6 +649,8 @@ fn app_qemu_test_case_preserves_host_symbolize_success_regex() {
         build_config_path: None,
         qemu_config_path: Some(qemu_config_path.clone()),
         rootfs_path: PathBuf::from("/tmp/rootfs.img"),
+        rootfs_copy_to_remove: None,
+        rootfs_run_dir_to_remove: None,
         snapshot: true,
         test_commands: Vec::new(),
         host_symbolize_success_regex: vec!["symbolized".to_string()],
@@ -479,7 +750,7 @@ fn ebpf_build_scripts_use_selected_rustup_toolchain() {
 }
 
 #[test]
-fn claw_code_prebuild_replaces_stale_rootfs_directory() {
+fn claw_code_prebuild_injects_only_the_runner_owned_rootfs_copy() {
     let root = tempdir().unwrap();
     let workspace = root.path();
     let repo = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -504,16 +775,11 @@ fn claw_code_prebuild_replaces_stale_rootfs_directory() {
     .unwrap();
     fs::set_permissions(&debugfs, fs::Permissions::from_mode(0o755)).unwrap();
 
-    let rootfs_dir = workspace.join("tmp/axbuild/rootfs");
-    let default_rootfs = rootfs_dir.join("rootfs-x86_64-alpine.img");
-    let app_rootfs = rootfs_dir.join("rootfs-x86_64-claw-code.img");
-    fs::create_dir_all(&default_rootfs).unwrap();
-    fs::write(
-        default_rootfs.join("rootfs-x86_64-alpine.img"),
-        b"base rootfs",
-    )
-    .unwrap();
-    fs::create_dir_all(&app_rootfs).unwrap();
+    let default_rootfs = workspace.join("rootfs-x86_64-alpine.img");
+    let app_rootfs = workspace.join("run/rootfs.img");
+    fs::create_dir_all(app_rootfs.parent().unwrap()).unwrap();
+    fs::write(&default_rootfs, b"base rootfs").unwrap();
+    fs::copy(&default_rootfs, &app_rootfs).unwrap();
 
     let path = format!("{}:{}", tools.display(), std::env::var("PATH").unwrap());
     let status = Command::new("bash")
@@ -530,10 +796,7 @@ fn claw_code_prebuild_replaces_stale_rootfs_directory() {
     assert!(status.success());
     assert!(app_rootfs.is_file());
     assert_eq!(fs::read(&app_rootfs).unwrap(), b"base rootfs");
-    assert_eq!(
-        fs::read(default_rootfs.join("rootfs-x86_64-alpine.img")).unwrap(),
-        b"base rootfs"
-    );
+    assert_eq!(fs::read(default_rootfs).unwrap(), b"base rootfs");
 }
 
 #[test]
@@ -744,6 +1007,49 @@ fn ffplay_prebuild_exposes_weston_private_libraries() {
 }
 
 #[test]
+fn media_prebuilds_run_apk_with_the_staged_musl_loader() {
+    let repo = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .parent()
+        .and_then(Path::parent)
+        .expect("axbuild manifest should live under scripts/axbuild")
+        .to_path_buf();
+    for app in ["ffmpeg", "mosquitto"] {
+        let prebuild_path = repo.join("apps/starry").join(app).join("prebuild.sh");
+        let content = fs::read_to_string(&prebuild_path).unwrap();
+
+        assert!(
+            content.contains("guest_loader=\"$staging_root/lib/ld-musl-${arch}.so.1\"")
+                && content.contains("--library-path")
+                && content.contains("$staging_root/lib:$staging_root/usr/lib"),
+            "{} must run guest apk through its staged musl loader so host libraries cannot leak in",
+            prebuild_path.display()
+        );
+    }
+}
+
+#[test]
+fn top_app_provisions_procps_before_guest_boot() {
+    let repo = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .parent()
+        .and_then(Path::parent)
+        .expect("axbuild manifest should live under scripts/axbuild")
+        .to_path_buf();
+    let app_dir = repo.join("apps/starry/top");
+    let guest_test = fs::read_to_string(app_dir.join("top-test.sh")).unwrap();
+    let prebuild = fs::read_to_string(app_dir.join("c/prebuild.sh")).unwrap_or_default();
+    let cmake = fs::read_to_string(app_dir.join("c/CMakeLists.txt")).unwrap_or_default();
+
+    assert!(
+        !guest_test.contains("apk add")
+            && prebuild.contains("apk add procps")
+            && cmake.contains("top-test.sh")
+            && cmake.contains("PROCPS_TOP"),
+        "{} must install procps into the private staging root instead of using guest network",
+        app_dir.display()
+    );
+}
+
+#[test]
 fn claw_code_qemu_config_exits_after_smoke_check() {
     let repo = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
         .parent()
@@ -753,6 +1059,15 @@ fn claw_code_qemu_config_exits_after_smoke_check() {
     let config_path = repo.join("apps/starry/claw-code/qemu-x86_64.toml");
     let content = fs::read_to_string(&config_path).unwrap();
     let config: toml::Value = toml::from_str(&content).unwrap();
+
+    let args = config.get("args").and_then(toml::Value::as_array).unwrap();
+    assert!(
+        args.iter().filter_map(toml::Value::as_str).any(|arg| {
+            arg.contains("rootfs-x86_64-alpine.img") && !arg.contains("rootfs-x86_64-claw-code.img")
+        }),
+        "{} must select a fixed managed base rootfs; the runner owns the private derived copy",
+        config_path.display()
+    );
 
     let timeout = config
         .get("timeout")
