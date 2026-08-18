@@ -16,10 +16,10 @@ mod types;
 
 use compile::{archive_static_lib, compile_dir_c_sources};
 use features::{c_compiler_features, dynamic_pie_for_c_app, map_c_app_features};
-use flags::{CFlagsInput, cflags, write_pthread_mutex_header};
+use flags::{CFlagsInput, axlibc_cflags, cflags, write_pthread_mutex_header};
 pub(crate) use libc::AX_LIBC_PACKAGE;
 use libc::build_axlibc_staticlib;
-use link::{find_link_scripts, libgcc, link_c_app, platform_name};
+use link::{AppLinkInput, find_link_scripts, libgcc, link_c_app, platform_name};
 use types::sanitize_name;
 pub(crate) use types::{ArceosCBuildInput, ArceosCBuildOutput};
 
@@ -97,6 +97,7 @@ pub(crate) fn build_c_app(
 
     let cflags = cflags(CFlagsInput {
         workspace_root,
+        app_dir: &input.app_dir,
         arch,
         mode,
         generated_include_dir: &generated_include_dir,
@@ -105,9 +106,21 @@ pub(crate) fn build_c_app(
         log: cargo.log,
         dynamic_pie,
     });
-    let lib_objects =
-        compile_dir_c_sources(&c_source_dir, &axlibc_obj_dir, &cflags, None, "axlibc")?;
+    let axlibc_cflags = axlibc_cflags(arch, &cflags);
+    let lib_objects = compile_dir_c_sources(
+        &c_source_dir,
+        &axlibc_obj_dir,
+        &axlibc_cflags,
+        None,
+        "axlibc",
+    )?;
     let app_objects = compile_dir_c_sources(&input.app_dir, &app_obj_dir, &cflags, None, "app")?;
+    let app_static_libraries = find_app_static_libraries(&input.app_dir)?;
+    let compiler_libgcc = libgcc(arch, &cargo.features)?;
+    let libgcc = compiler_libgcc.filter(|path| path.is_file()).or_else(|| {
+        let bundled = input.app_dir.join("libgcc.a");
+        bundled.is_file().then_some(bundled)
+    });
     let libc = axlibc_obj_dir.join("libc.a");
     archive_static_lib(arch, &libc, &lib_objects)?;
 
@@ -120,9 +133,27 @@ pub(crate) fn build_c_app(
         &elf_path,
         &rust_lib,
         &libc,
-        &app_objects,
-        libgcc(arch, &cargo.features)?,
+        AppLinkInput {
+            objects: &app_objects,
+            static_libraries: &app_static_libraries,
+        },
+        libgcc,
     )?;
 
     Ok(ArceosCBuildOutput { elf_path })
+}
+
+fn find_app_static_libraries(app_dir: &Path) -> anyhow::Result<Vec<std::path::PathBuf>> {
+    let mut libraries = fs::read_dir(app_dir)
+        .with_context(|| format!("failed to read {}", app_dir.display()))?
+        .collect::<Result<Vec<_>, _>>()?
+        .into_iter()
+        .map(|entry| entry.path())
+        .filter(|path| {
+            path.extension().is_some_and(|extension| extension == "a")
+                && path.file_name().is_none_or(|name| name != "libgcc.a")
+        })
+        .collect::<Vec<_>>();
+    libraries.sort();
+    Ok(libraries)
 }

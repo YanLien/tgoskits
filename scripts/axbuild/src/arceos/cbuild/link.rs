@@ -18,6 +18,11 @@ pub(super) struct LinkScripts {
     pub(super) pie: bool,
 }
 
+pub(super) struct AppLinkInput<'a> {
+    pub(super) objects: &'a [PathBuf],
+    pub(super) static_libraries: &'a [PathBuf],
+}
+
 pub(super) fn find_link_scripts(
     target_dir: &Path,
     target: &str,
@@ -184,7 +189,7 @@ pub(super) fn link_c_app(
     elf_path: &Path,
     rust_lib: &Path,
     libc: &Path,
-    app_objects: &[PathBuf],
+    app: AppLinkInput<'_>,
     libgcc: Option<PathBuf>,
 ) -> anyhow::Result<()> {
     let mut command = Command::new("rust-lld");
@@ -206,15 +211,16 @@ pub(super) fn link_c_app(
     } else {
         command.arg("-no-pie");
     }
+    command
+        .args(app.objects)
+        .arg("--start-group")
+        .args(app.static_libraries)
+        .arg(rust_lib)
+        .arg(libc);
     if let Some(libgcc) = libgcc {
         command.arg(libgcc);
     }
-    command
-        .args(app_objects)
-        .arg(libc)
-        .arg(rust_lib)
-        .arg("-o")
-        .arg(elf_path);
+    command.arg("--end-group").arg("-o").arg(elf_path);
     command
         .exec()
         .with_context(|| format!("failed to link {}", elf_path.display()))

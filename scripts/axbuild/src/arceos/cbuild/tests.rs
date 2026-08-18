@@ -7,7 +7,7 @@ use super::{
         c_compiler_features, c_config_features, c_defines, dynamic_pie_for_c_app,
         map_c_app_features,
     },
-    flags::{CFlagsInput, cflags, pthread_mutex_header_contents},
+    flags::{CFlagsInput, axlibc_cflags, cflags, pthread_mutex_header_contents},
     libc::{PIC_RUSTFLAG, append_pic_rustflag},
     link::{find_final_linker_script, find_link_scripts, find_linker_search_dirs},
 };
@@ -77,6 +77,7 @@ fn c_compiler_features_keep_case_defines_for_cflags() {
     );
     let flags = cflags(CFlagsInput {
         workspace_root: std::path::Path::new("/workspace"),
+        app_dir: std::path::Path::new("/app"),
         arch: "x86_64",
         mode: "release",
         generated_include_dir: std::path::Path::new("/generated"),
@@ -88,6 +89,30 @@ fn c_compiler_features_keep_case_defines_for_cflags() {
 
     assert!(flags.contains(&"-DAX_CONFIG_ALLOC".to_string()));
     assert!(flags.contains(&"-DARCEOS_C_TEST_CASE_MEM=1".to_string()));
+    assert!(flags.contains(&"-I/app/include".to_string()));
+}
+
+#[test]
+fn aarch64_fp_simd_cflags_keep_an_architecture_marker() {
+    let features = strings(&["fp-simd"]);
+    let flags = cflags(CFlagsInput {
+        workspace_root: std::path::Path::new("/workspace"),
+        app_dir: std::path::Path::new("/app"),
+        arch: "aarch64",
+        mode: "release",
+        generated_include_dir: std::path::Path::new("/generated"),
+        include_dir: std::path::Path::new("/include"),
+        features: &features,
+        log: Some(LogLevel::Info),
+        dynamic_pie: false,
+    });
+
+    assert!(flags.contains(&"-march=armv8-a".to_string()));
+    assert!(flags.contains(&"-mstrict-align".to_string()));
+    assert!(!flags.contains(&"-mgeneral-regs-only".to_string()));
+    let axlibc_flags = axlibc_cflags("aarch64", &flags);
+    assert!(axlibc_flags.contains(&"-fno-vectorize".to_string()));
+    assert!(axlibc_flags.contains(&"-fno-slp-vectorize".to_string()));
 }
 
 #[test]

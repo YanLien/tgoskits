@@ -7,6 +7,7 @@ use super::features::{c_config_features, c_define_name, c_defines, has_feature};
 
 pub(super) struct CFlagsInput<'a> {
     pub(super) workspace_root: &'a Path,
+    pub(super) app_dir: &'a Path,
     pub(super) arch: &'a str,
     pub(super) mode: &'a str,
     pub(super) generated_include_dir: &'a Path,
@@ -24,6 +25,7 @@ pub(super) fn cflags(input: CFlagsInput<'_>) -> Vec<String> {
         "-Wall".to_string(),
         format!("-I{}", input.generated_include_dir.display()),
         format!("-I{}", input.include_dir.display()),
+        format!("-I{}", input.app_dir.join("include").display()),
     ];
     for feature in c_config_features(input.features) {
         flags.push(format!("-DAX_CONFIG_{}", c_define_name(&feature)));
@@ -49,8 +51,12 @@ pub(super) fn cflags(input: CFlagsInput<'_>) -> Vec<String> {
         ]),
         "loongarch64" => flags.push("-msoft-float".to_string()),
         "x86_64" if !has_feature(input.features, "fp-simd") => flags.push("-mno-sse".to_string()),
-        "aarch64" if !has_feature(input.features, "fp-simd") => {
-            flags.push("-mgeneral-regs-only".to_string())
+        "aarch64" => {
+            flags.push("-march=armv8-a".to_string());
+            flags.push("-mstrict-align".to_string());
+            if !has_feature(input.features, "fp-simd") {
+                flags.push("-mgeneral-regs-only".to_string());
+            }
         }
         _ => {}
     }
@@ -58,6 +64,15 @@ pub(super) fn cflags(input: CFlagsInput<'_>) -> Vec<String> {
         "-I{}",
         input.workspace_root.join("include").display()
     ));
+    flags
+}
+
+pub(super) fn axlibc_cflags(arch: &str, app_cflags: &[String]) -> Vec<String> {
+    let mut flags = app_cflags.to_vec();
+    if arch == "aarch64" && !flags.iter().any(|flag| flag == "-mgeneral-regs-only") {
+        flags.push("-fno-vectorize".to_string());
+        flags.push("-fno-slp-vectorize".to_string());
+    }
     flags
 }
 

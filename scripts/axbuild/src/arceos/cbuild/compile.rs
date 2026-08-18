@@ -60,7 +60,7 @@ fn source_arch_hint(cflags: &[String]) -> &str {
         "riscv64"
     } else if cflags.iter().any(|flag| flag == "-msoft-float") {
         "loongarch64"
-    } else if cflags.iter().any(|flag| flag == "-mgeneral-regs-only") {
+    } else if cflags.iter().any(|flag| flag == "-march=armv8-a") {
         "aarch64"
     } else {
         "x86_64"
