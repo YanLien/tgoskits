@@ -308,4 +308,8 @@ int getpeername(int sockfd, struct sockaddr *restrict addr, socklen_t *restrict 
 #define SO_RCVTIMEO SO_RCVTIMEO_OLD
 #define SO_SNDTIMEO SO_SNDTIMEO_OLD
 
+#ifndef MSG_DONTWAIT
+#define MSG_DONTWAIT 0x40
+#endif
+
 #endif // __SOCKET_H__

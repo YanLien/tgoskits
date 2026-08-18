@@ -2,8 +2,8 @@ use core::ffi::{c_char, c_int, c_void};
 
 use ax_posix_api::{
     sys_accept, sys_bind, sys_connect, sys_freeaddrinfo, sys_getaddrinfo, sys_getpeername,
-    sys_getsockname, sys_listen, sys_recv, sys_recvfrom, sys_send, sys_sendto, sys_shutdown,
-    sys_socket,
+    sys_getsockname, sys_listen, sys_recv, sys_recvfrom, sys_send, sys_sendto, sys_setsockopt,
+    sys_shutdown, sys_socket,
 };
 
 use crate::{ctypes, utils::e};
@@ -100,6 +100,18 @@ pub unsafe extern "C" fn recv(
     flag: c_int, // currently not used
 ) -> ctypes::ssize_t {
     e(sys_recv(socket_fd, buf_ptr, len, flag) as _) as _
+}
+
+/// Set a socket option.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn setsockopt(
+    socket_fd: c_int,
+    level: c_int,
+    optname: c_int,
+    optval: *const c_void,
+    optlen: ctypes::socklen_t,
+) -> c_int {
+    unsafe { e(sys_setsockopt(socket_fd, level, optname, optval, optlen)) }
 }
 
 /// Listen for connections on a socket

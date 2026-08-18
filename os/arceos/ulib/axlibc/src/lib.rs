@@ -91,7 +91,7 @@ pub use self::malloc::{free, malloc};
 #[cfg(feature = "net")]
 pub use self::net::{
     accept, bind, connect, freeaddrinfo, getaddrinfo, getpeername, getsockname, listen, recv,
-    recvfrom, send, sendto, shutdown, socket,
+    recvfrom, send, sendto, setsockopt, shutdown, socket,
 };
 #[cfg(feature = "pipe")]
 pub use self::pipe::pipe;

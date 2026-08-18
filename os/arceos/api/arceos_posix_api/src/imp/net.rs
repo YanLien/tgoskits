@@ -3,11 +3,12 @@ use core::{
     ffi::{c_char, c_int, c_void},
     mem::size_of,
     net::{IpAddr, Ipv4Addr, SocketAddr, SocketAddrV4},
+    time::Duration,
 };
 
 use ax_io::PollState;
 use ax_net::{
-    RecvOptions, SendOptions, Shutdown, SocketAddrEx, SocketOps,
+    RecvFlags, RecvOptions, SendOptions, Shutdown, SocketAddrEx, SocketOps,
     options::{Configurable, SetSocketOption},
     tcp::TcpSocket,
     udp::UdpSocket,
@@ -41,10 +42,14 @@ impl Socket {
         }
     }
 
-    fn recv(&self, buf: &mut [u8]) -> PosixResult<usize> {
+    fn recv(&self, buf: &mut [u8], flags: c_int) -> PosixResult<usize> {
+        let options = RecvOptions {
+            flags: RecvFlags::from_bits_retain(flags as u32),
+            ..Default::default()
+        };
         match self {
-            Socket::Udp(udpsocket) => Ok(udpsocket.lock().recv(buf, RecvOptions::default())?),
-            Socket::Tcp(tcpsocket) => Ok(tcpsocket.lock().recv(buf, RecvOptions::default())?),
+            Socket::Udp(udpsocket) => Ok(udpsocket.lock().recv(buf, options)?),
+            Socket::Tcp(tcpsocket) => Ok(tcpsocket.lock().recv(buf, options)?),
         }
     }
 
@@ -164,11 +169,33 @@ impl Socket {
                 .set_option(SetSocketOption::ReuseAddress(&reuse))?),
         }
     }
+
+    fn set_recv_timeout(&self, timeout: Duration) -> PosixResult {
+        match self {
+            Socket::Udp(udpsocket) => Ok(udpsocket
+                .lock()
+                .set_option(SetSocketOption::ReceiveTimeout(&timeout))?),
+            Socket::Tcp(tcpsocket) => Ok(tcpsocket
+                .lock()
+                .set_option(SetSocketOption::ReceiveTimeout(&timeout))?),
+        }
+    }
+
+    fn set_send_timeout(&self, timeout: Duration) -> PosixResult {
+        match self {
+            Socket::Udp(udpsocket) => Ok(udpsocket
+                .lock()
+                .set_option(SetSocketOption::SendTimeout(&timeout))?),
+            Socket::Tcp(tcpsocket) => Ok(tcpsocket
+                .lock()
+                .set_option(SetSocketOption::SendTimeout(&timeout))?),
+        }
+    }
 }
 
 impl FileLike for Socket {
     fn read(&self, buf: &mut [u8]) -> PosixResult<usize> {
-        self.recv(buf)
+        self.recv(buf, 0)
     }
 
     fn write(&self, buf: &[u8]) -> PosixResult<usize> {
@@ -434,7 +461,7 @@ pub fn sys_recv(
             return Err(PosixError::EFAULT);
         }
         let buf = unsafe { core::slice::from_raw_parts_mut(buf_ptr as *mut u8, len) };
-        Socket::from_fd(socket_fd)?.recv(buf)
+        Socket::from_fd(socket_fd)?.recv(buf, flag)
     })
 }
 
@@ -657,20 +684,22 @@ pub unsafe fn sys_setsockopt(
                     _socket.set_reuseaddr(flag != 0)?;
                     Ok(0)
                 }
-                // Accept and silently ignore timeouts — ArceOS's smoltcp
-                // stack does not track per-socket read/write timeouts, but
-                // std calls setsockopt for these during
-                // set_read_timeout / set_write_timeout.
                 ctypes::SO_RCVTIMEO | ctypes::SO_SNDTIMEO => {
-                    debug!(
-                        "sys_setsockopt: ignoring SO_{}TIMEO for fd {}",
-                        if optname == ctypes::SO_RCVTIMEO as _ {
-                            "RCV"
-                        } else {
-                            "SND"
-                        },
-                        socket_fd
-                    );
+                    if optlen < size_of::<ctypes::timeval>() as u32 {
+                        return Err(PosixError::EINVAL);
+                    }
+                    let timeout = unsafe { &*(optval as *const ctypes::timeval) };
+                    if timeout.tv_sec < 0 || timeout.tv_usec < 0 || timeout.tv_usec >= 1_000_000 {
+                        return Err(PosixError::EINVAL);
+                    }
+                    let duration = Duration::from_secs(timeout.tv_sec as u64)
+                        .checked_add(Duration::from_micros(timeout.tv_usec as u64))
+                        .ok_or(PosixError::EINVAL)?;
+                    if optname == ctypes::SO_RCVTIMEO as _ {
+                        _socket.set_recv_timeout(duration)?;
+                    } else {
+                        _socket.set_send_timeout(duration)?;
+                    }
                     Ok(0)
                 }
                 ctypes::SO_LINGER | ctypes::SO_KEEPALIVE => {
