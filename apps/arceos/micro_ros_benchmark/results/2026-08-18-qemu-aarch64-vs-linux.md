@@ -130,3 +130,29 @@ does not measure CPU efficiency because polling intentionally keeps one guest
 vCPU and one bridge CPU runnable. A deployment-quality transport should replace
 polling with a board-specific doorbell interrupt and then compare latency,
 tail latency, throughput, and CPU utilization on physical hardware.
+
+## ArceOS ivshmem doorbell smoke result, 2026-08-19
+
+The QEMU `ivshmem-doorbell` mode uses a dedicated 512 KiB BAR2 region with two
+64-slot, 2,048-byte rings. Guest-to-host notifications use BAR0 doorbell
+writes; host-to-guest notifications use an eventfd converted by QEMU into an
+MSI-X interrupt. The guest blocks on `IrqNotify` and the bridge blocks in
+`epoll_wait`, so this mode does not keep two polling CPUs runnable.
+
+```text
+BENCH_RESULT platform=arceos test=topic_rtt qos=reliable samples=1000 min_ns=166480 mean_ns=298080 p50_ns=294160 p95_ns=318512 p99_ns=353968 max_ns=4449200 failures=0
+BENCH_RESULT platform=arceos test=service_rtt qos=reliable samples=1000 min_ns=149136 mean_ns=298580 p50_ns=301312 p95_ns=323600 p99_ns=342544 max_ns=521616 failures=0
+BENCH_RESULT platform=arceos test=executor_timer_jitter qos=reliable samples=1000 min_ns=0 mean_ns=1018 p50_ns=880 p95_ns=2448 p99_ns=2880 max_ns=3136 failures=0
+BENCHMARK_DOORBELL_IRQS count=4304
+MICRO_ROS_BENCHMARK_OK platform=arceos tests=3 samples=1000
+
+IVSHMEM_BRIDGE_STATS guest_kicks=4422 guest_packets=4428 agent_packets=4428 guest_interrupts=4428
+bridge process: 0.01 s user + 0.03 s system over 34.582 s wall time (shell reported 0% CPU)
+```
+
+Compared with the three-run polling median, this pinned smoke run has about
+2.31x topic RTT and 2.22x service RTT. Timer jitter remains approximately 1 us.
+That latency increase is the expected scheduler wakeup plus emulated MSI-X
+cost paid to stop busy polling. This is one smoke run, not a repeated
+Linux-versus-ArceOS result; compare CPU time and repeat both guests before
+making an efficiency claim.

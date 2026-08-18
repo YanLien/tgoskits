@@ -105,6 +105,42 @@ exposes the entire benchmark VM memory to the host file; it is suitable for
 controlled QEMU experiments, not a security boundary. A production board
 should reserve a dedicated coherent RAM window and add a doorbell interrupt.
 
+## ArceOS ivshmem doorbell transport
+
+The doorbell variant replaces both polling loops with QEMU
+`ivshmem-doorbell`. BAR2 contains two 64-slot, 2,048-byte datagram rings in a
+512 KiB shared region. BAR0 sends guest-to-host notifications, while a host
+`eventfd` is converted by QEMU into a guest MSI-X interrupt. The ArceOS IRQ
+handler wakes the blocked transport task through `IrqNotify`; the host bridge
+blocks in `epoll_wait` between guest kicks and Agent packets.
+
+The bridge implements the minimal QEMU ivshmem server handshake itself, so no
+separate `ivshmem-server` package is needed:
+
+```sh
+cc -std=c11 -O2 -Wall -Wextra -Werror \
+  host/ivshmem_udp_bridge.c -o /tmp/micro_ros_ivshmem_bridge
+/tmp/micro_ros_ivshmem_bridge \
+  /tmp/micro-ros-ivshmem.sock /dev/shm/micro-ros-ivshmem.mem
+```
+
+In another terminal, link the generated client artifacts into `c_doorbell`
+as described for `c_shm`, then run:
+
+```sh
+env PATH="/tmp/arceos-clang-aarch64-micro-ros:$PATH" \
+  CCC_OVERRIDE_OPTIONS=+-fno-stack-protector \
+  cargo xtask arceos qemu \
+  --config apps/arceos/micro_ros_benchmark/build-doorbell-aarch64-unknown-none-softfloat.toml \
+  --qemu-config apps/arceos/micro_ros_benchmark/qemu-doorbell-aarch64.toml
+```
+
+Successful output includes `BENCHMARK_DOORBELL_IRQS count=...`; a nonzero
+count proves that Agent responses arrived through MSI-X rather than timer
+polling. The bridge also reports guest kick and guest interrupt counts before
+it exits. This is a QEMU PCI transport. A physical board still needs its own
+reserved-memory and mailbox/doorbell driver.
+
 ## Linux native
 
 Generate an x86_64 micro-ROS static library with the custom UDP transport and

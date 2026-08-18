@@ -9,6 +9,9 @@
 
 #ifdef BENCHMARK_SHM_TRANSPORT
 #include "shm_transport.h"
+#ifdef BENCHMARK_SHM_DOORBELL
+#include <ax_ivshmem.h>
+#endif
 #else
 #include <arpa/inet.h>
 #include <sys/socket.h>
@@ -68,7 +71,7 @@ struct benchmark_transport {
 #endif
 };
 
-#ifdef BENCHMARK_SHM_TRANSPORT
+#if defined(BENCHMARK_SHM_TRANSPORT) && !defined(BENCHMARK_SHM_DOORBELL)
 static struct benchmark_shm_area benchmark_shared_area __attribute__((aligned(4096), used));
 #endif
 
@@ -122,7 +125,11 @@ int main(void)
 static int run_benchmark(void)
 {
 #ifdef BENCHMARK_SHM_TRANSPORT
+#ifdef BENCHMARK_SHM_DOORBELL
+    struct benchmark_transport transport = {.shared = NULL};
+#else
     struct benchmark_transport transport = {.shared = &benchmark_shared_area};
+#endif
 #else
     struct benchmark_transport transport = {.socket = -1};
 #endif
@@ -145,7 +152,11 @@ static int run_benchmark(void)
 
     active_benchmark = &benchmark;
 #ifdef BENCHMARK_SHM_TRANSPORT
+#ifdef BENCHMARK_SHM_DOORBELL
+    const char *transport_name = "shared-memory-doorbell";
+#else
     const char *transport_name = "shared-memory-poll";
+#endif
 #else
     const char *transport_name = "udp";
 #endif
@@ -190,7 +201,15 @@ static int run_benchmark(void)
 static void finish_transport(struct benchmark_transport *transport)
 {
 #ifdef BENCHMARK_SHM_TRANSPORT
+    if (transport->shared == NULL) {
+        return;
+    }
     benchmark_shm_store_release(&transport->shared->guest_done, 1U);
+#ifdef BENCHMARK_SHM_DOORBELL
+    (void)ax_ivshmem_notify(1, 0);
+    printf("BENCHMARK_DOORBELL_IRQS count=%llu\n",
+           (unsigned long long)ax_ivshmem_irq_count());
+#endif
 #else
     (void)transport;
 #endif
@@ -199,6 +218,19 @@ static void finish_transport(struct benchmark_transport *transport)
 static bool initialize_transport(struct benchmark_transport *transport)
 {
 #ifdef BENCHMARK_SHM_TRANSPORT
+#ifdef BENCHMARK_SHM_DOORBELL
+    size_t shared_size = 0;
+
+    if (ax_ivshmem_init() != 0) {
+        fail_benchmark("initialize ivshmem doorbell");
+        return false;
+    }
+    transport->shared = ax_ivshmem_shared_memory(&shared_size);
+    if (transport->shared == NULL || shared_size < sizeof(*transport->shared)) {
+        fail_benchmark("map ivshmem shared memory");
+        return false;
+    }
+#endif
     puts("micro-ROS benchmark: connecting to Agent through shared RAM bridge");
 #else
     printf("micro-ROS benchmark: connecting to Agent at %s:%u\n", BENCHMARK_AGENT_ADDRESS,
@@ -439,6 +471,9 @@ static bool transport_open(struct uxrCustomTransport *transport)
     context->shared->slot_size = BENCHMARK_SHM_SLOT_SIZE;
     benchmark_shm_store_release(&context->shared->guest_ready, 1U);
     __atomic_store_n(&context->shared->magic, BENCHMARK_SHM_MAGIC, __ATOMIC_RELEASE);
+#ifdef BENCHMARK_SHM_DOORBELL
+    (void)ax_ivshmem_notify(1, 0);
+#endif
     return true;
 #else
     context->socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
@@ -483,7 +518,16 @@ static size_t transport_write(struct uxrCustomTransport *transport, const uint8_
             *error_code = EMSGSIZE;
             return 0;
         }
+#ifdef BENCHMARK_SHM_DOORBELL
+        (void)ax_ivshmem_wait(1000);
+#endif
     }
+#ifdef BENCHMARK_SHM_DOORBELL
+    if (ax_ivshmem_notify(1, 0) != 0) {
+        *error_code = EIO;
+        return 0;
+    }
+#endif
     return length;
 #else
     ssize_t written = send(context->socket, buffer, length, 0);
@@ -514,6 +558,17 @@ static size_t transport_read(struct uxrCustomTransport *transport, uint8_t *buff
             *error_code = EMSGSIZE;
             return 0;
         }
+#ifdef BENCHMARK_SHM_DOORBELL
+        if (timeout_ms > 0) {
+            uint64_t now_ns = monotonic_now_ns();
+            uint64_t remaining_ns = deadline_ns > now_ns ? deadline_ns - now_ns : 0;
+            uint32_t remaining_ms = (uint32_t)((remaining_ns + UINT64_C(999999)) /
+                                               UINT64_C(1000000));
+            if (remaining_ms == 0 || ax_ivshmem_wait(remaining_ms) == 0) {
+                break;
+            }
+        }
+#endif
     } while (timeout_ms > 0 && monotonic_now_ns() < deadline_ns);
     return 0;
 #else

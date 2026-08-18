@@ -49,6 +49,8 @@ mod utils;
 
 #[cfg(feature = "fd")]
 mod fd_ops;
+#[cfg(feature = "ivshmem")]
+mod ivshmem;
 #[cfg(feature = "fs")]
 mod fs;
 #[cfg(any(feature = "select", feature = "epoll"))]

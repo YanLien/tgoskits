@@ -64,6 +64,8 @@ pub mod block;
 pub mod display;
 #[cfg(feature = "input")]
 pub mod input;
+#[cfg(feature = "ivshmem")]
+pub mod ivshmem;
 #[cfg(feature = "net")]
 pub mod net;
 #[cfg(feature = "vsock")]

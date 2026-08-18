@@ -986,6 +986,7 @@ dependencies = [
  "ax-io",
  "ax-posix-api",
  "ax-runtime",
+ "ax-task",
  "bindgen 0.72.1",
  "syscalls",
 ]

@@ -29,6 +29,7 @@ fp-simd = ["ax-hal/fp-simd"]
 
 # Interrupts
 irq = ["ax-posix-api/irq", "ax-runtime/irq"]
+ivshmem = ["irq", "paging", "multitask", "ax-driver/ivshmem", "dep:ax-task"]
 
 # Memory
 alloc = ["ax-posix-api/alloc"]
@@ -61,6 +62,7 @@ ax-hal.workspace = true
 ax-posix-api.workspace = true
 ax-io.workspace = true
 ax-runtime.workspace = true
+ax-task = { workspace = true, optional = true }
 syscalls.workspace = true
 
 [build-dependencies]

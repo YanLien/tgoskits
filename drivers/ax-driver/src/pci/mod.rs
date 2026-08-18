@@ -193,6 +193,7 @@ pub const fn has_pci_endpoint_drivers() -> bool {
         feature = "virtio-gpu",
         feature = "virtio-input",
         feature = "virtio-socket",
+        feature = "ivshmem",
         feature = "list-pci-devices",
     ))
 }

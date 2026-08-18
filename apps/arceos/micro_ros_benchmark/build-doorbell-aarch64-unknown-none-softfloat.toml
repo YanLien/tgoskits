@@ -1,0 +1,12 @@
+app-c = "c_doorbell"
+features = [
+    "alloc",
+    "paging",
+    "multitask",
+    "irq",
+    "ivshmem",
+    "fd",
+    "fp-simd",
+]
+log = "Info"
+max_cpu_num = 1
