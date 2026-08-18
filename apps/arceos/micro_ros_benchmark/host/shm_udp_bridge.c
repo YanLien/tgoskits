@@ -131,13 +131,26 @@ int main(int argc, char **argv)
         size_t length;
         ssize_t received;
 
+        if (benchmark_shm_load_acquire(&shared->guest_done) != 0) {
+            break;
+        }
         if (benchmark_shm_load_acquire(&shared->guest_ready) == 0) {
             sleep_ms(1);
             continue;
         }
         while ((length = benchmark_shm_ring_read(&shared->guest_to_host, packet,
                                                  sizeof(packet))) != 0) {
-            if (length == SIZE_MAX || send(agent_fd, packet, length, 0) != (ssize_t)length) {
+            ssize_t sent;
+
+            if (length == SIZE_MAX) {
+                fputs("invalid guest packet length\n", stderr);
+                stopping = 1;
+                break;
+            }
+            do {
+                sent = send(agent_fd, packet, length, 0);
+            } while (sent < 0 && (errno == EAGAIN || errno == EWOULDBLOCK) && !stopping);
+            if (sent != (ssize_t)length) {
                 perror("forward guest packet");
                 stopping = 1;
                 break;

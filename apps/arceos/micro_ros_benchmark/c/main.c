@@ -90,6 +90,7 @@ static struct benchmark_state *active_benchmark;
 
 static int run_benchmark(void);
 static bool initialize_transport(struct benchmark_transport *transport);
+static void finish_transport(struct benchmark_transport *transport);
 static bool initialize_entities(rclc_support_t *support, rcl_node_t *node,
                                 rcl_publisher_t *publisher, rcl_subscription_t *subscription,
                                 rcl_client_t *client, rcl_timer_t *timer,
@@ -155,6 +156,7 @@ static int run_benchmark(void)
     if (!initialize_transport(&transport) ||
         !initialize_entities(&support, &node, &publisher, &subscription, &client, &timer,
                              &executor, &allocator, &pong_message, &service_response)) {
+        finish_transport(&transport);
         return 1;
     }
 
@@ -163,6 +165,7 @@ static int run_benchmark(void)
         if (rclc_executor_spin_some(&executor, RCL_MS_TO_NS(BENCHMARK_SPIN_TIMEOUT_MS)) !=
             RCL_RET_OK) {
             fail_benchmark("discovery spin");
+            finish_transport(&transport);
             return 1;
         }
     }
@@ -173,13 +176,24 @@ static int run_benchmark(void)
         printf("MICRO_ROS_BENCHMARK_FAILED platform=%s phase=%d operation=%s\n",
                BENCHMARK_PLATFORM, (int)benchmark.phase,
                benchmark.failure == NULL ? "timeout" : benchmark.failure);
+        finish_transport(&transport);
         return 1;
     }
 
     benchmark.phase = BENCHMARK_FINISHED;
+    finish_transport(&transport);
     printf("MICRO_ROS_BENCHMARK_OK platform=%s tests=3 samples=%u\n", BENCHMARK_PLATFORM,
            (unsigned)BENCHMARK_MEASURED_SAMPLES);
     return 0;
+}
+
+static void finish_transport(struct benchmark_transport *transport)
+{
+#ifdef BENCHMARK_SHM_TRANSPORT
+    benchmark_shm_store_release(&transport->shared->guest_done, 1U);
+#else
+    (void)transport;
+#endif
 }
 
 static bool initialize_transport(struct benchmark_transport *transport)

@@ -8,8 +8,8 @@
 
 #define BENCHMARK_SHM_MAGIC UINT64_C(0x415243454d525348)
 #define BENCHMARK_SHM_VERSION 1U
-#define BENCHMARK_SHM_RING_CAPACITY 64U
-#define BENCHMARK_SHM_SLOT_SIZE 2048U
+#define BENCHMARK_SHM_RING_CAPACITY 3U
+#define BENCHMARK_SHM_SLOT_SIZE 600U
 
 struct benchmark_shm_slot {
     uint32_t length;
@@ -31,10 +31,14 @@ struct benchmark_shm_area {
     uint32_t ring_capacity;
     uint32_t slot_size;
     uint32_t guest_ready;
-    uint32_t reserved[9];
+    uint32_t guest_done;
+    uint32_t reserved[8];
     struct benchmark_shm_ring guest_to_host;
     struct benchmark_shm_ring host_to_guest;
 };
+
+_Static_assert(sizeof(struct benchmark_shm_area) <= 4096,
+               "shared transport must fit in one guest physical page");
 
 static inline uint32_t benchmark_shm_load_acquire(const uint32_t *value)
 {

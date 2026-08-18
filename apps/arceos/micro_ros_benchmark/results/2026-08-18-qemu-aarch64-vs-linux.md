@@ -5,6 +5,10 @@ hardware. Both clients used the Kilted Agent and the same Kilted rclpy peer on
 the same host, reliable QoS, 100 discarded warm-up samples, 1,000 measured
 samples, and a 10 ms executor timer period.
 
+> The UDP and ArceOS-only shared-RAM numbers below are retained as historical
+> integration baselines. The repeated, like-for-like shared-RAM comparison at
+> the end supersedes them for Linux-versus-ArceOS transport comparisons.
+
 | Test | Linux/QEMU mean | ArceOS/QEMU mean | ArceOS/QEMU delta |
 | --- | ---: | ---: | ---: |
 | Topic RTT | 739.434 us | 1,199.416 us | +62.2% (1.62x) |
@@ -84,3 +88,45 @@ Linux: the shared-RAM mode consumes polling CPUs, while the UDP mode blocks and
 wakes. A fair production comparison needs equivalent shared-memory transports,
 CPU utilization, repeated runs, and preferably a physical coherent-memory
 window with doorbell interrupts on both systems.
+
+## Repeated like-for-like shared-RAM comparison, 2026-08-19
+
+Linux and ArceOS used the same page-sized shared-memory protocol, bridge,
+generated AArch64 client archive, Agent, peer, Cortex-A72 QEMU CPU model, one
+vCPU, reliable QoS, 100 warm-up samples, and 1,000 measured samples. Each ring
+direction had three 600-byte slots. Neither guest used an emulated network
+device. Both transports busy-polled and had no doorbell interrupt.
+
+The host pinned QEMU, bridge, Agent, and peer to separate logical CPUs 2, 3, 4,
+and 5 respectively. The Agent was restarted and allowed four seconds to warm
+up before every run. Stale bridge processes were removed before collecting
+these three alternating ArceOS/Linux pairs.
+
+The table reports the median of the three per-run means. The range is the
+minimum and maximum per-run mean; it makes the Linux third-run tail event
+visible instead of selecting only the best run.
+
+| Test | ArceOS median mean (range) | Linux median mean (range) | ArceOS delta |
+| --- | ---: | ---: | ---: |
+| Topic RTT | 128.982 us (124.705–139.342) | 144.541 us (128.326–263.525) | -10.8% |
+| Service RTT | 134.272 us (131.010–159.318) | 149.190 us (136.247–253.691) | -10.0% |
+| Executor timer absolute jitter | 1.165 us (1.147–1.198) | 0.943 us (0.925–0.961) | +23.5% |
+
+Per-run means and tail percentiles:
+
+```text
+ArceOS run 1: topic mean=139342 p95=191024 p99=220960; service mean=131010 p95=184208 p99=189584; jitter mean=1147 p95=2640 p99=3152 ns
+Linux  run 1: topic mean=128326 p95=178928 p99=195008; service mean=136247 p95=181504 p99=198512; jitter mean=961 p95=2224 p99=2608 ns
+ArceOS run 2: topic mean=128982 p95=179824 p99=185120; service mean=134272 p95=180288 p99=184880; jitter mean=1165 p95=2704 p99=3104 ns
+Linux  run 2: topic mean=144541 p95=214208 p99=242480; service mean=149190 p95=212160 p99=241968; jitter mean=943 p95=2096 p99=2464 ns
+ArceOS run 3: topic mean=124705 p95=177184 p99=183312; service mean=159318 p95=182560 p99=191680; jitter mean=1198 p95=2720 p99=3088 ns
+Linux  run 3: topic mean=263525 p95=276736 p99=2974864; service mean=253691 p95=265200 p99=2954800; jitter mean=925 p95=2192 p99=2672 ns
+```
+
+The result is close rather than a categorical unikernel win: ArceOS has about
+10% lower median-of-run-mean RTT, while Linux has lower timer jitter. Linux's
+third run also shows roughly 3 ms p99 topic/service outliers. This benchmark
+does not measure CPU efficiency because polling intentionally keeps one guest
+vCPU and one bridge CPU runnable. A deployment-quality transport should replace
+polling with a board-specific doorbell interrupt and then compare latency,
+tail latency, throughput, and CPU utilization on physical hardware.

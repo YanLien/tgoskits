@@ -1,8 +1,8 @@
 # micro-ROS Linux/ArceOS benchmark
 
 This application compares the same micro-ROS C workload on Linux and ArceOS.
-The baseline uses a custom UDP transport; ArceOS also has an experimental
-shared-RAM transport. All modes use reliable QoS, the same XRCE Agent and the
+The baseline uses a custom UDP transport; ArceOS and AArch64 Linux/QEMU also
+share an experimental shared-RAM transport. All modes use reliable QoS, the same XRCE Agent and the
 same ROS 2 echo peer. It reports:
 
 - sequential `/benchmark/ping` to `/benchmark/pong` topic round-trip latency;
@@ -65,10 +65,12 @@ env PATH="/tmp/arceos-clang-aarch64-micro-ros:$PATH" \
 
 ## ArceOS shared-RAM transport
 
-The experimental mode stores two single-producer/single-consumer rings in the
+The experimental mode stores two single-producer/single-consumer rings in one
+page-aligned 3,840-byte area (three 600-byte slots in each direction) in the
 guest image and backs QEMU's 256 MiB RAM with a shared host file. A small host
 bridge scans that RAM for the versioned ring header, preserves XRCE datagram
-boundaries, and forwards packets to the stock UDP Agent.
+boundaries, and forwards packets to the stock UDP Agent. The guest sets a
+completion flag so the bridge exits without leaving a polling process behind.
 
 Reuse the generated client artifacts without copying the common source:
 
@@ -94,13 +96,14 @@ env PATH="/tmp/arceos-clang-aarch64-micro-ros:$PATH" \
 ```
 
 This first implementation deliberately busy-polls both rings while a transport
-session is open. That exposes the minimum practical latency of this design but
-uses a guest vCPU and a host CPU while active. Report CPU consumption beside
-latency, and do not compare it with an interrupt-driven transport as though the
-resource cost were equal. The RAM backend also exposes the entire benchmark VM
-memory to the host file; it is suitable for controlled QEMU experiments, not a
-security boundary. A production board should reserve a dedicated coherent RAM
-window and add a doorbell interrupt instead.
+session is open. ArceOS itself has GIC and architectural timer interrupts
+enabled; only this transport lacks a doorbell interrupt. The Linux shared-RAM
+client uses the same polling algorithm, so the comparison is transport-fair,
+but each client still consumes its guest vCPU and the bridge consumes a host
+CPU while active. Report CPU consumption beside latency. The RAM backend also
+exposes the entire benchmark VM memory to the host file; it is suitable for
+controlled QEMU experiments, not a security boundary. A production board
+should reserve a dedicated coherent RAM window and add a doorbell interrupt.
 
 ## Linux native
 
@@ -178,6 +181,32 @@ gcc -std=gnu11 -O2 -Wall -Wextra -Werror \
 
 The CMake build exposes `BENCHMARK_PLATFORM` and `BENCHMARK_AGENT_ADDRESS` as
 cache variables for equivalent cross-build environments.
+
+### Linux AArch64 shared-RAM mode
+
+Build `linux_shm/main.c` and `linux_shm/compat.c` against the same AArch64
+headers and archive, then place the binary in the guest rootfs. Back the full
+guest RAM with a shared file and disable emulated networking:
+
+```sh
+rm -f /dev/shm/linux-micro-ros-benchmark.mem
+/tmp/micro_ros_shm_bridge /dev/shm/linux-micro-ros-benchmark.mem
+
+qemu-system-aarch64 \
+  -machine virt,gic-version=3,memory-backend=shmram \
+  -object memory-backend-file,id=shmram,size=256M,\
+mem-path=/dev/shm/linux-micro-ros-benchmark.mem,share=on \
+  -m 256M -cpu cortex-a72 -smp 1 -nic none \
+  -kernel /path/to/arm64/Image \
+  -append 'console=ttyAMA0 root=/dev/vda rw init=/bin/sh' \
+  -drive if=none,file=/path/to/aarch64-rootfs.img,format=raw,id=rootfs \
+  -device virtio-blk-device,drive=rootfs \
+  -display none -monitor none -serial stdio -no-reboot
+```
+
+Use `-monitor none -serial stdio` for scripted guest input. With
+`-serial mon:stdio`, QEMU's monitor/serial multiplexer can consume the command
+intended for the guest shell.
 
 Example output:
 
