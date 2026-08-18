@@ -16,6 +16,7 @@
 #include <lifecycle_msgs/msg/transition_description.h>
 #include <lifecycle_msgs/srv/get_available_transitions.h>
 #include <rcl/rcl.h>
+#include <rcl/graph.h>
 #include <rclc/executor.h>
 #include <rclc/rclc.h>
 #include <rclc/timer.h>
@@ -23,7 +24,9 @@
 #include <rclc_parameter/rclc_parameter.h>
 #include <rmw_microros/custom_transport.h>
 #include <rmw_microros/ping.h>
+#include <rmw_microros/rmw_microros.h>
 #include <rmw_microros/time_sync.h>
+#include <rcutils/types/string_array.h>
 #include <rosidl_runtime_c/string_functions.h>
 #include <std_msgs/msg/int32.h>
 #include <uxr/client/profile/transport/custom/custom_transport.h>
@@ -77,6 +80,29 @@ static bool lifecycle_deactivate_ok;
 static bool lifecycle_ok;
 static bool time_sync_ok;
 static bool guard_condition_ok;
+static bool graph_ok;
+
+static rcl_ret_t update_graph_status(const rcl_node_t *node, rcl_allocator_t allocator)
+{
+    if (graph_ok) {
+        return RCL_RET_OK;
+    }
+
+    rcutils_string_array_t names = rcutils_get_zero_initialized_string_array();
+    rcutils_string_array_t namespaces = rcutils_get_zero_initialized_string_array();
+    rcl_ret_t result = rcl_get_node_names(node, allocator, &names, &namespaces);
+    if (result == RCL_RET_OK && names.size > 0) {
+        graph_ok = true;
+        printf("MICRO_ROS_GRAPH_OK nodes=%zu\n", names.size);
+    }
+    if (names.data != NULL) {
+        (void)rcutils_string_array_fini(&names);
+    }
+    if (namespaces.data != NULL) {
+        (void)rcutils_string_array_fini(&namespaces);
+    }
+    return result;
+}
 
 static bool action_succeeded(void)
 {
@@ -723,6 +749,27 @@ int main(void)
         return report_rcl_error("parameter initialization", result);
     }
 
+    if (rmw_uros_enable_graph() != RMW_RET_OK) {
+        puts("micro-ROS: rmw_uros_enable_graph failed");
+        return 1;
+    }
+    puts("MICRO_ROS_GRAPH_REQUESTED");
+    for (size_t attempt = 0; attempt < 3000 && !graph_ok; ++attempt) {
+        result = rclc_executor_spin_some(&executor, RCL_MS_TO_NS(10));
+        if (result != RCL_RET_OK && result != RCL_RET_TIMEOUT) {
+            return report_rcl_error("graph rclc_executor_spin_some", result);
+        }
+        result = update_graph_status(&node, allocator);
+        if (result != RCL_RET_OK) {
+            return report_rcl_error("rcl_get_node_names", result);
+        }
+        usleep(10000);
+    }
+    if (!graph_ok) {
+        puts("micro-ROS: graph discovery timed out");
+        return 1;
+    }
+
     puts("MICRO_ROS_FEATURES_READY");
     result = rcl_trigger_guard_condition(&guard_condition);
     if (result != RCL_RET_OK) {
@@ -744,17 +791,27 @@ int main(void)
     }
     puts("micro-ROS: action client sent success test goal");
 
+    size_t spin_iterations = 0;
     while (!(timer_ok && subscriber_ok && service_ok && service_client_ok &&
              action_succeeded() && action_client_ok && parameter_ok && lifecycle_ok &&
-             time_sync_ok && guard_condition_ok)) {
+             time_sync_ok && guard_condition_ok && graph_ok)) {
         result = rclc_executor_spin_some(&executor, RCL_MS_TO_NS(10));
         if (result != RCL_RET_OK && result != RCL_RET_TIMEOUT) {
             return report_rcl_error("rclc_executor_spin_some", result);
         }
+        ++spin_iterations;
+        if (!service_client_ok && spin_iterations % 200 == 0) {
+            result = rcl_send_request(&service_client, &service_client_request,
+                                      &service_sequence_number);
+            if (result != RCL_RET_OK) {
+                return report_rcl_error("service client retry", result);
+            }
+            puts("micro-ROS: service client retry sent");
+        }
         usleep(10000);
     }
 
-    puts("MICRO_ROS_FEATURES_OK executor=1 guard_condition=1 qos_best_effort=1 subscriber=1 service_server=1 service_client=1 action_server=1 action_client=1 parameter=1 lifecycle=1 time_sync=1");
+    puts("MICRO_ROS_FEATURES_OK executor=1 guard_condition=1 qos_best_effort=1 subscriber=1 service_server=1 service_client=1 action_server=1 action_client=1 parameter=1 lifecycle=1 time_sync=1 graph=1");
     if (action_worker_started) {
         (void)pthread_join(action_worker, NULL);
     }

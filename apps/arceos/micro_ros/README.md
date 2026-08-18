@@ -12,7 +12,9 @@ in one process:
   `/host_fibonacci`, including feedback, result, and cancellation;
 - parameter list/get/describe/set services and parameter events;
 - all five lifecycle services, transition callbacks, and transition events;
-- Agent time synchronization and epoch access.
+- Agent time synchronization and epoch access;
+- a delayed, one-snapshot `RMW_UXRCE_GRAPH` cache and `rcl_get_node_names()`
+  query.
 
 The Kilted `rclc_lifecycle` helper only registers `get_state`,
 `get_available_states`, and `change_state`. This application also registers
@@ -22,7 +24,7 @@ The Kilted `rclc_lifecycle` helper only registers `get_state`,
 The final QEMU success marker is:
 
 ```text
-MICRO_ROS_FEATURES_OK executor=1 guard_condition=1 qos_best_effort=1 subscriber=1 service_server=1 service_client=1 action_server=1 action_client=1 parameter=1 lifecycle=1 time_sync=1
+MICRO_ROS_FEATURES_OK executor=1 guard_condition=1 qos_best_effort=1 subscriber=1 service_server=1 service_client=1 action_server=1 action_client=1 parameter=1 lifecycle=1 time_sync=1 graph=1
 ```
 
 ## Static client library
@@ -36,9 +38,15 @@ at:
 
 The cross-compilation and XRCE capacity settings used for the Kilted library
 are recorded in `library_generation/`. The current application needs five
-publishers, three subscriptions, fifteen services, four clients, and a history
-depth of four. These totals include the action, parameter, and lifecycle
-entities created internally by rcl/rclc.
+publishers, three subscriptions, fifteen services, four clients, an entity
+history depth of four, and a 256-message reliable input stream for the graph
+snapshot. These totals include the action, parameter, and lifecycle entities
+created internally by rcl/rclc.
+
+Before building, apply
+`library_generation/patches/rmw_microxrcedds-kilted-graph.patch` to the Kilted
+`rmw_microxrcedds` checkout. It contains the Kilted graph compile/query fixes
+and the delayed one-snapshot delivery API used by this application.
 
 When rebuilding with `microros/micro_ros_static_library_builder:kilted`, pass
 `library_generation/aarch64_arceos_toolchain.cmake` and
@@ -68,8 +76,16 @@ docker run --rm --name arceos-micro-ros-agent --network host --ipc host \
 shared-memory traffic works across both containers.
 
 The guest's service and action clients expect host-side servers named
-`/host_add_two_ints` and `/host_fibonacci`. Once those are running, launch the
-guest:
+`/host_add_two_ints` and `/host_fibonacci`. Also start the best-effort
+publisher before the guest so DDS matching is complete when its subscription
+is created. Stop the publisher after the final marker:
+
+```sh
+ros2 topic pub --qos-reliability best_effort -r 2 \
+  /arceos_input std_msgs/msg/Int32 "{data: 42}"
+```
+
+Once those peers are running, launch the guest:
 
 ```sh
 env PATH="/tmp/arceos-clang-aarch64-micro-ros:$PATH" \
@@ -79,12 +95,9 @@ env PATH="/tmp/arceos-clang-aarch64-micro-ros:$PATH" \
   --qemu-config apps/arceos/micro_ros/qemu-aarch64.toml
 ```
 
-Drive the guest-facing features from ROS 2 Kilted:
+Drive the remaining guest-facing features from ROS 2 Kilted:
 
 ```sh
-ros2 topic pub --qos-reliability best_effort --times 3 -r 2 \
-  /arceos_input std_msgs/msg/Int32 "{data: 42}"
-
 ros2 service call /arceos_add_two_ints \
   example_interfaces/srv/AddTwoInts "{a: 20, b: 22}"
 
@@ -105,35 +118,36 @@ The service response must contain `sum=42`; the action must finish with
 successful host service call, one successful host action goal, feedback, and a
 second host action goal that it cancels.
 
-## Graph-discovery limitation
+## Graph-discovery support and limitation
 
-`RMW_UXRCE_GRAPH` remains disabled. The Kilted graph profile has upstream
-compile defects in `rmw_microxrcedds`. After correcting those locally, the
-stock Kilted Agent does create a reliable, transient-local
-`ros_to_microros_graph` writer; the earlier conclusion that this producer was
-missing was incorrect.
+`RMW_UXRCE_GRAPH` is enabled with the recorded downstream Kilted patch. The
+stock Kilted Agent creates a reliable, transient-local
+`ros_to_microros_graph` writer. The patch fixes invalid context and string
+buffer handling in the Kilted client, creates the graph DDS entities during
+RMW initialization, and delays `REQUEST_DATA` until all application entities
+and executor handles exist.
 
-The graph-enabled full-feature application still cannot complete entity
-initialization. In the reproduced setup, each graph change caused the Agent to
-send the complete graph (about 64 KiB, roughly 129 508-byte XRCE fragments).
-The default four-message reliable input history stalled during initialization.
-Increasing it to 256 messages and raising the entity-creation timeout from one
-to ten seconds only moved the failure from action-client setup to parameter
-server setup. Thus graph queries are not supported by this integration yet;
-the observed blocker is graph-update size/frequency competing with XRCE entity
-creation, not an absent Agent producer. No upstream issue matching this exact
-runtime failure was found as of 2026-08-18.
+Delivery is deliberately limited to one complete snapshot. In the reproduced
+setup, a graph was about 64 KiB, or roughly 129 508-byte XRCE fragments.
+Requesting unlimited updates during startup stalled entity creation; leaving
+updates enabled at runtime let short-lived ROS CLI nodes generate several full
+snapshots and overrun the reliable stream's retained window. A 256-message
+input history plus delayed, single-sample delivery produced a valid cache, and
+`rcl_get_node_names()` returned discovered nodes before the rest of the feature
+exercise completed successfully.
 
-DDS data paths do work without that profile. A best-effort rclpy reader that is
-created before the guest writer receives `/arceos_counter` (verified value:
-`1`). A later `ros2 topic echo` may wait forever because that CLI first relies
-on graph discovery before creating its reader. This is a discovery limitation,
-not a publisher transport failure.
+The remaining limitation is freshness: this integration provides an initial
+graph snapshot, not a continuously updated client-side cache. Host ROS 2 graph
+discovery through the Agent remains live, so standard `ros2 topic`, `service`,
+`action`, `param`, and `lifecycle` commands discover the guest normally. No
+upstream issue matching the exact full-snapshot XRCE failure was found as of
+2026-08-18.
 
 ## Verified result
 
 The complete AArch64 QEMU run was repeated on 2026-08-18 with a Kilted Agent
-and ROS 2 Kilted peers. Every component marker and the final marker above were
-observed; QEMU exited through its configured success regex. This demonstrates
-the listed rcl/rclc APIs over the AArch64 UDP setup. It is not a claim that
-every micro-ROS transport, middleware profile, or graph API is supported.
+and ROS 2 Kilted peers. Every component marker, `MICRO_ROS_GRAPH_OK`, and the
+final marker above were observed; QEMU exited through its configured success
+regex. This demonstrates the listed rcl/rclc APIs and the initial graph query
+over the AArch64 UDP setup. It is not a claim that every micro-ROS transport,
+middleware profile, graph query, or continuous graph-update mode is supported.

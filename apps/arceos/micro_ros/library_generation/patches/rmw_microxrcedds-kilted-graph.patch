@@ -1,0 +1,198 @@
+diff --git a/rmw_microxrcedds_c/include/rmw_microros/rmw_microros.h b/rmw_microxrcedds_c/include/rmw_microros/rmw_microros.h
+index 2568f94..bde79ee 100644
+--- a/rmw_microxrcedds_c/include/rmw_microros/rmw_microros.h
++++ b/rmw_microxrcedds_c/include/rmw_microros/rmw_microros.h
+@@ -70,6 +70,15 @@ typedef struct rmw_uxrce_transport_params_t
+   uint32_t client_key;
+ } rmw_uxrce_transport_params_t;
+ 
++#ifdef RMW_UXRCE_GRAPH
++/**
++ * \brief Starts graph snapshot delivery after application entity creation.
++ * \return RMW_RET_OK when the data request is queued.
++ * \return RMW_RET_ERROR if no XRCE session is initialized.
++ */
++rmw_ret_t rmw_uros_enable_graph(void);
++#endif  // RMW_UXRCE_GRAPH
++
+ 
+ #if defined(__cplusplus)
+ }
+diff --git a/rmw_microxrcedds_c/src/rmw_graph.c b/rmw_microxrcedds_c/src/rmw_graph.c
+index a0b8f74..bc07136 100644
+--- a/rmw_microxrcedds_c/src/rmw_graph.c
++++ b/rmw_microxrcedds_c/src/rmw_graph.c
+@@ -17,6 +17,7 @@
+ #include <rosidl_runtime_c/string_functions.h>
+ #include <micro_ros_msgs/msg/detail/graph__rosidl_typesupport_microxrcedds_c.h>
+ 
++#include "./rmw_microros_internal/error_handling_internal.h"
+ #include "./rmw_microros_internal/utils.h"
+ 
+ rmw_ret_t rmw_graph_init(
+@@ -25,7 +26,7 @@ rmw_ret_t rmw_graph_init(
+ {
+   rmw_ret_t ret = RMW_RET_OK;
+ 
+-  if (NULL == &context->session) {
++  if (NULL == context) {
+     RMW_UROS_TRACE_MESSAGE("Cannot initializate graph context without a XRCE session")
+     return RMW_RET_INVALID_ARGUMENT;
+   }
+@@ -33,6 +34,7 @@ rmw_ret_t rmw_graph_init(
+   // Init graph_info structure
+   graph_info->initialized = false;
+   graph_info->has_changed = false;
++  graph_info->data_requested = false;
+   graph_info->context = context;
+ 
+   // Create micro-ROS graph participant
+@@ -134,9 +136,32 @@ rmw_ret_t rmw_graph_init(
+     goto end;
+   }
+ 
+-  // Request data from topic: set delivery flow
++end:
++  return ret;
++}
++
++rmw_ret_t rmw_uros_enable_graph(void)
++{
++  if (!session_memory.is_initialized || NULL == session_memory.allocateditems) {
++    RMW_UROS_TRACE_MESSAGE("Cannot enable graph data without an initialized XRCE session")
++    return RMW_RET_ERROR;
++  }
++
++  rmw_uxrce_mempool_item_t * item = session_memory.allocateditems;
++  rmw_context_impl_t * context = (rmw_context_impl_t *)item->data;
++  rmw_graph_info_t * graph_info = &context->graph_info;
++  if (graph_info->data_requested) {
++    return RMW_RET_OK;
++  }
++
++  // Request data only after the application has created all of its entities.
++  // Starting this flow in rmw_graph_init() lets full graph snapshots compete
++  // with XRCE CREATE/STATUS traffic during startup.
+   uxrDeliveryControl delivery_control;
+-  delivery_control.max_samples = UXR_MAX_SAMPLES_UNLIMITED;
++  // One complete snapshot is enough for the initial cache fill. Continuous
++  // full-graph updates can overrun the Agent's reliable output history when
++  // short-lived ROS CLI nodes repeatedly join and leave the graph.
++  delivery_control.max_samples = 1;
+   delivery_control.min_pace_period = 0;
+   delivery_control.max_elapsed_time = UXR_MAX_ELAPSED_TIME_UNLIMITED;
+   delivery_control.max_bytes_per_second = UXR_MAX_BYTES_PER_SECOND_UNLIMITED;
+@@ -146,8 +171,8 @@ rmw_ret_t rmw_graph_init(
+     context->reliable_output, graph_info->datareader_id,
+     context->reliable_input, &delivery_control);
+ 
+-end:
+-  return ret;
++  graph_info->data_requested = true;
++  return RMW_RET_OK;
+ }
+ 
+ #define UCDR_DESERIALIZE_AND_CHECK_RETVAL(RETVAL, FUNCTION_NAME, ...) \
+diff --git a/rmw_microxrcedds_c/src/rmw_microros_internal/types.h b/rmw_microxrcedds_c/src/rmw_microros_internal/types.h
+index 45cadb2..727ebff 100644
+--- a/rmw_microxrcedds_c/src/rmw_microros_internal/types.h
++++ b/rmw_microxrcedds_c/src/rmw_microros_internal/types.h
+@@ -42,6 +42,7 @@ typedef struct rmw_graph_info_t
+ {
+   bool initialized;
+   bool has_changed;
++  bool data_requested;
+   rmw_context_impl_t * context;
+ 
+   uxrObjectId participant_id;
+diff --git a/rmw_microxrcedds_c/src/rmw_node_info_and_types.c b/rmw_microxrcedds_c/src/rmw_node_info_and_types.c
+index d8d0e98..29a19a4 100644
+--- a/rmw_microxrcedds_c/src/rmw_node_info_and_types.c
++++ b/rmw_microxrcedds_c/src/rmw_node_info_and_types.c
+@@ -104,7 +104,7 @@ __rmw_get_entity_names_and_types_by_node(
+             strlen(entity->name.data) + 1, allocator->state);
+           snprintf(
+             topic_names_and_types->names.data[current_position],
+-            topic_names_and_types->names.capacity,
++            strlen(entity->name.data) + 1,
+             "%s",
+             entity->name.data);
+ 
+@@ -134,8 +134,8 @@ __rmw_get_entity_names_and_types_by_node(
+               sizeof(char), allocator->state);
+             snprintf(
+               topic_names_and_types->types[current_position].data[k],
+-              topic_names_and_types->types[current_position].capacity,
+-              "%s"
++              strlen(entity->types.data[k].data) + 1,
++              "%s",
+               entity->types.data[k].data);
+           }
+         }
+diff --git a/rmw_microxrcedds_c/src/rmw_node_names.c b/rmw_microxrcedds_c/src/rmw_node_names.c
+index b258754..5f07ae0 100644
+--- a/rmw_microxrcedds_c/src/rmw_node_names.c
++++ b/rmw_microxrcedds_c/src/rmw_node_names.c
+@@ -81,12 +81,14 @@ rmw_get_node_names(
+   // Copy information into result arrays
+   for (size_t i = 0; i < graph_data->nodes.size; ++i) {
+     micro_ros_msgs__msg__Node * node = &graph_data->nodes.data[i];
++    const size_t namespace_length = strlen(node->node_namespace.data) + 1;
+     node_namespaces->data[i] = allocator.zero_allocate(
+-      strlen(node->node_namespace.data) + 1, sizeof(char), allocator.state);
+-    snprintf(node_namespaces->data[i], node_namespaces->size, "%s", node->node_namespace.data);
++      namespace_length, sizeof(char), allocator.state);
++    snprintf(node_namespaces->data[i], namespace_length, "%s", node->node_namespace.data);
++    const size_t name_length = strlen(node->node_name.data) + 1;
+     node_names->data[i] = allocator.zero_allocate(
+-      strlen(node->node_name.data) + 1, sizeof(char), allocator.state);
+-    snprintf(node_names->data[i], node_names->size, "%s", node->node_name.data);
++      name_length, sizeof(char), allocator.state);
++    snprintf(node_names->data[i], name_length, "%s", node->node_name.data);
+   }
+ 
+ fini:
+diff --git a/rmw_microxrcedds_c/src/rmw_service_names_and_types.c b/rmw_microxrcedds_c/src/rmw_service_names_and_types.c
+index 4c42c4a..e493a6c 100644
+--- a/rmw_microxrcedds_c/src/rmw_service_names_and_types.c
++++ b/rmw_microxrcedds_c/src/rmw_service_names_and_types.c
+@@ -113,7 +113,7 @@ rmw_get_service_names_and_types(
+               strlen(entity->name.data) + 1, allocator->state);
+             snprintf(
+               service_names_and_types->names.data[current_position],
+-              service_names_and_types->names.capacity,
++              strlen(entity->name.data) + 1,
+               "%s",
+               entity->name.data);
+ 
+@@ -143,7 +143,7 @@ rmw_get_service_names_and_types(
+                 sizeof(char), allocator->state);
+               snprintf(
+                 service_names_and_types->types[current_position].data[k],
+-                service_names_and_types->types[current_position].capacity,
++                strlen(entity->types.data[k].data) + 1,
+                 "%s",
+                 entity->types.data[k].data);
+             }
+diff --git a/rmw_microxrcedds_c/src/rmw_topic_names_and_types.c b/rmw_microxrcedds_c/src/rmw_topic_names_and_types.c
+index ddb2105..33de829 100644
+--- a/rmw_microxrcedds_c/src/rmw_topic_names_and_types.c
++++ b/rmw_microxrcedds_c/src/rmw_topic_names_and_types.c
+@@ -116,7 +116,7 @@ rmw_get_topic_names_and_types(
+               strlen(entity->name.data) + 1, allocator->state);
+             snprintf(
+               topic_names_and_types->names.data[current_position],
+-              topic_names_and_types->names.capacity,
++              strlen(entity->name.data) + 1,
+               "%s",
+               entity->name.data);
+ 
+@@ -146,7 +146,7 @@ rmw_get_topic_names_and_types(
+                 sizeof(char), allocator->state);
+               snprintf(
+                 topic_names_and_types->types[current_position].data[k],
+-                topic_names_and_types->types[current_position].capacity,
++                strlen(entity->types.data[k].data) + 1,
+                 "%s",
+                 entity->types.data[k].data);
+             }
