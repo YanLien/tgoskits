@@ -1,0 +1,21 @@
+args = [
+    "-machine",
+    "virt,gic-version=3,memory-backend=shmram",
+    "-m",
+    "256M",
+    "-object",
+    "memory-backend-file,id=shmram,size=256M,mem-path=/dev/shm/arceos-micro-ros-benchmark.mem,share=on",
+    "-cpu",
+    "cortex-a72",
+    "-smp",
+    "1",
+    "-display",
+    "none",
+    "-serial",
+    "mon:stdio",
+]
+uefi = false
+to_bin = true
+success_regex = ["MICRO_ROS_BENCHMARK_OK platform=arceos tests=3 samples=1000"]
+fail_regex = ["(?i)\\bpanic(?:ked)?\\b", "MICRO_ROS_BENCHMARK_FAILED", "rcl_ret="]
+timeout = 60

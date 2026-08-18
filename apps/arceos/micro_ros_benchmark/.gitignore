@@ -1,0 +1,4 @@
+c/include
+c/libgcc.a
+c/libmicroros.a
+linux/build/

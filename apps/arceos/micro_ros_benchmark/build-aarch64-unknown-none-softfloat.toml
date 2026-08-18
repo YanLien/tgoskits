@@ -1,0 +1,13 @@
+app-c = "c"
+features = [
+    "alloc",
+    "paging",
+    "multitask",
+    "irq",
+    "fd",
+    "net",
+    "fp-simd",
+    "ax-driver/virtio-net",
+]
+log = "Warn"
+max_cpu_num = 1

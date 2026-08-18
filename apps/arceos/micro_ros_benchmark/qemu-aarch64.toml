@@ -1,0 +1,23 @@
+args = [
+    "-machine",
+    "virt,gic-version=3",
+    "-m",
+    "256M",
+    "-cpu",
+    "cortex-a72",
+    "-smp",
+    "1",
+    "-device",
+    "virtio-net-pci,netdev=net0",
+    "-netdev",
+    "user,id=net0",
+    "-display",
+    "none",
+    "-serial",
+    "mon:stdio",
+]
+uefi = false
+to_bin = true
+success_regex = ["MICRO_ROS_BENCHMARK_OK platform=arceos tests=3 samples=1000"]
+fail_regex = ["(?i)\\bpanic(?:ked)?\\b", "MICRO_ROS_BENCHMARK_FAILED", "rcl_ret="]
+timeout = 60

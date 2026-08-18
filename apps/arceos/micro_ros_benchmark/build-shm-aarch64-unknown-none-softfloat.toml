@@ -1,0 +1,11 @@
+app-c = "c_shm"
+features = [
+    "alloc",
+    "paging",
+    "multitask",
+    "irq",
+    "fd",
+    "fp-simd",
+]
+log = "Warn"
+max_cpu_num = 1

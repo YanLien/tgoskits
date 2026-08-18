@@ -115,6 +115,7 @@ members = [
 ]
 exclude = [
     "apps/arceos/micro_ros",
+    "apps/arceos/micro_ros_benchmark",
     "os/StarryOS/lkm/linux-hello",
     "virtualization/test_crates",
 ]
