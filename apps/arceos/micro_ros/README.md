@@ -108,9 +108,21 @@ second host action goal that it cancels.
 ## Graph-discovery limitation
 
 `RMW_UXRCE_GRAPH` remains disabled. The Kilted graph profile has upstream
-compile defects, and after those are locally corrected the stock Kilted Agent
-still does not provide the `ros_to_microros_graph` producer required by the
-client. Enabling it makes normal entity initialization stall.
+compile defects in `rmw_microxrcedds`. After correcting those locally, the
+stock Kilted Agent does create a reliable, transient-local
+`ros_to_microros_graph` writer; the earlier conclusion that this producer was
+missing was incorrect.
+
+The graph-enabled full-feature application still cannot complete entity
+initialization. In the reproduced setup, each graph change caused the Agent to
+send the complete graph (about 64 KiB, roughly 129 508-byte XRCE fragments).
+The default four-message reliable input history stalled during initialization.
+Increasing it to 256 messages and raising the entity-creation timeout from one
+to ten seconds only moved the failure from action-client setup to parameter
+server setup. Thus graph queries are not supported by this integration yet;
+the observed blocker is graph-update size/frequency competing with XRCE entity
+creation, not an absent Agent producer. No upstream issue matching this exact
+runtime failure was found as of 2026-08-18.
 
 DDS data paths do work without that profile. A best-effort rclpy reader that is
 created before the guest writer receives `/arceos_counter` (verified value:
