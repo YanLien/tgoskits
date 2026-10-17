@@ -23,4 +23,10 @@
 
 归档的 `software-baseline-600.log` 复放成功，包含 Fair/FIFO 各 300 条 Host 样本及对应校准 Guest ISR 记录。复放脚本输出同时保留 Host `pulse_ns`、`ack_observed_ns` 和 Guest ISR 区间；报告只把校准后的 ISR 区间用于 ISR 尾延迟，明确排除 1 ms 轮询确认时间。该基线用于样本量和协议复核，不代表真板性能，也不与 128 条物理 PPI 组混合比较。
 
+## Linux Guest CPU 干扰复放
+
+`linux-interference-600.log` 同样包含 Fair/FIFO 各 300 条，来源为 PL031 SPI，Linux Guest 在 Host CPU3 运行固定批量 CPU 负载，服务放置和每条样本的 Ready 关联均通过分析器校验。该组可用于验证“共享 vCPU/Guest 负载下的事件链和负载进度”字段；它不能证明 DRAM/Cache 竞争，因为日志只提供 Linux 批次进度和逻辑负载计数，没有真实板 PMU/带宽计数。
+
+该组的 Guest ISR P99 上界约为 Fair 727 µs、FIFO 748 µs；Host 观察窗口 P99 上界约为 947 µs、1.024 ms。两者严格分列，不能用后者替代 ISR 时延。当前证据足以保留 A 方向并准备真板匹配实验，尚不足以启动 D/E 或把 QEMU 负载差异写成性能收益。
+
 本轮没有进行外部推送、PR、合并、部署或发布。

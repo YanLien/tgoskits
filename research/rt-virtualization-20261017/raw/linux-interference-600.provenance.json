@@ -1,0 +1,14 @@
+{
+  "source_path": "/home/yanlien/Workspace/tgoskits-research-20261017/evidence/linux-interference/run-data/final.log",
+  "archived_path": "research/rt-virtualization-20261017/raw/linux-interference-600.log",
+  "sha256": "d21eabf8992e07467a8509aaaa4ea11a1e02f825119f246b45214365e8acddac",
+  "host_sample_markers": 600,
+  "guest_isr_sample_markers": 600,
+  "clock_sample_markers": 128,
+  "source_marker": [
+    "VIRQ_SOURCE kind=pl031_spi"
+  ],
+  "linux_config": [
+    "VIRQ_LINUX_CONFIG vm=1 vcpu=0 host_cpu=3 guest_cpu=0 workload=cpu batch_iterations=8192 report_batches=256"
+  ]
+}

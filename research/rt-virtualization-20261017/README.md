@@ -58,6 +58,12 @@ research/rt-virtualization-20261017/replay_archived_ppi.sh
 research/rt-virtualization-20261017/replay_software_baseline.sh
 ```
 
+复放已有的 Linux Guest CPU 干扰样本（PL031 SPI，Fair/FIFO 各 300 条）：
+
+```sh
+research/rt-virtualization-20261017/replay_linux_interference.sh
+```
+
 ## 归档布局
 
 - `design/`：阶段判断、A0 设计和适用边界。

@@ -1,0 +1,44 @@
+{
+  "host.elf": {
+    "source": "/home/yanlien/Workspace/tgoskits-research-target-20261017/aarch64-unknown-linux-musl/release/build/axvm/2d6f1ef0a9c92692/out/vcpu_runtime-2d6f1ef0a9c92692",
+    "bytes": 7547360,
+    "sha256": "63ef24f0d6a3ef248a168b8b66af0570e00daab458808abded55c32707cf6b00",
+    "remote_gzip": "/home/yanlien/Workspace/tgoskits-research-evidence-20261017/linux-interference/final-63ef24f0d6a3ef24-host.elf.gz",
+    "gzip_sha256": "5c788b52d8bc1028d359bb40a95db04bfd890951fcccd2703db2731d485a67dc"
+  },
+  "host.bin": {
+    "source": "/home/yanlien/Workspace/tgoskits-research-target-20261017/aarch64-unknown-linux-musl/release/build/axvm/2d6f1ef0a9c92692/out/vcpu_runtime-2d6f1ef0a9c92692.bin",
+    "bytes": 4907072,
+    "sha256": "324a87b2b48c0fa144c374d14f562b1335eb85bd15f03bf8c338cb6ccac26080",
+    "remote_gzip": "/home/yanlien/Workspace/tgoskits-research-evidence-20261017/linux-interference/final-324a87b2b48c0fa1-host.bin.gz",
+    "gzip_sha256": "54090045569fad7f715fafb3cc172548b44bf8e1729c47a5e52d6b0b73cf8e77"
+  },
+  "host-initramfs.cpio": {
+    "source": "/home/yanlien/Workspace/tgoskits-research-target-20261017/axbuild/axvisor/host-initramfs/aarch64.cpio",
+    "bytes": 18519314,
+    "sha256": "7ed90b5432372a43555a71e85ebad3bd1d2dabab29ea94682decd4364708a66b",
+    "remote_gzip": "/home/yanlien/Workspace/tgoskits-research-evidence-20261017/linux-interference/final-7ed90b5432372a43-host-initramfs.cpio.gz",
+    "gzip_sha256": "dadb09a376cd7e5305194d8f5d6838213dcdc71394a076c92aacf786ce6162f8"
+  },
+  "rt.elf": {
+    "source": "/home/yanlien/Workspace/tgoskits-research-target-20261017/axbuild/axvm/vcpu-runtime/guest/zephyr/zephyr.elf",
+    "bytes": 718264,
+    "sha256": "5a19e684932de7a4c9d45214c90d85f7a89a16eb27f591ecdfbcbe7025bdf9fc",
+    "remote_gzip": "/home/yanlien/Workspace/tgoskits-research-evidence-20261017/linux-interference/final-5a19e684932de7a4-rt.elf.gz",
+    "gzip_sha256": "e8d1e561562bad60d7958322633808cdbd1533d159af011bae40cd5d3bfd754e"
+  },
+  "linux-workload.elf": {
+    "source": "/home/yanlien/Workspace/tgoskits-research-target-20261017/axbuild/axvm/vcpu-runtime/linux/ordinary-load",
+    "bytes": 3722232,
+    "sha256": "c2ef3007be43bf1fa92fe18a85e562411e672529da903b367b1308ecf3e69e86",
+    "remote_gzip": "/home/yanlien/Workspace/tgoskits-research-evidence-20261017/linux-interference/final-c2ef3007be43bf1f-linux-workload.elf.gz",
+    "gzip_sha256": "cca44b4f7c56fdc299d0bd4bb81094ac36518ec2d7b14f80688e5180e1541c82"
+  },
+  "linux-initramfs.cpio.gz": {
+    "source": "/home/yanlien/Workspace/tgoskits-research-target-20261017/axbuild/axvm/vcpu-runtime/linux/initramfs.cpio.gz",
+    "bytes": 2225169,
+    "sha256": "45724002fb354d71e6e15d57c6571472f332f4ae766cbf1bffd1b0c96c1301e0",
+    "remote_gzip": "/home/yanlien/Workspace/tgoskits-research-evidence-20261017/linux-interference/final-45724002fb354d71-linux-initramfs.cpio.gz.gz",
+    "gzip_sha256": "609f23621ce7f9eec440b63674eb6d7e86782bb7cf129957e6c891c0ea8b6dab"
+  }
+}

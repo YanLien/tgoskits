@@ -6,7 +6,7 @@
 
 已覆盖的软件 edge、CNTP PPI、PL031 SPI、低 EL/Guest-running、同核 CPU、跨核私有内存工作集和独立 CPU Linux VM。真板采集、PMU 计数和 DRAM/Cache 干扰尚未完成。
 
-已有的一次软件中断 QEMU 基线包含 600 条 Host 样本（Fair/FIFO 各 300）和对应 Guest ISR 校准记录，已纳入归档复放；其 `ack_observed_ns` 仅作 Host 观察窗口，不进入 ISR 时延。
+已有的一次软件中断 QEMU 基线包含 600 条 Host 样本（Fair/FIFO 各 300）和对应 Guest ISR 校准记录，已纳入归档复放；其 `ack_observed_ns` 仅作 Host 观察窗口，不进入 ISR 时延。另有一组 600 条 PL031 SPI + Linux Guest CPU 干扰样本已纳入复放，用于验证负载生命周期和跨 VM 事件分解，但仍不等价于真板 DRAM/Cache 干扰。
 
 ## 瓶颈判断
 

@@ -1,0 +1,25 @@
+[base]
+cpu_num = 1
+guest_type = "virtualized"
+id = 1
+name = "linux-ordinary-cpu"
+phys_cpu_ids = [3]
+
+[devices]
+disabled = []
+passthrough = []
+
+[kernel]
+cmdline = "console=ttyAMA0 rdinit=/init devtmpfs.mount=1 quiet loglevel=0"
+dtb_load_addr = 2147483648
+entry_point = 2149580800
+kernel_load_addr = 2149580800
+kernel_path = "/guest/builtin/images/c5403e99b9ae7a8c60c393fb2a97e637ded3e049179bb1b2f63cf6b94dd2a61a"
+memory_regions = [[
+    2147483648,
+    1073741824,
+    7,
+    0,
+]]
+ramdisk_load_addr = 2214592512
+ramdisk_path = "/guest/builtin/images/45724002fb354d71e6e15d57c6571472f332f4ae766cbf1bffd1b0c96c1301e0"
