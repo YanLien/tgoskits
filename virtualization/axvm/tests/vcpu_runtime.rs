@@ -10,6 +10,8 @@ use ax_std as _;
 mod clock;
 #[path = "support/contention.rs"]
 mod contention;
+#[path = "support/inversion.rs"]
+mod inversion;
 #[path = "support/linux.rs"]
 mod linux;
 #[path = "support/physical.rs"]
@@ -75,6 +77,32 @@ fn run_measurement(resource: &toml::Value, guest_running: bool) -> Result<()> {
         ax_std::os::arceos::task::diagnostics::install_ready_trace_hook(rejected_ready_observer)
             .is_err(),
         "ready observer replacement was accepted"
+    );
+    let service_mode = resource
+        .get("irq_service")
+        .and_then(toml::Value::as_str)
+        .context("missing IRQ service experiment mode")?;
+    let service_rounds = u64::try_from(
+        resource
+            .get("irq_service_rounds")
+            .and_then(toml::Value::as_integer)
+            .context("missing IRQ dispatch rounds")?,
+    )?;
+    let service_window_us = u64::try_from(
+        resource
+            .get("irq_service_window_us")
+            .and_then(toml::Value::as_integer)
+            .context("missing IRQ dispatch window")?,
+    )?;
+    let inversion_witness = resource
+        .get("inversion_witness")
+        .and_then(toml::Value::as_bool)
+        .context("missing inversion witness selection")?;
+    axvm::diagnostics::irq_service::configure(service_mode, service_rounds, service_window_us)?;
+    ensure!(
+        axvm::diagnostics::irq_service::configure(service_mode, service_rounds, service_window_us)
+            .is_err(),
+        "IRQ service mode replacement was accepted"
     );
     let mut envelopes = Vec::with_capacity(128);
     for marker in 0..128 {
@@ -157,6 +185,16 @@ fn run_measurement(resource: &toml::Value, guest_running: bool) -> Result<()> {
         );
     }
 
+    if inversion_witness {
+        ensure!(
+            scenario == "baseline"
+                && source_kind == "physical_timer_ppi"
+                && !guest_running
+                && service_placement == "cpu0",
+            "inversion witness requires baseline current-EL PPI with CPU0 services"
+        );
+        println!("VIRQ_INVERSION_CONFIG cpu=0 priority=60 duration_ms=50 sample=1");
+    }
     if scenario == "linux_cpu" {
         ensure!(
             source_kind == "pl031_spi" && !guest_running && service_placement == "cpu0",
@@ -235,6 +273,7 @@ fn run_measurement(resource: &toml::Value, guest_running: bool) -> Result<()> {
                             guest_running,
                             samples,
                             linux: Some((peer, &mut progress)),
+                            inversion_witness,
                         },
                     )?);
                     Ok(())
@@ -256,6 +295,7 @@ fn run_measurement(resource: &toml::Value, guest_running: bool) -> Result<()> {
                         guest_running,
                         samples,
                         linux: None,
+                        inversion_witness,
                     },
                 )?);
                 Ok(())
@@ -371,6 +411,7 @@ struct Measurement<'a> {
     guest_running: bool,
     samples: u32,
     linux: Option<(&'a mut Fixture, &'a mut linux::Progress)>,
+    inversion_witness: bool,
 }
 
 fn exercise(fixture: &mut Fixture, measurement: Measurement<'_>) -> Result<(u64, u64)> {
@@ -382,6 +423,7 @@ fn exercise(fixture: &mut Fixture, measurement: Measurement<'_>) -> Result<(u64,
         guest_running,
         samples,
         mut linux,
+        inversion_witness,
     } = measurement;
     let old_run = fixture.vm.start()?.wait()?;
     let old_memory = fixture.vm.guest_memory(old_run)?;
@@ -456,6 +498,12 @@ fn exercise(fixture: &mut Fixture, measurement: Measurement<'_>) -> Result<(u64,
     if let Some(load) = load {
         load.activate()?;
     }
+    let mut blocker = if inversion_witness {
+        Some(inversion::Witness::start()?)
+    } else {
+        None
+    };
+    let mut witness_report = None;
     let mut timings = Vec::with_capacity(samples as usize);
     let physical = if source_kind == "physical_timer_ppi" {
         Some(physical::PhysicalTimer::start(
@@ -497,6 +545,11 @@ fn exercise(fixture: &mut Fixture, measurement: Measurement<'_>) -> Result<(u64,
         } else {
             interrupt.pulse()?;
         }
+        if count == 1
+            && let Some(witness) = &blocker
+        {
+            witness.activate();
+        }
         let pulse_ns = submitted.elapsed().as_nanos();
         let state = wait_mailbox(fixture, &memory, address, deadline, |state| {
             state[2] >= count
@@ -515,6 +568,11 @@ fn exercise(fixture: &mut Fixture, measurement: Measurement<'_>) -> Result<(u64,
         }
         load_samples.push((batches_before, batches_after));
         let guest_ticks = clock::read_word(&memory, address + 48 + (count as usize - 1) * 8)?;
+        if count == 1
+            && let Some(witness) = blocker.as_mut()
+        {
+            witness_report = Some(witness.finish()?);
+        }
         timings.push((
             pulse_ns,
             ack_observed_ns,
@@ -546,6 +604,39 @@ fn exercise(fixture: &mut Fixture, measurement: Measurement<'_>) -> Result<(u64,
     let (offset_low, offset_high) = clock::offset_bounds(&probes)?;
     for (_, _, stamp) in &timings {
         clock::validate_delivery(stamp, offset_low, offset_high)?;
+    }
+    if let Some(report) = witness_report {
+        let guest_low = i128::from(timings[0].2.guest) + offset_low;
+        let guest_high = i128::from(timings[0].2.guest) + offset_high;
+        let due = physical_deadlines[0];
+        ensure!(
+            report.wrong_cpu == 0 && report.start < due && due < report.end,
+            "inversion witness did not bracket the physical deadline on CPU0"
+        );
+        let resource: toml::Value =
+            toml::from_str(&std::fs::read_to_string("/tests/vcpu-runtime.toml")?)?;
+        let enabled = resource.get("irq_service").and_then(toml::Value::as_str) != Some("off")
+            && matches!(policy, SchedulePolicy::Fifo { .. });
+        ensure!(
+            if enabled {
+                guest_low > i128::from(report.start) && guest_high < i128::from(report.end)
+            } else {
+                guest_low >= i128::from(report.end)
+            },
+            "IRQ service inheritance did not produce the expected scheduling order"
+        );
+        println!(
+            "VIRQ_INVERSION_WITNESS policy={policy_name} sample=1 blocker_cpu=0 \
+             blocker_priority=60 blocker_thread={} start_ticks={} end_ticks={} due_ticks={} \
+             guest_low_ticks={} guest_high_ticks={} preempted={} joined=1 wrong_cpu=0",
+            report.thread,
+            report.start,
+            report.end,
+            due,
+            guest_low,
+            guest_high,
+            u8::from(enabled)
+        );
     }
     if let Some((peer, progress)) = linux.as_mut() {
         progress.finish(peer, policy_name, linux_start, linux_end)?;

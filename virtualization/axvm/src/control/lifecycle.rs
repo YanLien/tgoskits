@@ -107,7 +107,10 @@ impl Owner {
         }
         let run = self.run.as_mut().expect("prepared run");
         let id = run.id;
-        run.worker = Some(RunSignalWorker::start(run.signals.clone())?);
+        run.worker = Some(RunSignalWorker::start(
+            run.signals.clone(),
+            self.vcpu_schedule_policy,
+        )?);
         if let Err(error) = CurrentArch::enter_runtime(&mut self.vm, &run.signals) {
             return match self.stop(operation) {
                 Ok(()) => Err(error),

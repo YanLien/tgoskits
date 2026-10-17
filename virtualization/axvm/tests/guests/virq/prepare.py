@@ -349,6 +349,19 @@ def write_test_resources(output: Path, entry: int, mailbox: int) -> Path:
         raise ValueError("guest_running requires baseline or memory_cross_core, physical_timer_ppi and cpu2 services")
     if scenario == "linux_cpu" and (source_kind != "pl031_spi" or service_placement != "cpu0" or irq_context != "current_el"):
         raise ValueError("linux_cpu requires current_el, pl031_spi and cpu0 services")
+    irq_service = os.environ.get("VIRQ_IRQ_SERVICE", "off")
+    if irq_service not in ("off", "inherit", "bounded"):
+        raise ValueError(f"unsupported VIRQ_IRQ_SERVICE: {irq_service}")
+    irq_service_rounds = int(os.environ.get("VIRQ_IRQ_SERVICE_ROUNDS", "8"))
+    irq_service_window_us = int(os.environ.get("VIRQ_IRQ_SERVICE_WINDOW_US", "1000"))
+    if not 1 <= irq_service_rounds <= 256 or not 100 <= irq_service_window_us <= 100000:
+        raise ValueError("IRQ service dispatch limit out of range")
+    witness = os.environ.get("VIRQ_INVERSION_WITNESS", "0")
+    if witness not in ("0", "1"):
+        raise ValueError("VIRQ_INVERSION_WITNESS must be 0 or 1")
+    inversion_witness = witness == "1"
+    if inversion_witness and (scenario != "baseline" or source_kind != "physical_timer_ppi" or irq_context != "current_el" or service_placement != "cpu0"):
+        raise ValueError("inversion witness requires baseline/current_el/PPI/CPU0 services")
     memory_bytes = int(os.environ.get("VIRQ_MEMORY_BYTES", str(16*1024*1024)))
     if not 1024*1024 <= memory_bytes <= 64*1024*1024 or memory_bytes % 8192:
         raise ValueError(f"unsupported VIRQ_MEMORY_BYTES: {memory_bytes}")
@@ -373,6 +386,10 @@ source = "{source_kind}"
 memory_bytes = {memory_bytes}
 service_placement = "{service_placement}"
 irq_context = "{irq_context}"
+irq_service = "{irq_service}"
+irq_service_rounds = {irq_service_rounds}
+irq_service_window_us = {irq_service_window_us}
+inversion_witness = {str(inversion_witness).lower()}
 guest_rtc_unused = {str(guest_rtc_unused).lower()}
 """
     )

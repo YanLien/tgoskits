@@ -40,7 +40,10 @@ impl RunSignalWorker {
     /// The returned object is an ordinary owner value. Its only shared state
     /// with the worker is the stop flag, so no lock is reachable from either the
     /// hard-IRQ path or the guest-entry path.
-    pub(crate) fn start(signals: Arc<RunSignals>) -> AxVmResult<Self> {
+    pub(crate) fn start(
+        signals: Arc<RunSignals>,
+        _vcpu_policy: task::SchedulePolicy,
+    ) -> AxVmResult<Self> {
         let stopping = Arc::new(AtomicBool::new(false));
         let worker_signals = Arc::clone(&signals);
         let worker_stopping = Arc::clone(&stopping);
@@ -51,13 +54,17 @@ impl RunSignalWorker {
         ))
         .stack_size(SIGNAL_WORKER_STACK_SIZE);
         #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
+        let builder = builder.policy(crate::diagnostics::irq_service::selected_policy(
+            _vcpu_policy,
+        )?);
+        #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
         let builder = if let Some(cpu) = crate::diagnostics::service_placement::cpu() {
             builder.affinity(task::cpu_set_from_raw_bits(1usize << cpu))
         } else {
             builder
         };
         let worker = builder
-            .spawn(move || run_worker(worker_signals, worker_stopping))
+            .spawn(move || run_worker(worker_signals, worker_stopping, _vcpu_policy))
             .map_err(|error| AxVmError::host("start run signal worker", error))?;
         Ok(Self {
             signals,
@@ -78,9 +85,18 @@ impl RunSignalWorker {
             self.signals.stop_irq_pending_publication();
             return Ok(());
         };
+        #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
+        let worker_id = worker.id().as_u64();
         match worker.clone().join() {
             Ok(_) => {
                 self.worker = None;
+                #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
+                println!(
+                    "VIRQ_IRQ_SERVICE_JOIN vm={} run={} thread={} joined=1",
+                    self.signals.run_id().vm().vm_id(),
+                    self.signals.run_id().generation(),
+                    worker_id
+                );
                 self.signals.stop_irq_pending_publication();
                 Ok(())
             }
@@ -90,7 +106,14 @@ impl RunSignalWorker {
     }
 }
 
-fn run_worker(signals: Arc<RunSignals>, stopping: Arc<AtomicBool>) {
+fn run_worker(
+    signals: Arc<RunSignals>,
+    stopping: Arc<AtomicBool>,
+    _vcpu_policy: task::SchedulePolicy,
+) {
+    #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
+    let mut dispatch =
+        crate::diagnostics::irq_service::Dispatch::start(signals.run_id(), _vcpu_policy);
     #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
     let mut placement = crate::diagnostics::service_placement::Probe::start(
         crate::diagnostics::service_placement::Role::Signal,
@@ -102,6 +125,10 @@ fn run_worker(signals: Arc<RunSignals>, stopping: Arc<AtomicBool>) {
             probe.observe();
         }
         if stopping.load(Ordering::Acquire) {
+            break;
+        }
+        #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
+        if !dispatch.admit_round(&stopping) {
             break;
         }
         signals.post_controller_events();
