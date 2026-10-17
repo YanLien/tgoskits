@@ -1,0 +1,123 @@
+{
+  "input": "research/rt-virtualization-20261017/results/replay/current-qemu-ppi-inherit-600/physical/samples.csv",
+  "sha256": "91a81ec2649f7cba0814342d129e3e327f151fe2a1bd9181dd09967000d69f83",
+  "metric": "entry_to_c_isr",
+  "iid_stationarity_and_independence_verified": false,
+  "inference_status": "descriptive only; IID probabilities are hypothetical planning diagnostics",
+  "clock_intervals_are_not_sampling_confidence_intervals": true,
+  "pooled_across_runs": false,
+  "strata": [
+    {
+      "identity": {
+        "policy": "fair",
+        "source": "physical_timer_ppi",
+        "irq_entry_context": "current_el_callback",
+        "scenario": "baseline",
+        "intid": "30"
+      },
+      "schedule_decomposition_counts": {
+        "True": 600,
+        "False": 0
+      },
+      "observations": 600,
+      "maximum_interval_ns": [
+        1500048,
+        1501088
+      ],
+      "quantiles": {
+        "0.95": {
+          "empirical_nearest_rank": 570,
+          "empirical_quantile_interval_ns": [
+            645632,
+            646672
+          ],
+          "is_sample_max_rank": false,
+          "iid_hypothetical_expected_observations_above_quantile": 30.0,
+          "iid_hypothetical_max_covers_population_quantile_probability": 0.9999999999999569,
+          "iid_min_n_for_95pct_one_sided_max_bound": 59,
+          "population_quantile_bound_claimed": false
+        },
+        "0.99": {
+          "empirical_nearest_rank": 594,
+          "empirical_quantile_interval_ns": [
+            1033072,
+            1034112
+          ],
+          "is_sample_max_rank": false,
+          "iid_hypothetical_expected_observations_above_quantile": 6.0,
+          "iid_hypothetical_max_covers_population_quantile_probability": 0.997594990708689,
+          "iid_min_n_for_95pct_one_sided_max_bound": 299,
+          "population_quantile_bound_claimed": false
+        },
+        "0.999": {
+          "empirical_nearest_rank": 600,
+          "empirical_quantile_interval_ns": [
+            1500048,
+            1501088
+          ],
+          "is_sample_max_rank": true,
+          "iid_hypothetical_expected_observations_above_quantile": 0.6,
+          "iid_hypothetical_max_covers_population_quantile_probability": 0.45135309251450334,
+          "iid_min_n_for_95pct_one_sided_max_bound": 2995,
+          "population_quantile_bound_claimed": false
+        }
+      }
+    },
+    {
+      "identity": {
+        "policy": "fifo80",
+        "source": "physical_timer_ppi",
+        "irq_entry_context": "current_el_callback",
+        "scenario": "baseline",
+        "intid": "30"
+      },
+      "schedule_decomposition_counts": {
+        "True": 600,
+        "False": 0
+      },
+      "observations": 600,
+      "maximum_interval_ns": [
+        742432,
+        743520
+      ],
+      "quantiles": {
+        "0.95": {
+          "empirical_nearest_rank": 570,
+          "empirical_quantile_interval_ns": [
+            511712,
+            512800
+          ],
+          "is_sample_max_rank": false,
+          "iid_hypothetical_expected_observations_above_quantile": 30.0,
+          "iid_hypothetical_max_covers_population_quantile_probability": 0.9999999999999569,
+          "iid_min_n_for_95pct_one_sided_max_bound": 59,
+          "population_quantile_bound_claimed": false
+        },
+        "0.99": {
+          "empirical_nearest_rank": 594,
+          "empirical_quantile_interval_ns": [
+            622320,
+            623408
+          ],
+          "is_sample_max_rank": false,
+          "iid_hypothetical_expected_observations_above_quantile": 6.0,
+          "iid_hypothetical_max_covers_population_quantile_probability": 0.997594990708689,
+          "iid_min_n_for_95pct_one_sided_max_bound": 299,
+          "population_quantile_bound_claimed": false
+        },
+        "0.999": {
+          "empirical_nearest_rank": 600,
+          "empirical_quantile_interval_ns": [
+            742432,
+            743520
+          ],
+          "is_sample_max_rank": true,
+          "iid_hypothetical_expected_observations_above_quantile": 0.6,
+          "iid_hypothetical_max_covers_population_quantile_probability": 0.45135309251450334,
+          "iid_min_n_for_95pct_one_sided_max_bound": 2995,
+          "population_quantile_bound_claimed": false
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "archived_path": "research/rt-virtualization-20261017/raw/current-qemu-ppi-bounded-600.log",
+  "sha256": "230d4f170bde7381e5a2bc3354db4cecc89b88b2586a85b1f9ec7a13597233eb",
+  "git_commit": "859e538972b4f4a835f1813cd2e8d609fed547e5",
+  "host_sample_markers": 1200,
+  "guest_isr_sample_markers": 1200,
+  "clock_sample_markers": 128,
+  "runtime_summary": [
+    "VIRQ_RUNTIME_SUMMARY records=12464 dropped=0 incomplete=0"
+  ],
+  "axtest_summary": [
+    "AXTEST_SUMMARY pass=1 fail=0 skip=0 total=1"
+  ],
+  "qemu_suite": [
+    "AXTEST_SUITE_OK"
+  ]
+}

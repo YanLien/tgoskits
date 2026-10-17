@@ -10,6 +10,8 @@
 
 当前分支又完成了一次真实 QEMU 运行，物理 PPI 基线 Fair/FIFO 各 600 条，runtime/Ready 均 600/600 完整关联；该结果与历史日志分开保存，作为当前代码和当前构建配置的功能/测量链证据。
 
+在同一配置下已补跑 `inherit` 与 `bounded`（8 轮/50 ms）各 600 条；三种模式均保留 Guest ISR 校准时间戳，且 runtime/Ready 关联完整。bounded/FIFO 出现约 31 ms 的 QEMU 限流尾部，作为原型代价记录，不能外推为真板结论。
+
 ## 瓶颈判断
 
 现有 witness 不是自然负载性能结论，而是对已观测路径的因果构造：低等级 CPU0 FIFO blocker 覆盖第一条物理 PPI 的 deadline。`off` 下 FIFO Guest ISR 在 blocker 结束后出现；`inherit` 和 `bounded` 下 FIFO ISR 在 blocker 结束前出现，Fair 目标不继承。这个结果足以支持阶段二先验证服务调度路径，但不足以证明 Deadline 机制收益。
