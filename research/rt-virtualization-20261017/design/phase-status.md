@@ -22,5 +22,6 @@
 - 还没有与 IRQ-only、Scheduler-only、Joint 及去掉反馈的消融组完成匹配实验。
 - 还没有 RK3588 真板、PMU、Cache/DSU、IOMMU 或 DMA 证据。
 - 方向 B 的 VM 级内存带宽预算尚未实现；方向 C 只有独立 CPU 的 Linux 负载夹具。
+- D/E 已完成本机预核查，但当前主机是 x86_64 Intel，不能证明 RK3588 的 DSU/SMMU 能力；真板核查清单已归档，未提前实现硬件依赖策略。
 
 下一步应先在真板复现 `off/inherit` 的匹配基线，报告 P95/P99/P99.9、Deadline miss、普通 VM 吞吐和服务开销，再决定是否把 A0 扩展为真正的 Deadline Slack 协同机制。

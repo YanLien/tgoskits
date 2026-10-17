@@ -49,6 +49,8 @@ python3 virtualization/axvm/tests/analysis/analyze_virq_irq_service.py \
 ## 归档布局
 
 - `design/`：阶段判断、A0 设计和适用边界。
+- `design/hardware-capability-audit.md`：D/E 本机预核查及真板门禁。
+- `design/phase4-evidence-protocol.md`：真板基线、单项、联合和消融实验协议。
 - `patches/`：研究补丁、来源校验和故障恢复验证。
 - `configs/`：本轮 QEMU/构建输入的快照。
 - `raw/`：原始 QEMU 日志及对应二进制身份 JSON，`SHA256SUMS` 为校验清单。
