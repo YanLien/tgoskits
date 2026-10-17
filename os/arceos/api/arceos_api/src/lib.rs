@@ -154,9 +154,10 @@ pub mod task {
         ) -> bool;
         /// Wakes up one or more tasks in the wait queue.
         ///
-        /// The maximum number of tasks to wake up is specified by `count`. If
-        /// `count` is `u32::MAX`, it will wake up all tasks in the wait queue.
-        /// Returns the number of waiters selected for wakeup.
+        /// At most `count` registrations present at the start are selected;
+        /// `u32::MAX` selects the complete initial cohort. A task that wakes
+        /// and waits again is outside this notification. Zero is a no-op.
+        /// Returns the number of successful scheduler wake deliveries.
         pub fn ax_wait_queue_wake(wq: &AxWaitQueueHandle, count: u32) -> usize;
     }
 }

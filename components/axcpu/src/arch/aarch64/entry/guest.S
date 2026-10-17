@@ -132,6 +132,15 @@
 
 .macro HANDLE_LOWER_IRQ_VCPU
     SAVE_REGS_FROM_EL1
+    # Optional observation after complete GPR save, before controller IAR.
+    # x9 is scratch only after its guest value has been saved. No Rust, TLS,
+    # allocation or callbacks run in this guest-owned register window.
+    .if {observe_irq_entry}
+    isb
+    mrs     x9, cntpct_el0
+    isb
+    str     x9, [sp, {irq_entry_ticks_offset}]
+    .endif
     ACK_PENDING_HOST_IRQ
     SAVE_VCPU_RUNTIME_FROM_EL1
     mov     x0, {exception_irq}

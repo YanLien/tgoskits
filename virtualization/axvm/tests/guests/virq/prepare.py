@@ -43,7 +43,7 @@ PINNED_PYTHON_PACKAGES = (
 )
 BOARD = "qemu_cortex_a53/qemu_cortex_a53/smp"
 MAILBOX_SYMBOL = "virq_mailbox"
-MAILBOX_SIZE = 20
+MAILBOX_SIZE = 2448
 GUEST_RAM_START = 0x4000_0000
 GUEST_RAM_SIZE = 0x0800_0000
 DTB_LOAD_ADDR = 0x47E0_0000
@@ -325,6 +325,9 @@ disabled = []
 
 def write_test_resources(output: Path, entry: int, mailbox: int) -> Path:
     """Write the initramfs fixture read by the `vcpu_runtime` axtest target."""
+    capture = os.environ.get("VIRQ_PROBE_CAPTURE", "off")
+    if capture not in ("off", "on"):
+        raise ValueError(f"unsupported VIRQ_PROBE_CAPTURE: {capture}")
     resources = output / "resources/tests"
     resources.mkdir(parents=True, exist_ok=True)
     fixture = resources / "vcpu-runtime.toml"
@@ -333,6 +336,7 @@ def write_test_resources(output: Path, entry: int, mailbox: int) -> Path:
 # `entry` and `mailbox` stay fixed for the pinned guest revision.
 entry = 0x{entry:x}
 mailbox = 0x{mailbox:x}
+probe_capture = {str(capture == "on").lower()}
 """
     )
     return fixture

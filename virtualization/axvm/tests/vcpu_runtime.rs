@@ -6,9 +6,14 @@
 use ax_runtime as _;
 use ax_std as _;
 
+#[path = "support/clock.rs"]
+mod clock;
 mod support;
 
-use std::time::{Duration, Instant};
+use std::{
+    time::{Duration, Instant},
+    vec::Vec,
+};
 
 use anyhow::{Context, Result, ensure};
 use axvm::{GuestMemoryPort, GuestPhysAddr, RtPriority, SchedulePolicy, VmStatus};
@@ -28,6 +33,21 @@ mod tests {
 fn run() -> Result<()> {
     let resource: toml::Value =
         toml::from_str(&std::fs::read_to_string("/tests/vcpu-runtime.toml")?)?;
+    let capture = resource
+        .get("probe_capture")
+        .and_then(toml::Value::as_bool)
+        .context("missing probe capture state")?;
+    #[cfg(not(feature = "probe-capture"))]
+    ensure!(!capture, "probe capture requested without compiled support");
+    #[cfg(feature = "probe-capture")]
+    if capture {
+        axvm::diagnostics::initialize(ax_std::os::arceos::task::sched::cpu_topology_len()?)?;
+    }
+    println!(
+        "VIRQ_PROBE_PROFILE compiled={} enabled={}",
+        usize::from(cfg!(feature = "probe-capture")),
+        usize::from(capture)
+    );
     let entry = resource
         .get("entry")
         .and_then(toml::Value::as_integer)
@@ -39,7 +59,8 @@ fn run() -> Result<()> {
         .context("test resources have no mailbox address")?;
     let mailbox = usize::try_from(mailbox)?;
     ensure!(
-        (0x4000_0000..=0x4800_0000 - 20).contains(&mailbox) && mailbox.is_multiple_of(4),
+        (0x4000_0000..=0x4800_0000 - clock::MAILBOX_SIZE).contains(&mailbox)
+            && mailbox.is_multiple_of(8),
         "mailbox is outside aligned guest RAM"
     );
     let fifo = SchedulePolicy::fifo(RtPriority::new(80).context("valid FIFO priority")?);
@@ -52,6 +73,51 @@ fn run() -> Result<()> {
             );
             exercise(fixture, GuestPhysAddr::from(mailbox), policy)
         })?;
+    }
+    #[cfg(feature = "probe-capture")]
+    if capture {
+        let snapshot = axvm::diagnostics::finish()?;
+        ensure!(
+            snapshot.dropped == 0 && snapshot.incomplete == 0,
+            "probe capture lost records"
+        );
+        for kind in [
+            axvm::diagnostics::EventKind::Binding,
+            axvm::diagnostics::EventKind::ReadyEnqueue,
+            axvm::diagnostics::EventKind::Running,
+        ] {
+            ensure!(
+                snapshot.events.iter().any(|e| e.kind == kind),
+                "probe capture missing {kind:?}"
+            );
+        }
+        ensure!(
+            snapshot
+                .events
+                .iter()
+                .filter(|e| e.kind == axvm::diagnostics::EventKind::IrqKick)
+                .count()
+                >= 600,
+            "probe capture missing interrupt publications"
+        );
+        for event in &snapshot.events {
+            println!(
+                "VIRQ_RUNTIME cpu={} sequence={} ticks={} kind={:?} thread={} value0={} value1={}",
+                event.cpu,
+                event.sequence,
+                event.ticks,
+                event.kind,
+                event.thread,
+                event.value0,
+                event.value1
+            );
+        }
+        println!(
+            "VIRQ_RUNTIME_SUMMARY records={} dropped={} incomplete={}",
+            snapshot.events.len(),
+            snapshot.dropped,
+            snapshot.incomplete
+        );
     }
     Ok(())
 }
@@ -138,16 +204,73 @@ fn exercise(fixture: &mut Fixture, address: GuestPhysAddr, policy: SchedulePolic
     })?;
     fixture.check_policy(policy, 2)?;
     ensure!(initial[2] == 0, "guest received an unrequested interrupt");
+    let frequency = clock::read_word(&memory, address + 40)?;
+    ensure!(
+        frequency != 0 && frequency == ax_cpu::timer::counter_frequency(),
+        "host and guest counter frequencies disagree"
+    );
+    let mut probes = clock::calibrate(fixture, &memory, address, "before", 1)?;
+    memory.write_bytes(address + 20, &clock::CLOCK_START.to_le_bytes())?;
+    let mut timings = Vec::with_capacity(SAMPLES as usize);
     for count in 1..=SAMPLES {
+        let submitted = Instant::now();
         // Pending bits coalesce edges: keep exactly one unacknowledged pulse.
+        let submitted_ticks = clock::host_ticks();
         interrupt.pulse()?;
+        let pulse_ns = submitted.elapsed().as_nanos();
         let state = wait_mailbox(fixture, &memory, address, deadline, |state| {
             state[2] >= count
         })?;
+        let ack_observed_ns = submitted.elapsed().as_nanos();
+        let observed_ticks = clock::host_ticks();
+        let guest_ticks = clock::read_word(&memory, address + 48 + (count as usize - 1) * 8)?;
+        timings.push((
+            pulse_ns,
+            ack_observed_ns,
+            clock::Delivery {
+                submitted: submitted_ticks,
+                guest: guest_ticks,
+                observed: observed_ticks,
+            },
+        ));
         ensure!(state[2] == count, "duplicate interrupt: {state:?}");
         ensure!(
             state[3] == initial[3],
             "non-target vCPU left suspend: {state:?}"
+        );
+    }
+    probes.extend(clock::calibrate(fixture, &memory, address, "after", 34)?);
+    let (offset_low, offset_high) = clock::offset_bounds(&probes)?;
+    for (_, _, stamp) in &timings {
+        clock::validate_delivery(stamp, offset_low, offset_high)?;
+    }
+    // Both intervals use the host clock. Confirmation includes mailbox polling
+    // and scheduling; it is not a guest ISR timestamp or a physical IRQ latency.
+    // Emit only after sampling so serial output does not enter these intervals.
+    let policy_name = match policy {
+        SchedulePolicy::Fifo { .. } => "fifo80",
+        _ => "fair",
+    };
+    for probe in &probes {
+        println!(
+            "VIRQ_CLOCK_SAMPLE policy={policy_name} phase={} sequence={} host_before={} \
+             guest_ticks={} host_after={} frequency_hz={frequency}",
+            probe.phase, probe.sequence, probe.before, probe.guest, probe.after
+        );
+    }
+    for (index, (pulse_ns, ack_observed_ns, stamp)) in timings.iter().enumerate() {
+        println!(
+            "VIRQ_HOST_SAMPLE policy={policy_name} sample={} pulse_ns={pulse_ns} \
+             ack_observed_ns={ack_observed_ns}",
+            index + 1
+        );
+        println!(
+            "VIRQ_ISR_SAMPLE policy={policy_name} sample={} submit_ticks={} guest_ticks={} \
+             observed_ticks={} frequency_hz={frequency}",
+            index + 1,
+            stamp.submitted,
+            stamp.guest,
+            stamp.observed
         );
     }
     println!("VIRQ_INJECT_COMPLETE vm=2 vcpu=1 vector=48 samples=300 errors=0");

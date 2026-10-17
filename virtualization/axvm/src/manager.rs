@@ -812,6 +812,12 @@ impl VmManager {
         let builder = crate::host::task::builder(name)
             .stack_size(CONTROL_STACK_SIZE)
             .extension(extension);
+        #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
+        let builder = if let Some(cpu) = crate::diagnostics::service_placement::cpu() {
+            builder.affinity(crate::host::task::cpu_set_from_raw_bits(1usize << cpu))
+        } else {
+            builder
+        };
         let prepared = builder
             .prepare(move || crate::control::run(shared_for_task, exit_for_task, plan, completion))
             .map_err(|error| AxVmError::host("prepare VM control task", error))?;
