@@ -1,3 +1,4 @@
+mod broadcast;
 mod lifecycle;
 
 use std::{
@@ -16,6 +17,7 @@ use ax_std::os::arceos::api::task::{self as api, AxWaitQueueHandle};
 const NUM_TASKS: usize = 16;
 
 pub fn run() -> crate::TestResult {
+    broadcast::run();
     test_wake_before_admission();
     lifecycle::run();
     test_wait();
