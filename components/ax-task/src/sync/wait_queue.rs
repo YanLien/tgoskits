@@ -47,6 +47,8 @@ pub fn sleep_until(deadline: MonotonicDeadline) {
 pub struct WaitQueue {
     waiters: PreemptTicketLock<VecDeque<Waiter>>,
     notification_generation: AtomicU64,
+    // Serialized by `waiters`; this atomic only provides interior mutability.
+    registration_sequence: AtomicU64,
     active_wait_attempts: AtomicUsize,
 }
 
@@ -135,6 +137,7 @@ impl WaitQueue {
         Self {
             waiters: PreemptTicketLock::new(VecDeque::new()),
             notification_generation: AtomicU64::new(0),
+            registration_sequence: AtomicU64::new(0),
             active_wait_attempts: AtomicUsize::new(0),
         }
     }
@@ -252,7 +255,7 @@ impl WaitQueue {
     /// Panics in hard IRQ context. IRQ producers must use
     /// [`crate::sync::irq::IrqWaitCell`] to wake one fixed service thread.
     pub fn notify_one(&self) -> bool {
-        self.notify_one_with_intent(WakeIntent::Normal)
+        self.notify_with_intent(1, WakeIntent::Normal) != 0
     }
 
     /// Selects one waiter with Linux `WF_SYNC` scheduling intent.
@@ -261,34 +264,54 @@ impl WaitQueue {
     /// Fair placement and wakeup preemption that this task-context producer
     /// expects to block shortly after publishing the condition.
     pub fn notify_one_sync(&self) -> bool {
-        self.notify_one_with_intent(WakeIntent::Sync)
+        self.notify_with_intent(1, WakeIntent::Sync) != 0
     }
 
-    fn notify_one_with_intent(&self, intent: WakeIntent) -> bool {
+    /// Wakes at most `limit` registrations present when this notification starts.
+    ///
+    /// Returns the number of successful scheduler deliveries. A waiter that
+    /// re-registers after waking is outside this notification's cohort, even
+    /// when it runs on another CPU before the notification returns. Delivery
+    /// runs outside the queue lock; cancelled or unavailable registrations
+    /// are attempted at most once. A zero limit does not notify anything.
+    ///
+    /// # Panics
+    ///
+    /// A positive limit panics in hard IRQ context. IRQ producers must use
+    /// [`crate::sync::irq::IrqWaitCell`] instead.
+    pub fn notify_n(&self, limit: usize) -> usize {
+        self.notify_with_intent(limit, WakeIntent::Normal)
+    }
+
+    fn notify_with_intent(&self, limit: usize, intent: WakeIntent) -> usize {
+        if limit == 0 {
+            return 0;
+        }
         assert_task_context_notification();
         if !self.may_have_active_wait_attempts() {
-            return false;
+            return 0;
         }
         let _preempt = PreemptScope::enter();
-        self.notify_one_preempt_disabled(intent)
+        self.notify_preempt_disabled(limit, intent)
     }
 
-    fn notify_one_preempt_disabled(&self, intent: WakeIntent) -> bool {
-        let (notification_generation, mut selected) = {
-            let mut waiters = self.waiters.lock();
-            let previous_generation = self
-                .notification_generation
+    fn notify_preempt_disabled(&self, limit: usize, intent: WakeIntent) -> usize {
+        let (cutoff, mut cursor, mut selected) = {
+            let waiters = self.waiters.lock();
+            self.notification_generation
                 .try_update(Ordering::Release, Ordering::Relaxed, |generation| {
                     generation.checked_add(1)
                 })
                 .unwrap_or_else(|_| panic!("wait-queue notification generation exhausted"));
-            let notification_generation = previous_generation + 1;
-            let selected = select_waiter(&mut waiters, notification_generation);
-            (notification_generation, selected)
+            let cutoff = self.registration_sequence.load(Ordering::Relaxed);
+            let mut cursor = 0;
+            let selected = select_waiter(&waiters, cutoff, &mut cursor);
+            (cutoff, cursor, selected)
         };
+        let mut woken = 0;
         loop {
             let Some(claim_owner) = selected else {
-                return false;
+                return woken;
             };
 
             let delivery = claim_owner
@@ -311,7 +334,10 @@ impl WaitQueue {
                             .expect("located delivered waiter must remain present");
                         assert_eq!(waiter.wake.deactivate(), WaiterRemoval::Delivered);
                     }
-                    return true;
+                    woken += 1;
+                    if woken == limit {
+                        return woken;
+                    }
                 }
                 WaitWakeDelivery::Cancelled | WaitWakeDelivery::Exited => {
                     if let Some(index) = index {
@@ -327,22 +353,15 @@ impl WaitQueue {
                     }
                 }
             }
-            selected = select_waiter(&mut waiters, notification_generation);
+            selected = select_waiter(&waiters, cutoff, &mut cursor);
         }
     }
 
-    /// Wakes every waiter.
+    /// Wakes all registrations present at the start of this notification.
     ///
-    /// Each direct scheduler wake runs outside the queue's preemption-disabling
-    /// publication lock. A generation-bearing selection token serializes wake
-    /// completion against timeout cleanup.
+    /// A waiter re-registering during delivery belongs to a later cohort.
     pub fn notify_all(&self) {
-        assert_task_context_notification();
-        if !self.may_have_active_wait_attempts() {
-            return;
-        }
-        let _preempt = PreemptScope::enter();
-        while self.notify_one_preempt_disabled(WakeIntent::Normal) {}
+        self.notify_n(usize::MAX);
     }
 
     fn wait_once(&self, deadline: Option<MonotonicDeadline>) -> Result<WaitOutcome, TaskError> {
@@ -390,7 +409,19 @@ impl WaitQueue {
                 CurrentParkStart::Prepared(park) => park,
             };
             let thread = park.thread_id();
-            waiters.push_back(Waiter::new(thread, park.generation(), park.wake_handle()));
+            let registration = self
+                .registration_sequence
+                .load(Ordering::Relaxed)
+                .checked_add(1)
+                .expect("wait-queue registration sequence exhausted");
+            self.registration_sequence
+                .store(registration, Ordering::Relaxed);
+            waiters.push_back(Waiter::new(
+                registration,
+                thread,
+                park.generation(),
+                park.wake_handle(),
+            ));
             if let Some(deadline) = deadline
                 && let Err(error) = park.arm_deadline(deadline)
             {
@@ -564,22 +595,23 @@ impl Default for WaitQueue {
 #[derive(Debug)]
 struct Waiter {
     wake: Arc<WaiterWake>,
-    last_attempted_by: u64,
+    registration: u64,
 }
 
 impl Waiter {
-    fn new(thread: ThreadId, park_generation: u64, wake: ThreadWakeHandle) -> Self {
+    fn new(
+        registration: u64,
+        thread: ThreadId,
+        park_generation: u64,
+        wake: ThreadWakeHandle,
+    ) -> Self {
         Self {
             wake: Arc::new(WaiterWake::new(thread, park_generation, wake)),
-            last_attempted_by: 0,
+            registration,
         }
     }
 
-    fn select(&mut self, notification_generation: u64) -> Option<Arc<WaiterWake>> {
-        if self.last_attempted_by == notification_generation {
-            return None;
-        }
-        self.last_attempted_by = notification_generation;
+    fn select(&self) -> Option<Arc<WaiterWake>> {
         let WaiterSelection::Selected(selected_waiter) = self.wake.try_select() else {
             return None;
         };
@@ -645,12 +677,22 @@ enum WaiterSelection {
 }
 
 fn select_waiter(
-    waiters: &mut VecDeque<Waiter>,
-    notification_generation: u64,
+    waiters: &VecDeque<Waiter>,
+    cutoff: u64,
+    cursor: &mut u64,
 ) -> Option<Arc<WaiterWake>> {
-    waiters
-        .iter_mut()
-        .find_map(|waiter| waiter.select(notification_generation))
+    // Registration order is FIFO and never reused. Advancing before selection
+    // also bounds retries when concurrent notifiers or cancellation intervene.
+    for waiter in waiters {
+        if waiter.registration <= *cursor || waiter.registration > cutoff {
+            continue;
+        }
+        *cursor = waiter.registration;
+        if let Some(selected) = waiter.select() {
+            return Some(selected);
+        }
+    }
+    None
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]

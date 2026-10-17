@@ -19,6 +19,8 @@ default = []
 context = []
 virtualization = ["context", "fp-simd", "exception-table", "dep:thiserror", "dep:tock-registers"]
 exception-table = []
+# Optional AArch64 pre-IAR guest IRQ timestamps; absent from default entry.
+virtualization-trace = ["virtualization"]
 pmu = ["dep:thiserror"]
 fp-simd = ["context"]
 tls = ["context"]

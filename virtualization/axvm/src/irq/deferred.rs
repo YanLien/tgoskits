@@ -44,14 +44,21 @@ impl RunSignalWorker {
         let stopping = Arc::new(AtomicBool::new(false));
         let worker_signals = Arc::clone(&signals);
         let worker_stopping = Arc::clone(&stopping);
-        let worker = task::builder(std::format!(
+        let builder = task::builder(std::format!(
             "VM[{}:run:{}]-signal-worker",
             signals.run_id().vm().vm_id(),
             signals.run_id().generation()
         ))
-        .stack_size(SIGNAL_WORKER_STACK_SIZE)
-        .spawn(move || run_worker(worker_signals, worker_stopping))
-        .map_err(|error| AxVmError::host("start run signal worker", error))?;
+        .stack_size(SIGNAL_WORKER_STACK_SIZE);
+        #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
+        let builder = if let Some(cpu) = crate::probe_fixture::cpu() {
+            builder.affinity(task::cpu_set_from_raw_bits(1usize << cpu))
+        } else {
+            builder
+        };
+        let worker = builder
+            .spawn(move || run_worker(worker_signals, worker_stopping))
+            .map_err(|error| AxVmError::host("start run signal worker", error))?;
         Ok(Self {
             signals,
             stopping,
@@ -84,8 +91,14 @@ impl RunSignalWorker {
 }
 
 fn run_worker(signals: Arc<RunSignals>, stopping: Arc<AtomicBool>) {
+    #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
+    let mut placement = crate::probe_fixture::Probe::start(crate::probe_fixture::Role::Signal);
     loop {
         signals.wait_for_irq_notification();
+        #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
+        if let Some(probe) = placement.as_mut() {
+            probe.observe();
+        }
         if stopping.load(Ordering::Acquire) {
             break;
         }

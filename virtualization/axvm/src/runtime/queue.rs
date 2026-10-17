@@ -310,8 +310,32 @@ impl VcpuWakeTarget {
         &self.signals
     }
 
+    #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
+    pub(crate) fn trace_irq_kick(&self) {
+        crate::diagnostics::record(
+            crate::diagnostics::EventKind::IrqKick,
+            self.wake.thread_id().as_u64(),
+            0,
+            0,
+        );
+    }
+
     pub(crate) fn wake(&self) {
+        #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
+        crate::diagnostics::record(
+            crate::diagnostics::EventKind::WakeBegin,
+            self.wake.thread_id().as_u64(),
+            0,
+            0,
+        );
         let _ = self.wake.wake();
+        #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
+        crate::diagnostics::record(
+            crate::diagnostics::EventKind::WakeEnd,
+            self.wake.thread_id().as_u64(),
+            0,
+            0,
+        );
     }
 }
 

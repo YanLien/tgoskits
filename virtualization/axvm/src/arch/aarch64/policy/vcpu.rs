@@ -160,6 +160,8 @@ impl ArmVcpu {
         let exit = unsafe { ax_cpu::virtualization::enter_guest(&mut self.machine) };
         self.timer.finish_machine(self.machine.timer);
         if exit.kind == TrapKind::Irq {
+            #[cfg(feature = "axtest")]
+            crate::diagnostics::lower_irq_entry(exit.irq_entry_ticks, exit.irq_ack);
             let token = (exit.irq_ack != u32::MAX)
                 .then(|| crate::arch::aarch64::gic::finish_pending_host_irq(exit.irq_ack))
                 .flatten();

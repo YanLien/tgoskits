@@ -31,6 +31,10 @@ pub struct Exit {
     pub pc: u64,
     /// Raw host IAR value, or `u32::MAX` when no IRQ was acknowledged.
     pub irq_ack: u32,
+    /// Physical counter after low-EL IRQ GPR save, before IAR; zero for other exits.
+    /// Present only with the optional AArch64 entry observation feature.
+    #[cfg(feature = "virtualization-trace")]
+    pub irq_entry_ticks: u64,
     /// IPA resolved before restoring the host translation bank.
     pub guest_address: Result<crate::virtualization::GuestPhysAddr, GuestAddressError>,
 }
@@ -44,6 +48,8 @@ impl Default for Exit {
             physical_fault_address: 0,
             pc: 0,
             irq_ack: u32::MAX,
+            #[cfg(feature = "virtualization-trace")]
+            irq_entry_ticks: 0,
             guest_address: Err(GuestAddressError::NotDataAbort),
         }
     }

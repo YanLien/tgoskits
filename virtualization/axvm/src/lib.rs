@@ -28,6 +28,8 @@ mod architecture;
 pub mod boot;
 mod configured;
 mod control;
+#[cfg(all(feature = "axtest", target_arch = "aarch64"))]
+pub mod diagnostics;
 mod engine;
 mod error;
 mod guest_memory;
@@ -112,3 +114,6 @@ mod host_link_symbols {
     #[unsafe(no_mangle)]
     static __PERCPU_TEMPLATE_ALIGN_END: usize = 0;
 }
+
+#[cfg(all(feature = "axtest", target_arch = "aarch64"))]
+pub mod probe_fixture;

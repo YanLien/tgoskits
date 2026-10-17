@@ -493,6 +493,8 @@ impl RunSignals {
             drop(producer);
             return Err(SignalError::InactiveTarget);
         };
+        #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
+        target.trace_irq_kick();
         let signals = target.signals();
         signals.request_unblock();
         signals.publish_exit_request();

@@ -46,8 +46,24 @@ static VCPU_TASK_OPS: ThreadExtensionOps = ThreadExtensionOps {
     drop: drop_attachment,
 };
 
-unsafe extern "Rust" fn switch_in(_: usize, _: ThreadId, _: SchedulePolicy, _: u64) {}
-unsafe extern "Rust" fn switch_out(_: usize, _: ThreadId, _: SwitchReason) {}
+unsafe extern "Rust" fn switch_in(_: usize, _thread: ThreadId, _: SchedulePolicy, _: u64) {
+    #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
+    crate::diagnostics::record(
+        crate::diagnostics::EventKind::Running,
+        _thread.as_u64(),
+        0,
+        0,
+    );
+}
+unsafe extern "Rust" fn switch_out(_: usize, _thread: ThreadId, _: SwitchReason) {
+    #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
+    crate::diagnostics::record(
+        crate::diagnostics::EventKind::Stopped,
+        _thread.as_u64(),
+        0,
+        0,
+    );
+}
 unsafe extern "Rust" fn deadline_overrun(_: usize, _: ThreadId) {}
 
 unsafe extern "Rust" fn exited(data: usize, _: ThreadId) {
@@ -64,4 +80,9 @@ unsafe extern "Rust" fn exited(data: usize, _: ThreadId) {
 unsafe extern "Rust" fn drop_attachment(data: usize) {
     // SAFETY: the scheduler is the sole destructor of this transferred box.
     drop(unsafe { Box::from_raw(data as *mut VcpuAttachment) });
+}
+
+#[cfg(all(feature = "axtest", target_arch = "aarch64", axtest))]
+pub(crate) fn owns_extension_ops(identity: usize) -> bool {
+    identity == &VCPU_TASK_OPS as *const ThreadExtensionOps as usize
 }

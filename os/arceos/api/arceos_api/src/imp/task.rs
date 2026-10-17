@@ -163,20 +163,8 @@ cfg_task! {
     }
 
     pub fn ax_wait_queue_wake(wq: &AxWaitQueueHandle, count: u32) -> usize {
-        let mut woken = 0;
-        if count == u32::MAX {
-            while wq.0.notify_one() {
-                woken += 1;
-            }
-        } else {
-            for _ in 0..count {
-                if !wq.0.notify_one() {
-                    break;
-                }
-                woken += 1;
-            }
-        }
-        woken
+        let limit = if count == u32::MAX { usize::MAX } else { count as usize };
+        wq.0.notify_n(limit)
     }
 
     fn task_result<T>(

@@ -166,6 +166,8 @@ pub(crate) fn run(
     plan: VmCreatePlan,
     creation: OperationCompletion<VmHandle>,
 ) {
+    #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
+    let mut placement = crate::probe_fixture::Probe::start(crate::probe_fixture::Role::Control);
     creation.accept();
     let first_run = RunId::new(shared.key(), 1);
     let signals = match RunSignals::new(first_run, plan.config.phys_cpu_ls.cpu_num()) {
@@ -230,6 +232,10 @@ pub(crate) fn run(
         }
     }
     loop {
+        #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
+        if let Some(probe) = placement.as_mut() {
+            probe.observe();
+        }
         if let Some(expected) = owner.guest_stop {
             if owner.run.as_ref().is_none_or(|run| run.id != expected) {
                 owner.guest_stop = None;
