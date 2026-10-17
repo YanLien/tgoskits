@@ -4,7 +4,7 @@
 
 ## 1. 客户机契约
 
-客户机面向 `qemu_cortex_a53` 的 SMP 变体构建，`CMakeLists.txt` 只把 `src/main.c` 编入 `app`，`prj.conf` 打开串口控制台、`CONFIG_ARMV8_A_NS`、`CONFIG_SCHED_CPU_MASK`、`CONFIG_SYSCLOCK_TICKS_PER_SEC=1000` 并关闭时间片。`virq_mailbox` 位于一致性客户机 RAM，每个字段只有一个写入方，宿主侧读取应答，并且只写入 `complete`；这是“投递是否到达目标 vCPU”与“闲置 vCPU 是否被误唤醒”两条断言的唯一数据来源。
+客户机面向 `qemu_cortex_a53` 的 SMP 变体构建，`CMakeLists.txt` 只把 `src/main.c` 编入 `app`，`prj.conf` 打开串口控制台、`CONFIG_ARMV8_A_NS`、`CONFIG_SCHED_CPU_MASK`、`CONFIG_SYSCLOCK_TICKS_PER_SEC=1000` 并关闭时间片。`virq_mailbox` 位于一致性客户机 RAM，每个字段只有一个写入方，宿主侧读取应答，写入 `complete` 与校准请求 `clock_request`；这是“投递是否到达目标 vCPU”与“闲置 vCPU 是否被误唤醒”两条断言的唯一数据来源。
 
 | 字段 | 唯一写入方 | 含义 |
 | --- | --- | --- |
@@ -12,11 +12,14 @@
 | `ready1` | CPU1 | CPU1 已使能 SPI 48 并进入待投递状态 |
 | `received` | CPU1 的中断服务程序 | CPU1 实际应答的投递次数 |
 | `parks0` | CPU0 | CPU0 进入挂起的次数，用于证明非目标 vCPU 未被推进 |
+| `clock_request` | 宿主侧测试 | 前后各 32 次时钟校准的请求序号，33 表示开始中断采样 |
+| `clock_ack`、`clock_ticks`、`frequency` | CPU1 | 校准确认、CNTVCT 读数与计数频率 |
+| `isr_ticks[300]` | CPU1 ISR | 每次 ISR 开头的 CNTVCT 读数，各槽仅写一次 |
 | `complete` | 宿主侧测试 | 宿主确认全部投递与隔离检查结束后允许客户机完成 |
 
 CPU1 在 `consumer_entry()` 中调用 `irq_enable(SOFTWARE_VIRQ)` 后才具备 GICv3 的 SPI 路由亲和性，`software_virq_isr()` 校验中断确实落在 CPU1 且计数未越界，`suspend_cpu()` 通过 `arm_smccc_hvc(PSCI_CPU_SUSPEND_64, ...)` 让两个 CPU 停在自己维度的等待中。CPU0 只在 `main()` 里递增 `parks0` 后挂起，不参与投递计数，因此任何“广播唤醒”都会立刻破坏 `parks0` 与 `received` 的对应关系。
 
-GIC 允许合并同一 pending 位的重复边沿，所以客户机只保留一个未应答中断、确认收到后才允许下一次投递：300 次投递证明的是宿主路径不会丢事件，而不是架构保证的 300 次 ISR。ISR 的 CPU 选择、LR 饱和与优先级规则由既有 `arm_vgic` 测试覆盖，本客户机专门验证真实 SMP 下的挂起与唤醒。
+GIC 允许合并同一 pending 位的重复边沿，所以客户机只保留一个未应答中断、确认收到后才允许下一次投递：300 次投递证明的是宿主路径不会丢事件，而不是架构保证的 300 次 ISR。ISR 的 CPU 选择、LR 饱和与优先级规则由既有 `arm_vgic` 测试覆盖，本客户机验证真实 SMP 下的定向投递与隔离。时钟校准期间 CPU1 主动处理请求，不在挂起状态；测量期间会调用挂起，但不保证每次投递前已重新挂起，因此时延不能解释为纯挂起唤醒成本。
 
 ## 2. 构建资源
 
@@ -50,13 +53,13 @@ flowchart TD
 | `TOOLCHAIN_ARCHIVE_URL` | ARM GNU-A `10.3-2021.07` 交叉工具链 | 与旧流程一致的编译器；`CROSS_COMPILE` 必须是绝对前缀 |
 | `PINNED_PYTHON_PACKAGES` | `cmake==4.4.3`、`ninja==1.13.2`、`pyelftools==0.33`、`PyYAML==6.0.3`、`packaging==26.3`、`pykwalify==1.8.0` | CMake/Ninja、ELF 解析与 Zephyr 板级 YAML 校验依赖 |
 | `BOARD` | `qemu_cortex_a53/qemu_cortex_a53/smp` | Zephyr 双核板级定义 |
-| `MAILBOX_SYMBOL`、`MAILBOX_SIZE` | `virq_mailbox`、20 字节 | ELF 符号校验对象；大小不符即中止 |
+| `MAILBOX_SYMBOL`、`MAILBOX_SIZE` | `virq_mailbox`、2448 字节 | ELF 符号校验对象；大小不符即中止 |
 
 `VIRQ_CACHE_DIR` 可把缓存移到共享位置，缓存内部分为 `zephyr`、`toolchain`、`venv` 三项，`VIRQ_TOOLCHAIN_SHA256` 可在需要时校验工具链压缩包摘要。源码校验要求检出提交等于 `ZEPHYR_REVISION` 且工作树无改动，避免“用了别人的分支”这种无法复现的输入。
 
 ### 2.2 产物与校验
 
-`inspect_guest()` 从 `.symtab` 读取 `virq_mailbox` 的地址与大小，要求大小等于 20 字节且地址与 ELF 入口都落在客户机 RAM `[0x40000000, 0x48000000)` 内；地址或大小不符时脚本直接失败，不写出半成品资源。`write_vm_config()` 用历史布局写 `vm.toml`：`id = 2`、`cpu_num = 2`、`phys_cpu_ids = [0, 1]`、`kernel_load_addr = 0x40000000`、`dtb_load_addr = 0x47e00000`、`memory_regions = [[0x40000000, 0x08000000, 0x7, 0]]`，`kernel_path` 保持相对路径以便整个输出目录整体搬移。
+`inspect_guest()` 从 `.symtab` 读取 `virq_mailbox` 的地址与大小，要求大小等于 2448 字节且地址与 ELF 入口都落在客户机 RAM `[0x40000000, 0x48000000)` 内；地址或大小不符时脚本直接失败，不写出半成品资源。`write_vm_config()` 用历史布局写 `vm.toml`：`id = 2`、`cpu_num = 2`、`phys_cpu_ids = [0, 1]`、`kernel_load_addr = 0x40000000`、`dtb_load_addr = 0x47e00000`、`memory_regions = [[0x40000000, 0x08000000, 0x7, 0]]`，`kernel_path` 保持相对路径以便整个输出目录整体搬移。
 
 | 产物 | 相对输出目录的路径 | 消费者 |
 | --- | --- | --- |
@@ -79,3 +82,5 @@ flowchart TD
 ### 3.2 未验证项
 
 本目录的文档与脚本不构成运行证据：固定版本客户机、双 vCPU 挂起语义、资源装入后的路径解析都需要实际执行 `cargo xtask ktest qemu -p axvm --test vcpu_runtime` 才能确认；在真实板卡上的延迟与吞吐同样不在本场景的证明范围内。
+
+校准字段的固定偏移为 request=20、ack=24、ticks=32、frequency=40、ISR 数组=48，整体 8 字节对齐。C 静态断言和 ELF 符号大小校验共同检查布局。CPU1 写时间戳后 release 发布确认；宿主观察确认后执行 DMB 再读取稳定载荷，不把普通字节复制视作原子结构体快照。

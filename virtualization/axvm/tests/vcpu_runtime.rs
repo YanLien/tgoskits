@@ -6,9 +6,14 @@
 use ax_runtime as _;
 use ax_std as _;
 
+#[path = "support/clock.rs"]
+mod clock;
 mod support;
 
-use std::time::{Duration, Instant};
+use std::{
+    time::{Duration, Instant},
+    vec::Vec,
+};
 
 use anyhow::{Context, Result, ensure};
 use axvm::{GuestMemoryPort, GuestPhysAddr, RtPriority, SchedulePolicy, VmStatus};
@@ -39,7 +44,8 @@ fn run() -> Result<()> {
         .context("test resources have no mailbox address")?;
     let mailbox = usize::try_from(mailbox)?;
     ensure!(
-        (0x4000_0000..=0x4800_0000 - 20).contains(&mailbox) && mailbox.is_multiple_of(4),
+        (0x4000_0000..=0x4800_0000 - clock::MAILBOX_SIZE).contains(&mailbox)
+            && mailbox.is_multiple_of(8),
         "mailbox is outside aligned guest RAM"
     );
     let fifo = SchedulePolicy::fifo(RtPriority::new(80).context("valid FIFO priority")?);
@@ -138,16 +144,73 @@ fn exercise(fixture: &mut Fixture, address: GuestPhysAddr, policy: SchedulePolic
     })?;
     fixture.check_policy(policy, 2)?;
     ensure!(initial[2] == 0, "guest received an unrequested interrupt");
+    let frequency = clock::read_word(&memory, address + 40)?;
+    ensure!(
+        frequency != 0 && frequency == ax_cpu::timer::counter_frequency(),
+        "host and guest counter frequencies disagree"
+    );
+    let mut probes = clock::calibrate(fixture, &memory, address, "before", 1)?;
+    memory.write_bytes(address + 20, &clock::CLOCK_START.to_le_bytes())?;
+    let mut timings = Vec::with_capacity(SAMPLES as usize);
     for count in 1..=SAMPLES {
+        let submitted = Instant::now();
         // Pending bits coalesce edges: keep exactly one unacknowledged pulse.
+        let submitted_ticks = clock::host_ticks();
         interrupt.pulse()?;
+        let pulse_ns = submitted.elapsed().as_nanos();
         let state = wait_mailbox(fixture, &memory, address, deadline, |state| {
             state[2] >= count
         })?;
+        let ack_observed_ns = submitted.elapsed().as_nanos();
+        let observed_ticks = clock::host_ticks();
+        let guest_ticks = clock::read_word(&memory, address + 48 + (count as usize - 1) * 8)?;
+        timings.push((
+            pulse_ns,
+            ack_observed_ns,
+            clock::Delivery {
+                submitted: submitted_ticks,
+                guest: guest_ticks,
+                observed: observed_ticks,
+            },
+        ));
         ensure!(state[2] == count, "duplicate interrupt: {state:?}");
         ensure!(
             state[3] == initial[3],
             "non-target vCPU left suspend: {state:?}"
+        );
+    }
+    probes.extend(clock::calibrate(fixture, &memory, address, "after", 34)?);
+    let (offset_low, offset_high) = clock::offset_bounds(&probes)?;
+    for (_, _, stamp) in &timings {
+        clock::validate_delivery(stamp, offset_low, offset_high)?;
+    }
+    // Both intervals use the host clock. Confirmation includes mailbox polling
+    // and scheduling; it is not a guest ISR timestamp or a physical IRQ latency.
+    // Emit only after sampling so serial output does not enter these intervals.
+    let policy_name = match policy {
+        SchedulePolicy::Fifo { .. } => "fifo80",
+        _ => "fair",
+    };
+    for probe in &probes {
+        println!(
+            "VIRQ_CLOCK_SAMPLE policy={policy_name} phase={} sequence={} host_before={} \
+             guest_ticks={} host_after={} frequency_hz={frequency}",
+            probe.phase, probe.sequence, probe.before, probe.guest, probe.after
+        );
+    }
+    for (index, (pulse_ns, ack_observed_ns, stamp)) in timings.iter().enumerate() {
+        println!(
+            "VIRQ_HOST_SAMPLE policy={policy_name} sample={} pulse_ns={pulse_ns} \
+             ack_observed_ns={ack_observed_ns}",
+            index + 1
+        );
+        println!(
+            "VIRQ_ISR_SAMPLE policy={policy_name} sample={} submit_ticks={} guest_ticks={} \
+             observed_ticks={} frequency_hz={frequency}",
+            index + 1,
+            stamp.submitted,
+            stamp.guest,
+            stamp.observed
         );
     }
     println!("VIRQ_INJECT_COMPLETE vm=2 vcpu=1 vector=48 samples=300 errors=0");
