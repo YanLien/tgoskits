@@ -35,6 +35,6 @@
 
 当前分支使用离线 pinned Zephyr、CMake/Ninja 和 AArch64 toolchain wrapper 完成了新的 600-sample `physical_timer_ppi` QEMU 基线。Fair/FIFO 各 600 条，校准区间宽度约 1.07/1.12 µs，`entry_to_c_isr` P99 上界约 598/659 µs，runtime 与 Ready 链均 600/600 完整。该运行证明当前代码、配置和测量链可以重建，但它仍然是 QEMU 功能证据；不能与真板性能、共享微架构资源或硬实时上界混同。
 
-同一分支随后完成了 `inherit` 和 `bounded`（8 轮/50 ms）各 600 条样本。两种模式均通过 `AXTEST_SUITE_OK`，runtime/Ready 链均 600/600 完整。`inherit` 的 `entry_to_c_isr` P99 上界为 Fair/FIFO 约 1.034/0.623 ms；`bounded` 为约 0.592/31.120 ms，其中 bounded/FIFO 的 31 ms 尾部是限流原型在该 QEMU 构造下的可观测代价，不能解释为硬件收益或保证。三组仍需真板匹配实验，当前仅证明原型模式可回滚、测量链可复现。
+同一分支随后完成了 `inherit` 和 `bounded`（8 轮/50 ms）各 600 条样本。两种模式均通过 `AXTEST_SUITE_OK`，runtime/Ready 链均 600/600 完整。`inherit` 的 `entry_to_c_isr` P99 上界为 Fair/FIFO 约 1.034/0.623 ms；`bounded` 为约 0.592/31.120 ms，其中 bounded/FIFO 的 31 ms 尾部是限流原型在该 QEMU 构造下的可观测代价，不能解释为硬件收益或保证。三组仍需真板匹配实验，当前仅证明原型模式可回滚、测量链可复现。 跨模式汇总见 `results/replay/current-qemu-service-comparison.json`；其中 Fair/ FIFO 的差值仅是不同 QEMU 启动的描述性算术差，不能作因果或总体分位数推断。
 
 本轮没有进行外部推送、PR、合并、部署或发布。

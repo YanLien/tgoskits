@@ -72,3 +72,50 @@ for mode in ("baseline", "inherit", "bounded"):
         }
     (out / "comparison.json").write_text(json.dumps(comparison, indent=2) + "\n")
 PY
+
+python3 - "$out_root" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+root = Path(sys.argv[1])
+mode_names = {"baseline": "off", "inherit": "inherit", "bounded": "bounded"}
+metrics = ["entry_to_c_isr_p99_upper_ns", "entry_to_c_isr_max_upper_ns", "host_observation_p99_upper_ns"]
+comparison = {
+    "source": "physical_timer_ppi",
+    "samples_per_policy": {"fair": 600, "fifo80": 600},
+    "modes": ["off", "inherit", "bounded"],
+    "policies": {},
+    "interpretation": [
+        "Values are descriptive QEMU observations from separate launches, not a paired performance experiment.",
+        "Deltas are arithmetic differences against the off launch and do not establish causality or a population bound.",
+        "Guest ISR metrics exclude the host acknowledgement observation window.",
+        "The bounded/FIFO tail records prototype throttling cost under this QEMU construction.",
+    ],
+}
+for policy in ("fair", "fifo80"):
+    values = {}
+    for mode in mode_names:
+        path = root / f"current-qemu-ppi-{mode}-600" / "comparison.json"
+        values[mode_names[mode]] = json.loads(path.read_text())["policies"][policy]
+    off = values["off"]
+    deltas = {}
+    for mode in ("inherit", "bounded"):
+        current = values[mode]
+        delta = {}
+        for metric in metrics:
+            delta[metric] = current[metric] - off[metric]
+        delta["runtime_segments_p99_ns"] = {
+            key: current["runtime_segments_p99_ns"][key] - off["runtime_segments_p99_ns"][key]
+            for key in off["runtime_segments_p99_ns"]
+        }
+        delta["ready_segments_p99_ns"] = {
+            key: current["ready_segments_p99_ns"][key] - off["ready_segments_p99_ns"][key]
+            for key in off["ready_segments_p99_ns"]
+        }
+        deltas[mode] = delta
+    comparison["policies"][policy] = {"observations": values, "delta_vs_off_ns": deltas}
+(root / "current-qemu-service-comparison.json").write_text(
+    json.dumps(comparison, ensure_ascii=False, indent=2) + "\n"
+)
+PY

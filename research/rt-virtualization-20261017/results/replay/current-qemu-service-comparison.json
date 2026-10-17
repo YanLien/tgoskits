@@ -1,0 +1,220 @@
+{
+  "source": "physical_timer_ppi",
+  "samples_per_policy": {
+    "fair": 600,
+    "fifo80": 600
+  },
+  "modes": [
+    "off",
+    "inherit",
+    "bounded"
+  ],
+  "policies": {
+    "fair": {
+      "observations": {
+        "off": {
+          "calibration_offset_width_ns": 1072.0,
+          "entry_to_c_isr_p99_upper_ns": 597872,
+          "entry_to_c_isr_max_upper_ns": 1452192,
+          "host_observation_p99_upper_ns": 1130256,
+          "runtime_segments_p99_ns": {
+            "submit_to_irq_ns": 1192672.0,
+            "irq_to_worker_ns": 170752.0,
+            "worker_to_running_ns": 196096.0,
+            "running_to_entry_ns": 149568.0,
+            "entry_to_isr_lower_ns": 42832.0,
+            "entry_to_isr_upper_ns": 43904.0
+          },
+          "ready_segments_p99_ns": {
+            "wake_to_ready_ns": 18816.0,
+            "ready_to_running_ns": 180528.0
+          },
+          "full_chain_samples": 600,
+          "ready_associated_samples": 600
+        },
+        "inherit": {
+          "calibration_offset_width_ns": 1040.0,
+          "entry_to_c_isr_p99_upper_ns": 1034112,
+          "entry_to_c_isr_max_upper_ns": 1501088,
+          "host_observation_p99_upper_ns": 1338416,
+          "runtime_segments_p99_ns": {
+            "submit_to_irq_ns": 1299968.0,
+            "irq_to_worker_ns": 305984.0,
+            "worker_to_running_ns": 274368.0,
+            "running_to_entry_ns": 349120.0,
+            "entry_to_isr_lower_ns": 73280.0,
+            "entry_to_isr_upper_ns": 74320.0
+          },
+          "ready_segments_p99_ns": {
+            "wake_to_ready_ns": 43584.0,
+            "ready_to_running_ns": 236032.0
+          },
+          "full_chain_samples": 600,
+          "ready_associated_samples": 600
+        },
+        "bounded": {
+          "calibration_offset_width_ns": 1040.0,
+          "entry_to_c_isr_p99_upper_ns": 591584,
+          "entry_to_c_isr_max_upper_ns": 1510240,
+          "host_observation_p99_upper_ns": 1074672,
+          "runtime_segments_p99_ns": {
+            "submit_to_irq_ns": 1127040.0,
+            "irq_to_worker_ns": 180064.0,
+            "worker_to_running_ns": 190672.0,
+            "running_to_entry_ns": 157024.0,
+            "entry_to_isr_lower_ns": 41456.0,
+            "entry_to_isr_upper_ns": 42496.0
+          },
+          "ready_segments_p99_ns": {
+            "wake_to_ready_ns": 18784.0,
+            "ready_to_running_ns": 174464.0
+          },
+          "full_chain_samples": 600,
+          "ready_associated_samples": 600
+        }
+      },
+      "delta_vs_off_ns": {
+        "inherit": {
+          "entry_to_c_isr_p99_upper_ns": 436240,
+          "entry_to_c_isr_max_upper_ns": 48896,
+          "host_observation_p99_upper_ns": 208160,
+          "runtime_segments_p99_ns": {
+            "submit_to_irq_ns": 107296.0,
+            "irq_to_worker_ns": 135232.0,
+            "worker_to_running_ns": 78272.0,
+            "running_to_entry_ns": 199552.0,
+            "entry_to_isr_lower_ns": 30448.0,
+            "entry_to_isr_upper_ns": 30416.0
+          },
+          "ready_segments_p99_ns": {
+            "wake_to_ready_ns": 24768.0,
+            "ready_to_running_ns": 55504.0
+          }
+        },
+        "bounded": {
+          "entry_to_c_isr_p99_upper_ns": -6288,
+          "entry_to_c_isr_max_upper_ns": 58048,
+          "host_observation_p99_upper_ns": -55584,
+          "runtime_segments_p99_ns": {
+            "submit_to_irq_ns": -65632.0,
+            "irq_to_worker_ns": 9312.0,
+            "worker_to_running_ns": -5424.0,
+            "running_to_entry_ns": 7456.0,
+            "entry_to_isr_lower_ns": -1376.0,
+            "entry_to_isr_upper_ns": -1408.0
+          },
+          "ready_segments_p99_ns": {
+            "wake_to_ready_ns": -32.0,
+            "ready_to_running_ns": -6064.0
+          }
+        }
+      }
+    },
+    "fifo80": {
+      "observations": {
+        "off": {
+          "calibration_offset_width_ns": 1120.0,
+          "entry_to_c_isr_p99_upper_ns": 659360,
+          "entry_to_c_isr_max_upper_ns": 916240,
+          "host_observation_p99_upper_ns": 1129232,
+          "runtime_segments_p99_ns": {
+            "submit_to_irq_ns": 1122048.0,
+            "irq_to_worker_ns": 258704.0,
+            "worker_to_running_ns": 202464.0,
+            "running_to_entry_ns": 253248.0,
+            "entry_to_isr_lower_ns": 51392.0,
+            "entry_to_isr_upper_ns": 52512.0
+          },
+          "ready_segments_p99_ns": {
+            "wake_to_ready_ns": 26592.0,
+            "ready_to_running_ns": 185312.0
+          },
+          "full_chain_samples": 600,
+          "ready_associated_samples": 600
+        },
+        "inherit": {
+          "calibration_offset_width_ns": 1088.0,
+          "entry_to_c_isr_p99_upper_ns": 623408,
+          "entry_to_c_isr_max_upper_ns": 743520,
+          "host_observation_p99_upper_ns": 1257344,
+          "runtime_segments_p99_ns": {
+            "submit_to_irq_ns": 1191296.0,
+            "irq_to_worker_ns": 148144.0,
+            "worker_to_running_ns": 195712.0,
+            "running_to_entry_ns": 287536.0,
+            "entry_to_isr_lower_ns": 47328.0,
+            "entry_to_isr_upper_ns": 48416.0
+          },
+          "ready_segments_p99_ns": {
+            "wake_to_ready_ns": 25440.0,
+            "ready_to_running_ns": 180064.0
+          },
+          "full_chain_samples": 600,
+          "ready_associated_samples": 600
+        },
+        "bounded": {
+          "calibration_offset_width_ns": 1056.0,
+          "entry_to_c_isr_p99_upper_ns": 31120496,
+          "entry_to_c_isr_max_upper_ns": 31383136,
+          "host_observation_p99_upper_ns": 1186464,
+          "runtime_segments_p99_ns": {
+            "submit_to_irq_ns": 1120928.0,
+            "irq_to_worker_ns": 30798944.0,
+            "worker_to_running_ns": 197952.0,
+            "running_to_entry_ns": 260624.0,
+            "entry_to_isr_lower_ns": 50496.0,
+            "entry_to_isr_upper_ns": 51552.0
+          },
+          "ready_segments_p99_ns": {
+            "wake_to_ready_ns": 28368.0,
+            "ready_to_running_ns": 177744.0
+          },
+          "full_chain_samples": 600,
+          "ready_associated_samples": 600
+        }
+      },
+      "delta_vs_off_ns": {
+        "inherit": {
+          "entry_to_c_isr_p99_upper_ns": -35952,
+          "entry_to_c_isr_max_upper_ns": -172720,
+          "host_observation_p99_upper_ns": 128112,
+          "runtime_segments_p99_ns": {
+            "submit_to_irq_ns": 69248.0,
+            "irq_to_worker_ns": -110560.0,
+            "worker_to_running_ns": -6752.0,
+            "running_to_entry_ns": 34288.0,
+            "entry_to_isr_lower_ns": -4064.0,
+            "entry_to_isr_upper_ns": -4096.0
+          },
+          "ready_segments_p99_ns": {
+            "wake_to_ready_ns": -1152.0,
+            "ready_to_running_ns": -5248.0
+          }
+        },
+        "bounded": {
+          "entry_to_c_isr_p99_upper_ns": 30461136,
+          "entry_to_c_isr_max_upper_ns": 30466896,
+          "host_observation_p99_upper_ns": 57232,
+          "runtime_segments_p99_ns": {
+            "submit_to_irq_ns": -1120.0,
+            "irq_to_worker_ns": 30540240.0,
+            "worker_to_running_ns": -4512.0,
+            "running_to_entry_ns": 7376.0,
+            "entry_to_isr_lower_ns": -896.0,
+            "entry_to_isr_upper_ns": -960.0
+          },
+          "ready_segments_p99_ns": {
+            "wake_to_ready_ns": 1776.0,
+            "ready_to_running_ns": -7568.0
+          }
+        }
+      }
+    }
+  },
+  "interpretation": [
+    "Values are descriptive QEMU observations from separate launches, not a paired performance experiment.",
+    "Deltas are arithmetic differences against the off launch and do not establish causality or a population bound.",
+    "Guest ISR metrics exclude the host acknowledgement observation window.",
+    "The bounded/FIFO tail records prototype throttling cost under this QEMU construction."
+  ]
+}
