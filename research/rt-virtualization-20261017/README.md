@@ -76,6 +76,12 @@ research/rt-virtualization-20261017/replay_linux_matched.sh
 research/rt-virtualization-20261017/replay_current_qemu.sh
 ```
 
+重放同拓扑 memory-build 的 baseline 与逻辑内存工作集组：
+
+```sh
+research/rt-virtualization-20261017/replay_current_memory.sh
+```
+
 验证整个归档包（不启动 QEMU）：
 
 ```sh
@@ -97,6 +103,7 @@ research/rt-virtualization-20261017/verify_archive.sh
 - `results/`：分析器 stdout 和校验清单。
 - `raw/current-qemu-ppi-baseline-600.log`：当前分支使用离线缓存实际复跑的 600-sample PPI 基线；对应分析在 `results/replay/current-qemu-ppi-baseline-600/`。
 - `raw/current-qemu-ppi-inherit-600.log`、`raw/current-qemu-ppi-bounded-600.log`：同配置下 `inherit` 与 `bounded`（8 轮/50 ms）复跑；各自的校准 ISR、runtime、Ready、尾部审计和 provenance 位于 `results/replay/current-qemu-ppi-{inherit,bounded}-600/` 与 `raw/*.provenance.json`。
+- `raw/current-qemu-ppi-memory-cross-core-{baseline,off}-600.log`：同 memory-build/QEMU 拓扑的无负载与 16 MiB 逻辑工作集组；差值见 `results/replay/current-qemu-memory-cross-core-comparison.json`，不代表 DRAM/Cache 带宽。
 - `results/replay/`：由归档日志重新生成的 ISR 区间、尾部审计、Ready/Running 分解以及策略对比 JSON；`current-qemu-service-comparison.json` 汇总三种当前分支服务模式相对 `off` 的描述性差值。
 
 QEMU 数据只证明功能、测量协议和调度顺序 witness。它不能替代 RK3588 等真板的性能证据，也不能作为 WCET/WCRT 或硬实时保证。所有样本仍须保留 ISR 校准区间、入口来源、Ready 关联状态和追踪丢失状态；不得把 1 ms mailbox 轮询确认时间当作 ISR 时延。

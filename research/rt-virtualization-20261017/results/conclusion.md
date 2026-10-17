@@ -37,4 +37,10 @@
 
 同一分支随后完成了 `inherit` 和 `bounded`（8 轮/50 ms）各 600 条样本。两种模式均通过 `AXTEST_SUITE_OK`，runtime/Ready 链均 600/600 完整。`inherit` 的 `entry_to_c_isr` P99 上界为 Fair/FIFO 约 1.034/0.623 ms；`bounded` 为约 0.592/31.120 ms，其中 bounded/FIFO 的 31 ms 尾部是限流原型在该 QEMU 构造下的可观测代价，不能解释为硬件收益或保证。三组仍需真板匹配实验，当前仅证明原型模式可回滚、测量链可复现。 跨模式汇总见 `results/replay/current-qemu-service-comparison.json`；其中 Fair/ FIFO 的差值仅是不同 QEMU 启动的描述性算术差，不能作因果或总体分位数推断。
 
+
+
+## 当前分支逻辑内存工作集复跑
+
+使用同一 memory-build/QEMU 拓扑，完成 `baseline` 与 `memory_cross_core`（16 MiB、服务 CPU0、内存 worker CPU2）各 Fair/FIFO 600 条样本。两组均 `AXTEST_SUITE_OK`，runtime/Ready 为 600/600；工作集组 `mismatch_words=0`、`wrong_cpu=0`、`joined=true`。`current-qemu-memory-cross-core-comparison.json` 仅给出两次独立 QEMU 启动的描述性差值。逻辑读写字节和批次数不能当作 DRAM 带宽、Cache 竞争或 PMU 计数；真板共享资源结论仍未建立。
+
 本轮没有进行外部推送、PR、合并、部署或发布。

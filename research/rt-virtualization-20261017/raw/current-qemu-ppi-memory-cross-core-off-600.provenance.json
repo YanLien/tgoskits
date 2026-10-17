@@ -1,0 +1,17 @@
+{
+  "archived_path": "research/rt-virtualization-20261017/raw/current-qemu-ppi-memory-cross-core-off-600.log",
+  "sha256": "b9c9612b7ba6439ff9fcd4c3be47607ae1f1840eb6c04c6634085edab5ed1251",
+  "git_commit": "4f4296ff53efdfc6afabcfc3a63b8af98ed61114",
+  "host_sample_markers": 1200,
+  "guest_isr_sample_markers": 1200,
+  "clock_sample_markers": 128,
+  "runtime_summary": [
+    "VIRQ_RUNTIME_SUMMARY records=12825 dropped=0 incomplete=0"
+  ],
+  "axtest_summary": [
+    "AXTEST_SUMMARY pass=1 fail=0 skip=0 total=1"
+  ],
+  "qemu_suite": [
+    "AXTEST_SUITE_OK"
+  ]
+}

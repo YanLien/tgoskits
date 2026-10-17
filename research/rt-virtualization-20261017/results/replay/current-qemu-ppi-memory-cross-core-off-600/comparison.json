@@ -1,0 +1,101 @@
+{
+  "source": "physical_timer_ppi",
+  "execution_context": "current_el",
+  "scenario": "memory_cross_core",
+  "memory_bytes": 16777216,
+  "samples_per_policy": {
+    "fair": 600,
+    "fifo80": 600
+  },
+  "policies": {
+    "fair": {
+      "calibration_offset_width_ns": 1072.0,
+      "entry_to_c_isr_p99_upper_ns": 688560,
+      "entry_to_c_isr_max_upper_ns": 1964464,
+      "host_observation_p99_upper_ns": 1008512,
+      "runtime_segments_p99_ns": {
+        "submit_to_irq_ns": 1199424.0,
+        "irq_to_worker_ns": 260928.0,
+        "worker_to_running_ns": 210656.0,
+        "running_to_entry_ns": 241712.0,
+        "entry_to_isr_lower_ns": 62128.0,
+        "entry_to_isr_upper_ns": 63200.0
+      },
+      "ready_segments_p99_ns": {
+        "wake_to_ready_ns": 23200.0,
+        "ready_to_running_ns": 187792.0
+      },
+      "full_chain_samples": 600,
+      "ready_associated_samples": 600,
+      "memory_workload": {
+        "kind": "memory",
+        "cpu": 2,
+        "thread": 8589934601,
+        "working_set_bytes": 16777216,
+        "chunk_words": 1024,
+        "pre_vm_batches": 180,
+        "start_batches": 104075,
+        "end_batches": 346518,
+        "final_batches": 420931,
+        "final_logical_read_bytes": 3448266752,
+        "final_logical_write_bytes": 3448266752,
+        "interval_logical_read_bytes": 1986093056,
+        "interval_logical_write_bytes": 1986093056,
+        "checksum": 2199453240320,
+        "verified_words": 2097152,
+        "mismatch_words": 0,
+        "wrong_cpu": 0,
+        "joined": true,
+        "samples_with_progress": 600,
+        "samples_without_observed_progress": 0
+      }
+    },
+    "fifo80": {
+      "calibration_offset_width_ns": 1136.0,
+      "entry_to_c_isr_p99_upper_ns": 722192,
+      "entry_to_c_isr_max_upper_ns": 981216,
+      "host_observation_p99_upper_ns": 1014592,
+      "runtime_segments_p99_ns": {
+        "submit_to_irq_ns": 1133200.0,
+        "irq_to_worker_ns": 433808.0,
+        "worker_to_running_ns": 188608.0,
+        "running_to_entry_ns": 162160.0,
+        "entry_to_isr_lower_ns": 54192.0,
+        "entry_to_isr_upper_ns": 55328.0
+      },
+      "ready_segments_p99_ns": {
+        "wake_to_ready_ns": 32800.0,
+        "ready_to_running_ns": 171440.0
+      },
+      "full_chain_samples": 600,
+      "ready_associated_samples": 600,
+      "memory_workload": {
+        "kind": "memory",
+        "cpu": 2,
+        "thread": 12884901897,
+        "working_set_bytes": 16777216,
+        "chunk_words": 1024,
+        "pre_vm_batches": 150,
+        "start_batches": 77956,
+        "end_batches": 326713,
+        "final_batches": 407538,
+        "final_logical_read_bytes": 3338551296,
+        "final_logical_write_bytes": 3338551296,
+        "interval_logical_read_bytes": 2037817344,
+        "interval_logical_write_bytes": 2037817344,
+        "checksum": 2199439525888,
+        "verified_words": 2097152,
+        "mismatch_words": 0,
+        "wrong_cpu": 0,
+        "joined": true,
+        "samples_with_progress": 600,
+        "samples_without_observed_progress": 0
+      }
+    }
+  },
+  "limitations": [
+    "Current-branch QEMU logical memory-cross-core workload; not a DRAM/cache bandwidth measurement.",
+    "QEMU validates the event chain and workload lifecycle, not hardware contention or performance.",
+    "Host observation windows remain separate from Guest ISR latency."
+  ]
+}

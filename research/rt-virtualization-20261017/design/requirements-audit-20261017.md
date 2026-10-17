@@ -11,6 +11,8 @@
 | 不把 1 ms 轮询当 ISR 延迟 | `results/conclusion.md`、分析器 limitations；`ack_observed_ns` 未进入 ISR 指标 | 已验证口径 |
 | 共享资源干扰识别 | `linux-matched` 只覆盖 QEMU CPU 负载生命周期；`hardware-capability-audit.md` 明确无 RK3588 PMU/DSU/SMMU 证据 | QEMU 夹具完成；真板干扰未验证 |
 
+当前分支另有同 memory-build 拓扑的 `baseline`/`memory_cross_core` 600 样本复跑；它证明逻辑工作集生命周期、校验和及事件链可复现，仍不提供 DRAM/Cache/PMU 干扰证据。
+
 阶段一尚不能声称“实际硬件瓶颈已确定”。当前只能提出 QEMU 假设：`submit→IRQ`、`worker→Running` 和 `Running→GuestEntry` 可能贡献尾部；该假设须在真板匹配实验中复核。
 
 ## 阶段二：独立、可回滚机制

@@ -19,6 +19,7 @@ Date: 2026-10-17 (Asia/Shanghai)
 - Current-branch `inherit` and `bounded` QEMU reruns each completed with `AXTEST_SUITE_OK`; each Fair/FIFO policy produced 600 calibrated Guest ISR samples and 600/600 runtime/Ready associations. The bounded/FIFO tail is retained as an observed prototype cost. The replay script also regenerates `current-qemu-service-comparison.json` with explicit descriptive-only deltas against `off`.
 - `sha256sum -c` passed for the raw, configuration, and result manifests after repairing the conclusion hash; the phase requirements audit is recorded in `design/requirements-audit-20261017.md`.
 - `research/rt-virtualization-20261017/verify_archive.sh`: passed script syntax checks, true-board template JSON validation, all three SHA-256 manifests, and the 19 analysis tests without starting QEMU.
+- Current-branch matched memory-build QEMU runs: `baseline` and `memory_cross_core` each completed with `AXTEST_SUITE_OK`, 600 samples per policy, and 600/600 runtime/Ready associations; logical workload integrity checks passed.
 
 ## Workspace test sweep
 
