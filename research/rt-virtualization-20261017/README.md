@@ -82,6 +82,7 @@ research/rt-virtualization-20261017/replay_current_qemu.sh
 - `design/hardware-capability-audit.md`：D/E 本机预核查及真板门禁。
 - `design/phase4-evidence-protocol.md`：真板基线、单项、联合和消融实验协议。
 - `design/requirements-audit-20261017.md`：按 `论文提要.md` 逐项核对当前证据、缺口和外部阻塞。
+- `design/blockers-20261017.md`：记录真板、硬件能力、先行方法和 QEMU 外推边界的阻塞状态。
 - `design/true-board-gate.md`、`configs/true-board-run-template.json`：真板能力门禁、首轮实验和元数据模板；当前为待板卡填写状态。
 - `../prior-art/核对与对照方案.md`：方向 B 先行方法的可比变量、复现门槛和当前缺口。
 - `patches/`：研究补丁、来源校验和故障恢复验证。
