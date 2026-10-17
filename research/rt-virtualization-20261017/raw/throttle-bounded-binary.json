@@ -1,0 +1,37 @@
+{
+  "host.elf": {
+    "source": "/home/yanlien/Workspace/tgoskits-research-20261017/build/main/aarch64-unknown-linux-musl/release/build/axvm/2d6f1ef0a9c92692/out/vcpu_runtime-2d6f1ef0a9c92692",
+    "bytes": 7588960,
+    "sha256": "24becb60a193209113d29e1d66697e87e8bc166e796b26d8ab532c90cff97380",
+    "remote_gzip": "/home/yanlien/Workspace/tgoskits-research-20261017/evidence/irq-coordination/throttle-bounded-24becb60a1932091-host.elf.gz",
+    "gzip_sha256": "debc0f9d9d8970d9179750aeb75deb37c88abe8859c08d55766209f9fff9677e"
+  },
+  "host.bin": {
+    "source": "/home/yanlien/Workspace/tgoskits-research-20261017/build/main/aarch64-unknown-linux-musl/release/build/axvm/2d6f1ef0a9c92692/out/vcpu_runtime-2d6f1ef0a9c92692.bin",
+    "bytes": 4935744,
+    "sha256": "45e6ade18a59e610d929976282fefe7a592e7630595605acd3eb8bee878a3f41",
+    "remote_gzip": "/home/yanlien/Workspace/tgoskits-research-20261017/evidence/irq-coordination/throttle-bounded-45e6ade18a59e610-host.bin.gz",
+    "gzip_sha256": "38e4fc1db2efd7448a44beb241d0d23d34021fed72ece5ca5b5c2d16afb5f05a"
+  },
+  "host-initramfs.cpio": {
+    "source": "/home/yanlien/Workspace/tgoskits-research-20261017/build/main/axbuild/axvisor/host-initramfs/aarch64.cpio",
+    "bytes": 43756,
+    "sha256": "b6cc9a834cfac9c89273e9d2d079e89b6242a820fb3e6dca1864bfdbffafee58",
+    "remote_gzip": "/home/yanlien/Workspace/tgoskits-research-20261017/evidence/irq-coordination/throttle-bounded-b6cc9a834cfac9c8-host-initramfs.cpio.gz",
+    "gzip_sha256": "ed9580993a2fc5eb4caa8311de9d7c02bfd469fac6a7629f5ba48e533aaa4363"
+  },
+  "guest.elf": {
+    "source": "/home/yanlien/Workspace/tgoskits-research-target-20261017/axbuild/axvm/vcpu-runtime/guest/zephyr/zephyr.elf",
+    "bytes": 718424,
+    "sha256": "7d6439cc5e31ee51f0e06a0046c7f829f22310c4adcec4482fcf5933b2bf8381",
+    "remote_gzip": "/home/yanlien/Workspace/tgoskits-research-20261017/evidence/irq-coordination/throttle-bounded-7d6439cc5e31ee51-guest.elf.gz",
+    "gzip_sha256": "7e97537c73d1826bd46338d33b623428a4b43e4967071884e760f18e38d69bc7"
+  },
+  "guest.bin": {
+    "source": "/home/yanlien/Workspace/tgoskits-research-target-20261017/axbuild/axvm/vcpu-runtime/guest/zephyr/zephyr.bin",
+    "bytes": 41190,
+    "sha256": "671f924d8595fe9c1fcb23a68dd6c17d2c2f37385809e3337792d841bc055312",
+    "remote_gzip": "/home/yanlien/Workspace/tgoskits-research-20261017/evidence/irq-coordination/throttle-bounded-671f924d8595fe9c-guest.bin.gz",
+    "gzip_sha256": "ec9afe616de61dc72f836a91c12a6d24c8a2c363a1dca893bcafb8a8a5e93208"
+  }
+}

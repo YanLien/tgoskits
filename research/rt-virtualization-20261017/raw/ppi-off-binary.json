@@ -1,0 +1,37 @@
+{
+  "host.elf": {
+    "source": "/home/yanlien/Workspace/tgoskits-research-20261017/build/main/aarch64-unknown-linux-musl/release/build/axvm/2d6f1ef0a9c92692/out/vcpu_runtime-2d6f1ef0a9c92692",
+    "bytes": 7559792,
+    "sha256": "c96472d4e884fd444bc6acb06ecbe66a135bd7cd89a32992201da77d4562a22b",
+    "remote_gzip": "/home/yanlien/Workspace/tgoskits-research-20261017/evidence/irq-coordination/ppi-off-c96472d4e884fd44-host.elf.gz",
+    "gzip_sha256": "8756d73251bb945a520a63dcef9d716afb7dfca98ed0a3375428770076b3533b"
+  },
+  "host.bin": {
+    "source": "/home/yanlien/Workspace/tgoskits-research-20261017/build/main/aarch64-unknown-linux-musl/release/build/axvm/2d6f1ef0a9c92692/out/vcpu_runtime-2d6f1ef0a9c92692.bin",
+    "bytes": 4915264,
+    "sha256": "9439366ba78948570e443d3f9602a8c2708d792a5ea6b01db9e9eac20d03001e",
+    "remote_gzip": "/home/yanlien/Workspace/tgoskits-research-20261017/evidence/irq-coordination/ppi-off-9439366ba7894857-host.bin.gz",
+    "gzip_sha256": "2fa90999d34bd3711ea2dd6615e2404432b384a0cdb2c136d29f43829c101c24"
+  },
+  "host-initramfs.cpio": {
+    "source": "/home/yanlien/Workspace/tgoskits-research-20261017/build/main/axbuild/axvisor/host-initramfs/aarch64.cpio",
+    "bytes": 43672,
+    "sha256": "e722fabfbdbf4140d32b6aedc85b0a83560d6ec88540ab121ff5c20d2764bd23",
+    "remote_gzip": "/home/yanlien/Workspace/tgoskits-research-20261017/evidence/irq-coordination/ppi-off-e722fabfbdbf4140-host-initramfs.cpio.gz",
+    "gzip_sha256": "7b81a178f98b4cb341c10b612e2f2f6381f338abb7b5251ce3750c1ca119362c"
+  },
+  "guest.elf": {
+    "source": "/home/yanlien/Workspace/tgoskits-research-target-20261017/axbuild/axvm/vcpu-runtime/guest/zephyr/zephyr.elf",
+    "bytes": 718424,
+    "sha256": "20dbfa7138aae57e29985cf5efacbfac7cb7c7b707a6d2a2c643022ae5c674b4",
+    "remote_gzip": "/home/yanlien/Workspace/tgoskits-research-20261017/evidence/irq-coordination/ppi-off-20dbfa7138aae57e-guest.elf.gz",
+    "gzip_sha256": "bef875288dfd79087b5aa0120b03ef0d8e8bcaf7ad9076d62ccdff6c00bd92eb"
+  },
+  "guest.bin": {
+    "source": "/home/yanlien/Workspace/tgoskits-research-target-20261017/axbuild/axvm/vcpu-runtime/guest/zephyr/zephyr.bin",
+    "bytes": 41190,
+    "sha256": "98e0c4af511eccff5065031eac6efd7e8b3b57c8e54de01244d618951c108a37",
+    "remote_gzip": "/home/yanlien/Workspace/tgoskits-research-20261017/evidence/irq-coordination/ppi-off-98e0c4af511eccff-guest.bin.gz",
+    "gzip_sha256": "69192e4576e36073ca5011cc4616762deb6e09eadd219be56f088a32f7adc3ee"
+  }
+}

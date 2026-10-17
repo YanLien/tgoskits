@@ -1,0 +1,4700 @@
+diff --git a/Cargo.lock b/Cargo.lock
+index 2112dd6a8..c4dda6f4a 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -1759,6 +1759,7 @@ dependencies = [
+  "arm-gic-driver",
+  "arm_vgic",
+  "ax-api",
++ "ax-arm-pl031",
+  "ax-cpu",
+  "ax-cpumask",
+  "ax-crate-interface",
+@@ -1766,6 +1767,7 @@ dependencies = [
+  "ax-hal",
+  "ax-memory-addr",
+  "ax-memory-set",
++ "ax-mm",
+  "ax-plat",
+  "ax-runtime",
+  "ax-std",
+diff --git a/components/ax-task/src/diagnostics.rs b/components/ax-task/src/diagnostics.rs
+index 6f6fcad2c..7ed45afc2 100644
+--- a/components/ax-task/src/diagnostics.rs
++++ b/components/ax-task/src/diagnostics.rs
+@@ -26,3 +26,13 @@ pub(crate) mod counters;
+ 
+ #[cfg(axtest)]
+ pub use crate::sched::system::pi_schedule_test_probe_snapshot;
++
++#[cfg(axtest)]
++mod ready;
++#[cfg(axtest)]
++pub(crate) use ready::record_ready;
++#[cfg(axtest)]
++pub use ready::{
++    ReadyKind, ReadyObserverAlreadyInstalled, ReadyTraceHook, ReadyTraceRecord,
++    install_ready_trace_hook,
++};
+diff --git a/components/ax-task/src/sched/system/task_system/dispatch/bandwidth.rs b/components/ax-task/src/sched/system/task_system/dispatch/bandwidth.rs
+index e6d597c9d..62c7e27df 100644
+--- a/components/ax-task/src/sched/system/task_system/dispatch/bandwidth.rs
++++ b/components/ax-task/src/sched/system/task_system/dispatch/bandwidth.rs
+@@ -129,6 +129,8 @@ impl TaskSystem {
+             None
+         };
+         core.publish_effective_schedule(policy, enqueue.entity());
++        #[cfg(axtest)]
++        let trace_on_cpu = sched.placement.on_cpu().is_some();
+         if sched.placement.on_cpu() == Some(owner) {
+             // Fair removes current from its class tree while Linux keeps the
+             // task logically on_rq. Re-linking it is put_prev, not activation.
+@@ -137,6 +139,19 @@ impl TaskSystem {
+             sched.placement.activate(owner);
+         }
+         core.set_wake_cpu_hint(owner);
++        #[cfg(axtest)]
++        {
++            use crate::diagnostics::ReadyKind;
++            let kind = match reason {
++                EnqueueReason::Wake => ReadyKind::OwnerWake,
++                EnqueueReason::Yield => ReadyKind::OwnerYield,
++                EnqueueReason::Preempted => ReadyKind::OwnerPreempted,
++                EnqueueReason::Replenished => ReadyKind::OwnerReplenished,
++                EnqueueReason::Migrated => ReadyKind::OwnerMigrated,
++                EnqueueReason::PolicyChanged => ReadyKind::OwnerPolicyChanged,
++            };
++            crate::diagnostics::record_ready(core, owner, kind, trace_on_cpu);
++        }
+         OwnerReadyEnqueue {
+             reschedule,
+             scheduler_deadline_refresh_required: enqueue.scheduler_deadline_refresh_required(),
+diff --git a/components/ax-task/src/sched/system/task_system/dispatch/wake/activation.rs b/components/ax-task/src/sched/system/task_system/dispatch/wake/activation.rs
+index 69010cc8f..0394aa085 100644
+--- a/components/ax-task/src/sched/system/task_system/dispatch/wake/activation.rs
++++ b/components/ax-task/src/sched/system/task_system/dispatch/wake/activation.rs
+@@ -235,6 +235,13 @@ impl TaskSystem {
+             context.producer,
+             &irq_owner,
+         );
++        #[cfg(axtest)]
++        crate::diagnostics::record_ready(
++            core,
++            target,
++            crate::diagnostics::ReadyKind::DirectWake,
++            false,
++        );
+         run_queue.commit();
+         if let Some(deadline) = local_runtime {
+             // The outer task lock retains local IRQ exclusion after rq commit.
+diff --git a/components/ax-task/src/sched/system/task_system/dispatch/wake/on_run_queue.rs b/components/ax-task/src/sched/system/task_system/dispatch/wake/on_run_queue.rs
+index 7c3c69e1b..07b07c55d 100644
+--- a/components/ax-task/src/sched/system/task_system/dispatch/wake/on_run_queue.rs
++++ b/components/ax-task/src/sched/system/task_system/dispatch/wake/on_run_queue.rs
+@@ -147,6 +147,13 @@ impl TaskSystem {
+                         context.producer,
+                         &irq_owner,
+                     );
++                    #[cfg(axtest)]
++                    crate::diagnostics::record_ready(
++                        core,
++                        target,
++                        crate::diagnostics::ReadyKind::OnRunQueueWake,
++                        on_cpu,
++                    );
+                     run_queue.commit();
+                     Some(())
+                 }
+diff --git a/components/ax-task/src/sync/wait_queue.rs b/components/ax-task/src/sync/wait_queue.rs
+index cab396abb..b99307bd9 100644
+--- a/components/ax-task/src/sync/wait_queue.rs
++++ b/components/ax-task/src/sync/wait_queue.rs
+@@ -47,6 +47,8 @@ pub fn sleep_until(deadline: MonotonicDeadline) {
+ pub struct WaitQueue {
+     waiters: PreemptTicketLock<VecDeque<Waiter>>,
+     notification_generation: AtomicU64,
++    // Serialized by `waiters`; this atomic only provides interior mutability.
++    registration_sequence: AtomicU64,
+     active_wait_attempts: AtomicUsize,
+ }
+ 
+@@ -135,6 +137,7 @@ impl WaitQueue {
+         Self {
+             waiters: PreemptTicketLock::new(VecDeque::new()),
+             notification_generation: AtomicU64::new(0),
++            registration_sequence: AtomicU64::new(0),
+             active_wait_attempts: AtomicUsize::new(0),
+         }
+     }
+@@ -252,7 +255,7 @@ impl WaitQueue {
+     /// Panics in hard IRQ context. IRQ producers must use
+     /// [`crate::sync::irq::IrqWaitCell`] to wake one fixed service thread.
+     pub fn notify_one(&self) -> bool {
+-        self.notify_one_with_intent(WakeIntent::Normal)
++        self.notify_with_intent(1, WakeIntent::Normal) != 0
+     }
+ 
+     /// Selects one waiter with Linux `WF_SYNC` scheduling intent.
+@@ -261,34 +264,54 @@ impl WaitQueue {
+     /// Fair placement and wakeup preemption that this task-context producer
+     /// expects to block shortly after publishing the condition.
+     pub fn notify_one_sync(&self) -> bool {
+-        self.notify_one_with_intent(WakeIntent::Sync)
++        self.notify_with_intent(1, WakeIntent::Sync) != 0
+     }
+ 
+-    fn notify_one_with_intent(&self, intent: WakeIntent) -> bool {
++    /// Wakes at most `limit` registrations present when this notification starts.
++    ///
++    /// Returns the number of successful scheduler deliveries. A waiter that
++    /// re-registers after waking is outside this notification's cohort, even
++    /// when it runs on another CPU before the notification returns. Delivery
++    /// runs outside the queue lock; cancelled or unavailable registrations
++    /// are attempted at most once. A zero limit does not notify anything.
++    ///
++    /// # Panics
++    ///
++    /// A positive limit panics in hard IRQ context. IRQ producers must use
++    /// [`crate::sync::irq::IrqWaitCell`] instead.
++    pub fn notify_n(&self, limit: usize) -> usize {
++        self.notify_with_intent(limit, WakeIntent::Normal)
++    }
++
++    fn notify_with_intent(&self, limit: usize, intent: WakeIntent) -> usize {
++        if limit == 0 {
++            return 0;
++        }
+         assert_task_context_notification();
+         if !self.may_have_active_wait_attempts() {
+-            return false;
++            return 0;
+         }
+         let _preempt = PreemptScope::enter();
+-        self.notify_one_preempt_disabled(intent)
++        self.notify_preempt_disabled(limit, intent)
+     }
+ 
+-    fn notify_one_preempt_disabled(&self, intent: WakeIntent) -> bool {
+-        let (notification_generation, mut selected) = {
+-            let mut waiters = self.waiters.lock();
+-            let previous_generation = self
+-                .notification_generation
++    fn notify_preempt_disabled(&self, limit: usize, intent: WakeIntent) -> usize {
++        let (cutoff, mut cursor, mut selected) = {
++            let waiters = self.waiters.lock();
++            self.notification_generation
+                 .try_update(Ordering::Release, Ordering::Relaxed, |generation| {
+                     generation.checked_add(1)
+                 })
+                 .unwrap_or_else(|_| panic!("wait-queue notification generation exhausted"));
+-            let notification_generation = previous_generation + 1;
+-            let selected = select_waiter(&mut waiters, notification_generation);
+-            (notification_generation, selected)
++            let cutoff = self.registration_sequence.load(Ordering::Relaxed);
++            let mut cursor = 0;
++            let selected = select_waiter(&waiters, cutoff, &mut cursor);
++            (cutoff, cursor, selected)
+         };
++        let mut woken = 0;
+         loop {
+             let Some(claim_owner) = selected else {
+-                return false;
++                return woken;
+             };
+ 
+             let delivery = claim_owner
+@@ -311,7 +334,10 @@ impl WaitQueue {
+                             .expect("located delivered waiter must remain present");
+                         assert_eq!(waiter.wake.deactivate(), WaiterRemoval::Delivered);
+                     }
+-                    return true;
++                    woken += 1;
++                    if woken == limit {
++                        return woken;
++                    }
+                 }
+                 WaitWakeDelivery::Cancelled | WaitWakeDelivery::Exited => {
+                     if let Some(index) = index {
+@@ -327,22 +353,15 @@ impl WaitQueue {
+                     }
+                 }
+             }
+-            selected = select_waiter(&mut waiters, notification_generation);
++            selected = select_waiter(&waiters, cutoff, &mut cursor);
+         }
+     }
+ 
+-    /// Wakes every waiter.
++    /// Wakes all registrations present at the start of this notification.
+     ///
+-    /// Each direct scheduler wake runs outside the queue's preemption-disabling
+-    /// publication lock. A generation-bearing selection token serializes wake
+-    /// completion against timeout cleanup.
++    /// A waiter re-registering during delivery belongs to a later cohort.
+     pub fn notify_all(&self) {
+-        assert_task_context_notification();
+-        if !self.may_have_active_wait_attempts() {
+-            return;
+-        }
+-        let _preempt = PreemptScope::enter();
+-        while self.notify_one_preempt_disabled(WakeIntent::Normal) {}
++        self.notify_n(usize::MAX);
+     }
+ 
+     fn wait_once(&self, deadline: Option<MonotonicDeadline>) -> Result<WaitOutcome, TaskError> {
+@@ -390,7 +409,19 @@ impl WaitQueue {
+                 CurrentParkStart::Prepared(park) => park,
+             };
+             let thread = park.thread_id();
+-            waiters.push_back(Waiter::new(thread, park.generation(), park.wake_handle()));
++            let registration = self
++                .registration_sequence
++                .load(Ordering::Relaxed)
++                .checked_add(1)
++                .expect("wait-queue registration sequence exhausted");
++            self.registration_sequence
++                .store(registration, Ordering::Relaxed);
++            waiters.push_back(Waiter::new(
++                registration,
++                thread,
++                park.generation(),
++                park.wake_handle(),
++            ));
+             if let Some(deadline) = deadline
+                 && let Err(error) = park.arm_deadline(deadline)
+             {
+@@ -564,22 +595,23 @@ impl Default for WaitQueue {
+ #[derive(Debug)]
+ struct Waiter {
+     wake: Arc<WaiterWake>,
+-    last_attempted_by: u64,
++    registration: u64,
+ }
+ 
+ impl Waiter {
+-    fn new(thread: ThreadId, park_generation: u64, wake: ThreadWakeHandle) -> Self {
++    fn new(
++        registration: u64,
++        thread: ThreadId,
++        park_generation: u64,
++        wake: ThreadWakeHandle,
++    ) -> Self {
+         Self {
+             wake: Arc::new(WaiterWake::new(thread, park_generation, wake)),
+-            last_attempted_by: 0,
++            registration,
+         }
+     }
+ 
+-    fn select(&mut self, notification_generation: u64) -> Option<Arc<WaiterWake>> {
+-        if self.last_attempted_by == notification_generation {
+-            return None;
+-        }
+-        self.last_attempted_by = notification_generation;
++    fn select(&self) -> Option<Arc<WaiterWake>> {
+         let WaiterSelection::Selected(selected_waiter) = self.wake.try_select() else {
+             return None;
+         };
+@@ -645,12 +677,22 @@ enum WaiterSelection {
+ }
+ 
+ fn select_waiter(
+-    waiters: &mut VecDeque<Waiter>,
+-    notification_generation: u64,
++    waiters: &VecDeque<Waiter>,
++    cutoff: u64,
++    cursor: &mut u64,
+ ) -> Option<Arc<WaiterWake>> {
+-    waiters
+-        .iter_mut()
+-        .find_map(|waiter| waiter.select(notification_generation))
++    // Registration order is FIFO and never reused. Advancing before selection
++    // also bounds retries when concurrent notifiers or cancellation intervene.
++    for waiter in waiters {
++        if waiter.registration <= *cursor || waiter.registration > cutoff {
++            continue;
++        }
++        *cursor = waiter.registration;
++        if let Some(selected) = waiter.select() {
++            return Some(selected);
++        }
++    }
++    None
+ }
+ 
+ #[derive(Clone, Copy, Debug, Eq, PartialEq)]
+diff --git a/components/axcpu/Cargo.toml b/components/axcpu/Cargo.toml
+index a6ec5398c..3c197a306 100644
+--- a/components/axcpu/Cargo.toml
++++ b/components/axcpu/Cargo.toml
+@@ -19,6 +19,8 @@ default = []
+ context = []
+ virtualization = ["context", "fp-simd", "exception-table", "dep:thiserror", "dep:tock-registers"]
+ exception-table = []
++# Optional AArch64 pre-IAR guest IRQ timestamps; absent from default entry.
++virtualization-trace = ["virtualization"]
+ pmu = ["dep:thiserror"]
+ fp-simd = ["context"]
+ tls = ["context"]
+diff --git a/components/axcpu/src/arch/aarch64/entry/guest.S b/components/axcpu/src/arch/aarch64/entry/guest.S
+index dd08638e2..7ccca47c1 100644
+--- a/components/axcpu/src/arch/aarch64/entry/guest.S
++++ b/components/axcpu/src/arch/aarch64/entry/guest.S
+@@ -132,6 +132,15 @@
+ 
+ .macro HANDLE_LOWER_IRQ_VCPU
+     SAVE_REGS_FROM_EL1
++    # Optional observation after complete GPR save, before controller IAR.
++    # x9 is scratch only after its guest value has been saved. No Rust, TLS,
++    # allocation or callbacks run in this guest-owned register window.
++    .if {observe_irq_entry}
++    isb
++    mrs     x9, cntpct_el0
++    isb
++    str     x9, [sp, {irq_entry_ticks_offset}]
++    .endif
+     ACK_PENDING_HOST_IRQ
+     SAVE_VCPU_RUNTIME_FROM_EL1
+     mov     x0, {exception_irq}
+diff --git a/components/axcpu/src/arch/aarch64/entry/guest.rs b/components/axcpu/src/arch/aarch64/entry/guest.rs
+index 03fa412e8..d113256f4 100644
+--- a/components/axcpu/src/arch/aarch64/entry/guest.rs
++++ b/components/axcpu/src/arch/aarch64/entry/guest.rs
+@@ -31,6 +31,11 @@ macro_rules! exit_offset {
+     };
+ }
+ 
++#[cfg(feature = "virtualization-trace")]
++const IRQ_ENTRY_TICKS_OFFSET: usize = exit_offset!(irq_entry_ticks);
++#[cfg(not(feature = "virtualization-trace"))]
++const IRQ_ENTRY_TICKS_OFFSET: usize = 0; // The assembler discards the disabled block.
++
+ const _: () = {
+     assert!(offset_of!(Vcpu, context) == 0);
+     assert!(host_offset!(stack) == size_of::<GuestContext>());
+@@ -43,6 +48,8 @@ core::arch::global_asm!(
+     include_str!("guest.S"),
+     exception_sync = const 0,
+     exception_irq = const 1,
++    observe_irq_entry = const cfg!(feature = "virtualization-trace") as u8,
++    irq_entry_ticks_offset = const IRQ_ENTRY_TICKS_OFFSET,
+     trap_frame_size = const size_of::<GuestContext>(),
+     guest_elr_offset = const offset_of!(GuestContext, elr),
+     guest_sp_el0_offset = const offset_of!(GuestContext, sp_el0),
+diff --git a/components/axcpu/src/arch/aarch64/virtualization/exit.rs b/components/axcpu/src/arch/aarch64/virtualization/exit.rs
+index e3a628ed5..a75f39b98 100644
+--- a/components/axcpu/src/arch/aarch64/virtualization/exit.rs
++++ b/components/axcpu/src/arch/aarch64/virtualization/exit.rs
+@@ -31,6 +31,10 @@ pub struct Exit {
+     pub pc: u64,
+     /// Raw host IAR value, or `u32::MAX` when no IRQ was acknowledged.
+     pub irq_ack: u32,
++    /// Physical counter after low-EL IRQ GPR save, before IAR; zero for other exits.
++    /// Present only with the optional AArch64 entry observation feature.
++    #[cfg(feature = "virtualization-trace")]
++    pub irq_entry_ticks: u64,
+     /// IPA resolved before restoring the host translation bank.
+     pub guest_address: Result<crate::virtualization::GuestPhysAddr, GuestAddressError>,
+ }
+@@ -44,6 +48,8 @@ impl Default for Exit {
+             physical_fault_address: 0,
+             pc: 0,
+             irq_ack: u32::MAX,
++            #[cfg(feature = "virtualization-trace")]
++            irq_entry_ticks: 0,
+             guest_address: Err(GuestAddressError::NotDataAbort),
+         }
+     }
+diff --git a/drivers/rtc/arm_pl031/src/lib.rs b/drivers/rtc/arm_pl031/src/lib.rs
+index cd165129f..1b2e4aba4 100644
+--- a/drivers/rtc/arm_pl031/src/lib.rs
++++ b/drivers/rtc/arm_pl031/src/lib.rs
+@@ -73,6 +73,18 @@ impl Rtc {
+         unsafe { addr_of_mut!((*self.registers).lr).write_volatile(unix_time) }
+     }
+ 
++    /// Returns the currently programmed alarm match value.
++    pub fn match_timestamp(&self) -> u32 {
++        // SAFETY: construction guarantees a live, aligned device register bank.
++        unsafe { addr_of!((*self.registers).mr).read_volatile() }
++    }
++
++    /// Returns whether the alarm interrupt is enabled in IMSC.
++    pub fn interrupt_enabled(&self) -> bool {
++        // SAFETY: construction guarantees a live, aligned device register bank.
++        unsafe { addr_of!((*self.registers).imsc).read_volatile() & 1 != 0 }
++    }
++
+     /// Writes a match value. When the RTC value matches this then an interrupt
+     /// will be generated (if it is enabled).
+     pub fn set_match_timestamp(&mut self, match_timestamp: u32) {
+diff --git a/os/arceos/api/arceos_api/src/imp/task.rs b/os/arceos/api/arceos_api/src/imp/task.rs
+index a8cfd3203..6a0a28fc3 100644
+--- a/os/arceos/api/arceos_api/src/imp/task.rs
++++ b/os/arceos/api/arceos_api/src/imp/task.rs
+@@ -163,20 +163,8 @@ cfg_task! {
+     }
+ 
+     pub fn ax_wait_queue_wake(wq: &AxWaitQueueHandle, count: u32) -> usize {
+-        let mut woken = 0;
+-        if count == u32::MAX {
+-            while wq.0.notify_one() {
+-                woken += 1;
+-            }
+-        } else {
+-            for _ in 0..count {
+-                if !wq.0.notify_one() {
+-                    break;
+-                }
+-                woken += 1;
+-            }
+-        }
+-        woken
++        let limit = if count == u32::MAX { usize::MAX } else { count as usize };
++        wq.0.notify_n(limit)
+     }
+ 
+     fn task_result<T>(
+diff --git a/os/arceos/api/arceos_api/src/lib.rs b/os/arceos/api/arceos_api/src/lib.rs
+index ffce47bcb..69d157af4 100644
+--- a/os/arceos/api/arceos_api/src/lib.rs
++++ b/os/arceos/api/arceos_api/src/lib.rs
+@@ -154,9 +154,10 @@ pub mod task {
+         ) -> bool;
+         /// Wakes up one or more tasks in the wait queue.
+         ///
+-        /// The maximum number of tasks to wake up is specified by `count`. If
+-        /// `count` is `u32::MAX`, it will wake up all tasks in the wait queue.
+-        /// Returns the number of waiters selected for wakeup.
++        /// At most `count` registrations present at the start are selected;
++        /// `u32::MAX` selects the complete initial cohort. A task that wakes
++        /// and waits again is outside this notification. Zero is a no-op.
++        /// Returns the number of successful scheduler wake deliveries.
+         pub fn ax_wait_queue_wake(wq: &AxWaitQueueHandle, count: u32) -> usize;
+     }
+ }
+diff --git a/test-suit/arceos/cpu/guest-entry/src/aarch64.rs b/test-suit/arceos/cpu/guest-entry/src/aarch64.rs
+index 50cd04300..dfc1f116e 100644
+--- a/test-suit/arceos/cpu/guest-entry/src/aarch64.rs
++++ b/test-suit/arceos/cpu/guest-entry/src/aarch64.rs
+@@ -22,11 +22,18 @@ core::arch::global_asm!(
+     ".balign 4",
+     ".global cpu_test_arm_guest",
+     "cpu_test_arm_guest:",
++    "mrs x3, pmcr_el0",
++    "mov x4, #64",
++    "msr pmcr_el0, x4",
++    "isb",
+     "fmov x1, d0",
+     "mov x0, #0x123",
+     "fmov d0, x0",
+     "mrs x2, tpidr_el0",
+     "hvc #0",
++    "mrs x3, pmcr_el0",
++    "msr pmcr_el0, xzr",
++    "isb",
+     "fmov x1, d0",
+     "mov x0, #0x456",
+     "fmov d0, x0",
+@@ -48,6 +55,12 @@ pub fn run() {
+     unsafe {
+         core::arch::asm!("mrs {}, tpidr_el0", out(reg) tls, options(nostack));
+     }
++    let original_pmcr: u64;
++    // SAFETY: the standalone machine test exclusively owns this pinned PMU
++    // domain with IRQs masked; no perf consumer or guest exists yet.
++    unsafe {
++        core::arch::asm!("mrs {}, pmcr_el0", out(reg) original_pmcr, options(nostack));
++    }
+     let mut cpu = PerCpu::new();
+     unsafe {
+         cpu.enable(guest_vector()).unwrap();
+@@ -76,16 +89,28 @@ pub fn run() {
+         core::arch::asm!("msr cntvoff_el2, {}", in(reg) 0x222u64, options(nostack));
+         core::arch::asm!("msr cntv_cval_el0, {}", "isb", in(reg) u64::MAX, options(nostack));
+     }
+-    for (expected, previous) in [(0x123, 0), (0x456, 0x123)] {
++    for (expected, previous, guest_before_lc, guest_after_lc, host_lc) in
++        [(0x123, 0, 0, 64, 0), (0x456, 0x123, 64, 0, 64)]
++    {
++        // LC changes overflow width, without writing P/C reset commands or
++        // enabling any counter. Keep all other host control bits unchanged.
++        let host_pmcr = (original_pmcr & !64) | host_lc;
++        // SAFETY: the test still owns this CPU's IRQ-excluded PMU domain;
++        // PMCR readback has RAZ reset bits, so none is replayed by this write.
++        unsafe {
++            core::arch::asm!("msr pmcr_el0, {}", "isb", in(reg) host_pmcr, options(nostack));
++        }
+         // SAFETY: valid trusted EL1 code, CPU-owned vector and IRQ exclusion;
+         // roots stay bare and the guest cannot reference host data memory.
+         let exit = unsafe { enter_guest(&mut guest) };
+         let restored_tls: u64;
++        let restored_pmcr: u64;
+         let offset: u64;
+         let compare: u64;
+         let control: u64;
+         unsafe {
+             core::arch::asm!("msr esr_el2, xzr", options(nostack));
++            core::arch::asm!("mrs {}, pmcr_el0", out(reg) restored_pmcr, options(nostack));
+             core::arch::asm!("mrs {}, tpidr_el0", out(reg) restored_tls, options(nostack));
+             core::arch::asm!("mrs {}, cntvoff_el2", out(reg) offset, options(nostack));
+             core::arch::asm!("mrs {}, cntv_cval_el0", out(reg) compare, options(nostack));
+@@ -98,6 +123,17 @@ pub fn run() {
+         assert_eq!(guest.context.gpr[1], previous);
+         assert_eq!(guest.context.gpr[2], 0xabc);
+         assert_eq!(guest.fp.regs[0] as u64, expected);
++        assert_eq!(restored_pmcr, host_pmcr, "guest PMCR leaked into host");
++        assert_eq!(
++            guest.context.gpr[3] & 64,
++            guest_before_lc,
++            "guest PMCR was not loaded"
++        );
++        assert_eq!(
++            guest.system.pmcr_el0 & 64,
++            guest_after_lc,
++            "guest PMCR was not saved"
++        );
+         assert_eq!(restored_tls, tls);
+         assert_eq!(registers::read_tpidr_el2(), anchor);
+         assert_eq!(registers::read_sp_el0(), current);
+@@ -108,17 +144,29 @@ pub fn run() {
+         assert_eq!(guest.timer.compare, 0x999);
+         assert!(!interrupt::irqs_enabled());
+     }
++    let final_pmcr: u64;
+     unsafe {
++        // SAFETY: no guest remains live and the test retains exclusive PMU
++        // ownership; restore the original control without reset commands.
++        core::arch::asm!("msr pmcr_el0, {}", "isb", in(reg) original_pmcr, options(nostack));
++        core::arch::asm!("mrs {}, pmcr_el0", out(reg) final_pmcr, options(nostack));
+         core::arch::asm!("msr cntv_ctl_el0, xzr", "isb", options(nostack));
+         core::arch::asm!("msr cntvoff_el2, {}", in(reg) original_offset, options(nostack));
+         core::arch::asm!("msr cntv_cval_el0, {}", in(reg) original_compare, options(nostack));
+         core::arch::asm!("msr cntv_ctl_el0, {}", "isb", in(reg) original_control, options(nostack));
+         cpu.disable().unwrap();
+     }
++    assert_eq!(
++        final_pmcr, original_pmcr,
++        "test did not restore original PMCR"
++    );
+     if irq {
+         interrupt::enable_irqs();
+     }
+     #[cfg(feature = "stage2-tlb")]
+     stage2_tlb::run();
++    std::println!(
++        "CPU_GUEST_PMU_RESTORE entries=2 host_restored=1 guest_saved=1 original_restored=1"
++    );
+     std::println!("CPU_GUEST_ENTRY_OK");
+ }
+diff --git a/test-suit/arceos/rust/src/task/wait_queue.rs b/test-suit/arceos/rust/src/task/wait_queue.rs
+index 47272e59b..33449a51e 100644
+--- a/test-suit/arceos/rust/src/task/wait_queue.rs
++++ b/test-suit/arceos/rust/src/task/wait_queue.rs
+@@ -1,3 +1,4 @@
++mod broadcast;
+ mod lifecycle;
+ 
+ use std::{
+@@ -16,6 +17,7 @@ use ax_std::os::arceos::api::task::{self as api, AxWaitQueueHandle};
+ const NUM_TASKS: usize = 16;
+ 
+ pub fn run() -> crate::TestResult {
++    broadcast::run();
+     test_wake_before_admission();
+     lifecycle::run();
+     test_wait();
+diff --git a/virtualization/axvm/Cargo.toml b/virtualization/axvm/Cargo.toml
+index 0bbf2bb3c..293224138 100644
+--- a/virtualization/axvm/Cargo.toml
++++ b/virtualization/axvm/Cargo.toml
+@@ -48,7 +48,7 @@ host-test = [
+     "ax-std/host-test",
+     "axdevice/host-test",
+ ]
+-axtest = ["ax-std/std-compat"]
++axtest = ["ax-std/std-compat", "ax-cpu/virtualization-trace"]
+ sstc = ["ax-cpu/riscv-sstc"]
+ tls = ["ax-std/tls", "cpu-local/tls"]
+ 
+@@ -132,6 +132,8 @@ rdif-clk.workspace = true
+ acpi_tables.workspace = true
+ 
+ [dev-dependencies]
++ax-arm-pl031.workspace = true
++ax-mm.workspace = true
+ acpi_tables.workspace = true
+ rdif-clk = { path = "../../drivers/interface/rdif-clk" }
+ 
+@@ -141,3 +143,6 @@ ax-hal.workspace = true
+ ax-runtime = { workspace = true, features = ["deferred-rootfs"] }
+ ax-driver.workspace = true
+ ax-std = { workspace = true, features = ["alloc"] }
++
++[lints.rust]
++unexpected_cfgs = { level = "warn", check-cfg = ['cfg(axtest)'] }
+diff --git a/virtualization/axvm/src/arch/aarch64/mod.rs b/virtualization/axvm/src/arch/aarch64/mod.rs
+index 7e579708d..ec0771487 100644
+--- a/virtualization/axvm/src/arch/aarch64/mod.rs
++++ b/virtualization/axvm/src/arch/aarch64/mod.rs
+@@ -486,10 +486,14 @@ struct HostGuestTrap;
+ #[trait_ffi::impl_extern_trait]
+ impl ax_cpu::virtualization::GuestHostTrap for HostGuestTrap {
+     fn current_irq(_context: ax_cpu::trap::InterruptedContext) {
+-        if let Some(token) = gic::acknowledge_host_irq()
+-            && let Err(error) = gic::route_acknowledged_host_irq(token)
+-        {
+-            warn!("{error}");
++        #[cfg(feature = "axtest")]
++        let observed = crate::diagnostics::current_irq_begin();
++        if let Some(token) = gic::acknowledge_host_irq() {
++            #[cfg(feature = "axtest")]
++            crate::diagnostics::current_irq_acknowledged(observed, gic::host_irq_intid(token));
++            if let Err(error) = gic::route_acknowledged_host_irq(token) {
++                warn!("{error}");
++            }
+         }
+     }
+ }
+@@ -709,6 +713,13 @@ impl VmArchVcpuOps for AxvmArmVcpu {
+             .ok_or(BackendError::InvalidState)?;
+         let host_irq_guard = ArmHostIrqGuard::mask();
+         vgic_backend_result(binding.load())?;
++        #[cfg(feature = "axtest")]
++        crate::diagnostics::record(
++            crate::diagnostics::EventKind::GuestEntryBoundary,
++            crate::host::task::current_thread().id().as_u64(),
++            0,
++            0,
++        );
+         let run_result = arm_result(self.inner.run(&host_irq_guard));
+         let timer_result = self.synchronize_timer();
+         let save_result = VcpuLocalInterrupts::save_exit(self);
+diff --git a/virtualization/axvm/src/arch/aarch64/policy/vcpu.rs b/virtualization/axvm/src/arch/aarch64/policy/vcpu.rs
+index bef465c00..1a9725e09 100644
+--- a/virtualization/axvm/src/arch/aarch64/policy/vcpu.rs
++++ b/virtualization/axvm/src/arch/aarch64/policy/vcpu.rs
+@@ -160,6 +160,8 @@ impl ArmVcpu {
+         let exit = unsafe { ax_cpu::virtualization::enter_guest(&mut self.machine) };
+         self.timer.finish_machine(self.machine.timer);
+         if exit.kind == TrapKind::Irq {
++            #[cfg(feature = "axtest")]
++            crate::diagnostics::lower_irq_entry(exit.irq_entry_ticks, exit.irq_ack);
+             let token = (exit.irq_ack != u32::MAX)
+                 .then(|| crate::arch::aarch64::gic::finish_pending_host_irq(exit.irq_ack))
+                 .flatten();
+diff --git a/virtualization/axvm/src/control/lifecycle.rs b/virtualization/axvm/src/control/lifecycle.rs
+index 233038264..ddbaf584d 100644
+--- a/virtualization/axvm/src/control/lifecycle.rs
++++ b/virtualization/axvm/src/control/lifecycle.rs
+@@ -107,7 +107,10 @@ impl Owner {
+         }
+         let run = self.run.as_mut().expect("prepared run");
+         let id = run.id;
+-        run.worker = Some(RunSignalWorker::start(run.signals.clone())?);
++        run.worker = Some(RunSignalWorker::start(
++            run.signals.clone(),
++            self.vcpu_schedule_policy,
++        )?);
+         if let Err(error) = CurrentArch::enter_runtime(&mut self.vm, &run.signals) {
+             return match self.stop(operation) {
+                 Ok(()) => Err(error),
+diff --git a/virtualization/axvm/src/control/mod.rs b/virtualization/axvm/src/control/mod.rs
+index 4d4535906..bf9d27f77 100644
+--- a/virtualization/axvm/src/control/mod.rs
++++ b/virtualization/axvm/src/control/mod.rs
+@@ -166,6 +166,10 @@ pub(crate) fn run(
+     plan: VmCreatePlan,
+     creation: OperationCompletion<VmHandle>,
+ ) {
++    #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
++    let mut placement = crate::diagnostics::service_placement::Probe::start(
++        crate::diagnostics::service_placement::Role::Control,
++    );
+     creation.accept();
+     let first_run = RunId::new(shared.key(), 1);
+     let signals = match RunSignals::new(first_run, plan.config.phys_cpu_ls.cpu_num()) {
+@@ -230,6 +234,10 @@ pub(crate) fn run(
+         }
+     }
+     loop {
++        #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
++        if let Some(probe) = placement.as_mut() {
++            probe.observe();
++        }
+         if let Some(expected) = owner.guest_stop {
+             if owner.run.as_ref().is_none_or(|run| run.id != expected) {
+                 owner.guest_stop = None;
+diff --git a/virtualization/axvm/src/irq/deferred.rs b/virtualization/axvm/src/irq/deferred.rs
+index ce79700cf..f2aad0fef 100644
+--- a/virtualization/axvm/src/irq/deferred.rs
++++ b/virtualization/axvm/src/irq/deferred.rs
+@@ -40,18 +40,32 @@ impl RunSignalWorker {
+     /// The returned object is an ordinary owner value. Its only shared state
+     /// with the worker is the stop flag, so no lock is reachable from either the
+     /// hard-IRQ path or the guest-entry path.
+-    pub(crate) fn start(signals: Arc<RunSignals>) -> AxVmResult<Self> {
++    pub(crate) fn start(
++        signals: Arc<RunSignals>,
++        _vcpu_policy: task::SchedulePolicy,
++    ) -> AxVmResult<Self> {
+         let stopping = Arc::new(AtomicBool::new(false));
+         let worker_signals = Arc::clone(&signals);
+         let worker_stopping = Arc::clone(&stopping);
+-        let worker = task::builder(std::format!(
++        let builder = task::builder(std::format!(
+             "VM[{}:run:{}]-signal-worker",
+             signals.run_id().vm().vm_id(),
+             signals.run_id().generation()
+         ))
+-        .stack_size(SIGNAL_WORKER_STACK_SIZE)
+-        .spawn(move || run_worker(worker_signals, worker_stopping))
+-        .map_err(|error| AxVmError::host("start run signal worker", error))?;
++        .stack_size(SIGNAL_WORKER_STACK_SIZE);
++        #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
++        let builder = builder.policy(crate::diagnostics::irq_service::selected_policy(
++            _vcpu_policy,
++        )?);
++        #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
++        let builder = if let Some(cpu) = crate::diagnostics::service_placement::cpu() {
++            builder.affinity(task::cpu_set_from_raw_bits(1usize << cpu))
++        } else {
++            builder
++        };
++        let worker = builder
++            .spawn(move || run_worker(worker_signals, worker_stopping, _vcpu_policy))
++            .map_err(|error| AxVmError::host("start run signal worker", error))?;
+         Ok(Self {
+             signals,
+             stopping,
+@@ -71,9 +85,18 @@ impl RunSignalWorker {
+             self.signals.stop_irq_pending_publication();
+             return Ok(());
+         };
++        #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
++        let worker_id = worker.id().as_u64();
+         match worker.clone().join() {
+             Ok(_) => {
+                 self.worker = None;
++                #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
++                println!(
++                    "VIRQ_IRQ_SERVICE_JOIN vm={} run={} thread={} joined=1",
++                    self.signals.run_id().vm().vm_id(),
++                    self.signals.run_id().generation(),
++                    worker_id
++                );
+                 self.signals.stop_irq_pending_publication();
+                 Ok(())
+             }
+@@ -83,12 +106,31 @@ impl RunSignalWorker {
+     }
+ }
+ 
+-fn run_worker(signals: Arc<RunSignals>, stopping: Arc<AtomicBool>) {
++fn run_worker(
++    signals: Arc<RunSignals>,
++    stopping: Arc<AtomicBool>,
++    _vcpu_policy: task::SchedulePolicy,
++) {
++    #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
++    let mut dispatch =
++        crate::diagnostics::irq_service::Dispatch::start(signals.run_id(), _vcpu_policy);
++    #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
++    let mut placement = crate::diagnostics::service_placement::Probe::start(
++        crate::diagnostics::service_placement::Role::Signal,
++    );
+     loop {
+         signals.wait_for_irq_notification();
++        #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
++        if let Some(probe) = placement.as_mut() {
++            probe.observe();
++        }
+         if stopping.load(Ordering::Acquire) {
+             break;
+         }
++        #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
++        if !dispatch.admit_round(&stopping) {
++            break;
++        }
+         signals.post_controller_events();
+         signals.kick_pending_for_worker();
+     }
+diff --git a/virtualization/axvm/src/lib.rs b/virtualization/axvm/src/lib.rs
+index b43de1067..581383d3e 100644
+--- a/virtualization/axvm/src/lib.rs
++++ b/virtualization/axvm/src/lib.rs
+@@ -28,6 +28,8 @@ mod architecture;
+ pub mod boot;
+ mod configured;
+ mod control;
++#[cfg(all(feature = "axtest", target_arch = "aarch64"))]
++pub mod diagnostics;
+ mod engine;
+ mod error;
+ mod guest_memory;
+diff --git a/virtualization/axvm/src/manager.rs b/virtualization/axvm/src/manager.rs
+index 464d6dce0..e6a9a69fb 100644
+--- a/virtualization/axvm/src/manager.rs
++++ b/virtualization/axvm/src/manager.rs
+@@ -812,6 +812,12 @@ impl VmManager {
+         let builder = crate::host::task::builder(name)
+             .stack_size(CONTROL_STACK_SIZE)
+             .extension(extension);
++        #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
++        let builder = if let Some(cpu) = crate::diagnostics::service_placement::cpu() {
++            builder.affinity(crate::host::task::cpu_set_from_raw_bits(1usize << cpu))
++        } else {
++            builder
++        };
+         let prepared = builder
+             .prepare(move || crate::control::run(shared_for_task, exit_for_task, plan, completion))
+             .map_err(|error| AxVmError::host("prepare VM control task", error))?;
+diff --git a/virtualization/axvm/src/runtime/queue.rs b/virtualization/axvm/src/runtime/queue.rs
+index ffcf94bde..81e8f7d82 100644
+--- a/virtualization/axvm/src/runtime/queue.rs
++++ b/virtualization/axvm/src/runtime/queue.rs
+@@ -310,8 +310,32 @@ impl VcpuWakeTarget {
+         &self.signals
+     }
+ 
++    #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
++    pub(crate) fn trace_irq_kick(&self) {
++        crate::diagnostics::record(
++            crate::diagnostics::EventKind::IrqKick,
++            self.wake.thread_id().as_u64(),
++            0,
++            0,
++        );
++    }
++
+     pub(crate) fn wake(&self) {
++        #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
++        crate::diagnostics::record(
++            crate::diagnostics::EventKind::WakeBegin,
++            self.wake.thread_id().as_u64(),
++            0,
++            0,
++        );
+         let _ = self.wake.wake();
++        #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
++        crate::diagnostics::record(
++            crate::diagnostics::EventKind::WakeEnd,
++            self.wake.thread_id().as_u64(),
++            0,
++            0,
++        );
+     }
+ }
+ 
+diff --git a/virtualization/axvm/src/runtime/vcpus.rs b/virtualization/axvm/src/runtime/vcpus.rs
+index 8e7168aa3..0f243bac0 100644
+--- a/virtualization/axvm/src/runtime/vcpus.rs
++++ b/virtualization/axvm/src/runtime/vcpus.rs
+@@ -352,6 +352,13 @@ fn run_owner(
+     control: Arc<ControlShared>,
+     cpu_on: Option<CpuOnArgs>,
+ ) {
++    #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
++    crate::diagnostics::record(
++        crate::diagnostics::EventKind::Binding,
++        crate::host::task::current_thread().id().as_u64(),
++        port.instance.run.vm().vm_id() as u64,
++        port.instance.vcpu_id as u64,
++    );
+     let initialized = (|| {
+         if port.signals.stop_requested() {
+             return Err(AxVmError::OperationCancelled { operation });
+diff --git a/virtualization/axvm/src/services/signals.rs b/virtualization/axvm/src/services/signals.rs
+index fd315dda8..da7a20047 100644
+--- a/virtualization/axvm/src/services/signals.rs
++++ b/virtualization/axvm/src/services/signals.rs
+@@ -493,6 +493,8 @@ impl RunSignals {
+             drop(producer);
+             return Err(SignalError::InactiveTarget);
+         };
++        #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
++        target.trace_irq_kick();
+         let signals = target.signals();
+         signals.request_unblock();
+         signals.publish_exit_request();
+diff --git a/virtualization/axvm/src/task.rs b/virtualization/axvm/src/task.rs
+index 7198907c9..02d133ea1 100644
+--- a/virtualization/axvm/src/task.rs
++++ b/virtualization/axvm/src/task.rs
+@@ -46,8 +46,24 @@ static VCPU_TASK_OPS: ThreadExtensionOps = ThreadExtensionOps {
+     drop: drop_attachment,
+ };
+ 
+-unsafe extern "Rust" fn switch_in(_: usize, _: ThreadId, _: SchedulePolicy, _: u64) {}
+-unsafe extern "Rust" fn switch_out(_: usize, _: ThreadId, _: SwitchReason) {}
++unsafe extern "Rust" fn switch_in(_: usize, _thread: ThreadId, _: SchedulePolicy, _: u64) {
++    #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
++    crate::diagnostics::record(
++        crate::diagnostics::EventKind::Running,
++        _thread.as_u64(),
++        0,
++        0,
++    );
++}
++unsafe extern "Rust" fn switch_out(_: usize, _thread: ThreadId, _: SwitchReason) {
++    #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
++    crate::diagnostics::record(
++        crate::diagnostics::EventKind::Stopped,
++        _thread.as_u64(),
++        0,
++        0,
++    );
++}
+ unsafe extern "Rust" fn deadline_overrun(_: usize, _: ThreadId) {}
+ 
+ unsafe extern "Rust" fn exited(data: usize, _: ThreadId) {
+@@ -65,3 +81,8 @@ unsafe extern "Rust" fn drop_attachment(data: usize) {
+     // SAFETY: the scheduler is the sole destructor of this transferred box.
+     drop(unsafe { Box::from_raw(data as *mut VcpuAttachment) });
+ }
++
++#[cfg(all(feature = "axtest", target_arch = "aarch64", axtest))]
++pub(crate) fn owns_extension_ops(identity: usize) -> bool {
++    identity == &VCPU_TASK_OPS as *const ThreadExtensionOps as usize
++}
+diff --git a/virtualization/axvm/tests/guests/virq/CMakeLists.txt b/virtualization/axvm/tests/guests/virq/CMakeLists.txt
+index aa909344d..7619542cf 100644
+--- a/virtualization/axvm/tests/guests/virq/CMakeLists.txt
++++ b/virtualization/axvm/tests/guests/virq/CMakeLists.txt
+@@ -3,4 +3,11 @@ cmake_minimum_required(VERSION 3.20.0)
+ find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
+ project(software_virq_latency_suspend)
+ 
++if(NOT DEFINED VIRQ_SAMPLES)
++  set(VIRQ_SAMPLES 300)
++endif()
++if(NOT VIRQ_SAMPLES MATCHES "^[0-9]+$" OR VIRQ_SAMPLES LESS 1 OR VIRQ_SAMPLES GREATER 1000)
++  message(FATAL_ERROR "VIRQ_SAMPLES must be between 1 and 1000")
++endif()
++target_compile_definitions(app PRIVATE SAMPLE_COUNT=${VIRQ_SAMPLES})
+ target_sources(app PRIVATE src/main.c)
+diff --git a/virtualization/axvm/tests/guests/virq/README.md b/virtualization/axvm/tests/guests/virq/README.md
+index 27dfa4602..f2a6d09c3 100644
+--- a/virtualization/axvm/tests/guests/virq/README.md
++++ b/virtualization/axvm/tests/guests/virq/README.md
+@@ -4,7 +4,7 @@
+ 
+ ## 1. 客户机契约
+ 
+-客户机面向 `qemu_cortex_a53` 的 SMP 变体构建，`CMakeLists.txt` 只把 `src/main.c` 编入 `app`，`prj.conf` 打开串口控制台、`CONFIG_ARMV8_A_NS`、`CONFIG_SCHED_CPU_MASK`、`CONFIG_SYSCLOCK_TICKS_PER_SEC=1000` 并关闭时间片。`virq_mailbox` 位于一致性客户机 RAM，每个字段只有一个写入方，宿主侧读取应答，并且只写入 `complete`；这是“投递是否到达目标 vCPU”与“闲置 vCPU 是否被误唤醒”两条断言的唯一数据来源。
++客户机面向 `qemu_cortex_a53` 的 SMP 变体构建，`CMakeLists.txt` 只把 `src/main.c` 编入 `app`，`prj.conf` 打开串口控制台、`CONFIG_ARMV8_A_NS`、`CONFIG_SCHED_CPU_MASK`、`CONFIG_SYSCLOCK_TICKS_PER_SEC=1000` 并关闭时间片。`virq_mailbox` 位于一致性客户机 RAM，每个字段只有一个写入方，宿主侧读取应答，写入 `complete` 与校准请求 `clock_request`；这是“投递是否到达目标 vCPU”与“闲置 vCPU 是否被误唤醒”两条断言的唯一数据来源。
+ 
+ | 字段 | 唯一写入方 | 含义 |
+ | --- | --- | --- |
+@@ -12,11 +12,14 @@
+ | `ready1` | CPU1 | CPU1 已使能 SPI 48 并进入待投递状态 |
+ | `received` | CPU1 的中断服务程序 | CPU1 实际应答的投递次数 |
+ | `parks0` | CPU0 | CPU0 进入挂起的次数，用于证明非目标 vCPU 未被推进 |
++| `clock_request` | 宿主侧测试 | 前后各 32 次时钟校准的请求序号，33 表示开始中断采样 |
++| `clock_ack`、`clock_ticks`、`frequency` | CPU1 | 校准确认、CNTVCT 读数与计数频率 |
++| `isr_ticks[300]` | CPU1 ISR | 每次 ISR 开头的 CNTVCT 读数，各槽仅写一次 |
+ | `complete` | 宿主侧测试 | 宿主确认全部投递与隔离检查结束后允许客户机完成 |
+ 
+ CPU1 在 `consumer_entry()` 中调用 `irq_enable(SOFTWARE_VIRQ)` 后才具备 GICv3 的 SPI 路由亲和性，`software_virq_isr()` 校验中断确实落在 CPU1 且计数未越界，`suspend_cpu()` 通过 `arm_smccc_hvc(PSCI_CPU_SUSPEND_64, ...)` 让两个 CPU 停在自己维度的等待中。CPU0 只在 `main()` 里递增 `parks0` 后挂起，不参与投递计数，因此任何“广播唤醒”都会立刻破坏 `parks0` 与 `received` 的对应关系。
+ 
+-GIC 允许合并同一 pending 位的重复边沿，所以客户机只保留一个未应答中断、确认收到后才允许下一次投递：300 次投递证明的是宿主路径不会丢事件，而不是架构保证的 300 次 ISR。ISR 的 CPU 选择、LR 饱和与优先级规则由既有 `arm_vgic` 测试覆盖，本客户机专门验证真实 SMP 下的挂起与唤醒。
++GIC 允许合并同一 pending 位的重复边沿，所以客户机只保留一个未应答中断、确认收到后才允许下一次投递：300 次投递证明的是宿主路径不会丢事件，而不是架构保证的 300 次 ISR。ISR 的 CPU 选择、LR 饱和与优先级规则由既有 `arm_vgic` 测试覆盖，本客户机验证真实 SMP 下的定向投递与隔离。时钟校准期间 CPU1 主动处理请求，不在挂起状态；测量期间会调用挂起，但不保证每次投递前已重新挂起，因此时延不能解释为纯挂起唤醒成本。
+ 
+ ## 2. 构建资源
+ 
+@@ -50,13 +53,13 @@ flowchart TD
+ | `TOOLCHAIN_ARCHIVE_URL` | ARM GNU-A `10.3-2021.07` 交叉工具链 | 与旧流程一致的编译器；`CROSS_COMPILE` 必须是绝对前缀 |
+ | `PINNED_PYTHON_PACKAGES` | `cmake==4.4.3`、`ninja==1.13.2`、`pyelftools==0.33`、`PyYAML==6.0.3`、`packaging==26.3`、`pykwalify==1.8.0` | CMake/Ninja、ELF 解析与 Zephyr 板级 YAML 校验依赖 |
+ | `BOARD` | `qemu_cortex_a53/qemu_cortex_a53/smp` | Zephyr 双核板级定义 |
+-| `MAILBOX_SYMBOL`、`MAILBOX_SIZE` | `virq_mailbox`、20 字节 | ELF 符号校验对象；大小不符即中止 |
++| `MAILBOX_SYMBOL`、`MAILBOX_SIZE` | `virq_mailbox`、2448 字节 | ELF 符号校验对象；大小不符即中止 |
+ 
+ `VIRQ_CACHE_DIR` 可把缓存移到共享位置，缓存内部分为 `zephyr`、`toolchain`、`venv` 三项，`VIRQ_TOOLCHAIN_SHA256` 可在需要时校验工具链压缩包摘要。源码校验要求检出提交等于 `ZEPHYR_REVISION` 且工作树无改动，避免“用了别人的分支”这种无法复现的输入。
+ 
+ ### 2.2 产物与校验
+ 
+-`inspect_guest()` 从 `.symtab` 读取 `virq_mailbox` 的地址与大小，要求大小等于 20 字节且地址与 ELF 入口都落在客户机 RAM `[0x40000000, 0x48000000)` 内；地址或大小不符时脚本直接失败，不写出半成品资源。`write_vm_config()` 用历史布局写 `vm.toml`：`id = 2`、`cpu_num = 2`、`phys_cpu_ids = [0, 1]`、`kernel_load_addr = 0x40000000`、`dtb_load_addr = 0x47e00000`、`memory_regions = [[0x40000000, 0x08000000, 0x7, 0]]`，`kernel_path` 保持相对路径以便整个输出目录整体搬移。
++`inspect_guest()` 从 `.symtab` 读取 `virq_mailbox` 的地址与大小，要求大小等于 2448 字节且地址与 ELF 入口都落在客户机 RAM `[0x40000000, 0x48000000)` 内；地址或大小不符时脚本直接失败，不写出半成品资源。`write_vm_config()` 用历史布局写 `vm.toml`：`id = 2`、`cpu_num = 2`、`phys_cpu_ids = [0, 1]`、`kernel_load_addr = 0x40000000`、`dtb_load_addr = 0x47e00000`、`memory_regions = [[0x40000000, 0x08000000, 0x7, 0]]`，`kernel_path` 保持相对路径以便整个输出目录整体搬移。
+ 
+ | 产物 | 相对输出目录的路径 | 消费者 |
+ | --- | --- | --- |
+@@ -79,3 +82,20 @@ flowchart TD
+ ### 3.2 未验证项
+ 
+ 本目录的文档与脚本不构成运行证据：固定版本客户机、双 vCPU 挂起语义、资源装入后的路径解析都需要实际执行 `cargo xtask ktest qemu -p axvm --test vcpu_runtime` 才能确认；在真实板卡上的延迟与吞吐同样不在本场景的证明范围内。
++
++校准字段的固定偏移为 request=20、ack=24、ticks=32、frequency=40、ISR 数组=48，整体 8 字节对齐。C 静态断言和 ELF 符号大小校验共同检查布局。CPU1 写时间戳后 release 发布确认；宿主观察确认后执行 DMB 再读取稳定载荷，不把普通字节复制视作原子结构体快照。
++
++
++### Guest-running测量模式
++
++mailbox offset28使用原保留u32作为running_mode，host单写、CPU1 acquire读取，大小仍2448字节。CLOCK_START前保持原校准握手；启用running_mode后，CPU1在采样期用arch_nop循环等待虚拟中断，原模式仍用PSCI suspend。ISR时间戳/received发布和非目标CPU0挂起协议不变。
++
++VIRQ_IRQ_CONTEXT=guest_running要求物理PPI源、三宿主核、CPU2服务和baseline负载，Guest物理映射仍[0,1]。VM资源生成脚本拒绝不满足模式、源、负载和服务配置条件的组合；服务CPU2是否存在由内核诊断初始化校验。具体源所有权与入口定义见vcpu-runtime/README.md第12节。该模式用于低EL IRQ观测链功能验证，不提供真实DRAM/缓存性能结论。
++
++PL031夹具以 VIRQ_SOURCE=pl031_spi 选择，prepare读取实际guest/zephyr/.config并仅在RTC/counter均禁用时写入guest_rtc_unused=true；它不修改Guest IRQ向量或ISR时间戳布局。详细Host设备所有权与测量边界见 ../../vcpu-runtime/README.md 的PL031章节。
++
++
++采样规模由 `VIRQ_SAMPLES`（默认300，范围1..1000）统一传给Guest编译与Host资源。mailbox头48字节不变，尾部数组为N个u64，prepare核验实际ELF符号大小为48+8N；READY/COMPLETE打印实际N。Host拒绝规模不匹配。大规模采集的追踪容量与独立boot分批限制见[运行夹具说明](../../vcpu-runtime/README.md)。
++
++
++`linux_cpu`场景另外调用相邻`linux-load/prepare.py`，验证固定Linux kernel与BusyBox基底SHA，用CROSS_COMPILE静态构建CPU工作程序，经原生`cargo xtask image pack-initramfs`打包。单独Linux资源位于生成输出的linux/目录，仅linux运行配置捆绑它；Zephyr的计数、mailbox与ISR协议保持不变。
+diff --git a/virtualization/axvm/tests/guests/virq/prepare.py b/virtualization/axvm/tests/guests/virq/prepare.py
+index 4dac43972..936dbb238 100644
+--- a/virtualization/axvm/tests/guests/virq/prepare.py
++++ b/virtualization/axvm/tests/guests/virq/prepare.py
+@@ -43,7 +43,13 @@ PINNED_PYTHON_PACKAGES = (
+ )
+ BOARD = "qemu_cortex_a53/qemu_cortex_a53/smp"
+ MAILBOX_SYMBOL = "virq_mailbox"
+-MAILBOX_SIZE = 20
++def sample_count() -> int:
++    """One build input shared by Guest layout and generated Host resources."""
++    value = os.environ.get("VIRQ_SAMPLES", "300")
++    if not value.isascii() or not value.isdecimal() or not 1 <= int(value) <= 1000:
++        raise ValueError("VIRQ_SAMPLES must be an integer between 1 and 1000")
++    return int(value)
++
+ GUEST_RAM_START = 0x4000_0000
+ GUEST_RAM_SIZE = 0x0800_0000
+ DTB_LOAD_ADDR = 0x47E0_0000
+@@ -252,6 +258,7 @@ def build_guest(
+             "-B",
+             str(build_dir),
+             f"-DBOARD={BOARD}",
++            f"-DVIRQ_SAMPLES={sample_count()}",
+             "-DWEST=NOTFOUND",
+             "-DCONFIG_MINIMAL_LIBC=y",
+             f"-DCROSS_COMPILE={cross_compile}",
+@@ -282,10 +289,11 @@ def inspect_guest(elf: Path) -> tuple[int, int]:
+         symbol = matches[0]
+         mailbox = int(symbol["st_value"])
+         size = int(symbol["st_size"])
+-    if size != MAILBOX_SIZE:
+-        raise RuntimeError(f"{MAILBOX_SYMBOL} is {size} bytes, expected {MAILBOX_SIZE}")
++    mailbox_size = 48 + sample_count() * 8
++    if size != mailbox_size:
++        raise RuntimeError(f"{MAILBOX_SYMBOL} is {size} bytes, expected {mailbox_size}")
+     end = GUEST_RAM_START + GUEST_RAM_SIZE
+-    if not GUEST_RAM_START <= mailbox or mailbox + MAILBOX_SIZE > end:
++    if not GUEST_RAM_START <= mailbox or mailbox + mailbox_size > end:
+         raise RuntimeError(
+             f"{MAILBOX_SYMBOL} at 0x{mailbox:x} does not fit guest RAM "
+             f"[0x{GUEST_RAM_START:x}, 0x{end:x})"
+@@ -325,14 +333,64 @@ disabled = []
+ 
+ def write_test_resources(output: Path, entry: int, mailbox: int) -> Path:
+     """Write the initramfs fixture read by the `vcpu_runtime` axtest target."""
++    scenario = os.environ.get("VIRQ_HOST_LOAD", "baseline")
++    if scenario not in ("baseline", "cpu_same_core", "cpu_continuous", "memory_cross_core", "linux_cpu"):
++        raise ValueError(f"unsupported VIRQ_HOST_LOAD: {scenario}")
++    source_kind = os.environ.get("VIRQ_SOURCE", "software")
++    if source_kind not in ("software", "physical_timer_ppi", "pl031_spi"):
++        raise ValueError(f"unsupported VIRQ_SOURCE: {source_kind}")
++    service_placement = os.environ.get("VIRQ_SERVICE_PLACEMENT", "unrestricted")
++    if service_placement not in ("unrestricted", "cpu0", "cpu1", "cpu2"):
++        raise ValueError(f"unsupported VIRQ_SERVICE_PLACEMENT: {service_placement}")
++    irq_context = os.environ.get("VIRQ_IRQ_CONTEXT", "current_el")
++    if irq_context not in ("current_el", "guest_running"):
++        raise ValueError(f"unsupported VIRQ_IRQ_CONTEXT: {irq_context}")
++    if irq_context == "guest_running" and (service_placement != "cpu2" or source_kind != "physical_timer_ppi" or scenario not in ("baseline", "memory_cross_core")):
++        raise ValueError("guest_running requires baseline or memory_cross_core, physical_timer_ppi and cpu2 services")
++    if scenario == "linux_cpu" and (source_kind != "pl031_spi" or service_placement != "cpu0" or irq_context != "current_el"):
++        raise ValueError("linux_cpu requires current_el, pl031_spi and cpu0 services")
++    irq_service = os.environ.get("VIRQ_IRQ_SERVICE", "off")
++    if irq_service not in ("off", "inherit", "bounded"):
++        raise ValueError(f"unsupported VIRQ_IRQ_SERVICE: {irq_service}")
++    irq_service_rounds = int(os.environ.get("VIRQ_IRQ_SERVICE_ROUNDS", "8"))
++    irq_service_window_us = int(os.environ.get("VIRQ_IRQ_SERVICE_WINDOW_US", "1000"))
++    if not 1 <= irq_service_rounds <= 256 or not 100 <= irq_service_window_us <= 100000:
++        raise ValueError("IRQ service dispatch limit out of range")
++    witness = os.environ.get("VIRQ_INVERSION_WITNESS", "0")
++    if witness not in ("0", "1"):
++        raise ValueError("VIRQ_INVERSION_WITNESS must be 0 or 1")
++    inversion_witness = witness == "1"
++    if inversion_witness and (scenario != "baseline" or source_kind != "physical_timer_ppi" or irq_context != "current_el" or service_placement != "cpu0"):
++        raise ValueError("inversion witness requires baseline/current_el/PPI/CPU0 services")
++    memory_bytes = int(os.environ.get("VIRQ_MEMORY_BYTES", str(16*1024*1024)))
++    if not 1024*1024 <= memory_bytes <= 64*1024*1024 or memory_bytes % 8192:
++        raise ValueError(f"unsupported VIRQ_MEMORY_BYTES: {memory_bytes}")
++    guest_rtc_unused = False
++    if source_kind == "pl031_spi":
++        guest_config = (output / "guest/zephyr/.config").read_text()
++        guest_rtc_unused = ("# CONFIG_COUNTER is not set" in guest_config
++                            and "# CONFIG_RTC is not set" in guest_config)
++        if not guest_rtc_unused:
++            raise ValueError("pl031_spi requires Guest RTC/counter drivers disabled")
+     resources = output / "resources/tests"
+     resources.mkdir(parents=True, exist_ok=True)
+     fixture = resources / "vcpu-runtime.toml"
+     fixture.write_text(
+         f"""# Generated by virtualization/axvm/tests/guests/virq/prepare.py.
+ # `entry` and `mailbox` stay fixed for the pinned guest revision.
++samples = {sample_count()}
+ entry = 0x{entry:x}
+ mailbox = 0x{mailbox:x}
++scenario = "{scenario}"
++source = "{source_kind}"
++memory_bytes = {memory_bytes}
++service_placement = "{service_placement}"
++irq_context = "{irq_context}"
++irq_service = "{irq_service}"
++irq_service_rounds = {irq_service_rounds}
++irq_service_window_us = {irq_service_window_us}
++inversion_witness = {str(inversion_witness).lower()}
++guest_rtc_unused = {str(guest_rtc_unused).lower()}
+ """
+     )
+     return fixture
+@@ -345,11 +403,15 @@ def parse_args() -> argparse.Namespace:
+     parser.add_argument("--output", type=Path, default=None, help="generated resource directory")
+     parser.add_argument("--cache-dir", type=Path, default=None, help="Zephyr/toolchain/venv cache")
+     parser.add_argument("--jobs", default=str(os.cpu_count() or 4), help="parallel guest build jobs")
++    parser.add_argument("--linux-peer", action="store_true", help="require the dual-Guest runtime resource profile")
+     return parser.parse_args()
+ 
+ 
+ def main() -> int:
+     args = parse_args()
++    sample_count()  # Reject invalid scale before toolchain setup or any build.
++    if args.linux_peer != (os.environ.get("VIRQ_HOST_LOAD", "baseline") == "linux_cpu"):
++        raise ValueError("linux_cpu requires matching Linux peer runtime configuration")
+     cache = (args.cache_dir or default_cache()).resolve()
+     cache.mkdir(parents=True, exist_ok=True)
+     python = ensure_python_runtime(cache)
+@@ -372,6 +434,8 @@ def main() -> int:
+     )
+     entry, mailbox = inspect_guest(elf)
+     config = write_vm_config(output, elf.with_name("zephyr.bin"), entry)
++    if os.environ.get("VIRQ_HOST_LOAD", "baseline") == "linux_cpu":
++        run([sys.executable, str(Path(__file__).resolve().parent.parent / "linux-load/prepare.py"), "--output", str(output)])
+     fixture = write_test_resources(output, entry, mailbox)
+     print(f"[virq] zephyr={ZEPHYR_REVISION} entry=0x{entry:x} mailbox=0x{mailbox:x}")
+     print(f"[virq] vm config {config}")
+diff --git a/virtualization/axvm/tests/guests/virq/src/main.c b/virtualization/axvm/tests/guests/virq/src/main.c
+index 4178034e1..3ec52f8e5 100644
+--- a/virtualization/axvm/tests/guests/virq/src/main.c
++++ b/virtualization/axvm/tests/guests/virq/src/main.c
+@@ -1,17 +1,25 @@
+ #include <stdint.h>
++#include <stddef.h>
+ #include <zephyr/arch/arm64/arm-smccc.h>
+ #include <zephyr/irq.h>
+ #include <zephyr/kernel.h>
+ #include <zephyr/dt-bindings/interrupt-controller/arm-gic.h>
+ 
+ #define SOFTWARE_VIRQ 48
++#ifndef SAMPLE_COUNT
+ #define SAMPLE_COUNT 300
++#endif
++#if SAMPLE_COUNT < 1 || SAMPLE_COUNT > 1000
++#error "SAMPLE_COUNT must be between 1 and 1000"
++#endif
+ #define TIMER_IRQ 27
+ #define PSCI_CPU_SUSPEND_64 0xc4000001UL
+ #define PSCI_SYSTEM_OFF_32 0x84000008UL
+ 
+ /* Test-only mailbox in normal coherent guest RAM. Each word has one writer:
+- * CPU0 owns ready0/parks0, CPU1 owns ready1/received, host owns complete.
++ * CPU0 owns ready0/parks0. CPU1 release-publishes clock replies and ISR
++ * timestamps. Host owns complete/clock_request; reply payloads remain stable
++ * until the next request, and each ISR slot is written only once.
+  * The build tool obtains its GPA from the ELF symbol, never a guessed address.
+  */
+ struct virq_mailbox {
+@@ -20,8 +28,36 @@ struct virq_mailbox {
+ 	uint32_t received;
+ 	uint32_t parks0;
+ 	uint32_t complete;
++	uint32_t clock_request;
++	uint32_t clock_ack;
++	uint32_t running_mode;
++	uint64_t clock_ticks;
++	uint64_t frequency;
++	uint64_t isr_ticks[SAMPLE_COUNT];
+ };
+ struct virq_mailbox virq_mailbox;
++_Static_assert(offsetof(struct virq_mailbox, clock_ticks) == 32, "clock layout");
++_Static_assert(offsetof(struct virq_mailbox, isr_ticks) == 48, "ISR layout");
++_Static_assert(sizeof(struct virq_mailbox) == 48 + SAMPLE_COUNT * 8, "mailbox size");
++
++static uint64_t counter_ticks(void)
++{
++    uint64_t ticks;
++    /* CNTVCT is direct; CNTPCT is trapped by the hypervisor. ISB and the
++     * compiler memory clobber delimit the C ISR observation point. */
++    __asm__ volatile("isb; mrs %0, cntvct_el0; isb" : "=r"(ticks) : : "memory");
++    return ticks;
++}
++
++static void clock_reply(void)
++{
++    uint32_t request = __atomic_load_n(&virq_mailbox.clock_request, __ATOMIC_ACQUIRE);
++    uint32_t ack = __atomic_load_n(&virq_mailbox.clock_ack, __ATOMIC_RELAXED);
++    if (request != 0 && request != 33 && request != ack && request <= 65) {
++        virq_mailbox.clock_ticks = counter_ticks();
++        __atomic_store_n(&virq_mailbox.clock_ack, request, __ATOMIC_RELEASE);
++    }
++}
+ 
+ static void suspend_cpu(void)
+ {
+@@ -35,12 +71,14 @@ static void suspend_cpu(void)
+ 
+ static void software_virq_isr(const void *arg)
+ {
++	uint64_t ticks = counter_ticks();
+ 	ARG_UNUSED(arg);
+ 	uint32_t count = __atomic_load_n(&virq_mailbox.received, __ATOMIC_RELAXED);
+ 	if (arch_curr_cpu()->id != 1 || count >= SAMPLE_COUNT) {
+ 		printk("SOFTWARE VIRQ FAIL cpu=%d count=%u\n", arch_curr_cpu()->id, count);
+ 		k_panic();
+ 	}
++	virq_mailbox.isr_ticks[count] = ticks;
+ 	__atomic_store_n(&virq_mailbox.received, count + 1, __ATOMIC_RELEASE);
+ }
+ 
+@@ -55,17 +93,30 @@ static void consumer_entry(void *a, void *b, void *c)
+ 	/* Enabling the SPI on CPU1 sets its GICv3 routing affinity to CPU1. */
+ 	irq_enable(SOFTWARE_VIRQ);
+ 	irq_disable(TIMER_IRQ);
++    uint64_t frequency;
++    __asm__ volatile("mrs %0, cntfrq_el0" : "=r"(frequency));
++    virq_mailbox.frequency = frequency;
+ 	__atomic_store_n(&virq_mailbox.ready1, 1, __ATOMIC_RELEASE);
++    while (__atomic_load_n(&virq_mailbox.clock_request, __ATOMIC_ACQUIRE) != 33) {
++        clock_reply();
++        arch_nop();
++    }
+ 	while (__atomic_load_n(&virq_mailbox.received, __ATOMIC_ACQUIRE) < SAMPLE_COUNT) {
+-		suspend_cpu();
++        if (__atomic_load_n(&virq_mailbox.running_mode, __ATOMIC_ACQUIRE)) {
++            arch_nop();
++        } else {
++            suspend_cpu();
++        }
+ 	}
+ 	/* The host acknowledges that it checked all deliveries and idle-CPU
+ 	 * isolation before we power off. No additional interrupt is injected.
+ 	 */
+ 	while (!__atomic_load_n(&virq_mailbox.complete, __ATOMIC_ACQUIRE)) {
++        clock_reply();
+ 		arch_nop();
+ 	}
+-	printk("SOFTWARE VIRQ COMPLETE streams=1 samples_each=300 total=300\n");
++	printk("SOFTWARE VIRQ COMPLETE streams=1 samples_each=%u total=%u\n",
++               SAMPLE_COUNT, SAMPLE_COUNT);
+ 	struct arm_smccc_res res;
+ 	arm_smccc_hvc(PSCI_SYSTEM_OFF_32, 0, 0, 0, 0, 0, 0, 0, &res);
+ 	k_panic();
+@@ -82,7 +133,7 @@ int main(void)
+ 	}
+ 	k_thread_start(&consumer_thread);
+ 	irq_disable(TIMER_IRQ);
+-	printk("SOFTWARE VIRQ READY suspend vector=48 samples=300\n");
++	printk("SOFTWARE VIRQ READY suspend vector=48 samples=%u\n", SAMPLE_COUNT);
+ 	__atomic_store_n(&virq_mailbox.ready0, 1, __ATOMIC_RELEASE);
+ 	for (;;) {
+ 		__atomic_fetch_add(&virq_mailbox.parks0, 1, __ATOMIC_RELEASE);
+diff --git a/virtualization/axvm/tests/support/mod.rs b/virtualization/axvm/tests/support/mod.rs
+index d3677950c..9e290b331 100644
+--- a/virtualization/axvm/tests/support/mod.rs
++++ b/virtualization/axvm/tests/support/mod.rs
+@@ -37,45 +37,68 @@ pub fn with_vm(
+     policy: SchedulePolicy,
+     workload: impl FnOnce(&mut Fixture) -> Result<()>,
+ ) -> Result<()> {
++    with_vms([(config_path, policy)], |fixtures| {
++        workload(&mut fixtures[0])
++    })
++}
++
++/// Shares one registry and final shutdown owner across all guest fixtures.
++pub fn with_vms<const N: usize>(
++    plans: [(&str, SchedulePolicy); N],
++    workload: impl FnOnce(&mut [Fixture; N]) -> Result<()>,
++) -> Result<()> {
++    ensure!(N > 0, "empty VM fixture group");
+     axvm::boot::init_guest_boot_resources();
+     let manager = VmManager::new().context("enable host virtualization")?;
+     let result = (|| {
+-        let serial = Arc::new(ConsoleFactory::default());
+-        let plan = prepare_plan(config_path, policy, serial.clone())?;
+-        let vm = manager.create(plan)?.wait().context("create VM")?;
+-        let mut fixture = Fixture {
+-            vm,
+-            serial,
+-            console_generation: None,
+-            transcript: String::new(),
+-            pending_line: String::new(),
+-            scratch: Vec::with_capacity(CONSOLE_QUEUE_BYTES),
+-        };
+-        ensure!(
+-            fixture
+-                .vm
+-                .snapshot()
+-                .vcpu
+-                .iter()
+-                .all(|cpu| cpu.host_base_policy.is_none()),
+-            "an inactive VM reports a host task"
+-        );
+-        let result = workload(&mut fixture);
+-        fixture.flush_console()?;
++        let mut fixtures = Vec::with_capacity(N);
++        for (path, policy) in plans {
++            let serial = Arc::new(ConsoleFactory::default());
++            let plan = prepare_plan(path, policy, serial.clone())?;
++            let vm = manager.create(plan)?.wait().context("create VM")?;
++            let fixture = Fixture {
++                vm,
++                serial,
++                console_generation: None,
++                transcript: String::new(),
++                pending_line: String::new(),
++                scratch: Vec::with_capacity(CONSOLE_QUEUE_BYTES),
++            };
++            ensure!(
++                fixture
++                    .vm
++                    .snapshot()
++                    .vcpu
++                    .iter()
++                    .all(|cpu| cpu.host_base_policy.is_none()),
++                "an inactive VM reports a host task"
++            );
++            fixtures.push(fixture);
++        }
++        let mut fixtures: [Fixture; N] = fixtures
++            .try_into()
++            .map_err(|_| anyhow::anyhow!("fixture group length mismatch"))?;
++        let mut result = workload(&mut fixtures);
++        for fixture in &mut fixtures {
++            if let Err(error) = fixture.flush_console() {
++                if result.is_ok() {
++                    result = Err(error);
++                }
++            }
++        }
+         result
+     })();
+-    let cleanup = manager
++    if let Err(error) = manager
+         .shutdown()
+-        .context("destroy VMs and join control tasks");
+-    // Always observe cleanup even when the workload failed. A guest marker can
+-    // never finish the axtest case before this join has completed.
+-    if let Err(error) = cleanup {
++        .context("destroy VMs and join control tasks")
++    {
+         return Err(error.context(format!("workload outcome: {result:?}")));
+     }
+     ensure!(
+         manager.list().is_empty(),
+         "VM registry retained a destroyed instance"
+     );
++    println!("VIRQ_VM_GROUP_RETIRED count={N} empty=1");
+     result
+ }
+ 
+diff --git a/virtualization/axvm/tests/vcpu-runtime/README.md b/virtualization/axvm/tests/vcpu-runtime/README.md
+index becdd3059..a9454c1bc 100644
+--- a/virtualization/axvm/tests/vcpu-runtime/README.md
++++ b/virtualization/axvm/tests/vcpu-runtime/README.md
+@@ -61,3 +61,170 @@
+ ### 3.2 在 CI 中的登记
+ 
+ `.github/ci/checks/axvisor.toml` 的 AArch64 QEMU 作业同时登记本测例：`package = "axvm"`、`test = "vcpu_runtime"`、`arch = "aarch64"` 以及上面两个配置文件路径。规划器会用这份登记校验包、测试目标与配置文件确实存在，并把改动这两个文件或其所在目录的拉取请求路由到同一个作业。
++
++## 4. 宿主侧测量样本
++
++测试在 Fair 和 FIFO(80) 下各记录 300 条 `VIRQ_HOST_SAMPLE`，字段为策略、从 1 开始的样本序号、`pulse_ns` 与 `ack_observed_ns`。前者测量宿主调用 `interrupt.pulse()` 的耗时；后者测量调用前至宿主观察到 Guest 确认计数的时间。两者使用同一宿主 `Instant` 时钟，单位为纳秒，样本缓存在测试任务中并在全部投递完成后输出，采样区间不打印样本。
++
++`ack_observed_ns` 包含宿主控制台处理、Guest 内存读取、调度等待及最多多轮 1 ms 休眠轮询；它不是 ISR 时间戳，也不用于推导中断延迟或其上界。`pulse_ns` 也不代表目标 vCPU 已完成注入。采样序列只保证一个未确认投递，不保证每次投递前目标 vCPU 已重新挂起，因此不能把它称为纯唤醒延迟。QEMU 数据用于验证测量链路，不能替代真板实时性结论。300 个样本不足以稳定估计 P99.9；不添加性能通过门槛，正确性仍由原有投递、隔离、代次和清理断言判定。
++
++## 5. Guest ISR 时间戳与时钟校准
++
++每策略额外导出 300 条 `VIRQ_ISR_SAMPLE` 与 64 条 `VIRQ_CLOCK_SAMPLE`。ISR 在 C 函数开头以 ISB + CNTVCT + ISB 记录虚拟计数；宿主通过已有物理计数接口并追加 ISB 记录投递前与确认后的计数。CNTPCT 在当前 Guest 中被模拟，故不将它用作低开销探针。宿主还验证 Guest 与宿主频率相等且非零。
++
++采样前后各 32 次独立请求—应答：宿主 H0 写请求，Guest 记录 G 后 release 发布确认，宿主观察后用 DMB 读取稳定载荷并记录 H1。恒定偏移 O 必须位于每个 [H0-G,H1-G] 区间的交集；空交集、超时、频率不符或 ISR 不在投递与确认的因果窗口内均失败。所有原始计数和频率在采样后输出，允许离线重新计算，不假定往返对称。
++
++时钟校准仅检查有限观测区间的相容性，不证明永久同步、无漂移或硬实时上界。结果定位至 Guest C ISR，含 Guest 向量分发；插桩本身有开销。序列保持单个未确认中断，但不是每次投递前都确认目标已挂起。QEMU 仅验证协议，真板性能仍需单独测量。
++
++## 6. 有界运行路径追踪
++
++AArch64 的 `axtest` 配置提供 `axvm::diagnostics` 观测接口；默认生产构建整体移除模块与插桩点。本测例在 Guest 启动前一次性初始化每 CPU 16384 槽的缓冲区，两个 CPU 的槽载荷约 1.25 MiB，不在热路径分配、打印或取得任务/rq 锁。槽只追加不覆盖；冻结门、在途写入计数和 release/acquire 提交协议保证快照完整性。容量耗尽或未提交记录使测试失败。
++
++`VIRQ_RUNTIME` 导出 CPU、每 CPU 连续序号、宿主物理计数、事件类别、带代际的线程 ID 及两个事件载荷；Binding 的载荷为 VM ID/vCPU ID。事件包括 IrqKick、WakeBegin/End、Running/Stopped 和 GuestEntryBoundary。切入/切出复用既有线程扩展回调；Entry 位于 VGIC bank load 后与低层 run 之前，仍包含寄存器恢复开销。WakeEnd 可能晚于远端 Running，它不是精确就绪队列发布时间。
++
++所有 VM 及线程清理完成后才冻结并输出追踪；`VIRQ_RUNTIME_SUMMARY` 的记录总数、dropped 和 incomplete 必须与导出一致。另有 128 条 `VIRQ_TRACE_ENVELOPE` 测量 Marker 调用与两端计时的整体包络，包括可能的抢占，不是所有插桩点的纯执行成本或硬实时上界。缺失切入、目标已运行、时钟区间内事件以及多事件歧义必须保留，不能拼接为有利的串行样本。
++
++新增 Ready/enqueue 队列边界见第 7 节。QEMU 仅验证关联和失败传播；其他板卡 axtest 目标中的插桩门默认关闭，但其性能影响仍需真板复核，不能从本测例推断已无影响。
++
++## 7. 调度队列 Ready 观测
++
++`ax-task` 在 `cfg(axtest)` 下提供一次安装、禁止替换的 `ReadyTraceHook`，在直接唤醒入队、on-rq 恢复和 owner 入队的状态更新后、释放队列锁前调用。AxVM 通过既有线程扩展 ops 身份过滤 vCPU，不新建线程登记表；回调只进行身份比较、计数器读取和有界原子写入，不取得任务/rq 锁，不分配或通知。默认生产构建移除调度插桩。`cargo xtask ktest` 会统一提供该 cfg。
++
++`ReadyEnqueue` 的 thread 为带代际的目标线程，value0 为目标 CPU，value1 的低 8 位是路径原因（1 DirectWake、2 OnRunQueueWake、3 OwnerWake、4 OwnerYield、5 OwnerPreempted、6 OwnerReplenished、7 OwnerMigrated、8 OwnerPolicyChanged），第 8 位表示更新前仍占用 CPU。观察 CPU 可以不同于目标 CPU。on_cpu、迁移、让出或策略变化不能直接当成一次新的 wake-to-run 等待。
++
++这是队列锁内的软件入队边界，不是物理 CPU 已开始执行，也不是纯调度策略排队时长；Ready 到 Running 包含后续提交、锁释放和调度。Deadline 仍被 throttled 的早退不记为 Ready。
++
++`VIRQ_READY_SUMMARY` 给出事件数量，缺少 Ready 记录会让测例失败。测例还验证试图替换已安装观察者会被拒绝；完整运行继续验证原观察者真实产出事件。离线必须按线程代际、样本窗口、路径、on_cpu 与目标 CPU 关联，保留歧义和缺失样本。
++
++
++## 8. 采样区间同核 CPU 负载
++
++默认生成的 fixture 为 baseline。运行同一 ktest 命令时设置
++`VIRQ_HOST_LOAD=cpu_same_core`，准备脚本将场景写入资源文件，非法值报错。
++控制线程固定 CPU0；负载线程在 VM 启动前绑定 CPU1，完成首批工作后阻塞。
++前校准完成且 CLOCK_START 发布后才启用连续计算，每批8192次整数递推并主动 yield。
++负载的完整所有者位于 with_vm 外：VM 正常/错误清理结束后才 stop 和 join，
++避免 FIFO Guest 忙等阶段压制较低优先级线程导致启停互等。
++
++VIRQ_LOAD_SAMPLE 保留每条 submit→确认观察窗口内的批次计数；
++VIRQ_LOAD_SUMMARY 保留区间与最终批次、线程身份、错核次数、checksum 及 joined。
++单条窗口无工作进展仍保留；整个采样区间无进展或错核会使测试失败。
++统计并不证明该工作先于 ISR，也不代表恒定 CPU 利用率。
++所有事件在采样后打印；setup 定位标记不会进入测量区间。
++默认 baseline 不创建负载，同样固定控制线程，便于同版本对照。
++
++这是宿主负载的测量验证，不能代替普通 VM 干扰或真板性能证据。
++设置 `VIRQ_HOST_LOAD=cpu_continuous` 时，在 VM 启动前启用持续计算，
++额外输出每策略的 VIRQ_LOAD_BOOT_WORK 批次，保留启动期和采样期的不同窗口。
++三种场景均须显式记录，不能把门控负载日志重标为持续负载。
++
++持续负载曾使 FIFO VM 启动停顿。现场确认是宿主 counted-wake 循环反复
++notify_one，在每次释放抢占保护后重复选中已经重新等待的高优先级 vCPU；
++控制 owner 因而无法完成 admission 打开。WaitQueue 现按通知开始时的登记序号
++上界限制选择范围，ArceOS API 复用 notify_n；原来的持续负载场景和通用
++wait-queue 重入回归均已通过。精确 ELF、旧现场和修复证据由研究记录归档。
++这个正确性修复不构成论文优化收益，队列广播批次自身的有界成本仍需计量。
++
++
++## 9. CNTP 物理 PPI 路径
++
++默认 `VIRQ_SOURCE=software` 保留原软件 edge；设置
++`VIRQ_SOURCE=physical_timer_ppi` 使用 QEMU virt 的 CPU0 CNTP 比较器和 PPI30。
++本机器 FDT 的 timer interrupts 第1项（从0计数）为 PPI14，即 INTID30；
++它必须与宿主 clockevent 不同，且硬件 CNTP 未启用，才允许独占注册。
++这份固定QEMU夹具不能用作真板的源发现逻辑。
++
++每次只编程一个约1ms后的deadline，等Guest确认再处理下一次；
++handler先关闭源电平，再调用已有IRQ-safe port。所有资源在VM停止前
++停止、disable/synchronize/free并恢复寄存器，错误返回也走同一守卫清理。
++各策略输出 VIRQ_PHYSICAL_ARM 与 VIRQ_PHYSICAL_SUMMARY。
++
++HostIrqEntry 的时间取自 HostGuestTrap::current_irq 回调开始，
++在IAR之前；向量保存和axcpu构造InterruptedContext的包装代码已经执行。
++当前实验要求600条该current-EL路径记录，不能补造缺失入口。
++它是内部物理PPI，不代表外设SPI、引脚到达时间或Guest-running低EL入口。
++
++VIRQ_SOURCE 明确区分日志来源。兼容日志中的pulse_ns在物理模式表示宿主
++arm提交耗时，分析器改名timer_arm_ns；submit到ISR亦改名timer_arm_to_c_isr。
++真正的回调入口到ISR区间需通过物理分析器关联入口和独立时钟校准后取得，
++不能把编程的1ms或确认轮询当作该区间。
++
++
++## 10. 三CPU跨核内存工作集
++
++使用同目录 build-aarch64-memory.toml 与 qemu-aarch64-memory.toml，
++设置 VIRQ_HOST_LOAD=memory_cross_core，VIRQ_MEMORY_BYTES 为字节数
++（默认16777216，范围1–64MiB，8192字节对齐）。源仍由VIRQ_SOURCE独立选择。
++普通两CPU配置会明确拒绝不可用的CPU2；三CPU baseline使用同一配置但不创建负载。
++
++控制与物理源在CPU0、目标vCPU在CPU1、内存worker固定CPU2。既有contention
++启停/join协议同时承载计算和内存两种具体工作，不改生产调度策略。
++私有工作集初始化word[i]=i，每批1024个u64各做一次volatile读/加一/写，
++分批yield；完成批次才更新计数。停止后逐word检查完整循环与剩余chunk，
++输出VIRQ_MEMORY_SUMMARY的逻辑读写字节、checksum、verified_words和joined。
++内存不与其他任务、Guest或DMA共享，错误更新会使整个测例失败。
++
++逻辑字节不等于缓存行填充、DRAM访问或PMU事件；初始化与最终验证不计入循环流量，
++窗口边界还可能横跨未完成chunk。signal worker和管理任务仍可能使用CPU2，
++因此该场景不能宣称纯带宽干扰。QEMU只验证功能，真实缓存容量、拓扑、
++PMU归属与板卡性能需要独立测量。
++
++
++## 11. 宿主服务亲和性
++
++用 VIRQ_SERVICE_PLACEMENT=cpu0 在任何 VM 创建前固定 control 与 run signal worker 到 CPU0，避免它们在 CPU2 与内存 worker 调度竞争。缺省 unrestricted 保留原线程放置。两种模式必须使用同版本及相同 CPU 数比较；控制两个服务不等于隔离所有宿主活动，也不提供真实 DRAM 干扰证据。
++
++本配置只编译到 AArch64 axtest。沿用 ThreadBuilder affinity，在 prepare/spawn 前设置，原有 extension、发布/激活和 stop/join 协议保持原流程。局部 probe 在任务进入、工作迭代和退出观察 CPU；销毁/join 后校验每个角色的 started/finished、observations 与 wrong_cpu，错核导致整套失败。输出 VIRQ_SERVICE_PLACEMENT、逐线程 VIRQ_SERVICE_THREAD 及汇总 VIRQ_SERVICE_SUMMARY；原子汇总只在退出时更新，热循环不打印。
++
++物理 PPI 对照与内存场景均可在第10节命令增加该环境变量。CPU0同时承担测量控制器和IRQ源，仍需记录该服务路径与测量开销；默认模式没有位置保证。配置不支持在VM运行中切换。
++
++
++## 12. Guest执行期间的PPI
++
++设置 VIRQ_IRQ_CONTEXT=guest_running、VIRQ_SERVICE_PLACEMENT=cpu2、VIRQ_HOST_LOAD=baseline 和 VIRQ_SOURCE=physical_timer_ppi，使用第10节的三宿主核build/QEMU配置。保留Guest映射[0,1]：控制器CPU0使用默认策略，目标Guest vCPU1在CPU1持续执行，control/signal服务固定CPU2。该组合接受baseline或memory_cross_core；后者使用CPU3内存worker，必须使用四宿主核配置。
++
++复用mailbox offset28的保留word为running_mode，host在CLOCK_START前写入并用DMB发布，Guest acquire读取并以arch_nop代替采样期的PSCI suspend；大小仍2448字节，原时钟/ISR偏移不变。CPU1的CNTP/PPI30由CPU0控制者通过既有同步hard-call入口操作；请求存于调用者栈，回调有界、IRQ关闭、无分配且不保留指针。先独占disabled PPI，再确认bank未启用；结束先mask、disable/synchronize/free，再恢复原inactive bank和释放观察器，远程恢复失败时保留原状态供清理重试。
++
++ax-cpu的可选virtualization-trace特性在低EL IRQ保存GPR后、读取IAR前采样CNTPCT，经Exit交还已恢复的宿主上下文。AxVM axtest启用该特性；生产默认不含该字段或读写指令。HostIrqEntry.value1=2表示低EL汇编点，1仍表示current-EL回调（保存GPR及Rust上下文包装后、IAR前）。事件原点逐样本保留；current-EL事件不会被删除以伪造全部Guest执行期间中断。
++
++默认VIRQ_IRQ_CONTEXT=current_el保留CPU0源到CPU1挂起目标的原夹具。两种条件的源CPU和Guest运行状态不同，不可将时延差异直接当作策略收益；均不是外设引脚到达、向量第一指令或真板性能证据。新增向量读时钟开销仍需实板审计。静态检查共享同一Cargo目录时串行执行，避免不同目标构建的future-incompatibility报告交错。
++
++
++## 13. 低EL与持续内存工作集组合
++
++使用 build-aarch64-memory-running.toml 和 qemu-aarch64-memory-running.toml，保持四宿主CPU，并设置 VIRQ_IRQ_CONTEXT=guest_running、VIRQ_SERVICE_PLACEMENT=cpu2、VIRQ_SOURCE=physical_timer_ppi。VIRQ_HOST_LOAD 分别设置 baseline 与 memory_cross_core 形成同拓扑对照；内存大小仍由 VIRQ_MEMORY_BYTES 控制。
++
++CPU0控制、CPU1源/Guest目标、CPU2服务、CPU3内存工作集。内存CPU由IRQ上下文派生并打印在VIRQ_MEMORY_CONFIG/SUMMARY，current_el原场景仍使用CPU2；普通三核配置运行组合会明确拒绝不可用CPU3，不能退回服务核。复用原stop/join与全量word校验，不增加共享缓冲区。两个指定服务与内存worker分核不意味着隔离全部宿主活动；QEMU数据仍不证明DRAM干扰或机制收益。
++
++
++## 14. Host-owned PL031 SPI source
++
++设置 VIRQ_SOURCE=pl031_spi、VIRQ_IRQ_CONTEXT=current_el、VIRQ_SERVICE_PLACEMENT=cpu0、VIRQ_HOST_LOAD=baseline，使用原双核build/QEMU配置。准备脚本检查实际Guest构建未启用RTC/counter；运行期禁止Guest passthrough并核对FDT及PL031标识。宿主独占SPI34，以现有RTC驱动编程当前秒的match，在ISR内mask/clear后发布虚拟vector48到CPU1目标。这是QEMU特定的Host-owned设备源，不是assigned-SPI直通、真实引脚或周期吞吐基准。
++
++两个新增驱动只读方法用于MR/IMSC准入及恢复读回。单一Rtc对象存于IRQ-safe寄存器bank；任务先disable精确IRQ再持锁，callback释放bank后才发布Guest通知。结束disable、mask/clear、synchronize/free，再恢复MR0/IMSC0并释放观察器与Rtc；清理失败隔离借用标记而不发布别名。永久Device映射通过ax-mm iomap取得，不由此测试撤销。
++
++VIRQ_RTC_CONFIG、逐样本VIRQ_RTC_ARM match_seconds及VIRQ_RTC_SUMMARY明确设备、计数、源退休及寄存器状态。RTC秒计数没有Host due_ticks含义。既有VIRQ_HOST_SAMPLE pulse_ns字段在此模式由分析器重命名rtc_arm_ns；入口来自current-EL保存GPR及Rust包装后/IAR前，并不是物理信号到达时间。必须保留全部ISR样本与Ready状态；QEMU功能通过不支持真板性能或硬实时结论。
++
++
++## 15. 有界采样规模
++
++`VIRQ_SAMPLES` 可设为1..1000的整数，默认300，单位是每策略的中断响应条数。prepare以该输入编译Guest尾部ISR数组，校验实际ELF mailbox大小，并生成Host的samples字段；READY/COMPLETE、Host统计和设备注销计数必须一致。启动时输出唯一的 `VIRQ_MEASUREMENT samples_per_policy=N`。Host在READY完整行核对规模后才投递，拒绝陈旧或混配资源。
++
++已有300条历史日志没有新声明，分析器仍按300验证；新规模必须有明确声明，不能从实际行数推断预期数。声明重复、越界、缺样本或源汇总计数不匹配均失败。每CPU追踪仍为16384条；允许配置1000不保证任意负载都能容纳，溢出使整个测例失败。扩展采集采用独立boot分批，保留每次原始日志、校准、二进制及退出状态；不在活跃写者存在时清空缓冲，不把多boot直接当IID样本合并，也不把样本最大值称为WCET。
++
++```sh
++VIRQ_SAMPLES=500 VIRQ_SOURCE=pl031_spi VIRQ_SERVICE_PLACEMENT=cpu0 \
++  cargo xtask ktest qemu -p axvm --test vcpu_runtime --arch aarch64 \
++  --config virtualization/axvm/tests/vcpu-runtime/build-aarch64-unknown-none-softfloat.toml \
++  --qemu-config virtualization/axvm/tests/vcpu-runtime/qemu-aarch64.toml
++```
++
++
++## 16. 普通Linux VM计算场景
++
++`VIRQ_HOST_LOAD=linux_cpu`使用同一VmManager同时拥有Linux VM1与实时VM2，控制/源/服务CPU0、实时目标CPU1、Linux单vCPU固定CPU3；Linux使用virtualized、分配RAM和空passthrough，用户程序有连续批次/checksum协议。使用`vcpu-runtime/linux/`下的四核8GiB build/QEMU/资源配置，并显式提供已校验的VIRQ_LINUX_KERNEL和VIRQ_LINUX_INITRAMFS_BASE路径。默认单VM资源配置不捆绑Linux。
++
++Guest逻辑CPU0不是Host CPU0。Linux串口进度在实时计时窗外排空，按8192次/批、256批/报告核验，不能作精确DRAM流量或单条ISR内的工作计数。采样与后校准后以Host stop停止Linux，再导出实时数据；全部服务销毁/join后才freeze。保留有界追踪和溢出失败，不把QEMU通过当作实板瓶颈或吞吐收益。
++
++
++A0仅在AArch64 axtest启用：VIRQ_IRQ_SERVICE=off/inherit/bounded。后两态对FIFO目标继承其等级，bounded限制每run的worker派发轮数；VIRQ_IRQ_SERVICE_ROUNDS范围1..256、VIRQ_IRQ_SERVICE_WINDOW_US范围100..100000，默认8轮/1ms。该限额不是IRQ数量、CPU执行预算、滑动窗口保证或Deadline感知算法。VIRQ_IRQ_SERVICE与VIRQ_IRQ_SERVICE_JOIN记录实际base策略和join结果。VIRQ_INVERSION_WITNESS=1仅用于baseline/current-EL/PPI/CPU0服务的有限FIFO60阻挡判定，禁止混入普通性能分布。50ms限额压力配置也单列分析。
+diff --git a/virtualization/axvm/tests/vcpu_runtime.rs b/virtualization/axvm/tests/vcpu_runtime.rs
+index b5b3bd21c..fbe6f8f9f 100644
+--- a/virtualization/axvm/tests/vcpu_runtime.rs
++++ b/virtualization/axvm/tests/vcpu_runtime.rs
+@@ -6,15 +6,30 @@
+ use ax_runtime as _;
+ use ax_std as _;
+ 
++#[path = "support/clock.rs"]
++mod clock;
++#[path = "support/contention.rs"]
++mod contention;
++#[path = "support/inversion.rs"]
++mod inversion;
++#[path = "support/linux.rs"]
++mod linux;
++#[path = "support/physical.rs"]
++mod physical;
++#[path = "support/rtc_spi.rs"]
++mod rtc_spi;
+ mod support;
+ 
+-use std::time::{Duration, Instant};
++use std::{
++    time::{Duration, Instant},
++    vec::Vec,
++};
+ 
+ use anyhow::{Context, Result, ensure};
+ use axvm::{GuestMemoryPort, GuestPhysAddr, RtPriority, SchedulePolicy, VmStatus};
+ use support::Fixture;
+ 
+-const SAMPLES: u32 = 300;
++const MAX_SAMPLES: u32 = 1000;
+ const VECTOR: u32 = 48;
+ 
+ #[axtest::tests]
+@@ -28,6 +43,76 @@ mod tests {
+ fn run() -> Result<()> {
+     let resource: toml::Value =
+         toml::from_str(&std::fs::read_to_string("/tests/vcpu-runtime.toml")?)?;
++    let context = resource
++        .get("irq_context")
++        .and_then(toml::Value::as_str)
++        .context("missing IRQ execution context")?;
++    ensure!(
++        matches!(context, "current_el" | "guest_running"),
++        "invalid IRQ context"
++    );
++    let guest_running = context == "guest_running";
++    run_measurement(&resource, guest_running)
++}
++
++fn run_measurement(resource: &toml::Value, guest_running: bool) -> Result<()> {
++    let samples = resource
++        .get("samples")
++        .and_then(toml::Value::as_integer)
++        .context("missing sample count")?;
++    let samples = u32::try_from(samples).context("invalid sample count")?;
++    ensure!(
++        (1..=MAX_SAMPLES).contains(&samples),
++        "sample count out of range"
++    );
++    println!("VIRQ_MEASUREMENT samples_per_policy={samples}");
++    let mailbox_size = 48 + samples as usize * 8;
++    // The FIFO guest spins during calibration; keep its controller off CPU1.
++    use ax_std::os::arceos::api::task::{AxCpuMask, ax_set_current_affinity};
++    ax_set_current_affinity(AxCpuMask::one_shot(0)).context("pin measurement controller")?;
++    println!("VIRQ_CONTROLLER cpu=0");
++
++    axvm::diagnostics::initialize(ax_std::os::arceos::task::sched::cpu_topology_len()?)?;
++    ensure!(
++        ax_std::os::arceos::task::diagnostics::install_ready_trace_hook(rejected_ready_observer)
++            .is_err(),
++        "ready observer replacement was accepted"
++    );
++    let service_mode = resource
++        .get("irq_service")
++        .and_then(toml::Value::as_str)
++        .context("missing IRQ service experiment mode")?;
++    let service_rounds = u64::try_from(
++        resource
++            .get("irq_service_rounds")
++            .and_then(toml::Value::as_integer)
++            .context("missing IRQ dispatch rounds")?,
++    )?;
++    let service_window_us = u64::try_from(
++        resource
++            .get("irq_service_window_us")
++            .and_then(toml::Value::as_integer)
++            .context("missing IRQ dispatch window")?,
++    )?;
++    let inversion_witness = resource
++        .get("inversion_witness")
++        .and_then(toml::Value::as_bool)
++        .context("missing inversion witness selection")?;
++    axvm::diagnostics::irq_service::configure(service_mode, service_rounds, service_window_us)?;
++    ensure!(
++        axvm::diagnostics::irq_service::configure(service_mode, service_rounds, service_window_us)
++            .is_err(),
++        "IRQ service mode replacement was accepted"
++    );
++    let mut envelopes = Vec::with_capacity(128);
++    for marker in 0..128 {
++        let before = clock::host_ticks();
++        axvm::diagnostics::mark(marker);
++        let after = clock::host_ticks();
++        ensure!(before <= after, "probe envelope counter moved backwards");
++        envelopes.push(after - before);
++    }
++
+     let entry = resource
+         .get("entry")
+         .and_then(toml::Value::as_integer)
+@@ -39,20 +124,252 @@ fn run() -> Result<()> {
+         .context("test resources have no mailbox address")?;
+     let mailbox = usize::try_from(mailbox)?;
+     ensure!(
+-        (0x4000_0000..=0x4800_0000 - 20).contains(&mailbox) && mailbox.is_multiple_of(4),
++        (0x4000_0000..=0x4800_0000 - mailbox_size).contains(&mailbox) && mailbox.is_multiple_of(8),
+         "mailbox is outside aligned guest RAM"
+     );
++    let scenario = resource
++        .get("scenario")
++        .and_then(toml::Value::as_str)
++        .context("test resources have no scenario")?;
++    ensure!(
++        matches!(
++            scenario,
++            "baseline" | "cpu_same_core" | "cpu_continuous" | "memory_cross_core" | "linux_cpu"
++        ),
++        "unsupported load scenario"
++    );
++    println!("VIRQ_SCENARIO name={scenario}");
++    let workload = if scenario == "memory_cross_core" {
++        let bytes = resource
++            .get("memory_bytes")
++            .and_then(toml::Value::as_integer)
++            .context("memory scenario has no working set")?;
++        let bytes = usize::try_from(bytes).context("memory working set is out of range")?;
++        let cpu = if guest_running { 3 } else { 2 };
++        println!(
++            "VIRQ_MEMORY_CONFIG cpu={cpu} working_set_bytes={bytes} chunk_words=1024 \
++             access=volatile_read_modify_write"
++        );
++        contention::Workload::Memory { bytes, cpu }
++    } else {
++        contention::Workload::Cpu
++    };
++
++    let source_kind = resource
++        .get("source")
++        .and_then(toml::Value::as_str)
++        .context("test resources have no interrupt source")?;
++    ensure!(
++        matches!(source_kind, "software" | "physical_timer_ppi" | "pl031_spi"),
++        "unsupported interrupt source"
++    );
++    println!("VIRQ_SOURCE kind={source_kind}");
++    let service_placement = resource
++        .get("service_placement")
++        .and_then(toml::Value::as_str)
++        .context("missing service placement")?;
++    ensure!(
++        matches!(service_placement, "unrestricted" | "cpu0" | "cpu1" | "cpu2"),
++        "unsupported service placement"
++    );
++    println!("VIRQ_SERVICE_PLACEMENT mode={service_placement}");
++    if service_placement != "unrestricted" {
++        let cpu = service_placement
++            .strip_prefix("cpu")
++            .context("invalid service CPU")?
++            .parse::<usize>()?;
++        axvm::diagnostics::service_placement::configure(cpu)?;
++        ensure!(
++            axvm::diagnostics::service_placement::configure(cpu).is_err(),
++            "service placement replacement was accepted"
++        );
++    }
++
++    if inversion_witness {
++        ensure!(
++            scenario == "baseline"
++                && source_kind == "physical_timer_ppi"
++                && !guest_running
++                && service_placement == "cpu0",
++            "inversion witness requires baseline current-EL PPI with CPU0 services"
++        );
++        println!("VIRQ_INVERSION_CONFIG cpu=0 priority=60 duration_ms=50 sample=1");
++    }
++    if scenario == "linux_cpu" {
++        ensure!(
++            source_kind == "pl031_spi" && !guest_running && service_placement == "cpu0",
++            "Linux peer requires current-EL SPI and CPU0 services"
++        );
++        ensure!(
++            ax_std::os::arceos::task::sched::cpu_topology_len()? >= 4,
++            "Linux peer needs CPU3"
++        );
++        println!(
++            "VIRQ_LINUX_CONFIG vm=1 vcpu=0 host_cpu=3 guest_cpu=0 workload=cpu \
++             batch_iterations=8192 report_batches=256"
++        );
++    }
++    if guest_running {
++        ensure!(
++            source_kind == "physical_timer_ppi"
++                && service_placement == "cpu2"
++                && matches!(scenario, "baseline" | "memory_cross_core"),
++            "guest-running IRQ context needs baseline or cross-core memory, PPI and CPU2 services"
++        );
++        println!(
++            "VIRQ_GUEST_EXECUTION mode=running target_cpu=1 controller_policy=default \
++             service_cpu=2 irq_cpu=1"
++        );
++    }
+     let fifo = SchedulePolicy::fifo(RtPriority::new(80).context("valid FIFO priority")?);
+     // Both policies, CPU_ON, reset, injection and teardown share one host boot.
+     for policy in [SchedulePolicy::default(), fifo] {
+-        support::with_vm("/guest/builtin/configs/vm-2.toml", policy, |fixture| {
+-            ensure!(
+-                fixture.vm.snapshot().description.bsp_entry.as_usize() == entry,
+-                "guest entry disagrees with the prepared ELF"
++        let policy_name = match policy {
++            SchedulePolicy::Fifo { .. } => "fifo80",
++            _ => "fair",
++        };
++        // Establish affinity before any FIFO guest can monopolize CPU1.
++        // Keep this guard outside with_vm so its error cleanup joins the VM first.
++        let load = if matches!(
++            scenario,
++            "cpu_same_core" | "cpu_continuous" | "memory_cross_core"
++        ) {
++            Some(contention::HostContention::start(workload)?)
++        } else {
++            None
++        };
++        if matches!(scenario, "cpu_continuous" | "memory_cross_core") {
++            let load = load.as_ref().context("continuous scenario has no load")?;
++            load.activate()?;
++            println!(
++                "VIRQ_LOAD_BOOT_WORK policy={policy_name} batches={}",
++                load.batches()
+             );
+-            exercise(fixture, GuestPhysAddr::from(mailbox), policy)
+-        })?;
++        }
++        let mut work_window = None;
++        if scenario == "linux_cpu" {
++            support::with_vms(
++                [
++                    ("/guest/builtin/configs/vm-2.toml", policy),
++                    (
++                        "/guest/builtin/configs/vm-1.toml",
++                        SchedulePolicy::default(),
++                    ),
++                ],
++                |fixtures| {
++                    let [fixture, peer] = fixtures;
++                    let mut progress = linux::Progress::start(peer)?;
++                    ensure!(
++                        fixture.vm.snapshot().description.bsp_entry.as_usize() == entry,
++                        "guest entry disagrees with the prepared ELF"
++                    );
++                    work_window = Some(exercise(
++                        fixture,
++                        Measurement {
++                            address: GuestPhysAddr::from(mailbox),
++                            policy,
++                            load: None,
++                            source_kind,
++                            guest_running,
++                            samples,
++                            linux: Some((peer, &mut progress)),
++                            inversion_witness,
++                        },
++                    )?);
++                    Ok(())
++                },
++            )?;
++        } else {
++            support::with_vm("/guest/builtin/configs/vm-2.toml", policy, |fixture| {
++                ensure!(
++                    fixture.vm.snapshot().description.bsp_entry.as_usize() == entry,
++                    "guest entry disagrees with the prepared ELF"
++                );
++                work_window = Some(exercise(
++                    fixture,
++                    Measurement {
++                        address: GuestPhysAddr::from(mailbox),
++                        policy,
++                        load: load.as_ref(),
++                        source_kind,
++                        guest_running,
++                        samples,
++                        linux: None,
++                        inversion_witness,
++                    },
++                )?);
++                Ok(())
++            })?;
++        }
++        if let Some(load) = load {
++            let (start, end) = work_window.context("load sampling window missing")?;
++            load.finish(start, end, policy_name)?;
++        }
++    }
++    if service_placement != "unrestricted" {
++        axvm::diagnostics::service_placement::validate()?;
++    }
++    let snapshot = axvm::diagnostics::finish()?;
++    ensure!(
++        snapshot.dropped == 0 && snapshot.incomplete == 0,
++        "runtime trace lost records"
++    );
++    let physical_count = snapshot
++        .events
++        .iter()
++        .filter(|event| event.kind == axvm::diagnostics::EventKind::HostIrqEntry)
++        .count();
++    ensure!(
++        physical_count
++            == if source_kind != "software" {
++                samples as usize * 2
++            } else {
++                0
++            },
++        "physical IRQ trace expected exactly {} entries for a physical source",
++        samples * 2
++    );
++    if guest_running {
++        ensure!(
++            snapshot.events.iter().any(|event| event.kind
++                == axvm::diagnostics::EventKind::HostIrqEntry
++                && event.value1 == 2),
++            "guest-running context captured no low-EL physical IRQ"
++        );
++    }
++    let ready_count = snapshot
++        .events
++        .iter()
++        .filter(|event| event.kind == axvm::diagnostics::EventKind::ReadyEnqueue)
++        .count();
++    ensure!(ready_count > 0, "runtime trace has no ready events");
++    println!("VIRQ_READY_SUMMARY records={ready_count}");
++    for (index, ticks) in envelopes.iter().enumerate() {
++        println!(
++            "VIRQ_TRACE_ENVELOPE sample={} ticks={} frequency_hz={}",
++            index + 1,
++            ticks,
++            ax_cpu::timer::counter_frequency()
++        );
+     }
++    for event in &snapshot.events {
++        println!(
++            "VIRQ_RUNTIME cpu={} sequence={} ticks={} kind={:?} thread={} value0={} value1={}",
++            event.cpu,
++            event.sequence,
++            event.ticks,
++            event.kind,
++            event.thread,
++            event.value0,
++            event.value1
++        );
++    }
++    println!(
++        "VIRQ_RUNTIME_SUMMARY records={} dropped={} incomplete={}",
++        snapshot.events.len(),
++        snapshot.dropped,
++        snapshot.incomplete
++    );
+     Ok(())
+ }
+ 
+@@ -86,11 +403,32 @@ fn wait_mailbox(
+     }
+ }
+ 
+-fn exercise(fixture: &mut Fixture, address: GuestPhysAddr, policy: SchedulePolicy) -> Result<()> {
++struct Measurement<'a> {
++    address: GuestPhysAddr,
++    policy: SchedulePolicy,
++    load: Option<&'a contention::HostContention>,
++    source_kind: &'a str,
++    guest_running: bool,
++    samples: u32,
++    linux: Option<(&'a mut Fixture, &'a mut linux::Progress)>,
++    inversion_witness: bool,
++}
++
++fn exercise(fixture: &mut Fixture, measurement: Measurement<'_>) -> Result<(u64, u64)> {
++    let Measurement {
++        address,
++        policy,
++        load,
++        source_kind,
++        guest_running,
++        samples,
++        mut linux,
++        inversion_witness,
++    } = measurement;
+     let old_run = fixture.vm.start()?.wait()?;
+     let old_memory = fixture.vm.guest_memory(old_run)?;
+     let old_interrupt = fixture.vm.interrupt_port(old_run, 1, VECTOR)?;
+-    wait_ready(fixture)?;
++    wait_ready(fixture, samples)?;
+     wait_mailbox(
+         fixture,
+         &old_memory,
+@@ -118,11 +456,11 @@ fn exercise(fixture: &mut Fixture, address: GuestPhysAddr, policy: SchedulePolic
+     let interrupt = fixture.vm.interrupt_port(run, 1, VECTOR)?;
+     // RAM can retain the preceding run's mailbox until guest startup clears
+     // BSS. The new serial backend proves this run reached main before polling.
+-    wait_ready(fixture)?;
++    wait_ready(fixture, samples)?;
+     let deadline = Instant::now() + Duration::from_secs(30);
+     // Zephyr's SMP startup may still deliver a scheduler IPI after both ready
+     // stores. Establish an idle boundary before the first pulse; the captured
+-    // count then stays fixed for the complete 300-delivery interval.
++    // count then stays fixed for the complete delivery interval.
+     let mut parks = None;
+     let mut quiet_since = Instant::now();
+     let initial = wait_mailbox(fixture, &memory, address, deadline, |state| {
+@@ -138,28 +476,241 @@ fn exercise(fixture: &mut Fixture, address: GuestPhysAddr, policy: SchedulePolic
+     })?;
+     fixture.check_policy(policy, 2)?;
+     ensure!(initial[2] == 0, "guest received an unrequested interrupt");
+-    for count in 1..=SAMPLES {
++    let frequency = clock::read_word(&memory, address + 40)?;
++    ensure!(
++        frequency != 0 && frequency == ax_cpu::timer::counter_frequency(),
++        "host and guest counter frequencies disagree"
++    );
++    let policy_name = match policy {
++        SchedulePolicy::Fifo { .. } => "fifo80",
++        _ => "fair",
++    };
++    let mut load_samples = Vec::with_capacity(samples as usize);
++    println!("VIRQ_LOAD_STAGE before_calibration policy={policy_name}");
++    let mut probes = clock::calibrate(fixture, &memory, address, "before", 1)?;
++    println!("VIRQ_LOAD_STAGE after_calibration policy={policy_name}");
++    if guest_running {
++        memory.write_bytes(address + 28, &1u32.to_le_bytes())?;
++        // Publish the mode before the Guest acquire-observes CLOCK_START.
++        aarch64_cpu::asm::barrier::dmb(aarch64_cpu::asm::barrier::ISH);
++    }
++    memory.write_bytes(address + 20, &clock::CLOCK_START.to_le_bytes())?;
++    if let Some(load) = load {
++        load.activate()?;
++    }
++    let mut blocker = if inversion_witness {
++        Some(inversion::Witness::start()?)
++    } else {
++        None
++    };
++    let mut witness_report = None;
++    let mut timings = Vec::with_capacity(samples as usize);
++    let physical = if source_kind == "physical_timer_ppi" {
++        Some(physical::PhysicalTimer::start(
++            interrupt.clone(),
++            usize::from(guest_running),
++        )?)
++    } else {
++        None
++    };
++    let rtc = if source_kind == "pl031_spi" {
++        ensure!(resource_unused_rtc()?, "Guest RTC/counter driver is active");
++        Some(rtc_spi::RtcSpi::start(interrupt.clone())?)
++    } else {
++        None
++    };
++    let mut rtc_arms = Vec::with_capacity(samples as usize);
++    let mut physical_deadlines = Vec::with_capacity(samples as usize);
++    let mut linux_samples = Vec::new();
++    let linux_start = if let Some((peer, progress)) = linux.as_mut() {
++        progress.poll(peer)?
++    } else {
++        0
++    };
++    let load_start = load.as_ref().map_or(0, |load| load.batches());
++    for count in 1..=samples {
++        let linux_before = if let Some((peer, progress)) = linux.as_mut() {
++            progress.poll(peer)?
++        } else {
++            0
++        };
++        let submitted = Instant::now();
+         // Pending bits coalesce edges: keep exactly one unacknowledged pulse.
+-        interrupt.pulse()?;
++        let submitted_ticks = clock::host_ticks();
++        let batches_before = load.as_ref().map_or(0, |load| load.batches());
++        if let Some(source) = &physical {
++            physical_deadlines.push(source.arm(count)?);
++        } else if let Some(source) = &rtc {
++            rtc_arms.push(source.arm(count)?);
++        } else {
++            interrupt.pulse()?;
++        }
++        if count == 1
++            && let Some(witness) = &blocker
++        {
++            witness.activate();
++        }
++        let pulse_ns = submitted.elapsed().as_nanos();
+         let state = wait_mailbox(fixture, &memory, address, deadline, |state| {
+             state[2] >= count
+         })?;
++        if let Some(source) = &physical {
++            source.check_delivered(count)?;
++        }
++        if let Some(source) = &rtc {
++            source.check_delivered(count)?;
++        }
++        let ack_observed_ns = submitted.elapsed().as_nanos();
++        let batches_after = load.as_ref().map_or(0, |load| load.batches());
++        let observed_ticks = clock::host_ticks();
++        if let Some((peer, progress)) = linux.as_mut() {
++            linux_samples.push((linux_before, progress.poll(peer)?));
++        }
++        load_samples.push((batches_before, batches_after));
++        let guest_ticks = clock::read_word(&memory, address + 48 + (count as usize - 1) * 8)?;
++        if count == 1
++            && let Some(witness) = blocker.as_mut()
++        {
++            witness_report = Some(witness.finish()?);
++        }
++        timings.push((
++            pulse_ns,
++            ack_observed_ns,
++            clock::Delivery {
++                submitted: submitted_ticks,
++                guest: guest_ticks,
++                observed: observed_ticks,
++            },
++        ));
+         ensure!(state[2] == count, "duplicate interrupt: {state:?}");
+         ensure!(
+             state[3] == initial[3],
+             "non-target vCPU left suspend: {state:?}"
+         );
+     }
+-    println!("VIRQ_INJECT_COMPLETE vm=2 vcpu=1 vector=48 samples=300 errors=0");
+-    println!("E1_COUNTERS idle_vcpu_returns=0 acknowledgements=300 policy={policy:?}");
++    let linux_end = if let Some((peer, progress)) = linux.as_mut() {
++        progress.poll(peer)?
++    } else {
++        0
++    };
++    let load_end = load.as_ref().map_or(0, |load| load.batches());
++    probes.extend(clock::calibrate(fixture, &memory, address, "after", 34)?);
++    if let Some(source) = physical {
++        source.finish(policy_name, samples)?;
++    }
++    if let Some(source) = rtc {
++        source.finish(policy_name, samples)?;
++    }
++    let (offset_low, offset_high) = clock::offset_bounds(&probes)?;
++    for (_, _, stamp) in &timings {
++        clock::validate_delivery(stamp, offset_low, offset_high)?;
++    }
++    if let Some(report) = witness_report {
++        let guest_low = i128::from(timings[0].2.guest) + offset_low;
++        let guest_high = i128::from(timings[0].2.guest) + offset_high;
++        let due = physical_deadlines[0];
++        ensure!(
++            report.wrong_cpu == 0 && report.start < due && due < report.end,
++            "inversion witness did not bracket the physical deadline on CPU0"
++        );
++        let resource: toml::Value =
++            toml::from_str(&std::fs::read_to_string("/tests/vcpu-runtime.toml")?)?;
++        let enabled = resource.get("irq_service").and_then(toml::Value::as_str) != Some("off")
++            && matches!(policy, SchedulePolicy::Fifo { .. });
++        ensure!(
++            if enabled {
++                guest_low > i128::from(report.start) && guest_high < i128::from(report.end)
++            } else {
++                guest_low >= i128::from(report.end)
++            },
++            "IRQ service inheritance did not produce the expected scheduling order"
++        );
++        println!(
++            "VIRQ_INVERSION_WITNESS policy={policy_name} sample=1 blocker_cpu=0 \
++             blocker_priority=60 blocker_thread={} start_ticks={} end_ticks={} due_ticks={} \
++             guest_low_ticks={} guest_high_ticks={} preempted={} joined=1 wrong_cpu=0",
++            report.thread,
++            report.start,
++            report.end,
++            due,
++            guest_low,
++            guest_high,
++            u8::from(enabled)
++        );
++    }
++    if let Some((peer, progress)) = linux.as_mut() {
++        progress.finish(peer, policy_name, linux_start, linux_end)?;
++    }
++    for (index, (before, after)) in linux_samples.iter().enumerate() {
++        println!(
++            "VIRQ_LINUX_SAMPLE policy={policy_name} sample={} before_batches={before} \
++             after_batches={after}",
++            index + 1
++        );
++    }
++    // Both intervals use the host clock. Confirmation includes mailbox polling
++    // and scheduling; it is not a guest ISR timestamp or a physical IRQ latency.
++    // Emit only after sampling so serial output does not enter these intervals.
++    for probe in &probes {
++        println!(
++            "VIRQ_CLOCK_SAMPLE policy={policy_name} phase={} sequence={} host_before={} \
++             guest_ticks={} host_after={} frequency_hz={frequency}",
++            probe.phase, probe.sequence, probe.before, probe.guest, probe.after
++        );
++    }
++    for (index, (pulse_ns, ack_observed_ns, stamp)) in timings.iter().enumerate() {
++        println!(
++            "VIRQ_HOST_SAMPLE policy={policy_name} sample={} pulse_ns={pulse_ns} \
++             ack_observed_ns={ack_observed_ns}",
++            index + 1
++        );
++        println!(
++            "VIRQ_ISR_SAMPLE policy={policy_name} sample={} submit_ticks={} guest_ticks={} \
++             observed_ticks={} frequency_hz={frequency}",
++            index + 1,
++            stamp.submitted,
++            stamp.guest,
++            stamp.observed
++        );
++    }
++    if load.is_some() {
++        for (index, (before, after)) in load_samples.iter().enumerate() {
++            println!(
++                "VIRQ_LOAD_SAMPLE policy={policy_name} sample={} before_batches={before} \
++                 after_batches={after}",
++                index + 1
++            );
++        }
++    }
++    for (index, due) in physical_deadlines.iter().enumerate() {
++        println!(
++            "VIRQ_PHYSICAL_ARM policy={policy_name} sample={} due_ticks={due} intid=30 cpu={}",
++            index + 1,
++            usize::from(guest_running)
++        );
++    }
++    for (index, matched) in rtc_arms.iter().enumerate() {
++        println!(
++            "VIRQ_RTC_ARM policy={policy_name} sample={} match_seconds={matched} intid=34 cpu=0",
++            index + 1
++        );
++    }
++    println!("VIRQ_INJECT_COMPLETE vm=2 vcpu=1 vector=48 samples={samples} errors=0");
++    println!("E1_COUNTERS idle_vcpu_returns=0 acknowledgements={samples} policy={policy:?}");
+     memory.write_bytes(address + 16, &1u32.to_le_bytes())?;
++    let completed =
++        format!("SOFTWARE VIRQ COMPLETE streams=1 samples_each={samples} total={samples}");
+     fixture.wait(Duration::from_secs(30), |snapshot, output| {
+         snapshot.state == VmStatus::Stopped
+-            && output.contains("SOFTWARE VIRQ COMPLETE streams=1 samples_each=300 total=300")
++            && output
++                .lines()
++                .any(|line| line.trim_end_matches('\r') == completed)
+     })?;
+     fixture.validate_console(|output| {
+         ensure!(
+-            output.contains("SOFTWARE VIRQ COMPLETE streams=1 samples_each=300 total=300"),
++            output
++                .lines()
++                .any(|line| line.trim_end_matches('\r') == completed),
+             "guest omitted completion"
+         );
+         Ok(())
+@@ -169,13 +720,53 @@ fn exercise(fixture: &mut Fixture, address: GuestPhysAddr, policy: SchedulePolic
+         interrupt.pulse().is_err(),
+         "stopped run retained its interrupt port"
+     );
+-    fixture.stop()
++    fixture.stop()?;
++    Ok((load_start, load_end))
+ }
+ 
+-fn wait_ready(fixture: &mut Fixture) -> Result<()> {
++fn wait_ready(fixture: &mut Fixture, samples: u32) -> Result<()> {
+     // CPU_ON may enter before the owner publishes its participant snapshot.
+     fixture.wait(Duration::from_secs(30), |snapshot, output| {
+         snapshot.cpu.running_vcpu_count == 2
+-            && output.contains("SOFTWARE VIRQ READY suspend vector=48 samples=300")
++            && output.split_inclusive('\n').any(|line| {
++                line.ends_with('\n')
++                    && line
++                        .trim_end_matches(['\r', '\n'])
++                        .starts_with("SOFTWARE VIRQ READY suspend vector=48 samples=")
++            })
++    })?;
++    let expected = format!("SOFTWARE VIRQ READY suspend vector=48 samples={samples}");
++    fixture.validate_console(|output| {
++        ensure!(
++            output
++                .lines()
++                .any(|line| line.trim_end_matches('\r') == expected),
++            "guest sample count disagrees with resource"
++        );
++        Ok(())
+     })
+ }
++
++fn rejected_ready_observer(_: ax_std::os::arceos::task::diagnostics::ReadyTraceRecord) {
++    panic!("rejected ready observer was invoked");
++}
++
++fn resource_unused_rtc() -> Result<bool> {
++    let resource: toml::Value =
++        toml::from_str(&std::fs::read_to_string("/tests/vcpu-runtime.toml")?)?;
++    let config: toml::Value = toml::from_str(&std::fs::read_to_string(
++        "/guest/builtin/configs/vm-2.toml",
++    )?)?;
++    ensure!(
++        config
++            .get("devices")
++            .and_then(|v| v.get("passthrough"))
++            .and_then(toml::Value::as_array)
++            .is_some_and(|v| v.is_empty()),
++        "RTC fixture forbids Guest passthrough"
++    );
++    Ok(resource
++        .get("guest_rtc_unused")
++        .and_then(toml::Value::as_bool)
++        == Some(true))
++}
+diff --git a/components/ax-task/src/diagnostics/ready.rs b/components/ax-task/src/diagnostics/ready.rs
+new file mode 100644
+index 000000000..6d41de6de
+--- /dev/null
++++ b/components/ax-task/src/diagnostics/ready.rs
+@@ -0,0 +1,85 @@
++//! Boot-scoped kernel-test observations at runnable queue transitions.
++
++use core::sync::atomic::{AtomicPtr, Ordering};
++
++use crate::{
++    sched::CpuId,
++    thread::{ThreadCore, ThreadId},
++};
++
++/// Transition path, distinct from policy eligibility or physical execution.
++#[derive(Clone, Copy, Debug, Eq, PartialEq)]
++#[repr(u64)]
++pub enum ReadyKind {
++    DirectWake         = 1,
++    OnRunQueueWake     = 2,
++    OwnerWake          = 3,
++    OwnerYield         = 4,
++    OwnerPreempted     = 5,
++    OwnerReplenished   = 6,
++    OwnerMigrated      = 7,
++    OwnerPolicyChanged = 8,
++}
++
++/// Values observed after queue/state updates and before the rq lock is released.
++#[derive(Clone, Copy, Debug)]
++pub struct ReadyTraceRecord {
++    pub thread: ThreadId,
++    pub destination_cpu: u32,
++    pub kind: ReadyKind,
++    /// True for a context still owning a CPU, including put_prev observations.
++    pub on_cpu: bool,
++    /// Identity only. Never dereference or reconstruct an extension from it.
++    pub extension_ops: usize,
++}
++
++/// Runs under scheduler locks: no allocation, blocking, printing, notification,
++/// scheduler reentry or registration changes are allowed in the observer.
++pub type ReadyTraceHook = fn(ReadyTraceRecord);
++
++static READY_HOOK: AtomicPtr<()> = AtomicPtr::new(core::ptr::null_mut());
++
++/// A different boot-lifetime observer is already installed.
++#[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
++#[error("a different ready trace observer is already installed")]
++pub struct ReadyObserverAlreadyInstalled;
++
++/// Installs one static function for the kernel boot, before starting a workload.
++/// Reinstalling the same function succeeds; replacement/unregistration is not
++/// supported because producers can concurrently execute the existing function.
++pub fn install_ready_trace_hook(hook: ReadyTraceHook) -> Result<(), ReadyObserverAlreadyInstalled> {
++    let pointer = hook as *mut ();
++    match READY_HOOK.compare_exchange(
++        core::ptr::null_mut(),
++        pointer,
++        Ordering::AcqRel,
++        Ordering::Acquire,
++    ) {
++        Ok(_) => Ok(()),
++        Err(installed) if installed == pointer => Ok(()),
++        Err(_) => Err(ReadyObserverAlreadyInstalled),
++    }
++}
++
++pub(crate) fn record_ready(core: &ThreadCore, destination: CpuId, kind: ReadyKind, on_cpu: bool) {
++    let pointer = READY_HOOK.load(Ordering::Acquire);
++    if pointer.is_null() {
++        return;
++    }
++    let extension_ops = core
++        .extension_view()
++        .map_or(0, |extension| extension.ops() as *const _ as usize);
++    let record = ReadyTraceRecord {
++        thread: core.id(),
++        destination_cpu: destination.as_u32(),
++        kind,
++        on_cpu,
++        extension_ops,
++    };
++    // SAFETY: the non-null value can only be published by installation from
++    // this exact ReadyTraceHook type. It is never replaced or reclaimed; a fn
++    // pointer has no captured environment and its code remains linked through
++    // shutdown. This round-trip preserves the original Rust calling convention.
++    let hook: ReadyTraceHook = unsafe { core::mem::transmute(pointer) };
++    hook(record);
++}
+diff --git a/test-suit/arceos/rust/src/task/wait_queue/broadcast.rs b/test-suit/arceos/rust/src/task/wait_queue/broadcast.rs
+new file mode 100644
+index 000000000..092a7bf15
+--- /dev/null
++++ b/test-suit/arceos/rust/src/task/wait_queue/broadcast.rs
+@@ -0,0 +1,76 @@
++//! A notification may select each registration in its initial cohort once.
++
++use std::{
++    sync::{
++        Arc,
++        atomic::{AtomicBool, AtomicUsize, Ordering},
++    },
++    thread,
++    vec::Vec,
++};
++
++use ax_std::os::arceos::{
++    api::task::{self as api, AxWaitQueueHandle},
++    task::{
++        sched::{CpuId, CpuSet, RtPriority, SchedulePolicy},
++        thread::current::current_thread_handle,
++    },
++};
++
++pub(super) fn run() {
++    let controller = current_thread_handle().expect("wait-queue controller");
++    let original_affinity = controller.affinity().expect("controller affinity");
++    let mut affinity = CpuSet::empty(ax_std::os::arceos::task::sched::cpu_topology_len().unwrap());
++    assert!(affinity.insert(CpuId::new(0)));
++    controller
++        .set_affinity_and_wait(affinity.clone())
++        .expect("pin notification controller");
++    let mut delivered = Vec::new();
++    for requested in [2, u32::MAX] {
++        let queue = Arc::new(AxWaitQueueHandle::new());
++        let checks = Arc::new(AtomicUsize::new(0));
++        let stop = Arc::new(AtomicBool::new(false));
++        let worker_queue = queue.clone();
++        let worker_checks = checks.clone();
++        let worker_stop = stop.clone();
++        let worker = ax_std::os::arceos::thread::builder("broadcast-rewaiter".into())
++            .policy(SchedulePolicy::fifo(RtPriority::new(80).unwrap()))
++            .affinity(affinity.clone())
++            .spawn(move || {
++                // The finite escape makes a broken reselecting broadcast return
++                // an excessive count instead of permanently hanging the suite.
++                api::ax_wait_queue_wait_until(
++                    &worker_queue,
++                    || {
++                        worker_stop.load(Ordering::Acquire)
++                            || worker_checks.fetch_add(1, Ordering::AcqRel) >= 7
++                    },
++                    None,
++                );
++            })
++            .expect("spawn FIFO condition waiter");
++        // Both tasks are on CPU0. Once the FIFO task ran its first predicate,
++        // this normal-policy controller cannot resume until that task blocks.
++        while checks.load(Ordering::Acquire) == 0 {
++            thread::yield_now();
++        }
++        let count = api::ax_wait_queue_wake(&queue, requested);
++        stop.store(true, Ordering::Release);
++        api::ax_wait_queue_wake(&queue, 1);
++        worker.join().expect("join requeued waiter");
++        println!(
++            "task_wait_queue: cohort requested={requested} delivered={count} checks={}",
++            checks.load(Ordering::Acquire)
++        );
++        delivered.push(count);
++    }
++    controller
++        .set_affinity_and_wait(original_affinity)
++        .expect("restore controller affinity");
++    assert_eq!(
++        delivered,
++        [1, 1],
++        "one notification repeatedly selected a requeued waiter"
++    );
++    println!("task_wait_queue: notification cohort OK");
++}
+diff --git a/virtualization/axvm/src/diagnostics.rs b/virtualization/axvm/src/diagnostics.rs
+new file mode 100644
+index 000000000..19e764d6d
+--- /dev/null
++++ b/virtualization/axvm/src/diagnostics.rs
+@@ -0,0 +1,297 @@
++//! AArch64 kernel-test runtime observations, absent from production builds.
++//!
++//! Capture is boot-scoped, bounded and append-only. It never owns scheduler,
++//! VM, interrupt-controller or thread lifetimes.
++
++use std::{
++    sync::{
++        OnceLock,
++        atomic::{AtomicBool, AtomicU32, AtomicU64, AtomicUsize, Ordering},
++    },
++    vec::Vec,
++};
++
++use aarch64_cpu::asm::barrier::{SY, isb};
++use ax_std::os::arceos::guard::IrqSaveGuard;
++
++use crate::{AxVmError, AxVmResult};
++
++pub mod irq_service;
++pub mod service_placement;
++
++const CAPACITY: usize = 16_384;
++static STORE: OnceLock<Vec<CpuBuffer>> = OnceLock::new();
++static ENABLED: AtomicBool = AtomicBool::new(false);
++static WRITERS: AtomicUsize = AtomicUsize::new(0);
++static OBSERVED_HOST_IRQ: AtomicU32 = AtomicU32::new(u32::MAX);
++static DROPPED: AtomicUsize = AtomicUsize::new(0);
++
++/// Software observation points; wake completion is deliberately not "ready".
++#[derive(Clone, Copy, Debug, Eq, PartialEq)]
++#[repr(u64)]
++pub enum EventKind {
++    Binding            = 1,
++    IrqKick            = 2,
++    WakeBegin          = 3,
++    WakeEnd            = 4,
++    Running            = 5,
++    Stopped            = 6,
++    GuestEntryBoundary = 7,
++    Marker             = 8,
++    ReadyEnqueue       = 9,
++    HostIrqEntry       = 10,
++}
++
++impl EventKind {
++    fn from_raw(kind: u64) -> Option<Self> {
++        Some(match kind {
++            1 => Self::Binding,
++            2 => Self::IrqKick,
++            3 => Self::WakeBegin,
++            4 => Self::WakeEnd,
++            5 => Self::Running,
++            6 => Self::Stopped,
++            7 => Self::GuestEntryBoundary,
++            8 => Self::Marker,
++            9 => Self::ReadyEnqueue,
++            10 => Self::HostIrqEntry,
++            _ => return None,
++        })
++    }
++}
++
++/// One committed observation. Thread IDs include the scheduler generation.
++#[derive(Clone, Copy, Debug)]
++pub struct Event {
++    pub cpu: usize,
++    pub sequence: usize,
++    pub ticks: u64,
++    pub kind: EventKind,
++    pub thread: u64,
++    /// Binding: VM ID. Marker: index. ReadyEnqueue: destination CPU.
++    /// HostIrqEntry: acknowledged INTID. Otherwise zero.
++    pub value0: u64,
++    /// Binding: vCPU ID. ReadyEnqueue: path and on_cpu flag.
++    /// HostIrqEntry: 1 for the current-EL callback, 2 for low-EL pre-IAR assembly.
++    /// Otherwise zero.
++    pub value1: u64,
++}
++
++/// Frozen value snapshot; dropped or incomplete observations invalidate it.
++#[derive(Debug)]
++pub struct Snapshot {
++    pub events: Vec<Event>,
++    pub dropped: usize,
++    pub incomplete: usize,
++}
++
++struct Slot {
++    kind: AtomicU64,
++    ticks: AtomicU64,
++    thread: AtomicU64,
++    value0: AtomicU64,
++    value1: AtomicU64,
++}
++
++impl Slot {
++    fn new() -> Self {
++        Self {
++            kind: AtomicU64::new(0),
++            ticks: AtomicU64::new(0),
++            thread: AtomicU64::new(0),
++            value0: AtomicU64::new(0),
++            value1: AtomicU64::new(0),
++        }
++    }
++}
++
++struct CpuBuffer {
++    next: AtomicUsize,
++    slots: Vec<Slot>,
++}
++
++/// Allocates before guest startup and enables capture once per kernel boot.
++/// Invalid CPU counts and repeated initialization return an error.
++pub fn initialize(cpu_count: usize) -> AxVmResult {
++    if !(1..=64).contains(&cpu_count) {
++        return Err(AxVmError::invalid_config("invalid runtime trace CPU count"));
++    }
++    let buffers = (0..cpu_count)
++        .map(|_| CpuBuffer {
++            next: AtomicUsize::new(0),
++            slots: (0..CAPACITY).map(|_| Slot::new()).collect(),
++        })
++        .collect();
++    STORE
++        .set(buffers)
++        .map_err(|_| AxVmError::invalid_config("runtime trace already initialized"))?;
++    #[cfg(axtest)]
++    ax_std::os::arceos::task::diagnostics::install_ready_trace_hook(capture_ready).map_err(
++        |_| AxVmError::resource_unavailable("install ready trace", "observer already installed"),
++    )?;
++    ENABLED.store(true, Ordering::SeqCst);
++    Ok(())
++}
++
++struct Writer;
++impl Drop for Writer {
++    fn drop(&mut self) {
++        WRITERS.fetch_sub(1, Ordering::SeqCst);
++    }
++}
++
++pub(crate) fn record(kind: EventKind, thread: u64, value0: u64, value1: u64) {
++    record_at(kind, thread, value0, value1, None);
++}
++
++fn record_at(kind: EventKind, thread: u64, value0: u64, value1: u64, captured: Option<u64>) {
++    if !ENABLED.load(Ordering::SeqCst) {
++        return;
++    }
++    let _irq = IrqSaveGuard::new();
++    WRITERS.fetch_add(1, Ordering::SeqCst);
++    let _writer = Writer;
++    // Paired with finish: a producer registering after the freeze cannot write.
++    if !ENABLED.load(Ordering::SeqCst) {
++        return;
++    }
++    let cpu = crate::host::task::current_cpu_id();
++    let Some(buffer) = STORE.get().and_then(|buffers| buffers.get(cpu)) else {
++        DROPPED.fetch_add(1, Ordering::Relaxed);
++        return;
++    };
++    let sequence = buffer.next.fetch_add(1, Ordering::Relaxed);
++    let Some(slot) = buffer.slots.get(sequence) else {
++        DROPPED.fetch_add(1, Ordering::Relaxed);
++        return;
++    };
++    let ticks = captured.unwrap_or_else(ax_cpu::timer::physical_counter);
++    isb(SY);
++    // Each reservation owns its slot forever; no slot is reused or overwritten.
++    slot.ticks.store(ticks, Ordering::Relaxed);
++    slot.thread.store(thread, Ordering::Relaxed);
++    slot.value0.store(value0, Ordering::Relaxed);
++    slot.value1.store(value1, Ordering::Relaxed);
++    slot.kind.store(kind as u64, Ordering::Release);
++}
++
++/// Adds an experiment marker without acquiring scheduler or VM state.
++pub fn mark(marker: u64) {
++    record(EventKind::Marker, 0, marker, 0);
++}
++
++/// Closes admission and copies committed records in per-CPU reservation order.
++/// A producer still in flight returns a retryable error; capture stays closed.
++/// Call after joining the workload. No buffers are reclaimed before shutdown.
++pub fn finish() -> AxVmResult<Snapshot> {
++    ENABLED.store(false, Ordering::SeqCst);
++    if WRITERS.load(Ordering::SeqCst) != 0 {
++        return Err(AxVmError::resource_unavailable(
++            "freeze runtime trace",
++            "producer still in flight",
++        ));
++    }
++    let buffers = STORE
++        .get()
++        .ok_or_else(|| AxVmError::invalid_config("runtime trace not initialized"))?;
++    let mut snapshot = Snapshot {
++        events: Vec::new(),
++        dropped: DROPPED.load(Ordering::Acquire),
++        incomplete: 0,
++    };
++    for (cpu, buffer) in buffers.iter().enumerate() {
++        let length = buffer.next.load(Ordering::Acquire).min(CAPACITY);
++        for (sequence, slot) in buffer.slots[..length].iter().enumerate() {
++            let Some(kind) = EventKind::from_raw(slot.kind.load(Ordering::Acquire)) else {
++                snapshot.incomplete += 1;
++                continue;
++            };
++            snapshot.events.push(Event {
++                cpu,
++                sequence,
++                kind,
++                ticks: slot.ticks.load(Ordering::Relaxed),
++                thread: slot.thread.load(Ordering::Relaxed),
++                value0: slot.value0.load(Ordering::Relaxed),
++                value1: slot.value1.load(Ordering::Relaxed),
++            });
++        }
++    }
++    Ok(snapshot)
++}
++
++#[cfg(axtest)]
++fn capture_ready(event: ax_std::os::arceos::task::diagnostics::ReadyTraceRecord) {
++    if !crate::task::owns_extension_ops(event.extension_ops) {
++        return;
++    }
++    record(
++        EventKind::ReadyEnqueue,
++        event.thread.as_u64(),
++        u64::from(event.destination_cpu),
++        event.kind as u64 | (u64::from(event.on_cpu) << 8),
++    );
++}
++
++/// Owns a test-only current- and lower-EL physical IRQ observation filter.
++pub struct HostIrqCapture {
++    intid: u32,
++}
++
++/// Enables one exclusive GIC PPI/SPI filter for current- and lower-EL observations.
++/// Stop and synchronize the source before dropping the returned observation.
++pub fn observe_host_irq(intid: u32) -> AxVmResult<HostIrqCapture> {
++    if !(16..1020).contains(&intid) {
++        return Err(AxVmError::invalid_config(
++            "physical IRQ observation requires a standard GIC PPI or SPI",
++        ));
++    }
++    OBSERVED_HOST_IRQ
++        .compare_exchange(u32::MAX, intid, Ordering::AcqRel, Ordering::Acquire)
++        .map_err(|_| {
++            AxVmError::resource_unavailable("observe physical IRQ", "observer already active")
++        })?;
++    Ok(HostIrqCapture { intid })
++}
++
++impl Drop for HostIrqCapture {
++    fn drop(&mut self) {
++        let _ = OBSERVED_HOST_IRQ.compare_exchange(
++            self.intid,
++            u32::MAX,
++            Ordering::AcqRel,
++            Ordering::Acquire,
++        );
++    }
++}
++
++pub(crate) fn current_irq_begin() -> Option<u64> {
++    if OBSERVED_HOST_IRQ.load(Ordering::Acquire) == u32::MAX {
++        return None;
++    }
++    let ticks = ax_cpu::timer::physical_counter();
++    isb(SY);
++    Some(ticks)
++}
++
++pub(crate) fn current_irq_acknowledged(ticks: Option<u64>, intid: u32) {
++    if let Some(ticks) = ticks
++        && OBSERVED_HOST_IRQ.load(Ordering::Acquire) == intid
++    {
++        record_at(EventKind::HostIrqEntry, 0, u64::from(intid), 1, Some(ticks));
++    }
++}
++
++/// Publishes an already captured low-EL timestamp after host restoration.
++pub(crate) fn lower_irq_entry(ticks: u64, acknowledged: u32) {
++    // Admitted PPIs/SPIs have no SGI source bits in their raw INTID.
++    if ticks != 0 && OBSERVED_HOST_IRQ.load(Ordering::Acquire) == acknowledged {
++        record_at(
++            EventKind::HostIrqEntry,
++            0,
++            u64::from(acknowledged),
++            2,
++            Some(ticks),
++        );
++    }
++}
+diff --git a/virtualization/axvm/src/diagnostics/irq_service.rs b/virtualization/axvm/src/diagnostics/irq_service.rs
+new file mode 100644
+index 000000000..071ba2391
+--- /dev/null
++++ b/virtualization/axvm/src/diagnostics/irq_service.rs
+@@ -0,0 +1,187 @@
++//! Test-only, boot-selected scheduling experiments for deferred IRQ services.
++
++use std::{
++    sync::{
++        OnceLock,
++        atomic::{AtomicBool, Ordering},
++    },
++    time::{Duration, Instant},
++};
++
++use crate::{AxVmError, AxVmResult, RunId, SchedulePolicy, host::task};
++
++const ROUNDS_PER_WINDOW: u64 = 8;
++const WINDOW: Duration = Duration::from_millis(1);
++static CONFIG: OnceLock<Config> = OnceLock::new();
++
++#[derive(Clone, Copy)]
++struct Config {
++    mode: Mode,
++    rounds: u64,
++    window: Duration,
++}
++
++const DEFAULT: Config = Config {
++    mode: Mode::Off,
++    rounds: ROUNDS_PER_WINDOW,
++    window: WINDOW,
++};
++
++#[derive(Clone, Copy, Debug, Eq, PartialEq)]
++enum Mode {
++    Off,
++    Inherit,
++    Bounded,
++}
++
++impl Mode {
++    fn name(self) -> &'static str {
++        match self {
++            Self::Off => "off",
++            Self::Inherit => "inherit",
++            Self::Bounded => "bounded",
++        }
++    }
++}
++
++/// Selects one experiment before VM creation. Replacement is rejected.
++/// Fair targets keep the default service policy; FIFO targets inherit only in
++/// enabled modes. This is an axtest experiment, not a production admission API.
++pub fn configure(mode: &str, rounds: u64, window_us: u64) -> AxVmResult {
++    let mode = match mode {
++        "off" => Mode::Off,
++        "inherit" => Mode::Inherit,
++        "bounded" => Mode::Bounded,
++        _ => return Err(AxVmError::invalid_config("unsupported IRQ service mode")),
++    };
++    if !(1..=256).contains(&rounds) || !(100..=100_000).contains(&window_us) {
++        return Err(AxVmError::invalid_config(
++            "IRQ service dispatch limit out of range",
++        ));
++    }
++    CONFIG
++        .set(Config {
++            mode,
++            rounds,
++            window: Duration::from_micros(window_us),
++        })
++        .map_err(|_| AxVmError::invalid_config("IRQ service mode already configured"))?;
++    println!(
++        "VIRQ_IRQ_SERVICE_CONFIG mode={} limit={rounds} window_ns={}",
++        mode.name(),
++        window_us * 1000
++    );
++    Ok(())
++}
++
++pub(crate) fn selected_policy(target: SchedulePolicy) -> AxVmResult<SchedulePolicy> {
++    if CONFIG.get().unwrap_or(&DEFAULT).mode == Mode::Off {
++        return Ok(SchedulePolicy::default());
++    }
++    match target {
++        SchedulePolicy::Fair { .. } => Ok(SchedulePolicy::default()),
++        SchedulePolicy::Fifo { .. } => Ok(target),
++        _ => Err(AxVmError::invalid_config(
++            "IRQ service inheritance supports only Fair and FIFO targets",
++        )),
++    }
++}
++
++/// State is owned solely by the fixed worker, never shared with IRQ producers.
++pub(crate) struct Dispatch {
++    run: RunId,
++    thread: u64,
++    mode: Mode,
++    target: SchedulePolicy,
++    actual: SchedulePolicy,
++    limited: bool,
++    window_end: Instant,
++    used: u64,
++    maximum: u64,
++    rounds: u64,
++    waits: u64,
++    limit: u64,
++    window: Duration,
++}
++
++impl Dispatch {
++    pub(crate) fn start(run: RunId, target: SchedulePolicy) -> Self {
++        let actual = task::current_thread().base_policy();
++        let expected = selected_policy(target).expect("worker policy validated before spawn");
++        assert_eq!(
++            actual, expected,
++            "IRQ service did not receive selected policy"
++        );
++        let config = *CONFIG.get().unwrap_or(&DEFAULT);
++        let mode = config.mode;
++        Self {
++            run,
++            thread: task::current_thread().id().as_u64(),
++            mode,
++            target,
++            actual,
++            limited: mode == Mode::Bounded && matches!(target, SchedulePolicy::Fifo { .. }),
++            window_end: Instant::now() + config.window,
++            used: 0,
++            maximum: 0,
++            rounds: 0,
++            waits: 0,
++            limit: config.rounds,
++            window: config.window,
++        }
++    }
++
++    /// Retains all canonical pending state while waiting outside every lock.
++    /// A stop bypasses dispatch after the timer wait; it never drains a new round.
++    pub(crate) fn admit_round(&mut self, stopping: &AtomicBool) -> bool {
++        if self.limited {
++            let now = Instant::now();
++            if now >= self.window_end {
++                self.window_end = now + self.window;
++                self.used = 0;
++            }
++            if self.used == self.limit {
++                self.waits += 1;
++                std::thread::sleep(self.window_end.saturating_duration_since(now));
++                if stopping.load(Ordering::Acquire) {
++                    return false;
++                }
++                self.window_end = Instant::now() + self.window;
++                self.used = 0;
++            }
++            self.used += 1;
++            self.maximum = self.maximum.max(self.used);
++        }
++        self.rounds += 1;
++        true
++    }
++}
++
++impl Drop for Dispatch {
++    fn drop(&mut self) {
++        let describe = |policy| match policy {
++            SchedulePolicy::Fifo { priority } => ("fifo", u64::from(priority.get())),
++            SchedulePolicy::Fair { .. } => ("fair", 0),
++            _ => ("other", 0),
++        };
++        let (target, target_priority) = describe(self.target);
++        let (actual, actual_priority) = describe(self.actual);
++        println!(
++            "VIRQ_IRQ_SERVICE vm={} run={} thread={} mode={} target={} target_priority={} \
++             actual={} actual_priority={} rounds={} waits={} max_rounds={} limit={} window_ns={}",
++            self.run.vm().vm_id(),
++            self.run.generation(),
++            self.thread,
++            self.mode.name(),
++            target,
++            target_priority,
++            actual,
++            actual_priority,
++            self.rounds,
++            self.waits,
++            self.maximum,
++            self.limit,
++            self.window.as_nanos()
++        );
++    }
++}
+diff --git a/virtualization/axvm/src/diagnostics/service_placement.rs b/virtualization/axvm/src/diagnostics/service_placement.rs
+new file mode 100644
+index 000000000..c57dfce31
+--- /dev/null
++++ b/virtualization/axvm/src/diagnostics/service_placement.rs
+@@ -0,0 +1,145 @@
++//! Boot-scoped service placement for controlled kernel-test comparisons.
++
++use std::sync::{
++    OnceLock,
++    atomic::{AtomicUsize, Ordering},
++};
++
++use crate::{AxVmError, AxVmResult, host::task};
++
++static CPU: OnceLock<usize> = OnceLock::new();
++static COUNTS: [Counts; 2] = [const { Counts::new() }; 2];
++
++struct Counts {
++    started: AtomicUsize,
++    finished: AtomicUsize,
++    observations: AtomicUsize,
++    wrong_cpu: AtomicUsize,
++}
++
++impl Counts {
++    const fn new() -> Self {
++        Self {
++            started: AtomicUsize::new(0),
++            finished: AtomicUsize::new(0),
++            observations: AtomicUsize::new(0),
++            wrong_cpu: AtomicUsize::new(0),
++        }
++    }
++}
++
++/// Fixes control and signal worker affinity once, before creating any VM.
++/// Requires initialized capture and a valid host CPU. No runtime reconfiguration.
++pub fn configure(cpu: usize) -> AxVmResult {
++    let count = super::STORE.get().map_or(0, std::vec::Vec::len);
++    if cpu >= count || cpu >= usize::BITS as usize {
++        return Err(AxVmError::invalid_config(
++            "service CPU is outside initialized topology",
++        ));
++    }
++    CPU.set(cpu)
++        .map_err(|_| AxVmError::invalid_config("service placement already configured"))
++}
++
++pub(crate) fn cpu() -> Option<usize> {
++    CPU.get().copied()
++}
++
++#[derive(Clone, Copy, Debug)]
++pub(crate) enum Role {
++    Control,
++    Signal,
++}
++
++impl Role {
++    fn name(self) -> &'static str {
++        match self {
++            Self::Control => "control",
++            Self::Signal => "signal",
++        }
++    }
++}
++
++/// Task-local statistics; never owns a thread or changes its affinity.
++pub(crate) struct Probe {
++    role: Role,
++    cpu: usize,
++    thread: u64,
++    observations: usize,
++    wrong_cpu: usize,
++}
++
++impl Probe {
++    pub(crate) fn start(role: Role) -> Option<Self> {
++        let cpu = cpu()?;
++        COUNTS[role as usize]
++            .started
++            .fetch_add(1, Ordering::Relaxed);
++        let mut probe = Self {
++            role,
++            cpu,
++            thread: task::current_thread().id().as_u64(),
++            observations: 0,
++            wrong_cpu: 0,
++        };
++        probe.observe();
++        Some(probe)
++    }
++
++    pub(crate) fn observe(&mut self) {
++        self.observations += 1;
++        self.wrong_cpu += usize::from(task::current_cpu_id() != self.cpu);
++    }
++}
++
++impl Drop for Probe {
++    fn drop(&mut self) {
++        self.observe();
++        let counts = &COUNTS[self.role as usize];
++        counts
++            .observations
++            .fetch_add(self.observations, Ordering::Relaxed);
++        counts
++            .wrong_cpu
++            .fetch_add(self.wrong_cpu, Ordering::Relaxed);
++        println!(
++            "VIRQ_SERVICE_THREAD role={} thread={} requested_cpu={} observations={} wrong_cpu={}",
++            self.role.name(),
++            self.thread,
++            self.cpu,
++            self.observations,
++            self.wrong_cpu
++        );
++        // Publish this task's completed aggregate; VM teardown joins all producers.
++        counts.finished.fetch_add(1, Ordering::Release);
++    }
++}
++
++/// Checks placement observations after all VM services have exited and joined.
++/// A wrong CPU, absent role, or unmatched service lifetime fails the measurement.
++pub fn validate() -> AxVmResult {
++    let cpu = cpu().ok_or_else(|| AxVmError::invalid_config("service placement not configured"))?;
++    for role in [Role::Control, Role::Signal] {
++        let counts = &COUNTS[role as usize];
++        let finished = counts.finished.load(Ordering::Acquire);
++        let started = counts.started.load(Ordering::Relaxed);
++        let observations = counts.observations.load(Ordering::Relaxed);
++        let wrong = counts.wrong_cpu.load(Ordering::Relaxed);
++        println!(
++            "VIRQ_SERVICE_SUMMARY role={} requested_cpu={} started={} finished={} observations={} \
++             wrong_cpu={}",
++            role.name(),
++            cpu,
++            started,
++            finished,
++            observations,
++            wrong
++        );
++        if started == 0 || started != finished || observations < started * 2 || wrong != 0 {
++            return Err(AxVmError::invalid_config(
++                "service placement observations failed",
++            ));
++        }
++    }
++    Ok(())
++}
+diff --git a/virtualization/axvm/tests/guests/linux-load/prepare.py b/virtualization/axvm/tests/guests/linux-load/prepare.py
+new file mode 100644
+index 000000000..9e57fff1c
+--- /dev/null
++++ b/virtualization/axvm/tests/guests/linux-load/prepare.py
+@@ -0,0 +1,113 @@
++#!/usr/bin/env python3
++"""Build a source-backed Linux CPU worker and its isolated Guest resources."""
++
++import argparse
++import gzip
++import hashlib
++import json
++import os
++from pathlib import Path
++import shutil
++import stat
++import subprocess
++import tempfile
++
++KERNEL_SHA = 'c5403e99b9ae7a8c60c393fb2a97e637ded3e049179bb1b2f63cf6b94dd2a61a'
++BASE_SHA = 'f71e2d9dd7ef4019de3880347c2896eb8507ceebb3b442b941d909954ccdc6eb'
++
++
++def checked_file(variable, expected):
++    path = Path(os.environ[variable]).resolve()
++    if hashlib.sha256(path.read_bytes()).hexdigest() != expected:
++        raise ValueError(variable+' checksum mismatch')
++    return path
++
++
++def extract_base(data, root):
++    offset = 0
++    while offset < len(data):
++        if data[offset:offset+6] != b'070701':
++            raise ValueError('unexpected base initramfs format')
++        h = [int(data[offset+6+i*8:offset+14+i*8], 16) for i in range(13)]
++        offset += 110
++        if h[11] < 1 or offset+h[11] > len(data) or data[offset+h[11]-1] != 0:
++            raise ValueError('invalid archive name')
++        name = data[offset:offset+h[11]-1].decode()
++        offset = (offset+h[11]+3)&~3
++        payload = data[offset:offset+h[6]]
++        if len(payload) != h[6]:
++            raise ValueError('truncated base initramfs')
++        offset = (offset+h[6]+3)&~3
++        if name == 'TRAILER!!!':
++            if any(data[offset:]):
++                raise ValueError('unexpected trailing base archive data')
++            return
++        relative = Path(name)
++        if relative.is_absolute() or '..' in relative.parts:
++            raise ValueError('unsafe archive path')
++        dest = root/relative
++        dest.parent.mkdir(parents=True, exist_ok=True)
++        kind = stat.S_IFMT(h[1])
++        if kind == stat.S_IFDIR:
++            dest.mkdir(exist_ok=True)
++        elif kind == stat.S_IFREG:
++            dest.write_bytes(payload)
++            dest.chmod(stat.S_IMODE(h[1]))
++        elif kind == stat.S_IFLNK:
++            target = payload.decode()
++            if Path(target).is_absolute() or '..' in Path(target).parts:
++                raise ValueError('unsafe archive symlink')
++            dest.symlink_to(target)
++        else:
++            raise ValueError('unsupported base initramfs entry type')
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--output', required=True, type=Path)
++    args = parser.parse_args()
++    kernel = checked_file('VIRQ_LINUX_KERNEL', KERNEL_SHA)
++    base = checked_file('VIRQ_LINUX_INITRAMFS_BASE', BASE_SHA)
++    output = args.output.resolve()/'linux'
++    output.mkdir(parents=True, exist_ok=True)
++    source = Path(__file__).with_name('workload.c')
++    compiler = os.environ['CROSS_COMPILE']+'gcc'
++    binary = output/'ordinary-load'
++    command = [compiler, '-O2', '-static', '-std=c11', '-Wall', '-Wextra', '-Werror', str(source), '-o', str(binary)]
++    subprocess.run(command, check=True)
++    with tempfile.TemporaryDirectory(prefix='linux-root-', dir=output) as directory:
++        root = Path(directory)
++        extract_base(gzip.decompress(base.read_bytes()), root)
++        shutil.copyfile(binary, root/'bin/ordinary-load')
++        (root/'bin/ordinary-load').chmod(0o755)
++        (root/'init').write_text('#!/bin/busybox sh\nset -eu\n/bin/busybox mount -t proc proc /proc\n/bin/busybox mount -t sysfs sysfs /sys\n/bin/busybox mount -t devtmpfs devtmpfs /dev\nexec /bin/ordinary-load\n')
++        (root/'init').chmod(0o755)
++        subprocess.run(['cargo','xtask','image','pack-initramfs',str(root),str(output/'initramfs.cpio.gz'),'--gzip'],check=True)
++    shutil.copyfile(kernel, output/'linux.kernel')
++    (output/'vm.toml').write_text('''[base]
++id = 1
++name = "linux-ordinary-cpu"
++guest_type = "virtualized"
++cpu_num = 1
++phys_cpu_ids = [3]
++[kernel]
++entry_point = 0x80200000
++kernel_path = "linux.kernel"
++kernel_load_addr = 0x80200000
++dtb_load_addr = 0x80000000
++ramdisk_path = "initramfs.cpio.gz"
++ramdisk_load_addr = 0x84000000
++cmdline = "console=ttyAMA0 rdinit=/init devtmpfs.mount=1 quiet loglevel=0"
++memory_regions = [[0x80000000, 0x40000000, 0x7, 0]]
++[devices]
++passthrough = []
++disabled = []
++''')
++    (output/'build.json').write_text(json.dumps(dict(command=command,kernel_sha256=KERNEL_SHA,base_initramfs_sha256=BASE_SHA,
++        workload_source_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),
++        workload_elf_sha256=hashlib.sha256(binary.read_bytes()).hexdigest(),
++        initramfs_sha256=hashlib.sha256((output/'initramfs.cpio.gz').read_bytes()).hexdigest()),indent=2)+'\n')
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/virtualization/axvm/tests/guests/linux-load/workload.c b/virtualization/axvm/tests/guests/linux-load/workload.c
+new file mode 100644
+index 000000000..d4db4dda7
+--- /dev/null
++++ b/virtualization/axvm/tests/guests/linux-load/workload.c
+@@ -0,0 +1,35 @@
++#define _GNU_SOURCE
++#include <errno.h>
++#include <inttypes.h>
++#include <sched.h>
++#include <stdint.h>
++#include <stdio.h>
++
++int main(void)
++{
++    cpu_set_t mask;
++    CPU_ZERO(&mask);
++    CPU_SET(0, &mask);
++    setvbuf(stdout, NULL, _IONBF, 0);
++    if (sched_setaffinity(0, sizeof(mask), &mask) != 0) {
++        printf("LINUX_LOAD_FAILED operation=affinity errno=%d\n", errno);
++        return 1;
++    }
++    printf("LINUX_LOAD_READY version=1 guest_cpu=0 batch_iterations=8192 report_batches=256\n");
++    volatile uint64_t checksum = 1;
++    uint64_t batches = 0;
++    for (;;) {
++        for (unsigned int i = 0; i < 8192; ++i)
++            checksum = checksum * UINT64_C(6364136223846793005) + 1;
++        ++batches;
++        if (batches % 256 == 0) {
++            int cpu = sched_getcpu();
++            if (cpu != 0) {
++                printf("LINUX_LOAD_FAILED operation=cpu guest_cpu=%d\n", cpu);
++                return 1;
++            }
++            printf("LINUX_LOAD_PROGRESS batches=%" PRIu64 " checksum=%" PRIu64 " guest_cpu=%d\n",
++                   batches, checksum, cpu);
++        }
++    }
++}
+diff --git a/virtualization/axvm/tests/support/clock.rs b/virtualization/axvm/tests/support/clock.rs
+new file mode 100644
+index 000000000..8d53ee2e0
+--- /dev/null
++++ b/virtualization/axvm/tests/support/clock.rs
+@@ -0,0 +1,110 @@
++//! Test-only cross-domain counter calibration over immutable reply windows.
++
++use std::{
++    time::{Duration, Instant},
++    vec::Vec,
++};
++
++use aarch64_cpu::asm::barrier::{ISH, SY, dmb, isb};
++use anyhow::{Result, ensure};
++use axvm::{GuestMemoryPort, GuestPhysAddr};
++
++use super::Fixture;
++
++pub const CLOCK_START: u32 = 33;
++
++pub struct Probe {
++    pub phase: &'static str,
++    pub sequence: u32,
++    pub before: u64,
++    pub guest: u64,
++    pub after: u64,
++}
++
++pub struct Delivery {
++    pub submitted: u64,
++    pub guest: u64,
++    pub observed: u64,
++}
++
++pub fn host_ticks() -> u64 {
++    let ticks = ax_cpu::timer::physical_counter();
++    // Also prevent following request stores from preceding this sample.
++    isb(SY);
++    ticks
++}
++
++pub fn read_word(memory: &GuestMemoryPort, address: GuestPhysAddr) -> Result<u64> {
++    // Guest release-publishes the reply/received byte before this acquire
++    // barrier. Its payload stays immutable until the host's next request.
++    dmb(ISH);
++    let mut bytes = [0; 8];
++    memory.read_bytes(address, &mut bytes)?;
++    Ok(u64::from_le_bytes(bytes))
++}
++
++pub fn calibrate(
++    fixture: &mut Fixture,
++    memory: &GuestMemoryPort,
++    address: GuestPhysAddr,
++    phase: &'static str,
++    first: u32,
++) -> Result<Vec<Probe>> {
++    let deadline = Instant::now() + Duration::from_secs(30);
++    let mut probes = Vec::with_capacity(32);
++    for sequence in first..first + 32 {
++        let before = host_ticks();
++        memory.write_bytes(address + 20, &sequence.to_le_bytes())?;
++        loop {
++            // Sequence <= 65: only the low byte ever changes. The memory
++            // copy API need not provide an atomic multi-byte snapshot.
++            let mut ack = [0; 1];
++            memory.read_bytes(address + 24, &mut ack)?;
++            if u32::from(ack[0]) == sequence {
++                break;
++            }
++            ensure!(Instant::now() < deadline, "clock calibration timed out");
++            fixture.flush_console()?;
++            std::thread::yield_now();
++        }
++        let guest = read_word(memory, address + 32)?;
++        let after = host_ticks();
++        ensure!(before <= after, "host counter moved backwards");
++        probes.push(Probe {
++            phase,
++            sequence,
++            before,
++            guest,
++            after,
++        });
++    }
++    Ok(probes)
++}
++
++pub fn offset_bounds(probes: &[Probe]) -> Result<(i128, i128)> {
++    let low = probes
++        .iter()
++        .map(|p| i128::from(p.before) - i128::from(p.guest))
++        .max()
++        .expect("calibration has probes");
++    let high = probes
++        .iter()
++        .map(|p| i128::from(p.after) - i128::from(p.guest))
++        .min()
++        .expect("calibration has probes");
++    ensure!(low <= high, "clock offset intervals do not intersect");
++    Ok((low, high))
++}
++
++pub fn validate_delivery(sample: &Delivery, low: i128, high: i128) -> Result<()> {
++    ensure!(
++        sample.submitted <= sample.observed,
++        "host counter moved backwards"
++    );
++    ensure!(
++        i128::from(sample.guest) + high >= i128::from(sample.submitted)
++            && i128::from(sample.guest) + low <= i128::from(sample.observed),
++        "ISR timestamp is outside its causal host window"
++    );
++    Ok(())
++}
+diff --git a/virtualization/axvm/tests/support/contention.rs b/virtualization/axvm/tests/support/contention.rs
+new file mode 100644
+index 000000000..34e3302de
+--- /dev/null
++++ b/virtualization/axvm/tests/support/contention.rs
+@@ -0,0 +1,194 @@
++//! Host work owned through startup, sampling, VM shutdown, and joined cleanup.
++
++#[path = "contention/work.rs"]
++mod work;
++use std::{
++    sync::{
++        Arc,
++        atomic::{AtomicBool, AtomicU64, Ordering},
++    },
++    thread::JoinHandle,
++    time::{Duration, Instant},
++};
++
++use anyhow::{Context, Result, ensure};
++pub use work::Workload;
++use work::{CPU_ITERATIONS, MEMORY_WORDS_PER_BATCH, WorkResult, WorkState};
++
++#[derive(Default)]
++struct Shared {
++    active: AtomicBool,
++    run_gate: ax_std::os::arceos::api::task::AxWaitQueueHandle,
++    stop: AtomicBool,
++    exited: AtomicBool,
++    batches: AtomicU64,
++    wrong_cpu: AtomicU64,
++}
++
++struct WorkerReport {
++    thread: u64,
++    work: WorkResult,
++}
++
++pub struct HostContention {
++    shared: Arc<Shared>,
++    worker: Option<JoinHandle<Result<WorkerReport>>>,
++    spec: Workload,
++}
++
++impl HostContention {
++    pub fn start(spec: Workload) -> Result<Self> {
++        spec.validate()?;
++        ensure!(
++            spec.cpu() < ax_std::os::arceos::task::sched::cpu_topology_len()?,
++            "contention CPU is unavailable"
++        );
++        let shared = Arc::new(Shared::default());
++        let worker_shared = shared.clone();
++        let worker = std::thread::Builder::new()
++            .name(format!("virq-host-load-cpu{}", spec.cpu()))
++            .spawn(move || {
++                let result = execute(&worker_shared, spec);
++                worker_shared.exited.store(true, Ordering::Release);
++                result
++            })
++            .context("spawn host contention worker")?;
++        let mut load = Self {
++            shared,
++            worker: Some(worker),
++            spec,
++        };
++        let deadline = Instant::now() + Duration::from_secs(10);
++        while load.batches() == 0 {
++            if load.shared.exited.load(Ordering::Acquire) {
++                // Join observes the worker's original allocation/setup error.
++                load.join()?;
++                anyhow::bail!("host load ended at startup");
++            }
++            ensure!(Instant::now() < deadline, "host load startup timed out");
++            std::thread::sleep(Duration::from_millis(1));
++        }
++        Ok(load)
++    }
++
++    pub fn activate(&self) -> Result<()> {
++        use ax_std::os::arceos::api::task::ax_wait_queue_wake;
++        let before = self.batches();
++        self.shared.active.store(true, Ordering::Release);
++        ax_wait_queue_wake(&self.shared.run_gate, 1);
++        let deadline = Instant::now() + Duration::from_secs(10);
++        while self.batches() == before {
++            ensure!(
++                !self.shared.exited.load(Ordering::Acquire),
++                "host load exited before activation"
++            );
++            ensure!(Instant::now() < deadline, "host load activation timed out");
++            std::thread::sleep(Duration::from_millis(1));
++        }
++        Ok(())
++    }
++
++    pub fn batches(&self) -> u64 {
++        // Pure completed-batch count, not publication of the private buffer.
++        self.shared.batches.load(Ordering::Relaxed)
++    }
++
++    pub fn finish(mut self, start_batches: u64, end_batches: u64, policy: &str) -> Result<()> {
++        let unexpectedly_exited = self.shared.exited.load(Ordering::Acquire);
++        let report = self.join()?.context("host load was already joined")?;
++        let wrong_cpu = self.shared.wrong_cpu.load(Ordering::Relaxed);
++        ensure!(
++            !unexpectedly_exited,
++            "host load ended before sampling finished"
++        );
++        ensure!(
++            end_batches > start_batches,
++            "host load made no sampling progress"
++        );
++        ensure!(wrong_cpu == 0, "host load left its requested CPU");
++        let cpu = self.spec.cpu();
++        let thread = report.thread;
++        let final_batches = self.batches();
++        match report.work {
++            WorkResult::Cpu { checksum } => println!(
++                "VIRQ_LOAD_SUMMARY policy={policy} cpu={cpu} thread={thread} \
++                 batch_iterations={CPU_ITERATIONS} start_batches={start_batches} \
++                 end_batches={end_batches} final_batches={final_batches} wrong_cpu={wrong_cpu} \
++                 checksum={checksum} joined=1"
++            ),
++            WorkResult::Memory {
++                bytes,
++                checksum,
++                verified_words,
++                read_bytes,
++                write_bytes,
++            } => println!(
++                "VIRQ_MEMORY_SUMMARY policy={policy} cpu={cpu} thread={thread} \
++                 working_set_bytes={bytes} chunk_words={MEMORY_WORDS_PER_BATCH} \
++                 start_batches={start_batches} end_batches={end_batches} \
++                 final_batches={final_batches} read_bytes={read_bytes} write_bytes={write_bytes} \
++                 checksum={checksum} verified_words={verified_words} mismatch_words=0 \
++                 wrong_cpu={wrong_cpu} joined=1"
++            ),
++        }
++        Ok(())
++    }
++
++    fn join(&mut self) -> Result<Option<WorkerReport>> {
++        self.shared.stop.store(true, Ordering::Release);
++        ax_std::os::arceos::api::task::ax_wait_queue_wake(&self.shared.run_gate, 1);
++        self.worker
++            .take()
++            .map(|worker| {
++                worker
++                    .join()
++                    .map_err(|_| anyhow::anyhow!("host load panicked"))?
++            })
++            .transpose()
++    }
++}
++
++impl Drop for HostContention {
++    fn drop(&mut self) {
++        if let Err(error) = self.join() {
++            println!("VIRQ_LOAD_CLEANUP_FAILED {error:#}");
++        }
++    }
++}
++
++fn execute(shared: &Shared, spec: Workload) -> Result<WorkerReport> {
++    use ax_std::os::arceos::{
++        api::task::{AxCpuMask, ax_current_task_id, ax_set_current_affinity},
++        modules::ax_hal::percpu::this_cpu_id,
++    };
++    let cpu = spec.cpu();
++    ax_set_current_affinity(AxCpuMask::one_shot(cpu)).context("pin host contention worker")?;
++    let thread = ax_current_task_id();
++    let mut work = WorkState::new(spec)?;
++    let mut batches = 0u64;
++    loop {
++        if batches != 0 && !shared.active.load(Ordering::Acquire) {
++            ax_std::os::arceos::api::task::ax_wait_queue_wait_until(
++                &shared.run_gate,
++                || shared.active.load(Ordering::Acquire) || shared.stop.load(Ordering::Acquire),
++                None,
++            );
++        }
++        if shared.stop.load(Ordering::Acquire) {
++            break;
++        }
++        if this_cpu_id() != cpu {
++            shared.wrong_cpu.fetch_add(1, Ordering::Relaxed);
++        }
++        work.run_batch();
++        batches = batches
++            .checked_add(1)
++            .context("host load batch count overflow")?;
++        shared.batches.store(batches, Ordering::Relaxed);
++        std::thread::yield_now();
++    }
++    Ok(WorkerReport {
++        thread,
++        work: work.finish(batches)?,
++    })
++}
+diff --git a/virtualization/axvm/tests/support/contention/work.rs b/virtualization/axvm/tests/support/contention/work.rs
+new file mode 100644
+index 000000000..04e6f3f81
+--- /dev/null
++++ b/virtualization/axvm/tests/support/contention/work.rs
+@@ -0,0 +1,136 @@
++//! Worker-owned operations; neither buffers nor pointers leave this module.
++
++use std::vec::Vec;
++
++use anyhow::{Context, Result, ensure};
++
++pub const CPU_ITERATIONS: u64 = 8192;
++pub const MEMORY_WORDS_PER_BATCH: usize = 1024;
++pub const MEMORY_BYTES_PER_BATCH: usize = MEMORY_WORDS_PER_BATCH * 8;
++
++#[derive(Clone, Copy)]
++pub enum Workload {
++    Cpu,
++    Memory { bytes: usize, cpu: usize },
++}
++
++impl Workload {
++    pub(super) fn cpu(self) -> usize {
++        match self {
++            Self::Cpu => 1,
++            Self::Memory { cpu, .. } => cpu,
++        }
++    }
++
++    pub(super) fn validate(self) -> Result<()> {
++        if let Self::Memory { bytes, cpu } = self {
++            ensure!(
++                matches!(cpu, 2 | 3),
++                "memory worker must use a dedicated fixture CPU"
++            );
++            ensure!(
++                (1024 * 1024..=64 * 1024 * 1024).contains(&bytes)
++                    && bytes.is_multiple_of(MEMORY_BYTES_PER_BATCH),
++                "invalid memory working set"
++            );
++        }
++        Ok(())
++    }
++}
++
++pub(super) enum WorkState {
++    Cpu { checksum: u64 },
++    Memory { words: Vec<u64>, cursor: usize },
++}
++
++pub(super) enum WorkResult {
++    Cpu {
++        checksum: u64,
++    },
++    Memory {
++        bytes: usize,
++        checksum: u64,
++        verified_words: usize,
++        read_bytes: u64,
++        write_bytes: u64,
++    },
++}
++
++impl WorkState {
++    pub(super) fn new(spec: Workload) -> Result<Self> {
++        match spec {
++            Workload::Cpu => Ok(Self::Cpu { checksum: 1 }),
++            Workload::Memory { bytes, .. } => {
++                let len = bytes / 8;
++                let mut words = Vec::new();
++                words
++                    .try_reserve_exact(len)
++                    .context("allocate memory working set")?;
++                words.extend((0..len).map(|index| index as u64));
++                Ok(Self::Memory { words, cursor: 0 })
++            }
++        }
++    }
++
++    pub(super) fn run_batch(&mut self) {
++        match self {
++            Self::Cpu { checksum } => {
++                for _ in 0..CPU_ITERATIONS {
++                    *checksum = std::hint::black_box(
++                        checksum.wrapping_mul(6364136223846793005).wrapping_add(1),
++                    );
++                }
++            }
++            Self::Memory { words, cursor } => {
++                for word in &mut words[*cursor..*cursor + MEMORY_WORDS_PER_BATCH] {
++                    let pointer = word as *mut u64;
++                    // SAFETY: the safe slice iterator supplies one aligned,
++                    // initialized word in this worker's exclusive live Vec.
++                    // No other task, guest or DMA agent has its address. These
++                    // accesses finish before yielding or freeing the buffer.
++                    unsafe {
++                        let value = pointer.read_volatile();
++                        pointer.write_volatile(value.wrapping_add(1));
++                    }
++                }
++                *cursor += MEMORY_WORDS_PER_BATCH;
++                if *cursor == words.len() {
++                    *cursor = 0;
++                }
++            }
++        }
++    }
++
++    pub(super) fn finish(self, batches: u64) -> Result<WorkResult> {
++        match self {
++            Self::Cpu { checksum } => Ok(WorkResult::Cpu { checksum }),
++            Self::Memory { words, .. } => {
++                let chunks = words.len() / MEMORY_WORDS_PER_BATCH;
++                let sweeps = batches / chunks as u64;
++                let extra_words = (batches % chunks as u64) as usize * MEMORY_WORDS_PER_BATCH;
++                let mut checksum = 0u64;
++                for (index, actual) in words.iter().enumerate() {
++                    let expected = (index as u64)
++                        .wrapping_add(sweeps)
++                        .wrapping_add(u64::from(index < extra_words));
++                    ensure!(
++                        *actual == expected,
++                        "memory working set verification failed at word {index}"
++                    );
++                    checksum = checksum.wrapping_add(*actual);
++                }
++                let bytes = words.len() * 8;
++                let read_bytes = batches
++                    .checked_mul(MEMORY_BYTES_PER_BATCH as u64)
++                    .context("memory byte count overflow")?;
++                Ok(WorkResult::Memory {
++                    bytes,
++                    checksum,
++                    verified_words: words.len(),
++                    read_bytes,
++                    write_bytes: read_bytes,
++                })
++            }
++        }
++    }
++}
+diff --git a/virtualization/axvm/tests/support/inversion.rs b/virtualization/axvm/tests/support/inversion.rs
+new file mode 100644
+index 000000000..3c5170249
+--- /dev/null
++++ b/virtualization/axvm/tests/support/inversion.rs
+@@ -0,0 +1,129 @@
++//! One finite FIFO60 witness on the IRQ service CPU, joined on every exit.
++
++use std::{
++    sync::{
++        Arc,
++        atomic::{AtomicBool, Ordering},
++    },
++    thread::JoinHandle,
++    time::{Duration, Instant},
++};
++
++use anyhow::{Context, Result, ensure};
++use ax_std::os::arceos::api::task::{
++    AxCpuMask, AxWaitQueueHandle, ax_set_current_affinity, ax_wait_queue_wait_until,
++    ax_wait_queue_wake,
++};
++use axvm::{RtPriority, SchedulePolicy};
++
++#[derive(Default)]
++struct Shared {
++    ready: AtomicBool,
++    active: AtomicBool,
++    stop: AtomicBool,
++    exited: AtomicBool,
++    gate: AxWaitQueueHandle,
++}
++
++pub struct Report {
++    pub start: u64,
++    pub end: u64,
++    pub thread: u64,
++    pub wrong_cpu: u64,
++}
++
++pub struct Witness {
++    shared: Arc<Shared>,
++    worker: Option<JoinHandle<Result<Report>>>,
++}
++
++impl Witness {
++    pub fn start() -> Result<Self> {
++        let shared = Arc::new(Shared::default());
++        let worker_shared = shared.clone();
++        let worker = std::thread::Builder::new()
++            .name("virq-fifo60-witness".into())
++            .spawn(move || {
++                let result = execute(&worker_shared);
++                worker_shared.exited.store(true, Ordering::Release);
++                result
++            })?;
++        let mut witness = Self {
++            shared,
++            worker: Some(worker),
++        };
++        let deadline = Instant::now() + Duration::from_secs(10);
++        while !witness.shared.ready.load(Ordering::Acquire) {
++            if witness.shared.exited.load(Ordering::Acquire) {
++                witness.finish()?;
++                anyhow::bail!("inversion witness exited before registration");
++            }
++            ensure!(
++                Instant::now() < deadline,
++                "inversion witness startup timed out"
++            );
++            std::thread::sleep(Duration::from_millis(1));
++        }
++        Ok(witness)
++    }
++
++    /// Called only after arming a delayed physical IRQ on CPU0.
++    pub fn activate(&self) {
++        self.shared.active.store(true, Ordering::Release);
++        ax_wait_queue_wake(&self.shared.gate, 1);
++    }
++
++    pub fn finish(&mut self) -> Result<Report> {
++        self.worker
++            .take()
++            .context("inversion witness already joined")?
++            .join()
++            .map_err(|_| anyhow::anyhow!("inversion witness panicked"))?
++    }
++}
++
++impl Drop for Witness {
++    fn drop(&mut self) {
++        if self.worker.is_some() {
++            self.shared.stop.store(true, Ordering::Release);
++            ax_wait_queue_wake(&self.shared.gate, 1);
++            if let Err(error) = self.finish() {
++                panic!("inversion witness cleanup failed: {error:#}");
++            }
++        }
++    }
++}
++
++fn execute(shared: &Shared) -> Result<Report> {
++    ax_set_current_affinity(AxCpuMask::one_shot(0)).context("pin inversion witness")?;
++    let current = ax_std::os::arceos::task::thread::current::current_thread_handle()?;
++    let policy = SchedulePolicy::fifo(RtPriority::new(60)?);
++    current.set_policy(policy)?;
++    ensure!(
++        current.base_policy() == policy,
++        "inversion witness policy mismatch"
++    );
++    let thread = current.id().as_u64();
++    shared.ready.store(true, Ordering::Release);
++    ax_wait_queue_wait_until(
++        &shared.gate,
++        || shared.active.load(Ordering::Acquire) || shared.stop.load(Ordering::Acquire),
++        None,
++    );
++    let start = super::clock::host_ticks();
++    let duration = ax_cpu::timer::counter_frequency() / 20;
++    let mut wrong_cpu = 0;
++    while !shared.stop.load(Ordering::Acquire)
++        && super::clock::host_ticks().saturating_sub(start) < duration
++    {
++        wrong_cpu += u64::from(ax_std::os::arceos::modules::ax_hal::percpu::this_cpu_id() != 0);
++        core::hint::spin_loop();
++    }
++    let end = super::clock::host_ticks();
++    Ok(Report {
++        start,
++        end,
++        thread,
++        wrong_cpu,
++    })
++}
+diff --git a/virtualization/axvm/tests/support/linux.rs b/virtualization/axvm/tests/support/linux.rs
+new file mode 100644
+index 000000000..0c48414aa
+--- /dev/null
++++ b/virtualization/axvm/tests/support/linux.rs
+@@ -0,0 +1,155 @@
++//! Consume bounded serial progress from a separate Linux guest; no shared GPA.
++
++use std::time::{Duration, Instant};
++
++use anyhow::{Context, Result, ensure};
++use axvm::{SchedulePolicy, VmStatus};
++
++use super::support::Fixture;
++
++#[derive(Default)]
++pub struct Progress {
++    offset: usize,
++    ready: bool,
++    batches: u64,
++    checksum: u64,
++    reports: u64,
++}
++
++impl Progress {
++    pub fn start(fixture: &mut Fixture) -> Result<Self> {
++        fixture.vm.start()?.wait()?;
++        fixture.wait(Duration::from_secs(120), |snapshot, _| {
++            snapshot.state == VmStatus::Running && snapshot.cpu.running_vcpu_count == 1
++        })?;
++        let mut progress = Self::default();
++        let deadline = Instant::now() + Duration::from_secs(120);
++        while progress.batches == 0 {
++            progress.poll(fixture)?;
++            ensure!(
++                Instant::now() < deadline,
++                "Linux workload startup timed out"
++            );
++            std::thread::sleep(Duration::from_millis(1));
++        }
++        fixture.check_policy(SchedulePolicy::default(), 1)?;
++        println!(
++            "VIRQ_LINUX_BOOT vm=1 vcpu=0 host_cpu=3 guest_cpu=0 batches={}",
++            progress.batches
++        );
++        Ok(progress)
++    }
++
++    pub fn poll(&mut self, fixture: &mut Fixture) -> Result<u64> {
++        fixture.flush_console()?;
++        let snapshot = fixture.vm.snapshot();
++        ensure!(
++            snapshot.state == VmStatus::Running && snapshot.last_failure.is_none(),
++            "Linux workload stopped before measurement completed"
++        );
++        self.consume(fixture)?;
++        Ok(self.batches)
++    }
++
++    fn consume(&mut self, fixture: &Fixture) -> Result<()> {
++        fixture.validate_console(|text| {
++            while let Some(end) = text[self.offset..].find('\n') {
++                let end = self.offset + end + 1;
++                self.line(text[self.offset..end].trim_end_matches(['\r', '\n']))?;
++                self.offset = end;
++            }
++            Ok(())
++        })
++    }
++
++    fn line(&mut self, line: &str) -> Result<()> {
++        ensure!(
++            !line.contains("LINUX_LOAD_FAILED"),
++            "Linux reported a workload failure"
++        );
++        if line.starts_with("LINUX_LOAD_READY") {
++            ensure!(
++                !self.ready
++                    && line
++                        == "LINUX_LOAD_READY version=1 guest_cpu=0 batch_iterations=8192 \
++                            report_batches=256",
++                "Linux workload readiness protocol mismatch"
++            );
++            self.ready = true;
++        } else if line.starts_with("LINUX_LOAD_PROGRESS") {
++            let mut fields = line.split_whitespace();
++            fields.next();
++            let batches = field(fields.next(), "batches=")?;
++            let checksum = field(fields.next(), "checksum=")?;
++            let cpu = field(fields.next(), "guest_cpu=")?;
++            ensure!(
++                fields.next().is_none() && self.ready && cpu == 0,
++                "Linux workload identity mismatch"
++            );
++            ensure!(
++                Some(batches) == self.batches.checked_add(256),
++                "Linux workload report missing or reordered"
++            );
++            let iterations = batches
++                .checked_mul(8192)
++                .context("Linux iteration count overflow")?;
++            ensure!(
++                checksum == checksum_after(iterations),
++                "Linux workload checksum mismatch"
++            );
++            self.batches = batches;
++            self.checksum = checksum;
++            self.reports += 1;
++        }
++        Ok(())
++    }
++
++    pub fn finish(
++        &mut self,
++        fixture: &mut Fixture,
++        policy: &str,
++        start: u64,
++        end: u64,
++    ) -> Result<()> {
++        self.poll(fixture)?;
++        ensure!(
++            0 < start && start < end && end <= self.batches,
++            "Linux produced no observed progress across the sampling window"
++        );
++        fixture.stop()?;
++        // Stop joins the vCPU and flushes its final complete console records.
++        self.consume(fixture)?;
++        ensure!(
++            fixture.vm.snapshot().cpu.running_vcpu_count == 0,
++            "Linux vCPU remained active"
++        );
++        println!(
++            "VIRQ_LINUX_SUMMARY policy={policy} vm=1 vcpu=0 host_cpu=3 guest_cpu=0 \
++             start_batches={start} end_batches={end} final_batches={} checksum={} reports={} \
++             batch_iterations=8192 report_batches=256 stopped=1",
++            self.batches, self.checksum, self.reports
++        );
++        Ok(())
++    }
++}
++
++fn field(value: Option<&str>, prefix: &str) -> Result<u64> {
++    value
++        .and_then(|v| v.strip_prefix(prefix))
++        .context("Linux workload field missing")?
++        .parse()
++        .context("Linux workload field is not an unsigned integer")
++}
++
++fn checksum_after(mut iterations: u64) -> u64 {
++    let (mut multiplier, mut increment, mut checksum) = (6364136223846793005u64, 1u64, 1u64);
++    while iterations != 0 {
++        if iterations & 1 != 0 {
++            checksum = multiplier.wrapping_mul(checksum).wrapping_add(increment);
++        }
++        increment = multiplier.wrapping_mul(increment).wrapping_add(increment);
++        multiplier = multiplier.wrapping_mul(multiplier);
++        iterations >>= 1;
++    }
++    checksum
++}
+diff --git a/virtualization/axvm/tests/support/physical.rs b/virtualization/axvm/tests/support/physical.rs
+new file mode 100644
+index 000000000..78f3c0a00
+--- /dev/null
++++ b/virtualization/axvm/tests/support/physical.rs
+@@ -0,0 +1,250 @@
++//! Exclusive QEMU virt CNTP/PPI source, controlled from CPU0.
++
++use core::marker::PhantomData;
++use std::sync::{
++    Arc,
++    atomic::{AtomicU32, Ordering},
++};
++
++use anyhow::{Context, Result, ensure};
++use ax_cpu::timer::{Timer, TimerControl, TimerKind};
++use ax_std::os::arceos::{guard::IrqSaveGuard, modules::ax_hal};
++use axvm::{VcpuInterruptPort, diagnostics::HostIrqCapture};
++
++#[derive(Default)]
++struct Counters {
++    handled: AtomicU32,
++    errors: AtomicU32,
++}
++
++pub struct PhysicalTimer {
++    cpu: usize,
++    irq: Option<ax_hal::irq::IrqHandle>,
++    counters: Arc<Counters>,
++    observation: Option<HostIrqCapture>,
++    original: Option<(u64, TimerControl)>,
++    _not_send_sync: PhantomData<*mut ()>,
++}
++
++impl PhysicalTimer {
++    pub fn start(port: VcpuInterruptPort, cpu: usize) -> Result<Self> {
++        ensure!(
++            ax_hal::platform_name() == "linux,dummy-virt",
++            "CNTP fixture requires QEMU virt"
++        );
++        ensure!(
++            ax_cpu::registers::current_exception_level() == 2,
++            "physical source needs EL2"
++        );
++        ensure!(
++            ax_hal::percpu::this_cpu_id() == 0,
++            "physical controller needs CPU0"
++        );
++        ensure!(
++            cpu <= 1 && cpu < ax_hal::cpu_num(),
++            "invalid physical source CPU"
++        );
++        let irq = ax_hal::irq::resolve_percpu_irq(ax_hal::irq::HwIrq(30))?;
++        let host_irq = ax_hal::time::irq_num();
++        ensure!(
++            host_irq.domain == irq.domain && host_irq.hwirq.0 == 26,
++            "QEMU EL2 CNTHP scheduler PPI26 is required"
++        );
++        ensure!(irq != host_irq, "CNTP is the host scheduler timer");
++        let counters = Arc::new(Counters::default());
++        let handler_counters = counters.clone();
++        let handle = ax_hal::irq::request_irq(
++            irq,
++            ax_hal::irq::IrqRequest::new_concurrent(move |context| {
++                // SAFETY: this action exclusively owns this CPU's CNTP PPI.
++                // IRQ exclusion serializes all bounded task/hard-call sessions;
++                // host clockevents use CNTHP and guest CNTP accesses are trapped.
++                let mut timer = unsafe { Timer::current(TimerKind::Physical) };
++                let pending = timer.control().contains(TimerControl::PENDING);
++                timer.set_control(TimerControl::MASKED);
++                if context.cpu != ax_hal::irq::CpuId(cpu) || !pending || port.pulse().is_err() {
++                    handler_counters.errors.fetch_add(1, Ordering::Relaxed);
++                }
++                handler_counters.handled.fetch_add(1, Ordering::Release);
++                ax_hal::irq::IrqReturn::Handled
++            })
++            .scope(ax_hal::irq::IrqScope::PerCpu {
++                cpus: ax_hal::irq::CpuMask::from_cpu(ax_hal::irq::CpuId(cpu)),
++            })
++            .auto_enable(ax_hal::irq::AutoEnable::No),
++        )
++        .context("request exclusive QEMU CNTP PPI")?;
++        let mut source = Self {
++            cpu,
++            irq: Some(handle),
++            counters,
++            observation: None,
++            original: None,
++            _not_send_sync: PhantomData,
++        };
++        on_cpu(cpu, Operation::SetTrigger(irq))?;
++        source.original = Some(on_cpu(cpu, Operation::Snapshot)?);
++        source.observation = Some(axvm::diagnostics::observe_host_irq(30)?);
++        ax_hal::irq::enable_irq(handle)?;
++        Ok(source)
++    }
++
++    pub fn arm(&self, sequence: u32) -> Result<u64> {
++        ensure!(
++            ax_hal::percpu::this_cpu_id() == 0,
++            "timer controller left CPU0"
++        );
++        ensure!(
++            self.counters.errors.load(Ordering::Acquire) == 0,
++            "physical IRQ handler error"
++        );
++        ensure!(
++            self.counters.handled.load(Ordering::Acquire) == sequence - 1,
++            "unexpected physical IRQ count"
++        );
++        on_cpu(self.cpu, Operation::Arm).map(|(due, _)| due)
++    }
++
++    pub fn check_delivered(&self, sequence: u32) -> Result<()> {
++        ensure!(
++            self.counters.handled.load(Ordering::Acquire) == sequence,
++            "physical source did not deliver exactly once"
++        );
++        ensure!(
++            self.counters.errors.load(Ordering::Acquire) == 0,
++            "physical source handler failed"
++        );
++        Ok(())
++    }
++
++    pub fn finish(mut self, policy: &str, samples: u32) -> Result<()> {
++        self.check_delivered(samples)?;
++        self.close()?;
++        println!(
++            "VIRQ_PHYSICAL_SUMMARY policy={policy} intid=30 cpu={} handled={samples} errors=0 \
++             retired=1",
++            self.cpu
++        );
++        Ok(())
++    }
++
++    fn close(&mut self) -> Result<()> {
++        ensure!(
++            ax_hal::percpu::this_cpu_id() == 0,
++            "timer cleanup left controller CPU0"
++        );
++        if let Some(handle) = self.irq {
++            if self.original.is_some() {
++                on_cpu(self.cpu, Operation::Mask)?;
++            }
++            ax_hal::irq::disable_irq(handle)?;
++            ax_hal::irq::synchronize_irq(handle)?;
++            ax_hal::irq::free_irq(handle)?;
++            self.irq = None;
++        }
++        // Retain the saved bank across a failed remote restore so Drop can retry.
++        if let Some((compare, control)) = self.original {
++            on_cpu(self.cpu, Operation::Restore(compare, control))?;
++            self.original = None;
++        }
++        self.observation.take();
++        Ok(())
++    }
++}
++
++impl Drop for PhysicalTimer {
++    fn drop(&mut self) {
++        if let Err(error) = self.close() {
++            println!("VIRQ_PHYSICAL_CLEANUP_FAILED {error:#}");
++        }
++    }
++}
++
++#[derive(Clone, Copy)]
++enum Operation {
++    SetTrigger(ax_hal::irq::IrqId),
++    Snapshot,
++    Arm,
++    Mask,
++    Restore(u64, TimerControl),
++}
++
++struct Request {
++    operation: Operation,
++    reply: Option<core::result::Result<(u64, TimerControl), &'static str>>,
++}
++
++fn on_cpu(cpu: usize, operation: Operation) -> Result<(u64, TimerControl)> {
++    let mut request = Request {
++        operation,
++        reply: None,
++    };
++    // SAFETY: the unique, aligned stack request remains live and unmoved until
++    // synchronous completion/cancellation; no caller lock is held. The callback
++    // is bounded, IRQ-masked, nonallocating, and retains no pointer or Timer view.
++    unsafe {
++        ax_hal::irq::run_on_cpu_sync(
++            ax_hal::irq::CpuId(cpu),
++            operate,
++            core::ptr::from_mut(&mut request).cast(),
++        )?;
++    }
++    request
++        .reply
++        .context("physical hard call did not complete")?
++        .map_err(anyhow::Error::msg)
++}
++
++unsafe fn operate(argument: *mut ()) {
++    // SAFETY: on_cpu owns this initialized stack Request until synchronous
++    // completion; it does not access the request while the callback executes.
++    let request = unsafe { &mut *argument.cast::<Request>() };
++    let _irq = IrqSaveGuard::new();
++    if let Operation::SetTrigger(irq) = request.operation {
++        request.reply = Some(
++            ax_hal::irq::set_trigger(irq, ax_hal::irq::IrqTrigger::Level)
++                .map(|()| (0, TimerControl::empty()))
++                .map_err(|_| "set CNTP PPI trigger failed"),
++        );
++        return;
++    }
++    // SAFETY: the fixture reserved this CPU's disabled PPI before Snapshot;
++    // subsequent operations retain ownership until Mask/synchronize/free, then
++    // Restore. Local IRQ exclusion prevents simultaneous handler access. Guest
++    // CNTP is emulated and CNTHP owns host clockevents, so no other bank user exists.
++    let mut timer = unsafe { Timer::current(TimerKind::Physical) };
++    request.reply = Some(match request.operation {
++        Operation::Snapshot => {
++            let control = timer.control();
++            if control.contains(TimerControl::ENABLE) {
++                Err("CNTP is already enabled")
++            } else {
++                Ok((timer.compare(), control))
++            }
++        }
++        Operation::Arm => {
++            let delay = ax_cpu::timer::counter_frequency() / 1000;
++            if timer.control().contains(TimerControl::ENABLE) {
++                Err("previous comparator remains enabled")
++            } else if delay == 0 {
++                Err("counter frequency is too low")
++            } else if let Some(due) = timer.counter().checked_add(delay) {
++                timer.set_compare(due);
++                timer.set_control(TimerControl::ENABLE);
++                Ok((due, TimerControl::ENABLE))
++            } else {
++                Err("timer deadline overflow")
++            }
++        }
++        Operation::Mask => {
++            timer.set_control(TimerControl::MASKED);
++            Ok((0, TimerControl::MASKED))
++        }
++        Operation::Restore(compare, control) => {
++            timer.set_compare(compare);
++            timer.set_control(control);
++            Ok((compare, control))
++        }
++        Operation::SetTrigger(_) => unreachable!(),
++    });
++}
+diff --git a/virtualization/axvm/tests/support/rtc_spi.rs b/virtualization/axvm/tests/support/rtc_spi.rs
+new file mode 100644
+index 000000000..9dc018f38
+--- /dev/null
++++ b/virtualization/axvm/tests/support/rtc_spi.rs
+@@ -0,0 +1,303 @@
++//! Exclusive, host-owned QEMU PL031 alarm; never changes the RTC calendar.
++
++use core::marker::PhantomData;
++use std::sync::{
++    Arc,
++    atomic::{AtomicBool, AtomicU32, Ordering},
++};
++
++use aarch64_cpu::asm::barrier::{SY, dsb};
++use anyhow::{Context, Result, ensure};
++use ax_arm_pl031::Rtc;
++use ax_std::os::arceos::modules::ax_hal;
++use ax_sync::RawSpinLock;
++use axvm::{VcpuInterruptPort, diagnostics::HostIrqCapture};
++
++static BORROWED: AtomicBool = AtomicBool::new(false);
++
++#[derive(Default)]
++struct Counters {
++    handled: AtomicU32,
++    errors: AtomicU32,
++}
++
++pub struct RtcSpi {
++    bank: Arc<RawSpinLock<Option<Rtc>>>,
++    counters: Arc<Counters>,
++    irq: Option<ax_hal::irq::IrqHandle>,
++    observation: Option<HostIrqCapture>,
++    original: Option<u32>,
++    borrowed: bool,
++    _not_send_sync: PhantomData<*mut ()>,
++}
++
++impl RtcSpi {
++    pub fn start(port: VcpuInterruptPort) -> Result<Self> {
++        ensure!(
++            ax_hal::platform_name() == "linux,dummy-virt",
++            "RTC needs QEMU virt"
++        );
++        ensure!(
++            ax_cpu::registers::current_exception_level() == 2,
++            "RTC needs EL2"
++        );
++        ensure!(
++            ax_hal::percpu::this_cpu_id() == 0,
++            "RTC controller needs CPU0"
++        );
++        verify_firmware()?;
++        let gic = ax_hal::irq::resolve_percpu_irq(ax_hal::irq::HwIrq(30))?;
++        let irq = ax_hal::irq::resolve_irq_source(ax_hal::irq::IrqSource::ControllerLine {
++            domain: gic.domain,
++            hwirq: ax_hal::irq::HwIrq(34),
++        })
++        .context("resolve RTC SPI in the active GIC domain")?;
++        ensure!(
++            irq != ax_hal::time::irq_num(),
++            "RTC aliases the scheduler timer"
++        );
++        ensure!(
++            Some(irq) != ax_hal::console::irq_num(),
++            "RTC aliases the console"
++        );
++        let mut source = Self {
++            bank: Arc::new(RawSpinLock::new(None)),
++            counters: Arc::new(Counters::default()),
++            irq: None,
++            observation: None,
++            original: None,
++            borrowed: false,
++            _not_send_sync: PhantomData,
++        };
++        BORROWED
++            .compare_exchange(false, true, Ordering::AcqRel, Ordering::Acquire)
++            .map_err(|_| anyhow::anyhow!("RTC fixture already borrowed"))?;
++        source.borrowed = true;
++        let bank = source.bank.clone();
++        let counters = source.counters.clone();
++        let handle = ax_hal::irq::request_irq(
++            irq,
++            ax_hal::irq::IrqRequest::new_concurrent(move |context| {
++                let valid = {
++                    let mut guard = bank.lock_irqsave();
++                    if let Some(rtc) = guard.as_mut() {
++                        let pending = rtc.interrupt_pending();
++                        rtc.enable_interrupt(false);
++                        rtc.clear_interrupt();
++                        dsb(SY);
++                        pending && !rtc.matched() && !rtc.interrupt_pending()
++                    } else {
++                        false
++                    }
++                };
++                // The callback itself is owned by the IRQ framework, not locked
++                // or shared with task code. Only the register bank is serialized.
++                if context.cpu != ax_hal::irq::CpuId(0) || !valid || port.pulse().is_err() {
++                    counters.errors.fetch_add(1, Ordering::Relaxed);
++                }
++                counters.handled.fetch_add(1, Ordering::Release);
++                ax_hal::irq::IrqReturn::Handled
++            })
++            .affinity(ax_hal::irq::IrqAffinity::Fixed(ax_hal::irq::CpuId(0)))
++            .auto_enable(ax_hal::irq::AutoEnable::No),
++        )
++        .context("request exclusive RTC SPI34")?;
++        source.irq = Some(handle);
++        ax_hal::irq::disable_irq(handle)?;
++        let mapped = ax_mm::iomap(0x0901_0000usize.into(), 0x1000)
++            .context("map exclusive PL031 register page as Device memory")?;
++        let base = mapped.as_usize() as *mut u32;
++        // SAFETY: strict QEMU/FDT admission checked this complete 4KiB PL031
++        // resource; iomap supplies a permanent Device RW mapping. This case has
++        // no host RTC consumer or Guest RTC/counter driver/passthrough. BORROWED
++        // and the disabled exclusive SPI prevent another fixture/IRQ accessor.
++        // Each aligned ID word is within the page. No Rtc view exists yet.
++        let identity: [u32; 8] = unsafe {
++            core::array::from_fn(|index| base.wrapping_add(0xfe0 / 4 + index).read_volatile())
++        };
++        ensure!(
++            identity == [0x31, 0x10, 0x14, 0, 0x0d, 0xf0, 5, 0xb1],
++            "unexpected PL031 identity"
++        );
++        // SAFETY: same live Device mapping and exclusive ownership above.
++        // This is the single Rtc object, published only into the IRQ-safe bank.
++        // The mapping outlives the IRQ callback and is never unmapped by us.
++        let rtc = unsafe { Rtc::new(base) };
++        ensure!(
++            rtc.match_timestamp() == 0
++                && !rtc.interrupt_enabled()
++                && !rtc.matched()
++                && !rtc.interrupt_pending(),
++            "RTC alarm was not inactive"
++        );
++        source.original = Some(rtc.match_timestamp());
++        *source.bank.lock_irqsave() = Some(rtc);
++        ax_hal::irq::set_trigger(irq, ax_hal::irq::IrqTrigger::Level)?;
++        source.observation = Some(axvm::diagnostics::observe_host_irq(34)?);
++        ax_hal::irq::enable_irq(handle)?;
++        println!(
++            "VIRQ_RTC_CONFIG base=0x9010000 intid=34 cpu=0 target_cpu=1 initial_mr=0 imsc=0 ris=0 \
++             mis=0"
++        );
++        Ok(source)
++    }
++
++    pub fn arm(&self, sequence: u32) -> Result<u32> {
++        ensure!(
++            ax_hal::percpu::this_cpu_id() == 0,
++            "RTC controller left CPU0"
++        );
++        self.check_delivered(sequence - 1)?;
++        let handle = self.irq.context("RTC source already closed")?;
++        // Mask the exact controller line before acquiring its register bank.
++        ax_hal::irq::disable_irq(handle)?;
++        let matched = {
++            let mut bank = self.bank.lock_irqsave();
++            let rtc = bank.as_mut().context("RTC bank absent")?;
++            rtc.enable_interrupt(false);
++            rtc.clear_interrupt();
++            dsb(SY);
++            let mut matched = None;
++            for _ in 0..3 {
++                let now = rtc.get_unix_timestamp();
++                rtc.set_match_timestamp(now);
++                dsb(SY);
++                if rtc.matched() {
++                    ensure!(
++                        rtc.match_timestamp() == now
++                            && !rtc.interrupt_enabled()
++                            && !rtc.interrupt_pending(),
++                        "RTC masked alarm state disagrees"
++                    );
++                    matched = Some(now);
++                    break;
++                }
++            }
++            let matched = matched.context("RTC alarm crossed three second boundaries")?;
++            rtc.enable_interrupt(true);
++            dsb(SY);
++            ensure!(
++                rtc.interrupt_enabled() && rtc.interrupt_pending(),
++                "RTC did not assert"
++            );
++            matched
++        };
++        ax_hal::irq::enable_irq(handle)?;
++        Ok(matched)
++    }
++
++    pub fn check_delivered(&self, sequence: u32) -> Result<()> {
++        ensure!(
++            self.counters.handled.load(Ordering::Acquire) == sequence,
++            "RTC interrupt count mismatch"
++        );
++        ensure!(
++            self.counters.errors.load(Ordering::Acquire) == 0,
++            "RTC handler pending/clear/CPU/delivery error"
++        );
++        Ok(())
++    }
++
++    pub fn finish(mut self, policy: &str, samples: u32) -> Result<()> {
++        self.check_delivered(samples)?;
++        self.close()?;
++        println!(
++            "VIRQ_RTC_SUMMARY policy={policy} intid=34 cpu=0 handled={samples} errors=0 retired=1 \
++             restored_mr=0 imsc=0 ris=0 mis=0"
++        );
++        Ok(())
++    }
++
++    fn close(&mut self) -> Result<()> {
++        if !self.borrowed {
++            return Ok(());
++        }
++        ensure!(ax_hal::percpu::this_cpu_id() == 0, "RTC cleanup left CPU0");
++        if let Some(handle) = self.irq {
++            ax_hal::irq::disable_irq(handle)?;
++            {
++                let mut bank = self.bank.lock_irqsave();
++                if let Some(rtc) = bank.as_mut() {
++                    rtc.enable_interrupt(false);
++                    rtc.clear_interrupt();
++                    dsb(SY);
++                }
++            }
++            ax_hal::irq::synchronize_irq(handle)?;
++            ax_hal::irq::free_irq(handle)?;
++            self.irq = None;
++        }
++        if let Some(original) = self.original {
++            let mut bank = self.bank.lock_irqsave();
++            let rtc = bank.as_mut().context("RTC restore lost register owner")?;
++            rtc.enable_interrupt(false);
++            rtc.set_match_timestamp(original);
++            rtc.clear_interrupt();
++            dsb(SY);
++            ensure!(
++                rtc.match_timestamp() == original
++                    && !rtc.interrupt_enabled()
++                    && !rtc.matched()
++                    && !rtc.interrupt_pending(),
++                "RTC restore failed"
++            );
++            self.original = None;
++        }
++        self.observation.take();
++        self.bank.lock_irqsave().take();
++        // All callback and register views are now gone. A failed close leaves
++        // BORROWED set, quarantining the device instead of publishing an alias.
++        BORROWED.store(false, Ordering::Release);
++        self.borrowed = false;
++        Ok(())
++    }
++}
++
++impl Drop for RtcSpi {
++    fn drop(&mut self) {
++        if let Err(error) = self.close() {
++            println!("VIRQ_RTC_CLEANUP_FAILED {error:#}");
++        }
++    }
++}
++
++fn verify_firmware() -> Result<()> {
++    let fdt = ax_hal::dtb::get_fdt().context("RTC firmware absent")?;
++    let mut nodes = fdt.find_compatible(&["arm,pl031"]);
++    let node = nodes.next().context("PL031 absent")?;
++    ensure!(nodes.next().is_none(), "multiple PL031 resources");
++    let reg: std::vec::Vec<u32> = node
++        .find_property("reg")
++        .context("RTC reg absent")?
++        .u32_list()
++        .collect();
++    let interrupts: std::vec::Vec<u32> = node
++        .find_property("interrupts")
++        .context("RTC interrupts absent")?
++        .u32_list()
++        .collect();
++    let parent = node
++        .interrupt_parent()
++        .context("RTC interrupt parent absent")?;
++    ensure!(
++        reg == [0, 0x9010000, 0, 0x1000] && interrupts == [0, 2, 4],
++        "unsupported RTC resource"
++    );
++    ensure!(
++        parent.node.compatibles().any(|s| s == "arm,gic-v3")
++            && parent
++                .node
++                .find_property("#interrupt-cells")
++                .map(|p| p.u32())
++                == Some(3),
++        "RTC needs the QEMU GICv3 binding"
++    );
++    ensure!(
++        matches!(
++            node.find_property("status").map(|p| p.str()),
++            None | Some("okay" | "ok")
++        ),
++        "RTC disabled by firmware"
++    );
++    Ok(())
++}
+diff --git a/virtualization/axvm/tests/vcpu-runtime/build-aarch64-memory-running.toml b/virtualization/axvm/tests/vcpu-runtime/build-aarch64-memory-running.toml
+new file mode 100644
+index 000000000..2e03649d0
+--- /dev/null
++++ b/virtualization/axvm/tests/vcpu-runtime/build-aarch64-memory-running.toml
+@@ -0,0 +1,5 @@
++# Four CPUs: controller0, Guest/source1, services2, memory worker3.
++features = []
++log = "Info"
++max_cpu_num = 4
++target = "aarch64-unknown-none-softfloat"
+diff --git a/virtualization/axvm/tests/vcpu-runtime/build-aarch64-memory.toml b/virtualization/axvm/tests/vcpu-runtime/build-aarch64-memory.toml
+new file mode 100644
+index 000000000..9978464d8
+--- /dev/null
++++ b/virtualization/axvm/tests/vcpu-runtime/build-aarch64-memory.toml
+@@ -0,0 +1,6 @@
++# Three-CPU memory-contention fixture: controller/source CPU0, guest target CPU1,
++# memory worker CPU2. The Zephyr guest itself still has two vCPUs.
++features = []
++log = "Info"
++max_cpu_num = 3
++target = "aarch64-unknown-none-softfloat"
+diff --git a/virtualization/axvm/tests/vcpu-runtime/linux/build-aarch64-unknown-none-softfloat.toml b/virtualization/axvm/tests/vcpu-runtime/linux/build-aarch64-unknown-none-softfloat.toml
+new file mode 100644
+index 000000000..1668f64cf
+--- /dev/null
++++ b/virtualization/axvm/tests/vcpu-runtime/linux/build-aarch64-unknown-none-softfloat.toml
+@@ -0,0 +1,4 @@
++features = []
++log = "Info"
++max_cpu_num = 4
++target = "aarch64-unknown-none-softfloat"
+diff --git a/virtualization/axvm/tests/vcpu-runtime/linux/guest-builds.toml b/virtualization/axvm/tests/vcpu-runtime/linux/guest-builds.toml
+new file mode 100644
+index 000000000..c95eab60f
+--- /dev/null
++++ b/virtualization/axvm/tests/vcpu-runtime/linux/guest-builds.toml
+@@ -0,0 +1,2 @@
++arceos_build_configs = []
++host_prepare = ["python3", "virtualization/axvm/tests/guests/virq/prepare.py", "--linux-peer"]
+diff --git a/virtualization/axvm/tests/vcpu-runtime/linux/host-initramfs.toml b/virtualization/axvm/tests/vcpu-runtime/linux/host-initramfs.toml
+new file mode 100644
+index 000000000..3fa534e59
+--- /dev/null
++++ b/virtualization/axvm/tests/vcpu-runtime/linux/host-initramfs.toml
+@@ -0,0 +1,5 @@
++source = "target/axbuild/axvm/vcpu-runtime/resources"
++vm_configs = [
++  "target/axbuild/axvm/vcpu-runtime/linux/vm.toml",
++  "target/axbuild/axvm/vcpu-runtime/vm.toml",
++]
+diff --git a/virtualization/axvm/tests/vcpu-runtime/linux/qemu-aarch64.toml b/virtualization/axvm/tests/vcpu-runtime/linux/qemu-aarch64.toml
+new file mode 100644
+index 000000000..349e74340
+--- /dev/null
++++ b/virtualization/axvm/tests/vcpu-runtime/linux/qemu-aarch64.toml
+@@ -0,0 +1,9 @@
++args = [
++  "-nographic", "-cpu", "cortex-a72",
++  "-machine", "virt,virtualization=on,gic-version=3,its=on",
++  "-smp", "4", "-m", "8g",
++]
++to_bin = true
++uefi = false
++timeout = 900
++fail_regex = ["AXVM_TEST_FAILED", "LINUX_LOAD_FAILED", "SOFTWARE VIRQ FAIL", "panicked at", "Kernel panic"]
+diff --git a/virtualization/axvm/tests/vcpu-runtime/qemu-aarch64-memory-running.toml b/virtualization/axvm/tests/vcpu-runtime/qemu-aarch64-memory-running.toml
+new file mode 100644
+index 000000000..315bc6a03
+--- /dev/null
++++ b/virtualization/axvm/tests/vcpu-runtime/qemu-aarch64-memory-running.toml
+@@ -0,0 +1,10 @@
++# Same-topology baseline and guest-running/memory combination.
++args = [
++  "-nographic", "-cpu", "cortex-a72",
++  "-machine", "virt,virtualization=on,gic-version=3",
++  "-smp", "4", "-m", "512M",
++]
++to_bin = true
++uefi = false
++timeout = 900
++fail_regex = ["VIRQ_TEST_FAILED", "SOFTWARE VIRQ FAIL", "panicked at"]
+diff --git a/virtualization/axvm/tests/vcpu-runtime/qemu-aarch64-memory.toml b/virtualization/axvm/tests/vcpu-runtime/qemu-aarch64-memory.toml
+new file mode 100644
+index 000000000..c62a2897a
+--- /dev/null
++++ b/virtualization/axvm/tests/vcpu-runtime/qemu-aarch64-memory.toml
+@@ -0,0 +1,11 @@
++# Three host CPUs for the memory_cross_core scenario and its same-topology baseline.
++# Guest resources and suite matching are shared with the normal case.
++args = [
++  "-nographic", "-cpu", "cortex-a72",
++  "-machine", "virt,virtualization=on,gic-version=3",
++  "-smp", "3", "-m", "512M",
++]
++to_bin = true
++uefi = false
++timeout = 900
++fail_regex = ["VIRQ_TEST_FAILED", "SOFTWARE VIRQ FAIL", "panicked at"]

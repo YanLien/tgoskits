@@ -1,0 +1,7 @@
+{
+  "native_no_wait_passed": true,
+  "independent_gate_rejected_missing_wait": true,
+  "rejection_reason": "Guest response span is too short",
+  "restored": true,
+  "recovery_native_and_gate_passed": true
+}

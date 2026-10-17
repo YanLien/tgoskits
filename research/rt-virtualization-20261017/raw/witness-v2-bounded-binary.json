@@ -1,0 +1,37 @@
+{
+  "host.elf": {
+    "source": "/home/yanlien/Workspace/tgoskits-research-20261017/build/main/aarch64-unknown-linux-musl/release/build/axvm/2d6f1ef0a9c92692/out/vcpu_runtime-2d6f1ef0a9c92692",
+    "bytes": 7588960,
+    "sha256": "24becb60a193209113d29e1d66697e87e8bc166e796b26d8ab532c90cff97380",
+    "remote_gzip": "/home/yanlien/Workspace/tgoskits-research-20261017/evidence/irq-coordination/witness-v2-bounded-24becb60a1932091-host.elf.gz",
+    "gzip_sha256": "debc0f9d9d8970d9179750aeb75deb37c88abe8859c08d55766209f9fff9677e"
+  },
+  "host.bin": {
+    "source": "/home/yanlien/Workspace/tgoskits-research-20261017/build/main/aarch64-unknown-linux-musl/release/build/axvm/2d6f1ef0a9c92692/out/vcpu_runtime-2d6f1ef0a9c92692.bin",
+    "bytes": 4935744,
+    "sha256": "45e6ade18a59e610d929976282fefe7a592e7630595605acd3eb8bee878a3f41",
+    "remote_gzip": "/home/yanlien/Workspace/tgoskits-research-20261017/evidence/irq-coordination/witness-v2-bounded-45e6ade18a59e610-host.bin.gz",
+    "gzip_sha256": "38e4fc1db2efd7448a44beb241d0d23d34021fed72ece5ca5b5c2d16afb5f05a"
+  },
+  "host-initramfs.cpio": {
+    "source": "/home/yanlien/Workspace/tgoskits-research-20261017/build/main/axbuild/axvisor/host-initramfs/aarch64.cpio",
+    "bytes": 43752,
+    "sha256": "e0a0a36bec02a3ec424f9e3d29b7c6e37644f62a06064237211000dbb8e1b645",
+    "remote_gzip": "/home/yanlien/Workspace/tgoskits-research-20261017/evidence/irq-coordination/witness-v2-bounded-e0a0a36bec02a3ec-host-initramfs.cpio.gz",
+    "gzip_sha256": "1c20770c481651b86277f5ded2751921213e4a6160c4cf8db6a7ba1dc115f5c5"
+  },
+  "guest.elf": {
+    "source": "/home/yanlien/Workspace/tgoskits-research-target-20261017/axbuild/axvm/vcpu-runtime/guest/zephyr/zephyr.elf",
+    "bytes": 718424,
+    "sha256": "de25475b1fddd3e90fa834242ca19da9c2c34e9d38608976a4f90862bc198c1a",
+    "remote_gzip": "/home/yanlien/Workspace/tgoskits-research-20261017/evidence/irq-coordination/witness-v2-bounded-de25475b1fddd3e9-guest.elf.gz",
+    "gzip_sha256": "aa72e7f6a01e6bc3b657098ca1b64374dc8ef4a4e5dd6a2762f58cd7b4bc6ae8"
+  },
+  "guest.bin": {
+    "source": "/home/yanlien/Workspace/tgoskits-research-target-20261017/axbuild/axvm/vcpu-runtime/guest/zephyr/zephyr.bin",
+    "bytes": 41190,
+    "sha256": "44b71cb4d0929ef294b6e0eae9c51cf9c39a0799739af95f311ca4d084ef461a",
+    "remote_gzip": "/home/yanlien/Workspace/tgoskits-research-20261017/evidence/irq-coordination/witness-v2-bounded-44b71cb4d0929ef2-guest.bin.gz",
+    "gzip_sha256": "0d8366fe3532a85fce4d3a602aeadaca112113770f346f9e0abe8e3135451f28"
+  }
+}

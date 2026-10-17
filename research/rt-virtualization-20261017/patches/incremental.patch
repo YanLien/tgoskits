@@ -1,0 +1,655 @@
+diff --git a/virtualization/axvm/src/control/lifecycle.rs b/virtualization/axvm/src/control/lifecycle.rs
+index 233038264..ddbaf584d 100644
+--- a/virtualization/axvm/src/control/lifecycle.rs
++++ b/virtualization/axvm/src/control/lifecycle.rs
+@@ -107,7 +107,10 @@ impl Owner {
+         }
+         let run = self.run.as_mut().expect("prepared run");
+         let id = run.id;
+-        run.worker = Some(RunSignalWorker::start(run.signals.clone())?);
++        run.worker = Some(RunSignalWorker::start(
++            run.signals.clone(),
++            self.vcpu_schedule_policy,
++        )?);
+         if let Err(error) = CurrentArch::enter_runtime(&mut self.vm, &run.signals) {
+             return match self.stop(operation) {
+                 Ok(()) => Err(error),
+diff --git a/virtualization/axvm/src/diagnostics.rs b/virtualization/axvm/src/diagnostics.rs
+index 290b64df5..19e764d6d 100644
+--- a/virtualization/axvm/src/diagnostics.rs
++++ b/virtualization/axvm/src/diagnostics.rs
+@@ -16,6 +16,7 @@ use ax_std::os::arceos::guard::IrqSaveGuard;
+ 
+ use crate::{AxVmError, AxVmResult};
+ 
++pub mod irq_service;
+ pub mod service_placement;
+ 
+ const CAPACITY: usize = 16_384;
+diff --git a/virtualization/axvm/src/diagnostics/irq_service.rs b/virtualization/axvm/src/diagnostics/irq_service.rs
+new file mode 100644
+index 000000000..071ba2391
+--- /dev/null
++++ b/virtualization/axvm/src/diagnostics/irq_service.rs
+@@ -0,0 +1,187 @@
++//! Test-only, boot-selected scheduling experiments for deferred IRQ services.
++
++use std::{
++    sync::{
++        OnceLock,
++        atomic::{AtomicBool, Ordering},
++    },
++    time::{Duration, Instant},
++};
++
++use crate::{AxVmError, AxVmResult, RunId, SchedulePolicy, host::task};
++
++const ROUNDS_PER_WINDOW: u64 = 8;
++const WINDOW: Duration = Duration::from_millis(1);
++static CONFIG: OnceLock<Config> = OnceLock::new();
++
++#[derive(Clone, Copy)]
++struct Config {
++    mode: Mode,
++    rounds: u64,
++    window: Duration,
++}
++
++const DEFAULT: Config = Config {
++    mode: Mode::Off,
++    rounds: ROUNDS_PER_WINDOW,
++    window: WINDOW,
++};
++
++#[derive(Clone, Copy, Debug, Eq, PartialEq)]
++enum Mode {
++    Off,
++    Inherit,
++    Bounded,
++}
++
++impl Mode {
++    fn name(self) -> &'static str {
++        match self {
++            Self::Off => "off",
++            Self::Inherit => "inherit",
++            Self::Bounded => "bounded",
++        }
++    }
++}
++
++/// Selects one experiment before VM creation. Replacement is rejected.
++/// Fair targets keep the default service policy; FIFO targets inherit only in
++/// enabled modes. This is an axtest experiment, not a production admission API.
++pub fn configure(mode: &str, rounds: u64, window_us: u64) -> AxVmResult {
++    let mode = match mode {
++        "off" => Mode::Off,
++        "inherit" => Mode::Inherit,
++        "bounded" => Mode::Bounded,
++        _ => return Err(AxVmError::invalid_config("unsupported IRQ service mode")),
++    };
++    if !(1..=256).contains(&rounds) || !(100..=100_000).contains(&window_us) {
++        return Err(AxVmError::invalid_config(
++            "IRQ service dispatch limit out of range",
++        ));
++    }
++    CONFIG
++        .set(Config {
++            mode,
++            rounds,
++            window: Duration::from_micros(window_us),
++        })
++        .map_err(|_| AxVmError::invalid_config("IRQ service mode already configured"))?;
++    println!(
++        "VIRQ_IRQ_SERVICE_CONFIG mode={} limit={rounds} window_ns={}",
++        mode.name(),
++        window_us * 1000
++    );
++    Ok(())
++}
++
++pub(crate) fn selected_policy(target: SchedulePolicy) -> AxVmResult<SchedulePolicy> {
++    if CONFIG.get().unwrap_or(&DEFAULT).mode == Mode::Off {
++        return Ok(SchedulePolicy::default());
++    }
++    match target {
++        SchedulePolicy::Fair { .. } => Ok(SchedulePolicy::default()),
++        SchedulePolicy::Fifo { .. } => Ok(target),
++        _ => Err(AxVmError::invalid_config(
++            "IRQ service inheritance supports only Fair and FIFO targets",
++        )),
++    }
++}
++
++/// State is owned solely by the fixed worker, never shared with IRQ producers.
++pub(crate) struct Dispatch {
++    run: RunId,
++    thread: u64,
++    mode: Mode,
++    target: SchedulePolicy,
++    actual: SchedulePolicy,
++    limited: bool,
++    window_end: Instant,
++    used: u64,
++    maximum: u64,
++    rounds: u64,
++    waits: u64,
++    limit: u64,
++    window: Duration,
++}
++
++impl Dispatch {
++    pub(crate) fn start(run: RunId, target: SchedulePolicy) -> Self {
++        let actual = task::current_thread().base_policy();
++        let expected = selected_policy(target).expect("worker policy validated before spawn");
++        assert_eq!(
++            actual, expected,
++            "IRQ service did not receive selected policy"
++        );
++        let config = *CONFIG.get().unwrap_or(&DEFAULT);
++        let mode = config.mode;
++        Self {
++            run,
++            thread: task::current_thread().id().as_u64(),
++            mode,
++            target,
++            actual,
++            limited: mode == Mode::Bounded && matches!(target, SchedulePolicy::Fifo { .. }),
++            window_end: Instant::now() + config.window,
++            used: 0,
++            maximum: 0,
++            rounds: 0,
++            waits: 0,
++            limit: config.rounds,
++            window: config.window,
++        }
++    }
++
++    /// Retains all canonical pending state while waiting outside every lock.
++    /// A stop bypasses dispatch after the timer wait; it never drains a new round.
++    pub(crate) fn admit_round(&mut self, stopping: &AtomicBool) -> bool {
++        if self.limited {
++            let now = Instant::now();
++            if now >= self.window_end {
++                self.window_end = now + self.window;
++                self.used = 0;
++            }
++            if self.used == self.limit {
++                self.waits += 1;
++                std::thread::sleep(self.window_end.saturating_duration_since(now));
++                if stopping.load(Ordering::Acquire) {
++                    return false;
++                }
++                self.window_end = Instant::now() + self.window;
++                self.used = 0;
++            }
++            self.used += 1;
++            self.maximum = self.maximum.max(self.used);
++        }
++        self.rounds += 1;
++        true
++    }
++}
++
++impl Drop for Dispatch {
++    fn drop(&mut self) {
++        let describe = |policy| match policy {
++            SchedulePolicy::Fifo { priority } => ("fifo", u64::from(priority.get())),
++            SchedulePolicy::Fair { .. } => ("fair", 0),
++            _ => ("other", 0),
++        };
++        let (target, target_priority) = describe(self.target);
++        let (actual, actual_priority) = describe(self.actual);
++        println!(
++            "VIRQ_IRQ_SERVICE vm={} run={} thread={} mode={} target={} target_priority={} \
++             actual={} actual_priority={} rounds={} waits={} max_rounds={} limit={} window_ns={}",
++            self.run.vm().vm_id(),
++            self.run.generation(),
++            self.thread,
++            self.mode.name(),
++            target,
++            target_priority,
++            actual,
++            actual_priority,
++            self.rounds,
++            self.waits,
++            self.maximum,
++            self.limit,
++            self.window.as_nanos()
++        );
++    }
++}
+diff --git a/virtualization/axvm/src/irq/deferred.rs b/virtualization/axvm/src/irq/deferred.rs
+index a8fd7cb14..f2aad0fef 100644
+--- a/virtualization/axvm/src/irq/deferred.rs
++++ b/virtualization/axvm/src/irq/deferred.rs
+@@ -40,7 +40,10 @@ impl RunSignalWorker {
+     /// The returned object is an ordinary owner value. Its only shared state
+     /// with the worker is the stop flag, so no lock is reachable from either the
+     /// hard-IRQ path or the guest-entry path.
+-    pub(crate) fn start(signals: Arc<RunSignals>) -> AxVmResult<Self> {
++    pub(crate) fn start(
++        signals: Arc<RunSignals>,
++        _vcpu_policy: task::SchedulePolicy,
++    ) -> AxVmResult<Self> {
+         let stopping = Arc::new(AtomicBool::new(false));
+         let worker_signals = Arc::clone(&signals);
+         let worker_stopping = Arc::clone(&stopping);
+@@ -51,13 +54,17 @@ impl RunSignalWorker {
+         ))
+         .stack_size(SIGNAL_WORKER_STACK_SIZE);
+         #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
++        let builder = builder.policy(crate::diagnostics::irq_service::selected_policy(
++            _vcpu_policy,
++        )?);
++        #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
+         let builder = if let Some(cpu) = crate::diagnostics::service_placement::cpu() {
+             builder.affinity(task::cpu_set_from_raw_bits(1usize << cpu))
+         } else {
+             builder
+         };
+         let worker = builder
+-            .spawn(move || run_worker(worker_signals, worker_stopping))
++            .spawn(move || run_worker(worker_signals, worker_stopping, _vcpu_policy))
+             .map_err(|error| AxVmError::host("start run signal worker", error))?;
+         Ok(Self {
+             signals,
+@@ -78,9 +85,18 @@ impl RunSignalWorker {
+             self.signals.stop_irq_pending_publication();
+             return Ok(());
+         };
++        #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
++        let worker_id = worker.id().as_u64();
+         match worker.clone().join() {
+             Ok(_) => {
+                 self.worker = None;
++                #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
++                println!(
++                    "VIRQ_IRQ_SERVICE_JOIN vm={} run={} thread={} joined=1",
++                    self.signals.run_id().vm().vm_id(),
++                    self.signals.run_id().generation(),
++                    worker_id
++                );
+                 self.signals.stop_irq_pending_publication();
+                 Ok(())
+             }
+@@ -90,7 +106,14 @@ impl RunSignalWorker {
+     }
+ }
+ 
+-fn run_worker(signals: Arc<RunSignals>, stopping: Arc<AtomicBool>) {
++fn run_worker(
++    signals: Arc<RunSignals>,
++    stopping: Arc<AtomicBool>,
++    _vcpu_policy: task::SchedulePolicy,
++) {
++    #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
++    let mut dispatch =
++        crate::diagnostics::irq_service::Dispatch::start(signals.run_id(), _vcpu_policy);
+     #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
+     let mut placement = crate::diagnostics::service_placement::Probe::start(
+         crate::diagnostics::service_placement::Role::Signal,
+@@ -104,6 +127,10 @@ fn run_worker(signals: Arc<RunSignals>, stopping: Arc<AtomicBool>) {
+         if stopping.load(Ordering::Acquire) {
+             break;
+         }
++        #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
++        if !dispatch.admit_round(&stopping) {
++            break;
++        }
+         signals.post_controller_events();
+         signals.kick_pending_for_worker();
+     }
+diff --git a/virtualization/axvm/tests/guests/virq/prepare.py b/virtualization/axvm/tests/guests/virq/prepare.py
+index 404c2ac8c..936dbb238 100644
+--- a/virtualization/axvm/tests/guests/virq/prepare.py
++++ b/virtualization/axvm/tests/guests/virq/prepare.py
+@@ -349,6 +349,19 @@ def write_test_resources(output: Path, entry: int, mailbox: int) -> Path:
+         raise ValueError("guest_running requires baseline or memory_cross_core, physical_timer_ppi and cpu2 services")
+     if scenario == "linux_cpu" and (source_kind != "pl031_spi" or service_placement != "cpu0" or irq_context != "current_el"):
+         raise ValueError("linux_cpu requires current_el, pl031_spi and cpu0 services")
++    irq_service = os.environ.get("VIRQ_IRQ_SERVICE", "off")
++    if irq_service not in ("off", "inherit", "bounded"):
++        raise ValueError(f"unsupported VIRQ_IRQ_SERVICE: {irq_service}")
++    irq_service_rounds = int(os.environ.get("VIRQ_IRQ_SERVICE_ROUNDS", "8"))
++    irq_service_window_us = int(os.environ.get("VIRQ_IRQ_SERVICE_WINDOW_US", "1000"))
++    if not 1 <= irq_service_rounds <= 256 or not 100 <= irq_service_window_us <= 100000:
++        raise ValueError("IRQ service dispatch limit out of range")
++    witness = os.environ.get("VIRQ_INVERSION_WITNESS", "0")
++    if witness not in ("0", "1"):
++        raise ValueError("VIRQ_INVERSION_WITNESS must be 0 or 1")
++    inversion_witness = witness == "1"
++    if inversion_witness and (scenario != "baseline" or source_kind != "physical_timer_ppi" or irq_context != "current_el" or service_placement != "cpu0"):
++        raise ValueError("inversion witness requires baseline/current_el/PPI/CPU0 services")
+     memory_bytes = int(os.environ.get("VIRQ_MEMORY_BYTES", str(16*1024*1024)))
+     if not 1024*1024 <= memory_bytes <= 64*1024*1024 or memory_bytes % 8192:
+         raise ValueError(f"unsupported VIRQ_MEMORY_BYTES: {memory_bytes}")
+@@ -373,6 +386,10 @@ source = "{source_kind}"
+ memory_bytes = {memory_bytes}
+ service_placement = "{service_placement}"
+ irq_context = "{irq_context}"
++irq_service = "{irq_service}"
++irq_service_rounds = {irq_service_rounds}
++irq_service_window_us = {irq_service_window_us}
++inversion_witness = {str(inversion_witness).lower()}
+ guest_rtc_unused = {str(guest_rtc_unused).lower()}
+ """
+     )
+diff --git a/virtualization/axvm/tests/support/inversion.rs b/virtualization/axvm/tests/support/inversion.rs
+new file mode 100644
+index 000000000..3c5170249
+--- /dev/null
++++ b/virtualization/axvm/tests/support/inversion.rs
+@@ -0,0 +1,129 @@
++//! One finite FIFO60 witness on the IRQ service CPU, joined on every exit.
++
++use std::{
++    sync::{
++        Arc,
++        atomic::{AtomicBool, Ordering},
++    },
++    thread::JoinHandle,
++    time::{Duration, Instant},
++};
++
++use anyhow::{Context, Result, ensure};
++use ax_std::os::arceos::api::task::{
++    AxCpuMask, AxWaitQueueHandle, ax_set_current_affinity, ax_wait_queue_wait_until,
++    ax_wait_queue_wake,
++};
++use axvm::{RtPriority, SchedulePolicy};
++
++#[derive(Default)]
++struct Shared {
++    ready: AtomicBool,
++    active: AtomicBool,
++    stop: AtomicBool,
++    exited: AtomicBool,
++    gate: AxWaitQueueHandle,
++}
++
++pub struct Report {
++    pub start: u64,
++    pub end: u64,
++    pub thread: u64,
++    pub wrong_cpu: u64,
++}
++
++pub struct Witness {
++    shared: Arc<Shared>,
++    worker: Option<JoinHandle<Result<Report>>>,
++}
++
++impl Witness {
++    pub fn start() -> Result<Self> {
++        let shared = Arc::new(Shared::default());
++        let worker_shared = shared.clone();
++        let worker = std::thread::Builder::new()
++            .name("virq-fifo60-witness".into())
++            .spawn(move || {
++                let result = execute(&worker_shared);
++                worker_shared.exited.store(true, Ordering::Release);
++                result
++            })?;
++        let mut witness = Self {
++            shared,
++            worker: Some(worker),
++        };
++        let deadline = Instant::now() + Duration::from_secs(10);
++        while !witness.shared.ready.load(Ordering::Acquire) {
++            if witness.shared.exited.load(Ordering::Acquire) {
++                witness.finish()?;
++                anyhow::bail!("inversion witness exited before registration");
++            }
++            ensure!(
++                Instant::now() < deadline,
++                "inversion witness startup timed out"
++            );
++            std::thread::sleep(Duration::from_millis(1));
++        }
++        Ok(witness)
++    }
++
++    /// Called only after arming a delayed physical IRQ on CPU0.
++    pub fn activate(&self) {
++        self.shared.active.store(true, Ordering::Release);
++        ax_wait_queue_wake(&self.shared.gate, 1);
++    }
++
++    pub fn finish(&mut self) -> Result<Report> {
++        self.worker
++            .take()
++            .context("inversion witness already joined")?
++            .join()
++            .map_err(|_| anyhow::anyhow!("inversion witness panicked"))?
++    }
++}
++
++impl Drop for Witness {
++    fn drop(&mut self) {
++        if self.worker.is_some() {
++            self.shared.stop.store(true, Ordering::Release);
++            ax_wait_queue_wake(&self.shared.gate, 1);
++            if let Err(error) = self.finish() {
++                panic!("inversion witness cleanup failed: {error:#}");
++            }
++        }
++    }
++}
++
++fn execute(shared: &Shared) -> Result<Report> {
++    ax_set_current_affinity(AxCpuMask::one_shot(0)).context("pin inversion witness")?;
++    let current = ax_std::os::arceos::task::thread::current::current_thread_handle()?;
++    let policy = SchedulePolicy::fifo(RtPriority::new(60)?);
++    current.set_policy(policy)?;
++    ensure!(
++        current.base_policy() == policy,
++        "inversion witness policy mismatch"
++    );
++    let thread = current.id().as_u64();
++    shared.ready.store(true, Ordering::Release);
++    ax_wait_queue_wait_until(
++        &shared.gate,
++        || shared.active.load(Ordering::Acquire) || shared.stop.load(Ordering::Acquire),
++        None,
++    );
++    let start = super::clock::host_ticks();
++    let duration = ax_cpu::timer::counter_frequency() / 20;
++    let mut wrong_cpu = 0;
++    while !shared.stop.load(Ordering::Acquire)
++        && super::clock::host_ticks().saturating_sub(start) < duration
++    {
++        wrong_cpu += u64::from(ax_std::os::arceos::modules::ax_hal::percpu::this_cpu_id() != 0);
++        core::hint::spin_loop();
++    }
++    let end = super::clock::host_ticks();
++    Ok(Report {
++        start,
++        end,
++        thread,
++        wrong_cpu,
++    })
++}
+diff --git a/virtualization/axvm/tests/vcpu-runtime/README.md b/virtualization/axvm/tests/vcpu-runtime/README.md
+index 0461c620a..a9454c1bc 100644
+--- a/virtualization/axvm/tests/vcpu-runtime/README.md
++++ b/virtualization/axvm/tests/vcpu-runtime/README.md
+@@ -225,3 +225,6 @@ VIRQ_SAMPLES=500 VIRQ_SOURCE=pl031_spi VIRQ_SERVICE_PLACEMENT=cpu0 \
+ `VIRQ_HOST_LOAD=linux_cpu`使用同一VmManager同时拥有Linux VM1与实时VM2，控制/源/服务CPU0、实时目标CPU1、Linux单vCPU固定CPU3；Linux使用virtualized、分配RAM和空passthrough，用户程序有连续批次/checksum协议。使用`vcpu-runtime/linux/`下的四核8GiB build/QEMU/资源配置，并显式提供已校验的VIRQ_LINUX_KERNEL和VIRQ_LINUX_INITRAMFS_BASE路径。默认单VM资源配置不捆绑Linux。
+ 
+ Guest逻辑CPU0不是Host CPU0。Linux串口进度在实时计时窗外排空，按8192次/批、256批/报告核验，不能作精确DRAM流量或单条ISR内的工作计数。采样与后校准后以Host stop停止Linux，再导出实时数据；全部服务销毁/join后才freeze。保留有界追踪和溢出失败，不把QEMU通过当作实板瓶颈或吞吐收益。
++
++
++A0仅在AArch64 axtest启用：VIRQ_IRQ_SERVICE=off/inherit/bounded。后两态对FIFO目标继承其等级，bounded限制每run的worker派发轮数；VIRQ_IRQ_SERVICE_ROUNDS范围1..256、VIRQ_IRQ_SERVICE_WINDOW_US范围100..100000，默认8轮/1ms。该限额不是IRQ数量、CPU执行预算、滑动窗口保证或Deadline感知算法。VIRQ_IRQ_SERVICE与VIRQ_IRQ_SERVICE_JOIN记录实际base策略和join结果。VIRQ_INVERSION_WITNESS=1仅用于baseline/current-EL/PPI/CPU0服务的有限FIFO60阻挡判定，禁止混入普通性能分布。50ms限额压力配置也单列分析。
+diff --git a/virtualization/axvm/tests/vcpu_runtime.rs b/virtualization/axvm/tests/vcpu_runtime.rs
+index 06e08647b..fbe6f8f9f 100644
+--- a/virtualization/axvm/tests/vcpu_runtime.rs
++++ b/virtualization/axvm/tests/vcpu_runtime.rs
+@@ -10,6 +10,8 @@ use ax_std as _;
+ mod clock;
+ #[path = "support/contention.rs"]
+ mod contention;
++#[path = "support/inversion.rs"]
++mod inversion;
+ #[path = "support/linux.rs"]
+ mod linux;
+ #[path = "support/physical.rs"]
+@@ -76,6 +78,32 @@ fn run_measurement(resource: &toml::Value, guest_running: bool) -> Result<()> {
+             .is_err(),
+         "ready observer replacement was accepted"
+     );
++    let service_mode = resource
++        .get("irq_service")
++        .and_then(toml::Value::as_str)
++        .context("missing IRQ service experiment mode")?;
++    let service_rounds = u64::try_from(
++        resource
++            .get("irq_service_rounds")
++            .and_then(toml::Value::as_integer)
++            .context("missing IRQ dispatch rounds")?,
++    )?;
++    let service_window_us = u64::try_from(
++        resource
++            .get("irq_service_window_us")
++            .and_then(toml::Value::as_integer)
++            .context("missing IRQ dispatch window")?,
++    )?;
++    let inversion_witness = resource
++        .get("inversion_witness")
++        .and_then(toml::Value::as_bool)
++        .context("missing inversion witness selection")?;
++    axvm::diagnostics::irq_service::configure(service_mode, service_rounds, service_window_us)?;
++    ensure!(
++        axvm::diagnostics::irq_service::configure(service_mode, service_rounds, service_window_us)
++            .is_err(),
++        "IRQ service mode replacement was accepted"
++    );
+     let mut envelopes = Vec::with_capacity(128);
+     for marker in 0..128 {
+         let before = clock::host_ticks();
+@@ -157,6 +185,16 @@ fn run_measurement(resource: &toml::Value, guest_running: bool) -> Result<()> {
+         );
+     }
+ 
++    if inversion_witness {
++        ensure!(
++            scenario == "baseline"
++                && source_kind == "physical_timer_ppi"
++                && !guest_running
++                && service_placement == "cpu0",
++            "inversion witness requires baseline current-EL PPI with CPU0 services"
++        );
++        println!("VIRQ_INVERSION_CONFIG cpu=0 priority=60 duration_ms=50 sample=1");
++    }
+     if scenario == "linux_cpu" {
+         ensure!(
+             source_kind == "pl031_spi" && !guest_running && service_placement == "cpu0",
+@@ -235,6 +273,7 @@ fn run_measurement(resource: &toml::Value, guest_running: bool) -> Result<()> {
+                             guest_running,
+                             samples,
+                             linux: Some((peer, &mut progress)),
++                            inversion_witness,
+                         },
+                     )?);
+                     Ok(())
+@@ -256,6 +295,7 @@ fn run_measurement(resource: &toml::Value, guest_running: bool) -> Result<()> {
+                         guest_running,
+                         samples,
+                         linux: None,
++                        inversion_witness,
+                     },
+                 )?);
+                 Ok(())
+@@ -371,6 +411,7 @@ struct Measurement<'a> {
+     guest_running: bool,
+     samples: u32,
+     linux: Option<(&'a mut Fixture, &'a mut linux::Progress)>,
++    inversion_witness: bool,
+ }
+ 
+ fn exercise(fixture: &mut Fixture, measurement: Measurement<'_>) -> Result<(u64, u64)> {
+@@ -382,6 +423,7 @@ fn exercise(fixture: &mut Fixture, measurement: Measurement<'_>) -> Result<(u64,
+         guest_running,
+         samples,
+         mut linux,
++        inversion_witness,
+     } = measurement;
+     let old_run = fixture.vm.start()?.wait()?;
+     let old_memory = fixture.vm.guest_memory(old_run)?;
+@@ -456,6 +498,12 @@ fn exercise(fixture: &mut Fixture, measurement: Measurement<'_>) -> Result<(u64,
+     if let Some(load) = load {
+         load.activate()?;
+     }
++    let mut blocker = if inversion_witness {
++        Some(inversion::Witness::start()?)
++    } else {
++        None
++    };
++    let mut witness_report = None;
+     let mut timings = Vec::with_capacity(samples as usize);
+     let physical = if source_kind == "physical_timer_ppi" {
+         Some(physical::PhysicalTimer::start(
+@@ -497,6 +545,11 @@ fn exercise(fixture: &mut Fixture, measurement: Measurement<'_>) -> Result<(u64,
+         } else {
+             interrupt.pulse()?;
+         }
++        if count == 1
++            && let Some(witness) = &blocker
++        {
++            witness.activate();
++        }
+         let pulse_ns = submitted.elapsed().as_nanos();
+         let state = wait_mailbox(fixture, &memory, address, deadline, |state| {
+             state[2] >= count
+@@ -515,6 +568,11 @@ fn exercise(fixture: &mut Fixture, measurement: Measurement<'_>) -> Result<(u64,
+         }
+         load_samples.push((batches_before, batches_after));
+         let guest_ticks = clock::read_word(&memory, address + 48 + (count as usize - 1) * 8)?;
++        if count == 1
++            && let Some(witness) = blocker.as_mut()
++        {
++            witness_report = Some(witness.finish()?);
++        }
+         timings.push((
+             pulse_ns,
+             ack_observed_ns,
+@@ -547,6 +605,39 @@ fn exercise(fixture: &mut Fixture, measurement: Measurement<'_>) -> Result<(u64,
+     for (_, _, stamp) in &timings {
+         clock::validate_delivery(stamp, offset_low, offset_high)?;
+     }
++    if let Some(report) = witness_report {
++        let guest_low = i128::from(timings[0].2.guest) + offset_low;
++        let guest_high = i128::from(timings[0].2.guest) + offset_high;
++        let due = physical_deadlines[0];
++        ensure!(
++            report.wrong_cpu == 0 && report.start < due && due < report.end,
++            "inversion witness did not bracket the physical deadline on CPU0"
++        );
++        let resource: toml::Value =
++            toml::from_str(&std::fs::read_to_string("/tests/vcpu-runtime.toml")?)?;
++        let enabled = resource.get("irq_service").and_then(toml::Value::as_str) != Some("off")
++            && matches!(policy, SchedulePolicy::Fifo { .. });
++        ensure!(
++            if enabled {
++                guest_low > i128::from(report.start) && guest_high < i128::from(report.end)
++            } else {
++                guest_low >= i128::from(report.end)
++            },
++            "IRQ service inheritance did not produce the expected scheduling order"
++        );
++        println!(
++            "VIRQ_INVERSION_WITNESS policy={policy_name} sample=1 blocker_cpu=0 \
++             blocker_priority=60 blocker_thread={} start_ticks={} end_ticks={} due_ticks={} \
++             guest_low_ticks={} guest_high_ticks={} preempted={} joined=1 wrong_cpu=0",
++            report.thread,
++            report.start,
++            report.end,
++            due,
++            guest_low,
++            guest_high,
++            u8::from(enabled)
++        );
++    }
+     if let Some((peer, progress)) = linux.as_mut() {
+         progress.finish(peer, policy_name, linux_start, linux_end)?;
+     }

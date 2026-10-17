@@ -1,0 +1,75 @@
+{
+  "base_tree": "1064473746c36b59aac2b8b73a600b629435a6fd",
+  "prototype_tree": "46132ba68a01fe412b7814ae8b6c67ae2632846a",
+  "main_unchanged": true,
+  "incremental_paths": [
+    "virtualization/axvm/src/control/lifecycle.rs",
+    "virtualization/axvm/src/diagnostics.rs",
+    "virtualization/axvm/src/diagnostics/irq_service.rs",
+    "virtualization/axvm/src/irq/deferred.rs",
+    "virtualization/axvm/tests/guests/virq/prepare.py",
+    "virtualization/axvm/tests/support/inversion.rs",
+    "virtualization/axvm/tests/vcpu-runtime/README.md",
+    "virtualization/axvm/tests/vcpu_runtime.rs"
+  ],
+  "incremental_applies": true,
+  "full_patch_sha256": "3272b81e72c08bea521452acac58afff76d6718668b007649c10eba3c4e43bd7",
+  "matched_host_guest_and_cpio_groups": [
+    "initial",
+    "witness"
+  ],
+  "cpio_payload_difference_within_groups": "irq_service mode only",
+  "binary_archive_entries_verified": 55,
+  "linux_embedded_assets": {
+    "kernel_sha256": "c5403e99b9ae7a8c60c393fb2a97e637ded3e049179bb1b2f63cf6b94dd2a61a",
+    "initramfs_member": "guest/builtin/images/45724002fb354d71e6e15d57c6571472f332f4ae766cbf1bffd1b0c96c1301e0",
+    "initramfs_sha256": "45724002fb354d71e6e15d57c6571472f332f4ae766cbf1bffd1b0c96c1301e0",
+    "worker_sha256": "c2ef3007be43bf1fa92fe18a85e562411e672529da903b367b1308ecf3e69e86",
+    "actual_vm_config": {
+      "base": {
+        "cpu_num": 1,
+        "guest_type": "virtualized",
+        "id": 1,
+        "name": "linux-ordinary-cpu",
+        "phys_cpu_ids": [
+          3
+        ]
+      },
+      "devices": {
+        "disabled": [],
+        "passthrough": []
+      },
+      "kernel": {
+        "cmdline": "console=ttyAMA0 rdinit=/init devtmpfs.mount=1 quiet loglevel=0",
+        "dtb_load_addr": 2147483648,
+        "entry_point": 2149580800,
+        "kernel_load_addr": 2149580800,
+        "kernel_path": "/guest/builtin/images/c5403e99b9ae7a8c60c393fb2a97e637ded3e049179bb1b2f63cf6b94dd2a61a",
+        "memory_regions": [
+          [
+            2147483648,
+            1073741824,
+            7,
+            0
+          ]
+        ],
+        "ramdisk_load_addr": 2214592512,
+        "ramdisk_path": "/guest/builtin/images/45724002fb354d71e6e15d57c6571472f332f4ae766cbf1bffd1b0c96c1301e0"
+      }
+    },
+    "container": "/home/yanlien/Workspace/tgoskits-research-20261017/evidence/irq-coordination/linux-bounded-41c6caa5d1756f15-host-initramfs.cpio.gz"
+  },
+  "positives": [
+    "ppi-off",
+    "ppi-inherit",
+    "ppi-bounded",
+    "witness-v2-off",
+    "witness-v2-inherit",
+    "witness-v2-bounded",
+    "throttle-bounded",
+    "linux-bounded",
+    "throttle-recovery-bounded"
+  ],
+  "native_priority_witness_negative_verified": true,
+  "missing_wait_gate_negative_and_recovery_verified": true
+}

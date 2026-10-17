@@ -1,0 +1,6 @@
+{
+  "mode": "bounded",
+  "samples": 256,
+  "throttle_waits": 0,
+  "witness": {}
+}
