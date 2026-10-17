@@ -1,0 +1,64 @@
+{
+  "schema": "axvisior-true-board-run-v1",
+  "status": "template_only_target_board_required",
+  "created_from": "论文提要.md",
+  "platform": {
+    "board_model": null,
+    "soc_revision": null,
+    "cpu_topology": null,
+    "firmware": {"atf": null, "uboot": null, "hash_sha256": null},
+    "kernel": {"release": null, "config_sha256": null},
+    "dtb_sha256": null
+  },
+  "capability_gate": {
+    "arm_pmu": {"available": null, "counter_count": null, "counter_width": null, "pmceid": null, "irq": null},
+    "dsu_cache": {"available": null, "partition_control": null, "permission_evidence": null},
+    "smmu": {"available": null, "version": null, "instances": null, "stream_ids": null, "iotlb_events": null},
+    "frequency_temperature_control": {"available": null, "fixed_policy": null, "temperature_range_c": null}
+  },
+  "guest_and_affinity": {
+    "realtime_guest_image_sha256": null,
+    "linux_guest_image_sha256": null,
+    "vcpu_count": null,
+    "physical_cpu_affinity": null,
+    "irq_routes": null,
+    "governor": null
+  },
+  "experiment": {
+    "group": "Baseline|IRQ-only|Scheduler-only|Joint|Ablation",
+    "scenario": "none|cpu|memory|interrupt|dma",
+    "source": "physical_timer_ppi|device_spi|other",
+    "samples_per_policy": null,
+    "duration_s": null,
+    "policies": ["fair", "fifo80"],
+    "raw_log": null,
+    "binary_manifest": null,
+    "config_snapshot": null
+  },
+  "measurement_contract": {
+    "required_fields": [
+      "source", "host_irq_entry", "irq_dispatch_done", "service_kick",
+      "ready_enqueue", "running_start", "guest_entry", "guest_isr_start",
+      "guest_isr_end", "host_guest_calibration_id", "calibration_error_ns",
+      "ack_observed_ns", "trace_loss", "deadline_ns", "deadline_miss"
+    ],
+    "ack_observed_isr_metric": false,
+    "trace_loss_must_be_zero": true,
+    "calibration_error_max_ns": null
+  },
+  "resource_counters": {
+    "per_cpu_pmu_before_after": null,
+    "memory_bandwidth_counter_unit": null,
+    "cache_miss_counter_unit": null,
+    "monitoring_overhead_ns": null,
+    "counter_overflow_count": null
+  },
+  "acceptance": {
+    "capability_gate_passed": false,
+    "matched_off_baseline_passed": false,
+    "repeated_runs": 0,
+    "deadline_miss_ratio_reported": false,
+    "ordinary_vm_throughput_reported": false,
+    "hardware_claim_allowed": false
+  }
+}
