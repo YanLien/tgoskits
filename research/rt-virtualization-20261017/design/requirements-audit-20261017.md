@@ -38,3 +38,7 @@
 ## 外部阻塞与下一可执行门
 
 当前主机为 x86_64 Intel，不能生成 RK3588 的真实性能证据；方向 D/E 的目标硬件能力也未通过核查。该阻塞不影响 QEMU 分析、协议和归档维护，但阻止阶段三/四的硬件结论。下一可执行门是取得固定版本的 RK3588 板卡、固件、DTB、PMU 权限和可重复 Guest 启动环境，然后按 `design/phase4-evidence-protocol.md` 先跑 `off`/匹配基线，再决定是否扩展 A0 或转向 B。
+
+## 字段完整性复核
+
+当前 QEMU 链已实现 Guest ISR 起点和 Host/Guest 校准，但没有 Guest ISR 结束时间，也没有统一的 `deadline_miss` 字段；因此阶段四协议中的 ISR 执行时长、Deadline miss ratio 和完整真板样本契约仍未完成。`observed_ticks` 只属于 Host 确认窗口，继续排除在 ISR 时延之外。该缺口不影响当前“到 Guest ISR 起点”的 QEMU 测量结论，但阻止阶段四完整证据包宣称完成。

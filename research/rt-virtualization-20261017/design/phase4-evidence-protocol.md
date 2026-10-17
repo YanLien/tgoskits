@@ -31,3 +31,9 @@
 ## 判断规则
 
 只有当阶段一数据显示 IRQ 服务、vCPU 等待和共享资源干扰存在稳定的可量化耦合，才保留 Joint 作为论文机制。若 Joint 不优于单项机制，或收益只是转移到普通 VM，不扩大实现范围；记录观测、假设和保证边界。
+
+## 当前 QEMU 字段映射与未实现字段
+
+当前 QEMU 日志中的 `VIRQ_ISR_SAMPLE.guest_ticks` 是 Guest C ISR 内第一处计数读取，可作为 `guest_isr_start`；`observed_ticks` 是 Host 侧确认窗口的结束观察点，经过校准后只能得到独立的 `c_isr_to_host_observation` 区间。当前夹具没有 Guest ISR 结束时间，因此不能报告 ISR 执行时长；也没有统一的 `deadline_miss` 字段，`deadline_to_entry_ns` 只描述物理 PPI 的入口相对比较器 deadline 的观测间隔。
+
+当前 runtime/Ready 事件可覆盖 `host_irq_entry`、`service_kick`、`ready_enqueue`、`running_start` 和 `guest_entry` 的关联；校准误差由 before/after counter offset 区间表示。阶段四真板采集仍必须补充 Guest ISR 结束标记、明确 deadline 判定规则和 trace-loss 状态，不能把当前 QEMU 的 `observed_ticks` 或缺失字段填充为替代值。
