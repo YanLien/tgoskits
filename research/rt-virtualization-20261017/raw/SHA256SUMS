@@ -1,4 +1,6 @@
 c6eaacd38a4d0a054cde9d813c6523a2867bd7afb22d97b84a03016be07f95f5  research/rt-virtualization-20261017/raw/capability-host.txt
+ca10ff9c0b09604194dcf76e488779e16ac9ce8a2d489cff4b644e009a42b296  research/rt-virtualization-20261017/raw/current-qemu-ppi-baseline-600.log
+ac9c3e9e55495310dc85058971505c208b71966b5fb2883cb630c02cbf93961a  research/rt-virtualization-20261017/raw/current-qemu-ppi-baseline-600.provenance.json
 0476c81b09b618719b246c3716db2115887998b6026ddc6e5d50c72e90b727f0  research/rt-virtualization-20261017/raw/linux-bounded-binary.json
 b76ce0e1d663d7ea077650a475810044bbd28a5d922a339980bae46c7ded97c4  research/rt-virtualization-20261017/raw/linux-bounded.log
 dc71e83d254297d7b329ce7336277d8fd9c41eb67bb01c9e01087120d0a719b2  research/rt-virtualization-20261017/raw/linux-interference-600-binary.json

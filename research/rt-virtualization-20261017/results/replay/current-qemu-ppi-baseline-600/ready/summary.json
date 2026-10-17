@@ -1,0 +1,77 @@
+{
+  "records": 12527,
+  "ready_records": 1233,
+  "ready_paths": {
+    "owner_wake": 4,
+    "direct_wake": 1225,
+    "owner_migrated": 4
+  },
+  "on_cpu_records": 0,
+  "policies": {
+    "fair": {
+      "samples": 600,
+      "ready_associated_samples": 600,
+      "statuses": {
+        "associated": 600
+      },
+      "parent_statuses": {},
+      "ready_paths": {
+        "direct_wake": 600
+      },
+      "cross_cpu_observations": 600,
+      "ready_observer_cpu_counts": {
+        "0": 600
+      },
+      "conditional_segments_ns": {
+        "wake_to_ready_ns": {
+          "median": 15168.0,
+          "p95": 17648.0,
+          "p99": 18816.0,
+          "max": 25328.0
+        },
+        "ready_to_running_ns": {
+          "median": 140808.0,
+          "p95": 160160.0,
+          "p99": 180528.0,
+          "max": 251728.0
+        }
+      }
+    },
+    "fifo80": {
+      "samples": 600,
+      "ready_associated_samples": 600,
+      "statuses": {
+        "associated": 600
+      },
+      "parent_statuses": {},
+      "ready_paths": {
+        "direct_wake": 600
+      },
+      "cross_cpu_observations": 600,
+      "ready_observer_cpu_counts": {
+        "0": 600
+      },
+      "conditional_segments_ns": {
+        "wake_to_ready_ns": {
+          "median": 16320.0,
+          "p95": 21760.0,
+          "p99": 26592.0,
+          "max": 35440.0
+        },
+        "ready_to_running_ns": {
+          "median": 68640.0,
+          "p95": 171952.0,
+          "p99": 185312.0,
+          "max": 197104.0
+        }
+      }
+    }
+  },
+  "limitations": [
+    "Ready is an rq-locked software observation before commit/unlock, not physical execution.",
+    "Only unique fresh wake enqueues are split; all declared sample statuses remain in the CSV.",
+    "Ready-to-Running includes remaining commit/unlock and dispatch costs, not pure queue-policy wait.",
+    "On-CPU requeue and non-wake reasons are retained in raw Ready events, not relabeled as fresh wakes.",
+    "QEMU only; no hardware bottleneck, performance improvement or hard real-time bound is established."
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "source": "physical_timer_ppi",
+  "execution_context": "current_el",
+  "samples_per_policy": {
+    "fair": 600,
+    "fifo80": 600
+  },
+  "policies": {
+    "fair": {
+      "calibration_offset_width_ns": 1072.0,
+      "entry_to_c_isr_p99_upper_ns": 597872,
+      "entry_to_c_isr_max_upper_ns": 1452192,
+      "host_observation_p99_upper_ns": 1130256,
+      "runtime_segments_p99_ns": {
+        "submit_to_irq_ns": 1192672.0,
+        "irq_to_worker_ns": 170752.0,
+        "worker_to_running_ns": 196096.0,
+        "running_to_entry_ns": 149568.0,
+        "entry_to_isr_lower_ns": 42832.0,
+        "entry_to_isr_upper_ns": 43904.0
+      },
+      "ready_segments_p99_ns": {
+        "wake_to_ready_ns": 18816.0,
+        "ready_to_running_ns": 180528.0
+      },
+      "full_chain_samples": 600,
+      "ready_associated_samples": 600
+    },
+    "fifo80": {
+      "calibration_offset_width_ns": 1120.0,
+      "entry_to_c_isr_p99_upper_ns": 659360,
+      "entry_to_c_isr_max_upper_ns": 916240,
+      "host_observation_p99_upper_ns": 1129232,
+      "runtime_segments_p99_ns": {
+        "submit_to_irq_ns": 1122048.0,
+        "irq_to_worker_ns": 258704.0,
+        "worker_to_running_ns": 202464.0,
+        "running_to_entry_ns": 253248.0,
+        "entry_to_isr_lower_ns": 51392.0,
+        "entry_to_isr_upper_ns": 52512.0
+      },
+      "ready_segments_p99_ns": {
+        "wake_to_ready_ns": 26592.0,
+        "ready_to_running_ns": 185312.0
+      },
+      "full_chain_samples": 600,
+      "ready_associated_samples": 600
+    }
+  },
+  "limitations": [
+    "Current-branch QEMU run with physical_timer_ppi and 600 samples per policy.",
+    "QEMU validates the measurement chain, not hardware performance or hard real-time bounds.",
+    "Host observation windows remain separate from Guest ISR latency."
+  ]
+}

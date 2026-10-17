@@ -31,4 +31,8 @@
 
 此外，`linux-matched-baseline-600.log` 提供了相同 PL031 SPI 配置下的无 Linux 负载对照，`replay_linux_matched.sh` 对两组统一执行同一分析器。该对照只解决 QEMU 配置/来源不一致问题；它仍然不是硬件共享资源基线，且 Linux Guest 的批次进度不是 DRAM 带宽计数。任何负载组差异都只能作为上板实验的假设和参数选择依据。
 
+## 当前分支复跑
+
+当前分支使用离线 pinned Zephyr、CMake/Ninja 和 AArch64 toolchain wrapper 完成了新的 600-sample `physical_timer_ppi` QEMU 基线。Fair/FIFO 各 600 条，校准区间宽度约 1.07/1.12 µs，`entry_to_c_isr` P99 上界约 598/659 µs，runtime 与 Ready 链均 600/600 完整。该运行证明当前代码、配置和测量链可以重建，但它仍然是 QEMU 功能证据；不能与真板性能、共享微架构资源或硬实时上界混同。
+
 本轮没有进行外部推送、PR、合并、部署或发布。

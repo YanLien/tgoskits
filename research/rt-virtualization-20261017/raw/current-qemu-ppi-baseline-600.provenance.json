@@ -1,0 +1,17 @@
+{
+  "archived_path": "research/rt-virtualization-20261017/raw/current-qemu-ppi-baseline-600.log",
+  "sha256": "ca10ff9c0b09604194dcf76e488779e16ac9ce8a2d489cff4b644e009a42b296",
+  "git_commit": "3b5ff4af14590893e1f08cb8d3b69d9c1b7386a4",
+  "host_sample_markers": 1200,
+  "guest_isr_sample_markers": 1200,
+  "clock_sample_markers": 128,
+  "runtime_summary": [
+    "VIRQ_RUNTIME_SUMMARY records=12527 dropped=0 incomplete=0"
+  ],
+  "axtest_summary": [
+    "AXTEST_SUMMARY pass=1 fail=0 skip=0 total=1"
+  ],
+  "qemu_suite": [
+    "AXTEST_SUITE_OK"
+  ]
+}

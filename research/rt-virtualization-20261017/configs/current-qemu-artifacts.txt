@@ -1,0 +1,7 @@
+target/axbuild/host-initramfs/virtualization/axvm/tests/vcpu-runtime/aarch64.cpio 928
+target/axbuild/axvisor/host-initramfs/aarch64.cpio 43752
+target/aarch64-unknown-linux-musl/release/build/axvm/2d6f1ef0a9c92692/out/vcpu_runtime-2d6f1ef0a9c92692.d 1513
+target/aarch64-unknown-linux-musl/release/build/axvm/2d6f1ef0a9c92692/out/vcpu_runtime-2d6f1ef0a9c92692 7588960
+target/aarch64-unknown-linux-musl/release/build/axvm/2d6f1ef0a9c92692/out/vcpu_runtime-2d6f1ef0a9c92692.axbt 1522313
+target/aarch64-unknown-linux-musl/release/build/axvm/2d6f1ef0a9c92692/out/vcpu_runtime-2d6f1ef0a9c92692.axks 1699875
+target/aarch64-unknown-linux-musl/release/build/axvm/2d6f1ef0a9c92692/out/vcpu_runtime-2d6f1ef0a9c92692.bin 4935744
