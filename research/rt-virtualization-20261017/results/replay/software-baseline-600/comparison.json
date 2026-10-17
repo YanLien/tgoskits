@@ -1,0 +1,60 @@
+{
+  "source": "software",
+  "host_samples_total": 600,
+  "guest_isr_samples_total": 600,
+  "host_ack_observed_excluded_from_isr": true,
+  "policies": {
+    "fair": {
+      "host_samples": 300,
+      "guest_isr_samples": 300,
+      "calibration_offset_width_ns": 1024.0,
+      "isr_lower_ns": {
+        "p50": 439248,
+        "p95": 589296,
+        "p99": 723552,
+        "max": 2478624
+      },
+      "isr_upper_ns": {
+        "p50": 440272,
+        "p95": 590320,
+        "p99": 724576,
+        "max": 2479648
+      },
+      "host_ack_observed_ns": {
+        "median": 1304608.0,
+        "p95": 1334752,
+        "p99": 1418272,
+        "max": 2493376
+      }
+    },
+    "fifo80": {
+      "host_samples": 300,
+      "guest_isr_samples": 300,
+      "calibration_offset_width_ns": 992.0,
+      "isr_lower_ns": {
+        "p50": 515184,
+        "p95": 570688,
+        "p99": 654016,
+        "max": 750848
+      },
+      "isr_upper_ns": {
+        "p50": 516176,
+        "p95": 571680,
+        "p99": 655008,
+        "max": 751840
+      },
+      "host_ack_observed_ns": {
+        "median": 1280888.0,
+        "p95": 1294272,
+        "p99": 1303920,
+        "max": 1329280
+      }
+    }
+  },
+  "limitations": [
+    "This is an archived QEMU software-interrupt baseline, not a hardware performance result.",
+    "Host pulse and ack_observed_ns are retained for provenance; ack_observed_ns is not ISR latency.",
+    "ISR intervals rely on the shared-rate, intersecting clock calibration and do not establish WCET/WCRT.",
+    "The 600 host samples are 300 Fair plus 300 FIFO samples from one archived run."
+  ]
+}

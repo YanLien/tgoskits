@@ -1,0 +1,12 @@
+{
+  "source_path": "/home/yanlien/Workspace/tgoskits-research-20261017/evidence/fifo-startup/baseline.log",
+  "archived_path": "research/rt-virtualization-20261017/raw/software-baseline-600.log",
+  "sha256": "0c6f139170bedc46f4a7c24d1a5c722d6143a3f73bac196910bf19f7e46f8222",
+  "host_sample_markers": 600,
+  "guest_isr_sample_markers": 600,
+  "clock_sample_markers": 128,
+  "notes": [
+    "Archived QEMU software-interrupt baseline.",
+    "Host ack_observed_ns is not Guest ISR latency."
+  ]
+}

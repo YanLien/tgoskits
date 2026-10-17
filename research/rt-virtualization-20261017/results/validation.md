@@ -11,6 +11,8 @@ Date: 2026-10-17 (Asia/Shanghai)
 - `sha256sum -c research/rt-virtualization-20261017/raw/SHA256SUMS` from the repository root: all 19 archived raw files passed.
 - After the D/E pre-check documentation update, the analysis suite was rerun: 19 tests passed.
 - `research/rt-virtualization-20261017/replay_archived_ppi.sh`: replayed all three archived PPI modes and regenerated the per-mode physical/ISR/runtime/Ready CSV/JSON, tail audit, policy comparison and bottleneck decomposition; `sh -n` and both raw/results checksum manifests passed.
+- `research/rt-virtualization-20261017/replay_software_baseline.sh`: replayed the archived 600-sample software baseline (300 Fair + 300 FIFO), with 600 corresponding calibrated Guest ISR samples; Host acknowledgement windows remained provenance-only.
+- Raw, configuration and result manifests were regenerated and verified; the 19 analysis tests still pass after the replay additions.
 
 ## Workspace test sweep
 

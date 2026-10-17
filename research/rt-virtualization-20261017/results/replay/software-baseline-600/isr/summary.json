@@ -1,0 +1,86 @@
+{
+  "units": "ns unless named ticks or Hz",
+  "policies": {
+    "fair": {
+      "samples": 300,
+      "calibration_probes": 64,
+      "frequency_hz": 62500000,
+      "offset_low_ticks": 46343153,
+      "offset_high_ticks": 46343217,
+      "offset_width_ns": 1024.0,
+      "source": "software",
+      "injection_to_c_isr_ns": {
+        "lower": {
+          "median": 439328.0,
+          "p95": 589296,
+          "p99": 723552,
+          "max": 2478624
+        },
+        "upper": {
+          "median": 440352.0,
+          "p95": 590320,
+          "p99": 724576,
+          "max": 2479648
+        }
+      },
+      "c_isr_to_host_observation_ns": {
+        "lower": {
+          "median": 863072.0,
+          "p95": 962752,
+          "p99": 988112,
+          "max": 1054752
+        },
+        "upper": {
+          "median": 864096.0,
+          "p95": 963776,
+          "p99": 989136,
+          "max": 1055776
+        }
+      }
+    },
+    "fifo80": {
+      "samples": 300,
+      "calibration_probes": 64,
+      "frequency_hz": 62500000,
+      "offset_low_ticks": 109783127,
+      "offset_high_ticks": 109783189,
+      "offset_width_ns": 992.0,
+      "source": "software",
+      "injection_to_c_isr_ns": {
+        "lower": {
+          "median": 515296.0,
+          "p95": 570688,
+          "p99": 654016,
+          "max": 750848
+        },
+        "upper": {
+          "median": 516288.0,
+          "p95": 571680,
+          "p99": 655008,
+          "max": 751840
+        }
+      },
+      "c_isr_to_host_observation_ns": {
+        "lower": {
+          "median": 764808.0,
+          "p95": 864208,
+          "p99": 881184,
+          "max": 885552
+        },
+        "upper": {
+          "median": 765800.0,
+          "p95": 865200,
+          "p99": 882176,
+          "max": 886544
+        }
+      }
+    }
+  },
+  "limitations": [
+    "QEMU instrumented observation; not a physical hardware performance result.",
+    "Intervals assume a shared rate and constant host-minus-guest offset across the run.",
+    "ISR means the first counter read in the Zephyr C ISR, after guest vector dispatch.",
+    "Finite calibration cannot prove permanent synchronization or hard real-time bounds.",
+    "Finite sample tails require a sufficiency audit; no performance comparison is established."
+  ]
+}

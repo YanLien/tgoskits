@@ -52,6 +52,12 @@ python3 virtualization/axvm/tests/analysis/analyze_virq_irq_service.py \
 research/rt-virtualization-20261017/replay_archived_ppi.sh
 ```
 
+复放已有的 600 条宿主侧软件中断样本（Fair/FIFO 各 300 条）：
+
+```sh
+research/rt-virtualization-20261017/replay_software_baseline.sh
+```
+
 ## 归档布局
 
 - `design/`：阶段判断、A0 设计和适用边界。

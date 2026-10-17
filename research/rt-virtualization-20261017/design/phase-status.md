@@ -6,6 +6,8 @@
 
 已覆盖的软件 edge、CNTP PPI、PL031 SPI、低 EL/Guest-running、同核 CPU、跨核私有内存工作集和独立 CPU Linux VM。真板采集、PMU 计数和 DRAM/Cache 干扰尚未完成。
 
+已有的一次软件中断 QEMU 基线包含 600 条 Host 样本（Fair/FIFO 各 300）和对应 Guest ISR 校准记录，已纳入归档复放；其 `ack_observed_ns` 仅作 Host 观察窗口，不进入 ISR 时延。
+
 ## 瓶颈判断
 
 现有 witness 不是自然负载性能结论，而是对已观测路径的因果构造：低等级 CPU0 FIFO blocker 覆盖第一条物理 PPI 的 deadline。`off` 下 FIFO Guest ISR 在 blocker 结束后出现；`inherit` 和 `bounded` 下 FIFO ISR 在 blocker 结束前出现，Fair 目标不继承。这个结果足以支持阶段二先验证服务调度路径，但不足以证明 Deadline 机制收益。

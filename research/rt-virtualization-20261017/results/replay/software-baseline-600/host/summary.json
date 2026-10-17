@@ -1,0 +1,39 @@
+{
+  "units": "ns",
+  "quantiles": "nearest-rank; median uses the two middle samples",
+  "limitation": "Host observation includes 1 ms polling; neither metric is guest ISR latency. QEMU timing is not a hardware performance result; Finite sample tails require a separate sufficiency audit.",
+  "policies": {
+    "fair": {
+      "samples": 300,
+      "source": "software",
+      "pulse_ns": {
+        "median": 30880.0,
+        "p95": 32800,
+        "p99": 70368,
+        "max": 240880
+      },
+      "ack_observed_ns": {
+        "median": 1304608.0,
+        "p95": 1334752,
+        "p99": 1418272,
+        "max": 2493376
+      }
+    },
+    "fifo80": {
+      "samples": 300,
+      "source": "software",
+      "pulse_ns": {
+        "median": 28496.0,
+        "p95": 29744,
+        "p99": 32592,
+        "max": 69808
+      },
+      "ack_observed_ns": {
+        "median": 1280888.0,
+        "p95": 1294272,
+        "p99": 1303920,
+        "max": 1329280
+      }
+    }
+  }
+}
