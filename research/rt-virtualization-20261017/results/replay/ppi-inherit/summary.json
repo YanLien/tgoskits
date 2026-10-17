@@ -1,0 +1,527 @@
+{
+  "source": "physical_timer_ppi",
+  "execution_context": "current_el",
+  "target_cpu": 1,
+  "source_cpu": 0,
+  "policies": {
+    "fair": {
+      "samples": 128,
+      "clock": {
+        "samples": 128,
+        "calibration_probes": 64,
+        "frequency_hz": 62500000,
+        "offset_low_ticks": 40175835,
+        "offset_high_ticks": 40175900,
+        "offset_width_ns": 1040.0,
+        "source": "physical_timer_ppi",
+        "timer_arm_to_c_isr_ns": {
+          "lower": {
+            "median": 1515072.0,
+            "p95": 1558672,
+            "p99": 1982528,
+            "max": 2513872
+          },
+          "upper": {
+            "median": 1516112.0,
+            "p95": 1559712,
+            "p99": 1983568,
+            "max": 2514912
+          }
+        },
+        "c_isr_to_host_observation_ns": {
+          "lower": {
+            "median": 1013392.0,
+            "p95": 1032576,
+            "p99": 1046016,
+            "max": 1077152
+          },
+          "upper": {
+            "median": 1014432.0,
+            "p95": 1033616,
+            "p99": 1047056,
+            "max": 1078192
+          }
+        }
+      },
+      "irq_entry_context_counts": {
+        "current_el_callback": 128
+      },
+      "by_entry_context": {
+        "current_el_callback": {
+          "entry_to_kick_ns": {
+            "median": 10248.0,
+            "p95": 17648.0,
+            "p99": 25728.0,
+            "max": 213632.0
+          },
+          "entry_to_c_isr_lower_ns": {
+            "median": 429664.0,
+            "p95": 500816,
+            "p99": 885616,
+            "max": 1358320
+          },
+          "entry_to_c_isr_upper_ns": {
+            "median": 430704.0,
+            "p95": 501856,
+            "p99": 886656,
+            "max": 1359360
+          }
+        }
+      },
+      "intervals_ns": {
+        "arm_to_entry_ns": {
+          "median": 1093608.0,
+          "p95": 1105680.0,
+          "p99": 1116368.0,
+          "max": 1155552.0
+        },
+        "deadline_to_entry_ns": {
+          "median": 90816.0,
+          "p95": 102928.0,
+          "p99": 110704.0,
+          "max": 113808.0
+        },
+        "entry_to_kick_ns": {
+          "median": 10248.0,
+          "p95": 17648.0,
+          "p99": 25728.0,
+          "max": 213632.0
+        },
+        "entry_to_c_isr_lower_ns": {
+          "median": 429664.0,
+          "p95": 500816,
+          "p99": 885616,
+          "max": 1358320
+        },
+        "entry_to_c_isr_upper_ns": {
+          "median": 430704.0,
+          "p95": 501856,
+          "p99": 886656,
+          "max": 1359360
+        }
+      }
+    },
+    "fifo80": {
+      "samples": 128,
+      "clock": {
+        "samples": 128,
+        "calibration_probes": 64,
+        "frequency_hz": 62500000,
+        "offset_low_ticks": 96670588,
+        "offset_high_ticks": 96670656,
+        "offset_width_ns": 1088.0,
+        "source": "physical_timer_ppi",
+        "timer_arm_to_c_isr_ns": {
+          "lower": {
+            "median": 1492280.0,
+            "p95": 1556512,
+            "p99": 1571552,
+            "max": 1581552
+          },
+          "upper": {
+            "median": 1493368.0,
+            "p95": 1557600,
+            "p99": 1572640,
+            "max": 1582640
+          }
+        },
+        "c_isr_to_host_observation_ns": {
+          "lower": {
+            "median": 1086984.0,
+            "p95": 1158128,
+            "p99": 1209968,
+            "max": 1282064
+          },
+          "upper": {
+            "median": 1088072.0,
+            "p95": 1159216,
+            "p99": 1211056,
+            "max": 1283152
+          }
+        }
+      },
+      "irq_entry_context_counts": {
+        "current_el_callback": 128
+      },
+      "by_entry_context": {
+        "current_el_callback": {
+          "entry_to_kick_ns": {
+            "median": 13768.0,
+            "p95": 18496.0,
+            "p99": 28512.0,
+            "max": 31520.0
+          },
+          "entry_to_c_isr_lower_ns": {
+            "median": 394592.0,
+            "p95": 444976,
+            "p99": 489504,
+            "max": 495632
+          },
+          "entry_to_c_isr_upper_ns": {
+            "median": 395680.0,
+            "p95": 446064,
+            "p99": 490592,
+            "max": 496720
+          }
+        }
+      },
+      "intervals_ns": {
+        "arm_to_entry_ns": {
+          "median": 1096824.0,
+          "p95": 1146144.0,
+          "p99": 1157424.0,
+          "max": 1172672.0
+        },
+        "deadline_to_entry_ns": {
+          "median": 93960.0,
+          "p95": 142896.0,
+          "p99": 154192.0,
+          "max": 169408.0
+        },
+        "entry_to_kick_ns": {
+          "median": 13768.0,
+          "p95": 18496.0,
+          "p99": 28512.0,
+          "max": 31520.0
+        },
+        "entry_to_c_isr_lower_ns": {
+          "median": 394592.0,
+          "p95": 444976,
+          "p99": 489504,
+          "max": 495632
+        },
+        "entry_to_c_isr_upper_ns": {
+          "median": 395680.0,
+          "p95": 446064,
+          "p99": 490592,
+          "max": 496720
+        }
+      }
+    }
+  },
+  "runtime": {
+    "records": 4965,
+    "dropped": 0,
+    "incomplete": 0,
+    "event_kinds": {
+      "Marker": 128,
+      "ReadyEnqueue": 288,
+      "Running": 418,
+      "Binding": 8,
+      "Stopped": 418,
+      "WakeBegin": 284,
+      "WakeEnd": 284,
+      "GuestEntryBoundary": 2617,
+      "IrqKick": 264,
+      "HostIrqEntry": 256
+    },
+    "policies": {
+      "fair": {
+        "samples": 128,
+        "full_chain_samples": 128,
+        "statuses": {
+          "associated": 128
+        },
+        "states_at_submit": {
+          "stopped": 128
+        },
+        "wake_end_after_running": 1,
+        "conditional_segments_ns": {
+          "submit_to_irq_ns": {
+            "median": 1103592.0,
+            "p95": 1115840.0,
+            "p99": 1126112.0,
+            "max": 1369184.0
+          },
+          "irq_to_worker_ns": {
+            "median": 108096.0,
+            "p95": 148432.0,
+            "p99": 184608.0,
+            "max": 264208.0
+          },
+          "worker_to_running_ns": {
+            "median": 156160.0,
+            "p95": 174080.0,
+            "p99": 241904.0,
+            "max": 246064.0
+          },
+          "running_to_entry_ns": {
+            "median": 112720.0,
+            "p95": 117808.0,
+            "p99": 572816.0,
+            "max": 889200.0
+          },
+          "entry_to_isr_lower_ns": {
+            "median": 34872.0,
+            "p95": 37792.0,
+            "p99": 41184.0,
+            "max": 52832.0
+          },
+          "entry_to_isr_upper_ns": {
+            "median": 35912.0,
+            "p95": 38832.0,
+            "p99": 42224.0,
+            "max": 53872.0
+          }
+        }
+      },
+      "fifo80": {
+        "samples": 128,
+        "full_chain_samples": 128,
+        "statuses": {
+          "associated": 128
+        },
+        "states_at_submit": {
+          "running": 1,
+          "stopped": 127
+        },
+        "wake_end_after_running": 0,
+        "conditional_segments_ns": {
+          "submit_to_irq_ns": {
+            "median": 1107648.0,
+            "p95": 1159952.0,
+            "p99": 1171136.0,
+            "max": 1186416.0
+          },
+          "irq_to_worker_ns": {
+            "median": 63480.0,
+            "p95": 99824.0,
+            "p99": 111664.0,
+            "max": 137648.0
+          },
+          "worker_to_running_ns": {
+            "median": 159760.0,
+            "p95": 187584.0,
+            "p99": 202416.0,
+            "max": 204080.0
+          },
+          "running_to_entry_ns": {
+            "median": 115928.0,
+            "p95": 129520.0,
+            "p99": 133664.0,
+            "max": 133760.0
+          },
+          "entry_to_isr_lower_ns": {
+            "median": 34936.0,
+            "p95": 36688.0,
+            "p99": 44032.0,
+            "max": 53776.0
+          },
+          "entry_to_isr_upper_ns": {
+            "median": 36024.0,
+            "p95": 37776.0,
+            "p99": 45120.0,
+            "max": 54864.0
+          }
+        }
+      }
+    },
+    "probe_envelope_ns": {
+      "median": 720.0,
+      "p95": 752.0,
+      "p99": 1952.0,
+      "max": 110576.0
+    },
+    "limitations": [
+      "QEMU observations; no hardware bottleneck or optimization claim.",
+      "Ready/enqueue is not captured. WakeBegin/End are a wake transaction bracket.",
+      "Segment statistics are conditional on full-chain association; all declared sample statuses are retained.",
+      "First Running and last certain Entry bracket inclusive work and possible intervening preemption.",
+      "Probe envelope includes timestamp reads and may include preemption; not pure probe overhead."
+    ]
+  },
+  "load_and_ready": {
+    "scenario": "baseline",
+    "loads": {},
+    "ready": {
+      "records": 4965,
+      "ready_records": 288,
+      "ready_paths": {
+        "owner_wake": 4,
+        "direct_wake": 279,
+        "on_run_queue_wake": 1,
+        "owner_migrated": 4
+      },
+      "on_cpu_records": 0,
+      "policies": {
+        "fair": {
+          "samples": 128,
+          "ready_associated_samples": 128,
+          "statuses": {
+            "associated": 128
+          },
+          "parent_statuses": {},
+          "ready_paths": {
+            "direct_wake": 128
+          },
+          "cross_cpu_observations": 128,
+          "ready_observer_cpu_counts": {
+            "0": 128
+          },
+          "conditional_segments_ns": {
+            "wake_to_ready_ns": {
+              "median": 14456.0,
+              "p95": 15264.0,
+              "p99": 17344.0,
+              "max": 27472.0
+            },
+            "ready_to_running_ns": {
+              "median": 141632.0,
+              "p95": 159744.0,
+              "p99": 227376.0,
+              "max": 231840.0
+            }
+          }
+        },
+        "fifo80": {
+          "samples": 128,
+          "ready_associated_samples": 128,
+          "statuses": {
+            "associated": 128
+          },
+          "parent_statuses": {},
+          "ready_paths": {
+            "direct_wake": 128
+          },
+          "cross_cpu_observations": 128,
+          "ready_observer_cpu_counts": {
+            "0": 128
+          },
+          "conditional_segments_ns": {
+            "wake_to_ready_ns": {
+              "median": 16272.0,
+              "p95": 17328.0,
+              "p99": 17872.0,
+              "max": 21728.0
+            },
+            "ready_to_running_ns": {
+              "median": 144424.0,
+              "p95": 170704.0,
+              "p99": 185696.0,
+              "max": 190032.0
+            }
+          }
+        }
+      },
+      "limitations": [
+        "Ready is an rq-locked software observation before commit/unlock, not physical execution.",
+        "Only unique fresh wake enqueues are split; all declared sample statuses remain in the CSV.",
+        "Ready-to-Running includes remaining commit/unlock and dispatch costs, not pure queue-policy wait.",
+        "On-CPU requeue and non-wake reasons are retained in raw Ready events, not relabeled as fresh wakes.",
+        "QEMU only; no hardware bottleneck, performance improvement or hard real-time bound is established."
+      ]
+    },
+    "clocks": {
+      "fair": {
+        "samples": 128,
+        "calibration_probes": 64,
+        "frequency_hz": 62500000,
+        "offset_low_ticks": 40175835,
+        "offset_high_ticks": 40175900,
+        "offset_width_ns": 1040.0,
+        "source": "physical_timer_ppi",
+        "timer_arm_to_c_isr_ns": {
+          "lower": {
+            "median": 1515072.0,
+            "p95": 1558672,
+            "p99": 1982528,
+            "max": 2513872
+          },
+          "upper": {
+            "median": 1516112.0,
+            "p95": 1559712,
+            "p99": 1983568,
+            "max": 2514912
+          }
+        },
+        "c_isr_to_host_observation_ns": {
+          "lower": {
+            "median": 1013392.0,
+            "p95": 1032576,
+            "p99": 1046016,
+            "max": 1077152
+          },
+          "upper": {
+            "median": 1014432.0,
+            "p95": 1033616,
+            "p99": 1047056,
+            "max": 1078192
+          }
+        }
+      },
+      "fifo80": {
+        "samples": 128,
+        "calibration_probes": 64,
+        "frequency_hz": 62500000,
+        "offset_low_ticks": 96670588,
+        "offset_high_ticks": 96670656,
+        "offset_width_ns": 1088.0,
+        "source": "physical_timer_ppi",
+        "timer_arm_to_c_isr_ns": {
+          "lower": {
+            "median": 1492280.0,
+            "p95": 1556512,
+            "p99": 1571552,
+            "max": 1581552
+          },
+          "upper": {
+            "median": 1493368.0,
+            "p95": 1557600,
+            "p99": 1572640,
+            "max": 1582640
+          }
+        },
+        "c_isr_to_host_observation_ns": {
+          "lower": {
+            "median": 1086984.0,
+            "p95": 1158128,
+            "p99": 1209968,
+            "max": 1282064
+          },
+          "upper": {
+            "median": 1088072.0,
+            "p95": 1159216,
+            "p99": 1211056,
+            "max": 1283152
+          }
+        }
+      }
+    },
+    "service_placement": {
+      "mode": "cpu0",
+      "verified": true,
+      "roles": {
+        "control": {
+          "cpu": 0,
+          "threads": 2,
+          "observations": 34,
+          "wrong_cpu": 0
+        },
+        "signal": {
+          "cpu": 0,
+          "threads": 4,
+          "observations": 276,
+          "wrong_cpu": 0
+        }
+      },
+      "limitation": "Discrete task observations supplement builder affinity; other host activity remains uncontrolled."
+    },
+    "limitations": [
+      "Host workload only; noncritical VM interference remains untested.",
+      "Linux counters are complete serial-observed reports, not exact ISR overlap, unreported final work, or DRAM traffic.",
+      "Per-sample work observations lie inside submit-to-ack observation windows, not necessarily before Guest ISR.",
+      "Batch-boundary CPU checks supplement affinity, not instruction-level residency measurement.",
+      "Yielding work does not establish a fixed CPU utilization or DRAM/cache contention level.",
+      "Memory counts are logical volatile operations attributed to completed chunks, not DRAM traffic; chunks may cross window boundaries.",
+      "QEMU validates the measurement and workload lifecycle, not hardware performance."
+    ]
+  },
+  "limitations": [
+    "Current-EL starts at the pre-IAR HostGuestTrap callback after GPR save/Rust wrapper; low-EL starts in assembly after GPR save, before IAR.",
+    "This is an internal physical timer PPI, not external device SPI or pin-arrival latency.",
+    "Entry origins remain classified per sample and in stratified summaries; neither point is vector-first-instruction or pin arrival.",
+    "Guest-running uses CPU1 PPI, busy target Guest and CPU2 services; its source/controller topology differs from the cross-core suspend case.",
+    "One outstanding 1ms comparator deadline at a time is not a periodic 1kHz throughput experiment.",
+    "QEMU functional and measurement evidence; hardware performance and hard real-time bounds remain unproven."
+  ]
+}

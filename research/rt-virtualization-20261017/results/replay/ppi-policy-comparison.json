@@ -1,0 +1,68 @@
+{
+  "off": {
+    "fair": {
+      "samples": 128,
+      "calibration_offset_width_ns": 1040.0,
+      "deadline_to_entry_p95_ns": 105360.0,
+      "entry_to_kick_p99_ns": 38144.0,
+      "entry_to_c_isr_p99_lower_ns": 969136,
+      "entry_to_c_isr_p99_upper_ns": 970176,
+      "entry_to_c_isr_max_upper_ns": 1562064,
+      "host_observation_p99_upper_ns": 1054112
+    },
+    "fifo80": {
+      "samples": 128,
+      "calibration_offset_width_ns": 1072.0,
+      "deadline_to_entry_p95_ns": 93408.0,
+      "entry_to_kick_p99_ns": 25392.0,
+      "entry_to_c_isr_p99_lower_ns": 480816,
+      "entry_to_c_isr_p99_upper_ns": 481888,
+      "entry_to_c_isr_max_upper_ns": 483504,
+      "host_observation_p99_upper_ns": 1082784
+    }
+  },
+  "inherit": {
+    "fair": {
+      "samples": 128,
+      "calibration_offset_width_ns": 1040.0,
+      "deadline_to_entry_p95_ns": 102928.0,
+      "entry_to_kick_p99_ns": 25728.0,
+      "entry_to_c_isr_p99_lower_ns": 885616,
+      "entry_to_c_isr_p99_upper_ns": 886656,
+      "entry_to_c_isr_max_upper_ns": 1359360,
+      "host_observation_p99_upper_ns": 1047056
+    },
+    "fifo80": {
+      "samples": 128,
+      "calibration_offset_width_ns": 1088.0,
+      "deadline_to_entry_p95_ns": 142896.0,
+      "entry_to_kick_p99_ns": 28512.0,
+      "entry_to_c_isr_p99_lower_ns": 489504,
+      "entry_to_c_isr_p99_upper_ns": 490592,
+      "entry_to_c_isr_max_upper_ns": 496720,
+      "host_observation_p99_upper_ns": 1211056
+    }
+  },
+  "bounded": {
+    "fair": {
+      "samples": 128,
+      "calibration_offset_width_ns": 1024.0,
+      "deadline_to_entry_p95_ns": 103776.0,
+      "entry_to_kick_p99_ns": 19824.0,
+      "entry_to_c_isr_p99_lower_ns": 699680,
+      "entry_to_c_isr_p99_upper_ns": 700704,
+      "entry_to_c_isr_max_upper_ns": 1626656,
+      "host_observation_p99_upper_ns": 1065088
+    },
+    "fifo80": {
+      "samples": 128,
+      "calibration_offset_width_ns": 1056.0,
+      "deadline_to_entry_p95_ns": 92944.0,
+      "entry_to_kick_p99_ns": 27136.0,
+      "entry_to_c_isr_p99_lower_ns": 608176,
+      "entry_to_c_isr_p99_upper_ns": 609232,
+      "entry_to_c_isr_max_upper_ns": 643984,
+      "host_observation_p99_upper_ns": 1090640
+    }
+  }
+}

@@ -46,6 +46,12 @@ python3 virtualization/axvm/tests/analysis/analyze_virq_irq_service.py \
   run.log --require-throttle --output-dir throttle-results
 ```
 
+复放归档的 128 条 PPI 样本并生成分层尾延迟摘要：
+
+```sh
+research/rt-virtualization-20261017/replay_archived_ppi.sh
+```
+
 ## 归档布局
 
 - `design/`：阶段判断、A0 设计和适用边界。
@@ -55,5 +61,6 @@ python3 virtualization/axvm/tests/analysis/analyze_virq_irq_service.py \
 - `configs/`：本轮 QEMU/构建输入的快照。
 - `raw/`：原始 QEMU 日志及对应二进制身份 JSON，`SHA256SUMS` 为校验清单。
 - `results/`：分析器 stdout 和校验清单。
+- `results/replay/`：由归档日志重新生成的 ISR 区间、尾部审计和 `ppi-policy-comparison.json`。
 
 QEMU 数据只证明功能、测量协议和调度顺序 witness。它不能替代 RK3588 等真板的性能证据，也不能作为 WCET/WCRT 或硬实时保证。所有样本仍须保留 ISR 校准区间、入口来源、Ready 关联状态和追踪丢失状态；不得把 1 ms mailbox 轮询确认时间当作 ISR 时延。

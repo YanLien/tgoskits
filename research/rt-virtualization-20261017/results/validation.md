@@ -10,6 +10,7 @@ Date: 2026-10-17 (Asia/Shanghai)
 - Archived A0 witness and throttling replays passed their independent analyzer checks; the witness traces remain separate from ordinary performance distributions.
 - `sha256sum -c research/rt-virtualization-20261017/raw/SHA256SUMS` from the repository root: all 19 archived raw files passed.
 - After the D/E pre-check documentation update, the analysis suite was rerun: 19 tests passed.
+- `research/rt-virtualization-20261017/replay_archived_ppi.sh`: replayed all three archived PPI modes and regenerated the per-mode CSV/JSON plus policy comparison; `sh -n` and both raw/results checksum manifests passed.
 
 ## Workspace test sweep
 
