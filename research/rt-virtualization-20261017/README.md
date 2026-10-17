@@ -76,6 +76,12 @@ research/rt-virtualization-20261017/replay_linux_matched.sh
 research/rt-virtualization-20261017/replay_current_qemu.sh
 ```
 
+验证整个归档包（不启动 QEMU）：
+
+```sh
+research/rt-virtualization-20261017/verify_archive.sh
+```
+
 ## 归档布局
 
 - `design/`：阶段判断、A0 设计和适用边界。
