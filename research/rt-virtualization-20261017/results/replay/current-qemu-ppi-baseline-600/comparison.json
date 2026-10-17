@@ -48,8 +48,8 @@
     }
   },
   "limitations": [
-    "Current-branch QEMU run with physical_timer_ppi and 600 samples per policy.",
-    "QEMU validates the measurement chain, not hardware performance or hard real-time bounds.",
+    "Current-branch QEMU run with physical_timer_ppi, IRQ service off, and 600 samples per policy.",
+    "QEMU validates the measurement chain and prototype correctness, not hardware performance or hard real-time bounds.",
     "Host observation windows remain separate from Guest ISR latency."
   ]
 }

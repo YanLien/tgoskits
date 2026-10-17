@@ -48,7 +48,7 @@
     }
   },
   "limitations": [
-    "Current-branch QEMU run with physical_timer_ppi, IRQ service bounded (8 rounds/50 ms), and 600 samples per policy.",
+    "Current-branch QEMU run with physical_timer_ppi, IRQ service bounded, and 600 samples per policy.",
     "QEMU validates the measurement chain and prototype correctness, not hardware performance or hard real-time bounds.",
     "Host observation windows remain separate from Guest ISR latency."
   ]
