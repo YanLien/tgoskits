@@ -16,6 +16,8 @@ Date: 2026-10-17 (Asia/Shanghai)
 - `research/rt-virtualization-20261017/replay_linux_matched.sh`: replayed the matching no-load PL031 SPI baseline and Linux CPU-load cohort with one protocol; both cohorts contain 300 Fair + 300 FIFO samples and all physical/runtime/Ready checks passed.
 - Current branch QEMU run: `VIRQ_SOURCE=physical_timer_ppi VIRQ_HOST_LOAD=baseline VIRQ_SERVICE_PLACEMENT=cpu0 VIRQ_IRQ_SERVICE=off VIRQ_SAMPLES=600 cargo xtask ktest qemu ...` completed with `AXTEST_SUITE_OK`; Fair/FIFO each produced 600 samples and 600/600 full runtime and Ready associations. The run used the archived offline Zephyr/CMake/toolchain cache and is recorded as `raw/current-qemu-ppi-baseline-600.log`.
 - Raw, configuration and result manifests were regenerated and verified; the 19 analysis tests still pass after the replay additions.
+- Current-branch `inherit` and `bounded` QEMU reruns each completed with `AXTEST_SUITE_OK`; each Fair/FIFO policy produced 600 calibrated Guest ISR samples and 600/600 runtime/Ready associations. The bounded/FIFO tail is retained as an observed prototype cost.
+- `sha256sum -c` passed for the raw, configuration, and result manifests after repairing the conclusion hash; the phase requirements audit is recorded in `design/requirements-audit-20261017.md`.
 
 ## Workspace test sweep
 
