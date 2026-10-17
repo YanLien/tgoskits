@@ -1,0 +1,56 @@
+{
+  "schema": "axvisior-prior-art-source-v1",
+  "checked_at": "2026-10-17",
+  "purpose": "source metadata and reproducibility gate; not AxVisor performance evidence",
+  "sources": [
+    {
+      "id": "h-mbr",
+      "title": "H-MBR: Hypervisor-Level Memory Bandwidth Reservation for Mixed Criticality Systems",
+      "doi": "10.4230/OASIcs.NG-RES.2025.4",
+      "urls": ["https://drops.dagstuhl.de/entities/document/10.4230/OASIcs.NG-RES.2025.4", "https://arxiv.org/abs/2502.02437"],
+      "scope": "VM-centric hypervisor memory bandwidth reservation",
+      "reproduction_status": "source_located_fixed_code_hardware_and_raw_data_missing"
+    },
+    {
+      "id": "memguard-rw",
+      "title": "Memguard-RW: Improved Real-Time Memory Bandwidth Regulation Within a Hypervisor",
+      "doi": "10.1109/ISORC65339.2025.00021",
+      "urls": ["https://doi.org/10.1109/ISORC65339.2025.00021", "https://repositorio.ufsc.br/handle/123456789/267662"],
+      "scope": "read/write performance-counter regulation in Bao",
+      "reproduction_status": "source_located_counter_mapping_platform_and_raw_data_missing"
+    },
+    {
+      "id": "memguard-original",
+      "title": "MemGuard: Memory Bandwidth Reservation System for Efficient Performance Isolation in Multi-core Platforms",
+      "urls": ["https://github.com/heechul/memguard"],
+      "scope": "original memory bandwidth reservation implementation; not a Bao VM-level baseline",
+      "reproduction_status": "source_located_not_ported_or_compared"
+    },
+    {
+      "id": "mcti",
+      "title": "MCTI: Mixed-Criticality Task-based Isolation",
+      "doi": "10.1007/s11241-024-09425-5",
+      "urls": ["https://cpslab.bu.edu/papers/mcti-rtsj-2024", "https://doi.org/10.1007/s11241-024-09425-5"],
+      "scope": "task-based isolation with listed RT-Bench and Jailhouse-RT artifacts",
+      "reproduction_status": "source_and_artifact_entry_located_hardware_semantics_not_aligned"
+    },
+    {
+      "id": "vc2m",
+      "title": "Holistic multi-resource allocation for multicore real-time virtualization",
+      "doi": "10.1145/3316781.3317840",
+      "urls": ["https://www.cis.upenn.edu/~linhphan/papers/vC2M-dac19.pdf"],
+      "scope": "CPU/cache/memory-bandwidth allocation; Xen prototype; window-outside foundational comparison",
+      "reproduction_status": "source_located_not_reproduced"
+    }
+  ],
+  "gate": {
+    "allow_phase4_comparable_baseline": false,
+    "required_before_comparison": [
+      "fixed source commit or release archive",
+      "target hardware and firmware identity",
+      "PMU event names and units",
+      "same Guest workload and affinity",
+      "raw logs and monitoring overhead"
+    ]
+  }
+}
