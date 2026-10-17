@@ -29,4 +29,6 @@
 
 该组的 Guest ISR P99 上界约为 Fair 727 µs、FIFO 748 µs；Host 观察窗口 P99 上界约为 947 µs、1.024 ms。两者严格分列，不能用后者替代 ISR 时延。当前证据足以保留 A 方向并准备真板匹配实验，尚不足以启动 D/E 或把 QEMU 负载差异写成性能收益。
 
+此外，`linux-matched-baseline-600.log` 提供了相同 PL031 SPI 配置下的无 Linux 负载对照，`replay_linux_matched.sh` 对两组统一执行同一分析器。该对照只解决 QEMU 配置/来源不一致问题；它仍然不是硬件共享资源基线，且 Linux Guest 的批次进度不是 DRAM 带宽计数。任何负载组差异都只能作为上板实验的假设和参数选择依据。
+
 本轮没有进行外部推送、PR、合并、部署或发布。

@@ -1,0 +1,12 @@
+{
+  "source_path": "/home/yanlien/Workspace/tgoskits-research-20261017/evidence/linux-interference/run-data/compat.log",
+  "archived_path": "research/rt-virtualization-20261017/raw/linux-matched-baseline-600.log",
+  "sha256": "85b7da949ceec3aa7c78393b7e690c741dd0e7022484d09fec38a2f21b824d4a",
+  "host_sample_markers": 600,
+  "guest_isr_sample_markers": 600,
+  "clock_sample_markers": 128,
+  "source_marker": [
+    "VIRQ_SOURCE kind=pl031_spi"
+  ],
+  "linux_config": []
+}

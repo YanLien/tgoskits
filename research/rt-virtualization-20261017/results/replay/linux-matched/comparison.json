@@ -1,0 +1,104 @@
+{
+  "baseline": {
+    "source": "pl031_spi",
+    "scenario": "baseline",
+    "policies": {
+      "fair": {
+        "samples": 300,
+        "calibration_offset_width_ns": 1056.0,
+        "entry_to_c_isr_p99_upper_ns": 553744,
+        "entry_to_c_isr_max_upper_ns": 2261664,
+        "host_observation_p99_upper_ns": 975104,
+        "runtime_segments_p99_ns": {
+          "submit_to_irq_ns": 58224.0,
+          "irq_to_worker_ns": 149232.0,
+          "worker_to_running_ns": 216800.0,
+          "running_to_entry_ns": 140784.0,
+          "entry_to_isr_lower_ns": 48640.0,
+          "entry_to_isr_upper_ns": 49696.0
+        },
+        "ready_segments_p99_ns": {
+          "wake_to_ready_ns": 24224.0,
+          "ready_to_running_ns": 200432.0
+        },
+        "linux_workload": null
+      },
+      "fifo80": {
+        "samples": 300,
+        "calibration_offset_width_ns": 1056.0,
+        "entry_to_c_isr_p99_upper_ns": 621184,
+        "entry_to_c_isr_max_upper_ns": 750448,
+        "host_observation_p99_upper_ns": 953520,
+        "runtime_segments_p99_ns": {
+          "submit_to_irq_ns": 65536.0,
+          "irq_to_worker_ns": 166256.0,
+          "worker_to_running_ns": 207104.0,
+          "running_to_entry_ns": 196400.0,
+          "entry_to_isr_lower_ns": 51792.0,
+          "entry_to_isr_upper_ns": 52848.0
+        },
+        "ready_segments_p99_ns": {
+          "wake_to_ready_ns": 22560.0,
+          "ready_to_running_ns": 192880.0
+        },
+        "linux_workload": null
+      }
+    }
+  },
+  "linux_cpu": {
+    "source": "pl031_spi",
+    "scenario": "linux_cpu",
+    "policies": {
+      "fair": {
+        "samples": 300,
+        "calibration_offset_width_ns": 1040.0,
+        "entry_to_c_isr_p99_upper_ns": 670752,
+        "entry_to_c_isr_max_upper_ns": 2139856,
+        "host_observation_p99_upper_ns": 946928,
+        "runtime_segments_p99_ns": {
+          "submit_to_irq_ns": 84864.0,
+          "irq_to_worker_ns": 200416.0,
+          "worker_to_running_ns": 137344.0,
+          "running_to_entry_ns": 383408.0,
+          "entry_to_isr_lower_ns": 70464.0,
+          "entry_to_isr_upper_ns": 71504.0
+        },
+        "ready_segments_p99_ns": {
+          "wake_to_ready_ns": 37408.0,
+          "ready_to_running_ns": 116176.0
+        },
+        "linux_workload": {
+          "start_batches": 3072,
+          "end_batches": 5888,
+          "samples_with_progress": 11,
+          "samples_without_observed_progress": 289
+        }
+      },
+      "fifo80": {
+        "samples": 300,
+        "calibration_offset_width_ns": 1056.0,
+        "entry_to_c_isr_p99_upper_ns": 684656,
+        "entry_to_c_isr_max_upper_ns": 2102896,
+        "host_observation_p99_upper_ns": 1024128,
+        "runtime_segments_p99_ns": {
+          "submit_to_irq_ns": 128624.0,
+          "irq_to_worker_ns": 320208.0,
+          "worker_to_running_ns": 153472.0,
+          "running_to_entry_ns": 239360.0,
+          "entry_to_isr_lower_ns": 78960.0,
+          "entry_to_isr_upper_ns": 80016.0
+        },
+        "ready_segments_p99_ns": {
+          "wake_to_ready_ns": 51616.0,
+          "ready_to_running_ns": 130528.0
+        },
+        "linux_workload": {
+          "start_batches": 2560,
+          "end_batches": 5376,
+          "samples_with_progress": 10,
+          "samples_without_observed_progress": 290
+        }
+      }
+    }
+  }
+}

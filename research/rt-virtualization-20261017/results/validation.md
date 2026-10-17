@@ -13,6 +13,7 @@ Date: 2026-10-17 (Asia/Shanghai)
 - `research/rt-virtualization-20261017/replay_archived_ppi.sh`: replayed all three archived PPI modes and regenerated the per-mode physical/ISR/runtime/Ready CSV/JSON, tail audit, policy comparison and bottleneck decomposition; `sh -n` and both raw/results checksum manifests passed.
 - `research/rt-virtualization-20261017/replay_software_baseline.sh`: replayed the archived 600-sample software baseline (300 Fair + 300 FIFO), with 600 corresponding calibrated Guest ISR samples; Host acknowledgement windows remained provenance-only.
 - `research/rt-virtualization-20261017/replay_linux_interference.sh`: replayed the archived PL031 SPI + Linux Guest CPU fixture (300 Fair + 300 FIFO); physical IRQ, runtime, Ready association and service placement checks passed.
+- `research/rt-virtualization-20261017/replay_linux_matched.sh`: replayed the matching no-load PL031 SPI baseline and Linux CPU-load cohort with one protocol; both cohorts contain 300 Fair + 300 FIFO samples and all physical/runtime/Ready checks passed.
 - Raw, configuration and result manifests were regenerated and verified; the 19 analysis tests still pass after the replay additions.
 
 ## Workspace test sweep

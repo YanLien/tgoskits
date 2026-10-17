@@ -1,0 +1,78 @@
+{
+  "records": 17772,
+  "ready_records": 637,
+  "ready_paths": {
+    "direct_wake": 624,
+    "owner_wake": 4,
+    "on_run_queue_wake": 3,
+    "owner_migrated": 6
+  },
+  "on_cpu_records": 0,
+  "policies": {
+    "fair": {
+      "samples": 300,
+      "ready_associated_samples": 300,
+      "statuses": {
+        "associated": 300
+      },
+      "parent_statuses": {},
+      "ready_paths": {
+        "direct_wake": 300
+      },
+      "cross_cpu_observations": 300,
+      "ready_observer_cpu_counts": {
+        "0": 300
+      },
+      "conditional_segments_ns": {
+        "wake_to_ready_ns": {
+          "median": 21520.0,
+          "p95": 32768.0,
+          "p99": 37408.0,
+          "max": 65792.0
+        },
+        "ready_to_running_ns": {
+          "median": 65120.0,
+          "p95": 108352.0,
+          "p99": 116176.0,
+          "max": 227744.0
+        }
+      }
+    },
+    "fifo80": {
+      "samples": 300,
+      "ready_associated_samples": 300,
+      "statuses": {
+        "associated": 300
+      },
+      "parent_statuses": {},
+      "ready_paths": {
+        "direct_wake": 300
+      },
+      "cross_cpu_observations": 300,
+      "ready_observer_cpu_counts": {
+        "0": 300
+      },
+      "conditional_segments_ns": {
+        "wake_to_ready_ns": {
+          "median": 24288.0,
+          "p95": 40784.0,
+          "p99": 51616.0,
+          "max": 81664.0
+        },
+        "ready_to_running_ns": {
+          "median": 69816.0,
+          "p95": 104496.0,
+          "p99": 130528.0,
+          "max": 132544.0
+        }
+      }
+    }
+  },
+  "limitations": [
+    "Ready is an rq-locked software observation before commit/unlock, not physical execution.",
+    "Only unique fresh wake enqueues are split; all declared sample statuses remain in the CSV.",
+    "Ready-to-Running includes remaining commit/unlock and dispatch costs, not pure queue-policy wait.",
+    "On-CPU requeue and non-wake reasons are retained in raw Ready events, not relabeled as fresh wakes.",
+    "QEMU only; no hardware bottleneck, performance improvement or hard real-time bound is established."
+  ]
+}

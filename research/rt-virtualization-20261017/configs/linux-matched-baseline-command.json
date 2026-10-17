@@ -1,0 +1,29 @@
+{
+  "command": [
+    "cargo",
+    "xtask",
+    "ktest",
+    "qemu",
+    "-p",
+    "axvm",
+    "--test",
+    "vcpu_runtime",
+    "--arch",
+    "aarch64",
+    "--config",
+    "virtualization/axvm/tests/vcpu-runtime/build-aarch64-unknown-none-softfloat.toml",
+    "--qemu-config",
+    "virtualization/axvm/tests/vcpu-runtime/qemu-aarch64.toml"
+  ],
+  "environment": {
+    "CARGO_TARGET_DIR": "/home/yanlien/Workspace/tgoskits-research-target-20261017",
+    "VIRQ_CACHE_DIR": "/tmp/axvm-deps-20261017/virq-cache",
+    "CROSS_COMPILE": "/tmp/axvm-deps-20261017/guest-toolchain/aarch64-none-linux-gnu-",
+    "VIRQ_SOURCE": "pl031_spi",
+    "VIRQ_HOST_LOAD": "baseline",
+    "VIRQ_IRQ_CONTEXT": "current_el",
+    "VIRQ_SERVICE_PLACEMENT": "cpu0",
+    "VIRQ_LINUX_KERNEL": "/home/yanlien/Workspace/tgoskits-research-target-20261017/axbuild/images/qemu-aarch64/linux/linux-qemu",
+    "VIRQ_LINUX_INITRAMFS_BASE": "/home/yanlien/Workspace/tgoskits/tmp/axbuild/axvisor/qemu-timer-stress/initramfs-aarch64.cpio.gz"
+  }
+}

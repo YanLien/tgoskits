@@ -64,6 +64,12 @@ research/rt-virtualization-20261017/replay_software_baseline.sh
 research/rt-virtualization-20261017/replay_linux_interference.sh
 ```
 
+复放相同 PL031 SPI 配置下的无 Linux 负载基线与 Linux CPU 负载组：
+
+```sh
+research/rt-virtualization-20261017/replay_linux_matched.sh
+```
+
 ## 归档布局
 
 - `design/`：阶段判断、A0 设计和适用边界。
