@@ -1,0 +1,344 @@
+{
+  "off": {
+    "fair": {
+      "runtime": {
+        "submit_to_irq_ns": {
+          "median": 1105560.0,
+          "p95": 1119328.0,
+          "p99": 1167808.0,
+          "max": 1481120.0
+        },
+        "irq_to_worker_ns": {
+          "median": 109768.0,
+          "p95": 149888.0,
+          "p99": 233888.0,
+          "max": 270544.0
+        },
+        "worker_to_running_ns": {
+          "median": 157984.0,
+          "p95": 177584.0,
+          "p99": 189232.0,
+          "max": 195728.0
+        },
+        "running_to_entry_ns": {
+          "median": 112592.0,
+          "p95": 119712.0,
+          "p99": 590768.0,
+          "max": 840784.0
+        },
+        "entry_to_isr_lower_ns": {
+          "median": 34816.0,
+          "p95": 38640.0,
+          "p99": 51520.0,
+          "max": 60912.0
+        },
+        "entry_to_isr_upper_ns": {
+          "median": 35856.0,
+          "p95": 39680.0,
+          "p99": 52560.0,
+          "max": 61952.0
+        }
+      },
+      "ready": {
+        "wake_to_ready_ns": {
+          "median": 14800.0,
+          "p95": 16336.0,
+          "p99": 18464.0,
+          "max": 18816.0
+        },
+        "ready_to_running_ns": {
+          "median": 143272.0,
+          "p95": 162960.0,
+          "p99": 174288.0,
+          "max": 180192.0
+        }
+      },
+      "full_chain_samples": 128,
+      "ready_associated_samples": 128
+    },
+    "fifo80": {
+      "runtime": {
+        "submit_to_irq_ns": {
+          "median": 1094872.0,
+          "p95": 1106816.0,
+          "p99": 1115216.0,
+          "max": 1126416.0
+        },
+        "irq_to_worker_ns": {
+          "median": 107456.0,
+          "p95": 145664.0,
+          "p99": 156208.0,
+          "max": 163280.0
+        },
+        "worker_to_running_ns": {
+          "median": 143232.0,
+          "p95": 166512.0,
+          "p99": 179536.0,
+          "max": 185040.0
+        },
+        "running_to_entry_ns": {
+          "median": 117456.0,
+          "p95": 125360.0,
+          "p99": 129296.0,
+          "max": 140576.0
+        },
+        "entry_to_isr_lower_ns": {
+          "median": 35680.0,
+          "p95": 43072.0,
+          "p99": 43680.0,
+          "max": 48224.0
+        },
+        "entry_to_isr_upper_ns": {
+          "median": 36752.0,
+          "p95": 44144.0,
+          "p99": 44752.0,
+          "max": 49296.0
+        }
+      },
+      "ready": {
+        "wake_to_ready_ns": {
+          "median": 13104.0,
+          "p95": 14288.0,
+          "p99": 15824.0,
+          "max": 16064.0
+        },
+        "ready_to_running_ns": {
+          "median": 129896.0,
+          "p95": 153232.0,
+          "p99": 166416.0,
+          "max": 172064.0
+        }
+      },
+      "full_chain_samples": 128,
+      "ready_associated_samples": 128
+    }
+  },
+  "inherit": {
+    "fair": {
+      "runtime": {
+        "submit_to_irq_ns": {
+          "median": 1103592.0,
+          "p95": 1115840.0,
+          "p99": 1126112.0,
+          "max": 1369184.0
+        },
+        "irq_to_worker_ns": {
+          "median": 108096.0,
+          "p95": 148432.0,
+          "p99": 184608.0,
+          "max": 264208.0
+        },
+        "worker_to_running_ns": {
+          "median": 156160.0,
+          "p95": 174080.0,
+          "p99": 241904.0,
+          "max": 246064.0
+        },
+        "running_to_entry_ns": {
+          "median": 112720.0,
+          "p95": 117808.0,
+          "p99": 572816.0,
+          "max": 889200.0
+        },
+        "entry_to_isr_lower_ns": {
+          "median": 34872.0,
+          "p95": 37792.0,
+          "p99": 41184.0,
+          "max": 52832.0
+        },
+        "entry_to_isr_upper_ns": {
+          "median": 35912.0,
+          "p95": 38832.0,
+          "p99": 42224.0,
+          "max": 53872.0
+        }
+      },
+      "ready": {
+        "wake_to_ready_ns": {
+          "median": 14456.0,
+          "p95": 15264.0,
+          "p99": 17344.0,
+          "max": 27472.0
+        },
+        "ready_to_running_ns": {
+          "median": 141632.0,
+          "p95": 159744.0,
+          "p99": 227376.0,
+          "max": 231840.0
+        }
+      },
+      "full_chain_samples": 128,
+      "ready_associated_samples": 128
+    },
+    "fifo80": {
+      "runtime": {
+        "submit_to_irq_ns": {
+          "median": 1107648.0,
+          "p95": 1159952.0,
+          "p99": 1171136.0,
+          "max": 1186416.0
+        },
+        "irq_to_worker_ns": {
+          "median": 63480.0,
+          "p95": 99824.0,
+          "p99": 111664.0,
+          "max": 137648.0
+        },
+        "worker_to_running_ns": {
+          "median": 159760.0,
+          "p95": 187584.0,
+          "p99": 202416.0,
+          "max": 204080.0
+        },
+        "running_to_entry_ns": {
+          "median": 115928.0,
+          "p95": 129520.0,
+          "p99": 133664.0,
+          "max": 133760.0
+        },
+        "entry_to_isr_lower_ns": {
+          "median": 34936.0,
+          "p95": 36688.0,
+          "p99": 44032.0,
+          "max": 53776.0
+        },
+        "entry_to_isr_upper_ns": {
+          "median": 36024.0,
+          "p95": 37776.0,
+          "p99": 45120.0,
+          "max": 54864.0
+        }
+      },
+      "ready": {
+        "wake_to_ready_ns": {
+          "median": 16272.0,
+          "p95": 17328.0,
+          "p99": 17872.0,
+          "max": 21728.0
+        },
+        "ready_to_running_ns": {
+          "median": 144424.0,
+          "p95": 170704.0,
+          "p99": 185696.0,
+          "max": 190032.0
+        }
+      },
+      "full_chain_samples": 128,
+      "ready_associated_samples": 128
+    }
+  },
+  "bounded": {
+    "fair": {
+      "runtime": {
+        "submit_to_irq_ns": {
+          "median": 1105880.0,
+          "p95": 1118288.0,
+          "p99": 1140800.0,
+          "max": 1453488.0
+        },
+        "irq_to_worker_ns": {
+          "median": 109312.0,
+          "p95": 149584.0,
+          "p99": 237824.0,
+          "max": 262144.0
+        },
+        "worker_to_running_ns": {
+          "median": 159208.0,
+          "p95": 175680.0,
+          "p99": 180272.0,
+          "max": 181488.0
+        },
+        "running_to_entry_ns": {
+          "median": 113048.0,
+          "p95": 118160.0,
+          "p99": 390304.0,
+          "max": 864144.0
+        },
+        "entry_to_isr_lower_ns": {
+          "median": 34392.0,
+          "p95": 35280.0,
+          "p99": 39936.0,
+          "max": 63216.0
+        },
+        "entry_to_isr_upper_ns": {
+          "median": 35416.0,
+          "p95": 36304.0,
+          "p99": 40960.0,
+          "max": 64240.0
+        }
+      },
+      "ready": {
+        "wake_to_ready_ns": {
+          "median": 14480.0,
+          "p95": 16000.0,
+          "p99": 22192.0,
+          "max": 23552.0
+        },
+        "ready_to_running_ns": {
+          "median": 144616.0,
+          "p95": 161040.0,
+          "p99": 165024.0,
+          "max": 166832.0
+        }
+      },
+      "full_chain_samples": 128,
+      "ready_associated_samples": 128
+    },
+    "fifo80": {
+      "runtime": {
+        "submit_to_irq_ns": {
+          "median": 1062736.0,
+          "p95": 1107008.0,
+          "p99": 1112096.0,
+          "max": 1114912.0
+        },
+        "irq_to_worker_ns": {
+          "median": 93104.0,
+          "p95": 100656.0,
+          "p99": 118640.0,
+          "max": 121488.0
+        },
+        "worker_to_running_ns": {
+          "median": 152144.0,
+          "p95": 188528.0,
+          "p99": 213680.0,
+          "max": 222480.0
+        },
+        "running_to_entry_ns": {
+          "median": 118896.0,
+          "p95": 133200.0,
+          "p99": 370688.0,
+          "max": 380880.0
+        },
+        "entry_to_isr_lower_ns": {
+          "median": 34976.0,
+          "p95": 40288.0,
+          "p99": 42528.0,
+          "max": 71040.0
+        },
+        "entry_to_isr_upper_ns": {
+          "median": 36032.0,
+          "p95": 41344.0,
+          "p99": 43584.0,
+          "max": 72096.0
+        }
+      },
+      "ready": {
+        "wake_to_ready_ns": {
+          "median": 14296.0,
+          "p95": 15280.0,
+          "p99": 20576.0,
+          "max": 23136.0
+        },
+        "ready_to_running_ns": {
+          "median": 137720.0,
+          "p95": 174112.0,
+          "p99": 196384.0,
+          "max": 201904.0
+        }
+      },
+      "full_chain_samples": 128,
+      "ready_associated_samples": 128
+    }
+  }
+}

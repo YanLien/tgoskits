@@ -16,6 +16,10 @@ for mode in off inherit bounded; do
     python3 "$analysis_dir/audit_virq_tail.py" \
         "$mode_dir/samples.csv" --metric entry_to_c_isr \
         --output "$mode_dir/tail.json"
+    python3 "$analysis_dir/analyze_virq_runtime.py" \
+        "$raw_dir/ppi-$mode.log" --output-dir "$mode_dir/runtime"
+    python3 "$analysis_dir/analyze_virq_ready.py" \
+        "$raw_dir/ppi-$mode.log" --output-dir "$mode_dir/ready"
 done
 
 python3 - "$out_dir" <<'PY'
@@ -42,5 +46,22 @@ for mode in ("off", "inherit", "bounded"):
         }
 (root / "ppi-policy-comparison.json").write_text(
     json.dumps(comparison, ensure_ascii=False, indent=2) + "\n"
+)
+
+decomposition = {}
+for mode in ("off", "inherit", "bounded"):
+    runtime = json.loads((root / f"ppi-{mode}" / "runtime" / "summary.json").read_text())
+    ready = json.loads((root / f"ppi-{mode}" / "ready" / "summary.json").read_text())
+    decomposition[mode] = {
+        policy: {
+            "runtime": runtime["policies"][policy]["conditional_segments_ns"],
+            "ready": ready["policies"][policy]["conditional_segments_ns"],
+            "full_chain_samples": runtime["policies"][policy]["full_chain_samples"],
+            "ready_associated_samples": ready["policies"][policy]["ready_associated_samples"],
+        }
+        for policy in ("fair", "fifo80")
+    }
+(root / "ppi-bottleneck-decomposition.json").write_text(
+    json.dumps(decomposition, ensure_ascii=False, indent=2) + "\n"
 )
 PY

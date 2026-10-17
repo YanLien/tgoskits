@@ -15,4 +15,8 @@
 
 `c_isr_to_host_observation` 仍约为 1 ms 量级，它是 Host 观察窗口的剩余部分，不是 Guest ISR 时延，未进入上述 ISR 指标。三种模式来自不同 QEMU 启动，样本量和运行环境不足以形成统计性能比较；该表只用于复现测量链和决定真板实验的分解字段。
 
+进一步的运行链分解显示，128/128 条样本都完成了 `IRQ -> worker -> Running -> GuestEntry` 关联。以 `off/fair` 为例，P99 的 `irq_to_worker`、`worker_to_running`、`running_to_entry` 和 GuestEntry 后 ISR 区间分别约为 234、189、591 和 53 µs；Ready 子段的 `wake_to_ready` 与 `ready_to_running` P99 分别约为 18 和 174 µs。它说明 QEMU 当前样本的尾部主要分布在服务唤醒、vCPU 运行前等待和偶发运行到 GuestEntry 的路径，而不是 1 ms 观察窗口本身。
+
+这只是测量链中的瓶颈假设：不同启动的策略数值不能当作 A0 的性能比较，也不能据此跳过真板匹配基线。阶段三仍须在真板确认同一分解和共享资源干扰是否耦合后再实现 Deadline Slack 协同。
+
 本轮没有进行外部推送、PR、合并、部署或发布。
