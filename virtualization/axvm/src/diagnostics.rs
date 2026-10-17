@@ -16,6 +16,7 @@ use ax_std::os::arceos::guard::IrqSaveGuard;
 
 use crate::{AxVmError, AxVmResult};
 
+pub mod irq_service;
 pub mod service_placement;
 
 const CAPACITY: usize = 16_384;

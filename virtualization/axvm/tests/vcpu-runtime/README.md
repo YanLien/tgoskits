@@ -225,3 +225,6 @@ VIRQ_SAMPLES=500 VIRQ_SOURCE=pl031_spi VIRQ_SERVICE_PLACEMENT=cpu0 \
 `VIRQ_HOST_LOAD=linux_cpu`使用同一VmManager同时拥有Linux VM1与实时VM2，控制/源/服务CPU0、实时目标CPU1、Linux单vCPU固定CPU3；Linux使用virtualized、分配RAM和空passthrough，用户程序有连续批次/checksum协议。使用`vcpu-runtime/linux/`下的四核8GiB build/QEMU/资源配置，并显式提供已校验的VIRQ_LINUX_KERNEL和VIRQ_LINUX_INITRAMFS_BASE路径。默认单VM资源配置不捆绑Linux。
 
 Guest逻辑CPU0不是Host CPU0。Linux串口进度在实时计时窗外排空，按8192次/批、256批/报告核验，不能作精确DRAM流量或单条ISR内的工作计数。采样与后校准后以Host stop停止Linux，再导出实时数据；全部服务销毁/join后才freeze。保留有界追踪和溢出失败，不把QEMU通过当作实板瓶颈或吞吐收益。
+
+
+A0仅在AArch64 axtest启用：VIRQ_IRQ_SERVICE=off/inherit/bounded。后两态对FIFO目标继承其等级，bounded限制每run的worker派发轮数；VIRQ_IRQ_SERVICE_ROUNDS范围1..256、VIRQ_IRQ_SERVICE_WINDOW_US范围100..100000，默认8轮/1ms。该限额不是IRQ数量、CPU执行预算、滑动窗口保证或Deadline感知算法。VIRQ_IRQ_SERVICE与VIRQ_IRQ_SERVICE_JOIN记录实际base策略和join结果。VIRQ_INVERSION_WITNESS=1仅用于baseline/current-EL/PPI/CPU0服务的有限FIFO60阻挡判定，禁止混入普通性能分布。50ms限额压力配置也单列分析。
