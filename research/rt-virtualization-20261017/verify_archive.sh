@@ -19,6 +19,8 @@ python3 -m json.tool \
 sha256sum -c research/rt-virtualization-20261017/raw/SHA256SUMS >/dev/null
 sha256sum -c research/rt-virtualization-20261017/configs/SHA256SUMS >/dev/null
 sha256sum -c research/rt-virtualization-20261017/results/SHA256SUMS >/dev/null
+sha256sum -c research/prior-art/SHA256SUMS >/dev/null
+python3 -m json.tool research/prior-art/sources.json >/dev/null
 python3 -m unittest discover -s virtualization/axvm/tests/analysis -p 'test_virq_*.py'
 
 printf '%s\n' 'archive verification passed: scripts, template, checksums, and analysis tests'
