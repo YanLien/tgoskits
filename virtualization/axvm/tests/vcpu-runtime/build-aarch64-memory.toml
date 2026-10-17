@@ -1,0 +1,6 @@
+# Three-CPU memory-contention fixture: controller/source CPU0, guest target CPU1,
+# memory worker CPU2. The Zephyr guest itself still has two vCPUs.
+features = []
+log = "Info"
+max_cpu_num = 3
+target = "aarch64-unknown-none-softfloat"

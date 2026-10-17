@@ -26,3 +26,13 @@ pub(crate) mod counters;
 
 #[cfg(axtest)]
 pub use crate::sched::system::pi_schedule_test_probe_snapshot;
+
+#[cfg(axtest)]
+mod ready;
+#[cfg(axtest)]
+pub(crate) use ready::record_ready;
+#[cfg(axtest)]
+pub use ready::{
+    ReadyKind, ReadyObserverAlreadyInstalled, ReadyTraceHook, ReadyTraceRecord,
+    install_ready_trace_hook,
+};

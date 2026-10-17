@@ -352,6 +352,13 @@ fn run_owner(
     control: Arc<ControlShared>,
     cpu_on: Option<CpuOnArgs>,
 ) {
+    #[cfg(all(feature = "axtest", target_arch = "aarch64"))]
+    crate::diagnostics::record(
+        crate::diagnostics::EventKind::Binding,
+        crate::host::task::current_thread().id().as_u64(),
+        port.instance.run.vm().vm_id() as u64,
+        port.instance.vcpu_id as u64,
+    );
     let initialized = (|| {
         if port.signals.stop_requested() {
             return Err(AxVmError::OperationCancelled { operation });

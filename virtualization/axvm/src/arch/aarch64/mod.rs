@@ -486,10 +486,14 @@ struct HostGuestTrap;
 #[trait_ffi::impl_extern_trait]
 impl ax_cpu::virtualization::GuestHostTrap for HostGuestTrap {
     fn current_irq(_context: ax_cpu::trap::InterruptedContext) {
-        if let Some(token) = gic::acknowledge_host_irq()
-            && let Err(error) = gic::route_acknowledged_host_irq(token)
-        {
-            warn!("{error}");
+        #[cfg(feature = "axtest")]
+        let observed = crate::diagnostics::current_irq_begin();
+        if let Some(token) = gic::acknowledge_host_irq() {
+            #[cfg(feature = "axtest")]
+            crate::diagnostics::current_irq_acknowledged(observed, gic::host_irq_intid(token));
+            if let Err(error) = gic::route_acknowledged_host_irq(token) {
+                warn!("{error}");
+            }
         }
     }
 }
@@ -709,6 +713,13 @@ impl VmArchVcpuOps for AxvmArmVcpu {
             .ok_or(BackendError::InvalidState)?;
         let host_irq_guard = ArmHostIrqGuard::mask();
         vgic_backend_result(binding.load())?;
+        #[cfg(feature = "axtest")]
+        crate::diagnostics::record(
+            crate::diagnostics::EventKind::GuestEntryBoundary,
+            crate::host::task::current_thread().id().as_u64(),
+            0,
+            0,
+        );
         let run_result = arm_result(self.inner.run(&host_irq_guard));
         let timer_result = self.synchronize_timer();
         let save_result = VcpuLocalInterrupts::save_exit(self);

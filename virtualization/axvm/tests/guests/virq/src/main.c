@@ -1,17 +1,25 @@
 #include <stdint.h>
+#include <stddef.h>
 #include <zephyr/arch/arm64/arm-smccc.h>
 #include <zephyr/irq.h>
 #include <zephyr/kernel.h>
 #include <zephyr/dt-bindings/interrupt-controller/arm-gic.h>
 
 #define SOFTWARE_VIRQ 48
+#ifndef SAMPLE_COUNT
 #define SAMPLE_COUNT 300
+#endif
+#if SAMPLE_COUNT < 1 || SAMPLE_COUNT > 1000
+#error "SAMPLE_COUNT must be between 1 and 1000"
+#endif
 #define TIMER_IRQ 27
 #define PSCI_CPU_SUSPEND_64 0xc4000001UL
 #define PSCI_SYSTEM_OFF_32 0x84000008UL
 
 /* Test-only mailbox in normal coherent guest RAM. Each word has one writer:
- * CPU0 owns ready0/parks0, CPU1 owns ready1/received, host owns complete.
+ * CPU0 owns ready0/parks0. CPU1 release-publishes clock replies and ISR
+ * timestamps. Host owns complete/clock_request; reply payloads remain stable
+ * until the next request, and each ISR slot is written only once.
  * The build tool obtains its GPA from the ELF symbol, never a guessed address.
  */
 struct virq_mailbox {
@@ -20,8 +28,36 @@ struct virq_mailbox {
 	uint32_t received;
 	uint32_t parks0;
 	uint32_t complete;
+	uint32_t clock_request;
+	uint32_t clock_ack;
+	uint32_t running_mode;
+	uint64_t clock_ticks;
+	uint64_t frequency;
+	uint64_t isr_ticks[SAMPLE_COUNT];
 };
 struct virq_mailbox virq_mailbox;
+_Static_assert(offsetof(struct virq_mailbox, clock_ticks) == 32, "clock layout");
+_Static_assert(offsetof(struct virq_mailbox, isr_ticks) == 48, "ISR layout");
+_Static_assert(sizeof(struct virq_mailbox) == 48 + SAMPLE_COUNT * 8, "mailbox size");
+
+static uint64_t counter_ticks(void)
+{
+    uint64_t ticks;
+    /* CNTVCT is direct; CNTPCT is trapped by the hypervisor. ISB and the
+     * compiler memory clobber delimit the C ISR observation point. */
+    __asm__ volatile("isb; mrs %0, cntvct_el0; isb" : "=r"(ticks) : : "memory");
+    return ticks;
+}
+
+static void clock_reply(void)
+{
+    uint32_t request = __atomic_load_n(&virq_mailbox.clock_request, __ATOMIC_ACQUIRE);
+    uint32_t ack = __atomic_load_n(&virq_mailbox.clock_ack, __ATOMIC_RELAXED);
+    if (request != 0 && request != 33 && request != ack && request <= 65) {
+        virq_mailbox.clock_ticks = counter_ticks();
+        __atomic_store_n(&virq_mailbox.clock_ack, request, __ATOMIC_RELEASE);
+    }
+}
 
 static void suspend_cpu(void)
 {
@@ -35,12 +71,14 @@ static void suspend_cpu(void)
 
 static void software_virq_isr(const void *arg)
 {
+	uint64_t ticks = counter_ticks();
 	ARG_UNUSED(arg);
 	uint32_t count = __atomic_load_n(&virq_mailbox.received, __ATOMIC_RELAXED);
 	if (arch_curr_cpu()->id != 1 || count >= SAMPLE_COUNT) {
 		printk("SOFTWARE VIRQ FAIL cpu=%d count=%u\n", arch_curr_cpu()->id, count);
 		k_panic();
 	}
+	virq_mailbox.isr_ticks[count] = ticks;
 	__atomic_store_n(&virq_mailbox.received, count + 1, __ATOMIC_RELEASE);
 }
 
@@ -55,17 +93,30 @@ static void consumer_entry(void *a, void *b, void *c)
 	/* Enabling the SPI on CPU1 sets its GICv3 routing affinity to CPU1. */
 	irq_enable(SOFTWARE_VIRQ);
 	irq_disable(TIMER_IRQ);
+    uint64_t frequency;
+    __asm__ volatile("mrs %0, cntfrq_el0" : "=r"(frequency));
+    virq_mailbox.frequency = frequency;
 	__atomic_store_n(&virq_mailbox.ready1, 1, __ATOMIC_RELEASE);
+    while (__atomic_load_n(&virq_mailbox.clock_request, __ATOMIC_ACQUIRE) != 33) {
+        clock_reply();
+        arch_nop();
+    }
 	while (__atomic_load_n(&virq_mailbox.received, __ATOMIC_ACQUIRE) < SAMPLE_COUNT) {
-		suspend_cpu();
+        if (__atomic_load_n(&virq_mailbox.running_mode, __ATOMIC_ACQUIRE)) {
+            arch_nop();
+        } else {
+            suspend_cpu();
+        }
 	}
 	/* The host acknowledges that it checked all deliveries and idle-CPU
 	 * isolation before we power off. No additional interrupt is injected.
 	 */
 	while (!__atomic_load_n(&virq_mailbox.complete, __ATOMIC_ACQUIRE)) {
+        clock_reply();
 		arch_nop();
 	}
-	printk("SOFTWARE VIRQ COMPLETE streams=1 samples_each=300 total=300\n");
+	printk("SOFTWARE VIRQ COMPLETE streams=1 samples_each=%u total=%u\n",
+               SAMPLE_COUNT, SAMPLE_COUNT);
 	struct arm_smccc_res res;
 	arm_smccc_hvc(PSCI_SYSTEM_OFF_32, 0, 0, 0, 0, 0, 0, 0, &res);
 	k_panic();
@@ -82,7 +133,7 @@ int main(void)
 	}
 	k_thread_start(&consumer_thread);
 	irq_disable(TIMER_IRQ);
-	printk("SOFTWARE VIRQ READY suspend vector=48 samples=300\n");
+	printk("SOFTWARE VIRQ READY suspend vector=48 samples=%u\n", SAMPLE_COUNT);
 	__atomic_store_n(&virq_mailbox.ready0, 1, __ATOMIC_RELEASE);
 	for (;;) {
 		__atomic_fetch_add(&virq_mailbox.parks0, 1, __ATOMIC_RELEASE);

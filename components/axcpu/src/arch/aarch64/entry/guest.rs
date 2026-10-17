@@ -31,6 +31,11 @@ macro_rules! exit_offset {
     };
 }
 
+#[cfg(feature = "virtualization-trace")]
+const IRQ_ENTRY_TICKS_OFFSET: usize = exit_offset!(irq_entry_ticks);
+#[cfg(not(feature = "virtualization-trace"))]
+const IRQ_ENTRY_TICKS_OFFSET: usize = 0; // The assembler discards the disabled block.
+
 const _: () = {
     assert!(offset_of!(Vcpu, context) == 0);
     assert!(host_offset!(stack) == size_of::<GuestContext>());
@@ -43,6 +48,8 @@ core::arch::global_asm!(
     include_str!("guest.S"),
     exception_sync = const 0,
     exception_irq = const 1,
+    observe_irq_entry = const cfg!(feature = "virtualization-trace") as u8,
+    irq_entry_ticks_offset = const IRQ_ENTRY_TICKS_OFFSET,
     trap_frame_size = const size_of::<GuestContext>(),
     guest_elr_offset = const offset_of!(GuestContext, elr),
     guest_sp_el0_offset = const offset_of!(GuestContext, sp_el0),

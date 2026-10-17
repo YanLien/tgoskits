@@ -1,0 +1,11 @@
+# Three host CPUs for the memory_cross_core scenario and its same-topology baseline.
+# Guest resources and suite matching are shared with the normal case.
+args = [
+  "-nographic", "-cpu", "cortex-a72",
+  "-machine", "virt,virtualization=on,gic-version=3",
+  "-smp", "3", "-m", "512M",
+]
+to_bin = true
+uefi = false
+timeout = 900
+fail_regex = ["VIRQ_TEST_FAILED", "SOFTWARE VIRQ FAIL", "panicked at"]

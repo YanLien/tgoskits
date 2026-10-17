@@ -73,6 +73,18 @@ impl Rtc {
         unsafe { addr_of_mut!((*self.registers).lr).write_volatile(unix_time) }
     }
 
+    /// Returns the currently programmed alarm match value.
+    pub fn match_timestamp(&self) -> u32 {
+        // SAFETY: construction guarantees a live, aligned device register bank.
+        unsafe { addr_of!((*self.registers).mr).read_volatile() }
+    }
+
+    /// Returns whether the alarm interrupt is enabled in IMSC.
+    pub fn interrupt_enabled(&self) -> bool {
+        // SAFETY: construction guarantees a live, aligned device register bank.
+        unsafe { addr_of!((*self.registers).imsc).read_volatile() & 1 != 0 }
+    }
+
     /// Writes a match value. When the RTC value matches this then an interrupt
     /// will be generated (if it is enabled).
     pub fn set_match_timestamp(&mut self, match_timestamp: u32) {

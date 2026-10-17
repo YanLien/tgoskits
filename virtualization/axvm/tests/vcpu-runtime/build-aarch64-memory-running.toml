@@ -1,0 +1,5 @@
+# Four CPUs: controller0, Guest/source1, services2, memory worker3.
+features = []
+log = "Info"
+max_cpu_num = 4
+target = "aarch64-unknown-none-softfloat"

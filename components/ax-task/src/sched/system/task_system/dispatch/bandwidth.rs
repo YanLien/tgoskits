@@ -129,6 +129,8 @@ impl TaskSystem {
             None
         };
         core.publish_effective_schedule(policy, enqueue.entity());
+        #[cfg(axtest)]
+        let trace_on_cpu = sched.placement.on_cpu().is_some();
         if sched.placement.on_cpu() == Some(owner) {
             // Fair removes current from its class tree while Linux keeps the
             // task logically on_rq. Re-linking it is put_prev, not activation.
@@ -137,6 +139,19 @@ impl TaskSystem {
             sched.placement.activate(owner);
         }
         core.set_wake_cpu_hint(owner);
+        #[cfg(axtest)]
+        {
+            use crate::diagnostics::ReadyKind;
+            let kind = match reason {
+                EnqueueReason::Wake => ReadyKind::OwnerWake,
+                EnqueueReason::Yield => ReadyKind::OwnerYield,
+                EnqueueReason::Preempted => ReadyKind::OwnerPreempted,
+                EnqueueReason::Replenished => ReadyKind::OwnerReplenished,
+                EnqueueReason::Migrated => ReadyKind::OwnerMigrated,
+                EnqueueReason::PolicyChanged => ReadyKind::OwnerPolicyChanged,
+            };
+            crate::diagnostics::record_ready(core, owner, kind, trace_on_cpu);
+        }
         OwnerReadyEnqueue {
             reschedule,
             scheduler_deadline_refresh_required: enqueue.scheduler_deadline_refresh_required(),

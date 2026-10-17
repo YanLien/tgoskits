@@ -37,45 +37,68 @@ pub fn with_vm(
     policy: SchedulePolicy,
     workload: impl FnOnce(&mut Fixture) -> Result<()>,
 ) -> Result<()> {
+    with_vms([(config_path, policy)], |fixtures| {
+        workload(&mut fixtures[0])
+    })
+}
+
+/// Shares one registry and final shutdown owner across all guest fixtures.
+pub fn with_vms<const N: usize>(
+    plans: [(&str, SchedulePolicy); N],
+    workload: impl FnOnce(&mut [Fixture; N]) -> Result<()>,
+) -> Result<()> {
+    ensure!(N > 0, "empty VM fixture group");
     axvm::boot::init_guest_boot_resources();
     let manager = VmManager::new().context("enable host virtualization")?;
     let result = (|| {
-        let serial = Arc::new(ConsoleFactory::default());
-        let plan = prepare_plan(config_path, policy, serial.clone())?;
-        let vm = manager.create(plan)?.wait().context("create VM")?;
-        let mut fixture = Fixture {
-            vm,
-            serial,
-            console_generation: None,
-            transcript: String::new(),
-            pending_line: String::new(),
-            scratch: Vec::with_capacity(CONSOLE_QUEUE_BYTES),
-        };
-        ensure!(
-            fixture
-                .vm
-                .snapshot()
-                .vcpu
-                .iter()
-                .all(|cpu| cpu.host_base_policy.is_none()),
-            "an inactive VM reports a host task"
-        );
-        let result = workload(&mut fixture);
-        fixture.flush_console()?;
+        let mut fixtures = Vec::with_capacity(N);
+        for (path, policy) in plans {
+            let serial = Arc::new(ConsoleFactory::default());
+            let plan = prepare_plan(path, policy, serial.clone())?;
+            let vm = manager.create(plan)?.wait().context("create VM")?;
+            let fixture = Fixture {
+                vm,
+                serial,
+                console_generation: None,
+                transcript: String::new(),
+                pending_line: String::new(),
+                scratch: Vec::with_capacity(CONSOLE_QUEUE_BYTES),
+            };
+            ensure!(
+                fixture
+                    .vm
+                    .snapshot()
+                    .vcpu
+                    .iter()
+                    .all(|cpu| cpu.host_base_policy.is_none()),
+                "an inactive VM reports a host task"
+            );
+            fixtures.push(fixture);
+        }
+        let mut fixtures: [Fixture; N] = fixtures
+            .try_into()
+            .map_err(|_| anyhow::anyhow!("fixture group length mismatch"))?;
+        let mut result = workload(&mut fixtures);
+        for fixture in &mut fixtures {
+            if let Err(error) = fixture.flush_console() {
+                if result.is_ok() {
+                    result = Err(error);
+                }
+            }
+        }
         result
     })();
-    let cleanup = manager
+    if let Err(error) = manager
         .shutdown()
-        .context("destroy VMs and join control tasks");
-    // Always observe cleanup even when the workload failed. A guest marker can
-    // never finish the axtest case before this join has completed.
-    if let Err(error) = cleanup {
+        .context("destroy VMs and join control tasks")
+    {
         return Err(error.context(format!("workload outcome: {result:?}")));
     }
     ensure!(
         manager.list().is_empty(),
         "VM registry retained a destroyed instance"
     );
+    println!("VIRQ_VM_GROUP_RETIRED count={N} empty=1");
     result
 }
 

@@ -22,11 +22,18 @@ core::arch::global_asm!(
     ".balign 4",
     ".global cpu_test_arm_guest",
     "cpu_test_arm_guest:",
+    "mrs x3, pmcr_el0",
+    "mov x4, #64",
+    "msr pmcr_el0, x4",
+    "isb",
     "fmov x1, d0",
     "mov x0, #0x123",
     "fmov d0, x0",
     "mrs x2, tpidr_el0",
     "hvc #0",
+    "mrs x3, pmcr_el0",
+    "msr pmcr_el0, xzr",
+    "isb",
     "fmov x1, d0",
     "mov x0, #0x456",
     "fmov d0, x0",
@@ -47,6 +54,12 @@ pub fn run() {
     // SAFETY: one pinned EL2 CPU owns this complete IRQ-masked machine test.
     unsafe {
         core::arch::asm!("mrs {}, tpidr_el0", out(reg) tls, options(nostack));
+    }
+    let original_pmcr: u64;
+    // SAFETY: the standalone machine test exclusively owns this pinned PMU
+    // domain with IRQs masked; no perf consumer or guest exists yet.
+    unsafe {
+        core::arch::asm!("mrs {}, pmcr_el0", out(reg) original_pmcr, options(nostack));
     }
     let mut cpu = PerCpu::new();
     unsafe {
@@ -76,16 +89,28 @@ pub fn run() {
         core::arch::asm!("msr cntvoff_el2, {}", in(reg) 0x222u64, options(nostack));
         core::arch::asm!("msr cntv_cval_el0, {}", "isb", in(reg) u64::MAX, options(nostack));
     }
-    for (expected, previous) in [(0x123, 0), (0x456, 0x123)] {
+    for (expected, previous, guest_before_lc, guest_after_lc, host_lc) in
+        [(0x123, 0, 0, 64, 0), (0x456, 0x123, 64, 0, 64)]
+    {
+        // LC changes overflow width, without writing P/C reset commands or
+        // enabling any counter. Keep all other host control bits unchanged.
+        let host_pmcr = (original_pmcr & !64) | host_lc;
+        // SAFETY: the test still owns this CPU's IRQ-excluded PMU domain;
+        // PMCR readback has RAZ reset bits, so none is replayed by this write.
+        unsafe {
+            core::arch::asm!("msr pmcr_el0, {}", "isb", in(reg) host_pmcr, options(nostack));
+        }
         // SAFETY: valid trusted EL1 code, CPU-owned vector and IRQ exclusion;
         // roots stay bare and the guest cannot reference host data memory.
         let exit = unsafe { enter_guest(&mut guest) };
         let restored_tls: u64;
+        let restored_pmcr: u64;
         let offset: u64;
         let compare: u64;
         let control: u64;
         unsafe {
             core::arch::asm!("msr esr_el2, xzr", options(nostack));
+            core::arch::asm!("mrs {}, pmcr_el0", out(reg) restored_pmcr, options(nostack));
             core::arch::asm!("mrs {}, tpidr_el0", out(reg) restored_tls, options(nostack));
             core::arch::asm!("mrs {}, cntvoff_el2", out(reg) offset, options(nostack));
             core::arch::asm!("mrs {}, cntv_cval_el0", out(reg) compare, options(nostack));
@@ -98,6 +123,17 @@ pub fn run() {
         assert_eq!(guest.context.gpr[1], previous);
         assert_eq!(guest.context.gpr[2], 0xabc);
         assert_eq!(guest.fp.regs[0] as u64, expected);
+        assert_eq!(restored_pmcr, host_pmcr, "guest PMCR leaked into host");
+        assert_eq!(
+            guest.context.gpr[3] & 64,
+            guest_before_lc,
+            "guest PMCR was not loaded"
+        );
+        assert_eq!(
+            guest.system.pmcr_el0 & 64,
+            guest_after_lc,
+            "guest PMCR was not saved"
+        );
         assert_eq!(restored_tls, tls);
         assert_eq!(registers::read_tpidr_el2(), anchor);
         assert_eq!(registers::read_sp_el0(), current);
@@ -108,17 +144,29 @@ pub fn run() {
         assert_eq!(guest.timer.compare, 0x999);
         assert!(!interrupt::irqs_enabled());
     }
+    let final_pmcr: u64;
     unsafe {
+        // SAFETY: no guest remains live and the test retains exclusive PMU
+        // ownership; restore the original control without reset commands.
+        core::arch::asm!("msr pmcr_el0, {}", "isb", in(reg) original_pmcr, options(nostack));
+        core::arch::asm!("mrs {}, pmcr_el0", out(reg) final_pmcr, options(nostack));
         core::arch::asm!("msr cntv_ctl_el0, xzr", "isb", options(nostack));
         core::arch::asm!("msr cntvoff_el2, {}", in(reg) original_offset, options(nostack));
         core::arch::asm!("msr cntv_cval_el0, {}", in(reg) original_compare, options(nostack));
         core::arch::asm!("msr cntv_ctl_el0, {}", "isb", in(reg) original_control, options(nostack));
         cpu.disable().unwrap();
     }
+    assert_eq!(
+        final_pmcr, original_pmcr,
+        "test did not restore original PMCR"
+    );
     if irq {
         interrupt::enable_irqs();
     }
     #[cfg(feature = "stage2-tlb")]
     stage2_tlb::run();
+    std::println!(
+        "CPU_GUEST_PMU_RESTORE entries=2 host_restored=1 guest_saved=1 original_restored=1"
+    );
     std::println!("CPU_GUEST_ENTRY_OK");
 }

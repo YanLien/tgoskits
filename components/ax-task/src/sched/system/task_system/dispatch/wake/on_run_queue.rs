@@ -147,6 +147,13 @@ impl TaskSystem {
                         context.producer,
                         &irq_owner,
                     );
+                    #[cfg(axtest)]
+                    crate::diagnostics::record_ready(
+                        core,
+                        target,
+                        crate::diagnostics::ReadyKind::OnRunQueueWake,
+                        on_cpu,
+                    );
                     run_queue.commit();
                     Some(())
                 }

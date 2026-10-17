@@ -28,6 +28,8 @@ mod architecture;
 pub mod boot;
 mod configured;
 mod control;
+#[cfg(all(feature = "axtest", target_arch = "aarch64"))]
+pub mod diagnostics;
 mod engine;
 mod error;
 mod guest_memory;

@@ -235,6 +235,13 @@ impl TaskSystem {
             context.producer,
             &irq_owner,
         );
+        #[cfg(axtest)]
+        crate::diagnostics::record_ready(
+            core,
+            target,
+            crate::diagnostics::ReadyKind::DirectWake,
+            false,
+        );
         run_queue.commit();
         if let Some(deadline) = local_runtime {
             // The outer task lock retains local IRQ exclusion after rq commit.
