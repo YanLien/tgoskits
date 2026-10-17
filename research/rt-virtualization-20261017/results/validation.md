@@ -6,7 +6,6 @@ Date: 2026-10-17 (Asia/Shanghai)
 
 - `cargo fmt --all -- --check`: passed.
 - `cargo xtask clippy --package axvm`: passed all 21 configured AxVM checks on the current branch.
-- `cargo xtask clippy --package axvm`: passed all 21 configured AxVM checks.
 - `python3 -m unittest discover -s virtualization/axvm/tests/analysis -p 'test_virq_*.py'`: 19 tests passed.
 - Archived A0 witness and throttling replays passed their independent analyzer checks; the witness traces remain separate from ordinary performance distributions.
 - `sha256sum -c research/rt-virtualization-20261017/raw/SHA256SUMS` from the repository root: all 19 archived raw files passed.
