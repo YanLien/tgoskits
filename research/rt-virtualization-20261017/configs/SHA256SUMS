@@ -13,3 +13,5 @@ a38c972f5a61ae0ff9ee408a8cb2e84d69ee0aaea08cd8618f36017abb813540  research/rt-vi
 ea9e4062c1f500b4b49c88a58405a7c0e23b29f4ddcf8cf020b22edcb3f01c35  research/rt-virtualization-20261017/configs/current-qemu-ppi-inherit-600.env
 289a1bb9d07726f0afefc28d1cfaf42f31370d2fe1be4c14ef747e1227cfff45  research/rt-virtualization-20261017/configs/current-qemu-ppi-bounded-600.env
 d28236385c976b62fcbb07b3ca3bb7b307147cec19c9406001e845425de8ec44  research/rt-virtualization-20261017/configs/true-board-run-template.json
+3817adf97af51e587c84196bd003bef2e1f924722a30408615c44cebe338ae28  research/rt-virtualization-20261017/configs/current-qemu-ppi-memory-cross-core-baseline-600.env
+061b15babb988efcc19e27942011ea5888a7759ae0e76cb74be5b51be04f0375  research/rt-virtualization-20261017/configs/current-qemu-ppi-memory-cross-core-off-600.env
