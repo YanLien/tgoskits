@@ -1,0 +1,160 @@
+{
+  "argv": [
+    "cargo",
+    "xtask",
+    "ktest",
+    "board",
+    "-p",
+    "axvm",
+    "--test",
+    "vcpu_runtime",
+    "-b",
+    "orangepi-5-plus",
+    "--config",
+    "virtualization/axvm/tests/vcpu-runtime/frequency/build-orangepi-5-plus.toml",
+    "--board-config",
+    "research-inputs/strict-native-v1/board.toml",
+    "--board-type",
+    "BallPick-Robot",
+    "--server",
+    "http://10.3.10.60",
+    "--port",
+    "2999"
+  ],
+  "cache_policy": {
+    "cargo_forbidden_roots": [
+      "config",
+      "config.toml",
+      "credentials",
+      "credentials.toml",
+      "target",
+      "rustup",
+      ".rustup"
+    ],
+    "cargo_runtime_files": {
+      ".global-cache": 16777216,
+      ".global-cache-journal": 16777216,
+      ".package-cache": 0,
+      ".package-cache-mutate": 0
+    },
+    "runtime_scope": "fixed Cargo bookkeeping only; snapshot mode/size/SHA before and after, Root exact approval binds the before snapshot; never build configuration or source inputs"
+  },
+  "cases": [
+    {
+      "environment": {
+        "VIRQ_IRQ_PRESSURE": "sgi",
+        "VIRQ_LINUX_PHASE_B": "1",
+        "VIRQ_LINUX_PHASE_OFFSET": "1"
+      },
+      "id": "AB1"
+    },
+    {
+      "environment": {
+        "VIRQ_IRQ_PRESSURE": "sgi",
+        "VIRQ_LINUX_PHASE_B": "1",
+        "VIRQ_LINUX_PHASE_OFFSET": "0"
+      },
+      "id": "AB0"
+    },
+    {
+      "environment": {
+        "VIRQ_IRQ_PRESSURE": "off",
+        "VIRQ_LINUX_PHASE_B": "0",
+        "VIRQ_LINUX_PHASE_OFFSET": "0"
+      },
+      "id": "0"
+    }
+  ],
+  "cleared_inherited": [
+    "VIRQ_*",
+    "ZEPHYR_BASE",
+    "CROSS_COMPILE",
+    "RUSTFLAGS",
+    "CARGO_ENCODED_RUSTFLAGS",
+    "ENCODED_RUSTFLAGS",
+    "QEMU*",
+    "GDB*"
+  ],
+  "environment": {
+    "AXBUILD_TARGET_DIR": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru",
+    "CARGO_HOME": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/cargo",
+    "CARGO_NET_OFFLINE": "true",
+    "CARGO_TARGET_DIR": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru",
+    "CCACHE_DIR": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/ccache",
+    "GIT_OPTIONAL_LOCKS": "0",
+    "HOME": "/home/yanlien",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PATH": "/home/yanlien/.cargo/bin:/usr/local/bin:/usr/bin:/bin",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "RUSTUP_HOME": "/home/yanlien/.rustup",
+    "RUST_LOG": "info,uboot_shell=debug",
+    "VIRQ_CACHE_DIR": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache",
+    "VIRQ_EXPLICIT_DTB": "1",
+    "VIRQ_FREQUENCY_REQUEST": "enabled",
+    "VIRQ_GIC_LAYOUT": "rk3588",
+    "VIRQ_HOST_LOAD": "linux_memory",
+    "VIRQ_IRQ_CONTEXT": "current_el",
+    "VIRQ_IRQ_PRESSURE_BURST": "2",
+    "VIRQ_IRQ_PRESSURE_PERIOD_US": "2000",
+    "VIRQ_IRQ_SERVICE": "off",
+    "VIRQ_LINUX_BASE_PROFILE": "registry-v0.0.14",
+    "VIRQ_LINUX_CC": "/usr/bin/aarch64-linux-gnu-gcc",
+    "VIRQ_LINUX_FENCES": "1",
+    "VIRQ_LINUX_HOST_CPU": "3",
+    "VIRQ_LINUX_INITRAMFS_BASE": "/home/yanlien/Program/hypervisor/tgoskits/target/research-assets/images/initramfs-aarch64-busybox.cpio.gz/initramfs-aarch64-busybox.cpio.gz",
+    "VIRQ_LINUX_KERNEL": "/home/yanlien/Program/hypervisor/tgoskits/target/research-assets/images/qemu-aarch64/linux/linux-qemu",
+    "VIRQ_LINUX_MEMORY_BYTES": "16777216",
+    "VIRQ_LINUX_MEMORY_EVERY": "1",
+    "VIRQ_LINUX_PHASE": "1",
+    "VIRQ_LINUX_PHASE_TEST_CLOCK": "0",
+    "VIRQ_PERIOD_US": "20000",
+    "VIRQ_RECORDING": "on",
+    "VIRQ_SAMPLES": "32",
+    "VIRQ_SERVICE_PLACEMENT": "cpu0",
+    "VIRQ_SOURCE": "physical_timer_ppi",
+    "VIRQ_TASK": "1",
+    "VIRQ_TASK_DEADLINE_US": "10000",
+    "VIRQ_TASK_ROUNDS": "4096",
+    "VIRQ_TASK_WAIT": "blocked",
+    "VIRQ_THERMAL_REQUEST": "enabled"
+  },
+  "environment_policy": "empty inherited environment; exact whitelist only; no secrets inherited or logged",
+  "execution_tools_root": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t",
+  "external_inputs": {
+    "/home/yanlien/Program/hypervisor/tgoskits/target/research-assets/images/initramfs-aarch64-busybox.cpio.gz/initramfs-aarch64-busybox.cpio.gz": {
+      "bytes": 19567536,
+      "mode": 436,
+      "sha256": "a6fe2ed7dace805e29b65c5dbee766e1c13449b162664faaf65f1775c630aa5b"
+    },
+    "/home/yanlien/Program/hypervisor/tgoskits/target/research-assets/images/qemu-aarch64/linux/linux-qemu": {
+      "bytes": 52558336,
+      "mode": 436,
+      "sha256": "c5403e99b9ae7a8c60c393fb2a97e637ded3e049179bb1b2f63cf6b94dd2a61a"
+    },
+    "/usr/bin/aarch64-linux-gnu-gcc": {
+      "bytes": 1723848,
+      "mode": 493,
+      "sha256": "cd90adc7801f4595267f61a5d25bd3a0c6beb2f9f1f107ab919a97a12972dc9a"
+    }
+  },
+  "limits": {
+    "board_seconds": 900,
+    "capture_seconds": 30,
+    "cleanup_seconds": 10,
+    "max_artifact_versions_per_path": 4,
+    "max_capture_bytes": 536870912,
+    "outer_seconds": 920
+  },
+  "normal702_sha256": "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb",
+  "primary_contract_sha256": "cfdee098b8a8a7427d2e125d5bfb75d448c1c9f3621d4a562f035350da4ada09",
+  "protected_controller_pid": 1666583,
+  "protected_original_session": 52334,
+  "repo_root": "/home/yanlien/Program/hypervisor/tgoskits",
+  "research_root": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017",
+  "schema_version": 1,
+  "scope": "offline candidate; no target authorization",
+  "source": "/tmp/crosspath-native-cache-v3-src-hr23qnrs",
+  "target": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru",
+  "tool_version_evidence": "inherited frozen versions; no fresh host/proc/version witness executed in Task1"
+}

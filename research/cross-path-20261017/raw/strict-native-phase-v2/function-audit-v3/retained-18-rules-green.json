@@ -1,0 +1,331 @@
+{
+  "auditor": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/audit.py",
+    "sha256": "35efe04deacc18de5556505b8567cabc988b1c85eefe6455cf3da1c2c4deb6c8"
+  },
+  "old_raw_reference": {
+    "bytes": 1723337,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v1/AB1/xtask.log",
+    "sha256": "c1e909ae2b747e178f2a6a82ebab719cea3a069a7e28ab2712841115f1adc5ec"
+  },
+  "trace_fixture": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/intensity-v3-b01-irq2x-0-32.log",
+    "sha256": "b7d63e456db20e93756a94f665734afbfb588a69610d24cfa85231bbcc2002f8"
+  },
+  "tests_run": 3,
+  "failures": 0,
+  "errors": 0,
+  "observations": [
+    {
+      "rule": "workload-readiness",
+      "source": {
+        "line": 1327,
+        "offset": 86057,
+        "bytes": 81,
+        "sha256": "ea81e12bdf485777ce2ad317500b4f01beefe17a501a4e522afad61459f2b131",
+        "marker": "LINUX_LOAD_READY",
+        "text": "LINUX_LOAD_READY version=3 guest_cpu=0 batch_iterations=8192 report_batches=256",
+        "prefix": ""
+      },
+      "original": "LINUX_LOAD_READY version=3 guest_cpu=0 batch_iterations=8192 report_batches=256\r\n",
+      "mutated": "LINUX_LOAD_READY version=2 guest_cpu=0 batch_iterations=8192 report_batches=256\r\n",
+      "rejected": true,
+      "scope": "local parser rule only; no normal end-to-end GREEN"
+    },
+    {
+      "rule": "memory-readiness",
+      "source": {
+        "line": 1328,
+        "offset": 86138,
+        "bytes": 90,
+        "sha256": "d7112af719b0849c070b431cc0fb07dfd6298459c3affa7b4f1521f362736dfd"
+      },
+      "original": "LINUX_MEMORY_READY version=1 working_set_bytes=16777216 every_batches=1 chunk_words=8192\r\n",
+      "mutated": "LINUX_MEMORY_READY version=1 working_set_bytes=16777216 every_batches=2 chunk_words=8192\r\n",
+      "rejected": true,
+      "scope": "local parser rule only; no normal end-to-end GREEN"
+    },
+    {
+      "rule": "progress-cpu-known-answer",
+      "source": {
+        "line": 1331,
+        "offset": 86452,
+        "bytes": 126,
+        "sha256": "c429ac12a1e209a06ff61b93d543ee6af76c2a64d9e8252f7736827593e29fb6",
+        "marker": "LINUX_LOAD_PROGRESS",
+        "text": "LINUX_LOAD_PROGRESS batches=256 checksum=17224921168723574785 guest_cpu=0 memory_batches=0 logical_bytes=0 memory_checksum=0",
+        "prefix": ""
+      },
+      "original": "LINUX_LOAD_PROGRESS batches=256 checksum=17224921168723574785 guest_cpu=0 memory_batches=0 logical_bytes=0 memory_checksum=0\r\n",
+      "mutated": "LINUX_LOAD_PROGRESS batches=256 checksum=0 guest_cpu=0 memory_batches=0 logical_bytes=0 memory_checksum=0\r\n",
+      "rejected": true,
+      "scope": "local parser rule only; no normal end-to-end GREEN"
+    },
+    {
+      "rule": "progress-guest-cpu",
+      "source": {
+        "line": 1331,
+        "offset": 86452,
+        "bytes": 126,
+        "sha256": "c429ac12a1e209a06ff61b93d543ee6af76c2a64d9e8252f7736827593e29fb6",
+        "marker": "LINUX_LOAD_PROGRESS",
+        "text": "LINUX_LOAD_PROGRESS batches=256 checksum=17224921168723574785 guest_cpu=0 memory_batches=0 logical_bytes=0 memory_checksum=0",
+        "prefix": ""
+      },
+      "original": "LINUX_LOAD_PROGRESS batches=256 checksum=17224921168723574785 guest_cpu=0 memory_batches=0 logical_bytes=0 memory_checksum=0\r\n",
+      "mutated": "LINUX_LOAD_PROGRESS batches=256 checksum=17224921168723574785 guest_cpu=1 memory_batches=0 logical_bytes=0 memory_checksum=0\r\n",
+      "rejected": true,
+      "scope": "local parser rule only; no normal end-to-end GREEN"
+    },
+    {
+      "rule": "progress-monotonic",
+      "source": {
+        "line": 1631,
+        "offset": 123171,
+        "bytes": 125,
+        "sha256": "84162acd650a66af794bff5f5e7100cce842012d8b28291ffcd4fc75bd27346e",
+        "marker": "LINUX_LOAD_PROGRESS",
+        "text": "LINUX_LOAD_PROGRESS batches=512 checksum=9443447076798070785 guest_cpu=0 memory_batches=0 logical_bytes=0 memory_checksum=0",
+        "prefix": ""
+      },
+      "original": "LINUX_LOAD_PROGRESS batches=512 checksum=9443447076798070785 guest_cpu=0 memory_batches=0 logical_bytes=0 memory_checksum=0\r\n",
+      "mutated": "LINUX_LOAD_PROGRESS batches=256 checksum=17224921168723574785 guest_cpu=0 memory_batches=0 logical_bytes=0 memory_checksum=0\r\n",
+      "rejected": true,
+      "scope": "local parser rule only; no normal end-to-end GREEN"
+    },
+    {
+      "rule": "progress-memory-before-DATA",
+      "source": {
+        "line": 1331,
+        "offset": 86452,
+        "bytes": 126,
+        "sha256": "c429ac12a1e209a06ff61b93d543ee6af76c2a64d9e8252f7736827593e29fb6",
+        "marker": "LINUX_LOAD_PROGRESS",
+        "text": "LINUX_LOAD_PROGRESS batches=256 checksum=17224921168723574785 guest_cpu=0 memory_batches=0 logical_bytes=0 memory_checksum=0",
+        "prefix": ""
+      },
+      "original": "LINUX_LOAD_PROGRESS batches=256 checksum=17224921168723574785 guest_cpu=0 memory_batches=0 logical_bytes=0 memory_checksum=0\r\n",
+      "mutated": "LINUX_LOAD_PROGRESS batches=256 checksum=17224921168723574785 guest_cpu=0 memory_batches=256 logical_bytes=33554432 memory_checksum=2199024304128\r\n",
+      "rejected": true,
+      "scope": "local parser rule only; no normal end-to-end GREEN"
+    },
+    {
+      "rule": "nonzero-errors",
+      "source": {
+        "line": 4898,
+        "offset": 1029986,
+        "bytes": 195,
+        "sha256": "19342273953cfbcfd496c9cb15fbd95ec33d2f4fad51414eaf7c46ba91336aec",
+        "marker": "VIRQ_IRQ_PRESSURE_SUMMARY",
+        "text": "VIRQ_IRQ_PRESSURE_SUMMARY policy=fair sent=2746 handled=2746 errors=0 start_count=2 end_count=2746 window_start_ticks=1238423767 window_end_ticks=1304277338 skipped_periods=0 joined=1 retired=1",
+        "prefix": ""
+      },
+      "original": "VIRQ_IRQ_PRESSURE_SUMMARY policy=fair sent=2746 handled=2746 errors=0 start_count=2 end_count=2746 window_start_ticks=1238423767 window_end_ticks=1304277338 skipped_periods=0 joined=1 retired=1\r\n",
+      "mutated": "VIRQ_IRQ_PRESSURE_SUMMARY policy=fair sent=2746 handled=2746 errors=1 start_count=2 end_count=2746 window_start_ticks=1238423767 window_end_ticks=1304277338 skipped_periods=0 joined=1 retired=1\r\n",
+      "rejected": true,
+      "scope": "local parser rule only; no normal end-to-end GREEN"
+    },
+    {
+      "rule": "known-failure-marker",
+      "source": {
+        "line": 4898,
+        "offset": 1029986,
+        "bytes": 195,
+        "sha256": "19342273953cfbcfd496c9cb15fbd95ec33d2f4fad51414eaf7c46ba91336aec",
+        "marker": "VIRQ_IRQ_PRESSURE_SUMMARY",
+        "text": "VIRQ_IRQ_PRESSURE_SUMMARY policy=fair sent=2746 handled=2746 errors=0 start_count=2 end_count=2746 window_start_ticks=1238423767 window_end_ticks=1304277338 skipped_periods=0 joined=1 retired=1",
+        "prefix": ""
+      },
+      "original": "VIRQ_IRQ_PRESSURE_SUMMARY policy=fair sent=2746 handled=2746 errors=0 start_count=2 end_count=2746 window_start_ticks=1238423767 window_end_ticks=1304277338 skipped_periods=0 joined=1 retired=1\r\n",
+      "mutated": "VIRQ_IRQ_PRESSURE_FAILURE policy=fair sent=2746 handled=2746 errors=0 start_count=2 end_count=2746 window_start_ticks=1238423767 window_end_ticks=1304277338 skipped_periods=0 joined=1 retired=1\r\n",
+      "rejected": true,
+      "scope": "local parser rule only; no normal end-to-end GREEN"
+    },
+    {
+      "rule": "unclassified-error-candidate",
+      "source": {
+        "line": 4898,
+        "offset": 1029986,
+        "bytes": 195,
+        "sha256": "19342273953cfbcfd496c9cb15fbd95ec33d2f4fad51414eaf7c46ba91336aec",
+        "marker": "VIRQ_IRQ_PRESSURE_SUMMARY",
+        "text": "VIRQ_IRQ_PRESSURE_SUMMARY policy=fair sent=2746 handled=2746 errors=0 start_count=2 end_count=2746 window_start_ticks=1238423767 window_end_ticks=1304277338 skipped_periods=0 joined=1 retired=1",
+        "prefix": ""
+      },
+      "original": "VIRQ_IRQ_PRESSURE_SUMMARY policy=fair sent=2746 handled=2746 errors=0 start_count=2 end_count=2746 window_start_ticks=1238423767 window_end_ticks=1304277338 skipped_periods=0 joined=1 retired=1\r\n",
+      "mutated": "NOTICE failure policy=fair sent=2746 handled=2746 errors=0 start_count=2 end_count=2746 window_start_ticks=1238423767 window_end_ticks=1304277338 skipped_periods=0 joined=1 retired=1\r\n",
+      "rejected": true,
+      "scope": "local parser rule only; no normal end-to-end GREEN"
+    },
+    {
+      "rule": "truncated-protocol-prefix",
+      "source": {
+        "line": 1638,
+        "offset": 124170,
+        "bytes": 2500,
+        "sha256": "047779e8ab08a2ec06e5535bd0786ad57111fd4f53c12a231905af4236e99904",
+        "marker": "LINUX_PHASE_DATA",
+        "text": "LINUX_PHASE_DATA version=2 encoding=table36 cookie=1 rows=35 payload_bytes=2393 crc32=3642088949 payload=H,2,1,z;S,0,16luh8,16luit,g93,1wfbfrcagxxj5,0,0,0,0,0;S,1,1fr2bw,1fr3yi,kv0,7yu0aj9mh5hd,74,s27uakg0,9zlds,9zlds,0;T,0,16qznw,16r0ja,16rrr3,8,gbv,2hp5p0w07v7r5,8,zikq9s,b8jk,b8jk,0;T,1,171a18,171bgr,1722nz,8,gh2,vld4i1hntypt,g,3y29iio,mh34,mh34,0;T,2,17bkek,17bkpr,17cbx6,8,gm8,1n6ak4qplfny9,o,8vn2cqo,xpmo,xpmo,0;T,3,17lurw,17lvso,17mmyq,8,grf,hkmypcsnbjsx,w,fs8z8xs,18y68,18y68,0;T,4,17w558,17w6qq,17wxwl,8,gwm,1b9egti37oni9,14,onw0740,1k6ps,1k6ps,0;T,5,186fik,186fx0,18772h,8,h1s,3rceyqka6xt6p,1c,zik579c,1vf9c,1vf9c,0;T,6,18gpvw,18gqqz,18hhwu,8,h6z,nmftlrxs6xoh,1k,1cc9e9ds,26nsw,26nsw,0;T,7,18r098,18r1o9,18rsub,8,hc6,3ruok254bqmm9,1s,1r4zrdhc,2hwcg,2hwcg,0;T,8,191amk,191b24,192286,8,hhc,2mugnlijda801,20,27wr8jk0,2t4w0,2t4w0,0;T,9,19bkzw,19bm67,19cdbv,8,hmj,1bwh5hm0hhaf5,28,2qnjtrls,34dfk,34dfk,0;T,a,19lvd8,19lx1c,19mo6t,8,hrq,2p9q8yczq7cap,2g,3bddj1mo,3flz4,3flz4,0;T,b,19w5qk,19w671,19wxd3,8,hww,hvqji4849a81,2o,3y28cdmo,3quio,3quio,0;T,c,1a6g3w,1a6h44,1a789s,8,i23,ugnu4blm6j29,2w,4mq49rls,42328,42328,0;T,d,1agqh8,1agrn0,1ahiso,8,i79,2kxakgr4rbfup,34,5dd1b7k0,4dbls,4dbls,0;T,e,1ar0uk,1ar11g,1ars7i,8,icf,3la2svf5bfw8x,3c,65yzgphc,4ok5c,4ok5c,0;T,f,1b1b7w,1b1bwl,1b2322,8,ihm,2i8dqxb8i64u9,3k,70jyq9ds,4zsow,4zsow,0;T,g,1bbll8,1bbmpz,1bcdvn,8,imt,160joyfe91u69,3s,7x3z3v9c,5b18g,5b18g,0;T,h,1blvyk,1blvyz,1bmn4n,8,irz,hitcpgoeyosh,40,8vn0lj40,5m9s0,5m9s0,0;T,i,1bw6bw,1bw6r7,1bwxwo,8,ix6,1is9c1zjp3e9t,48,9w5378xs,5xibk,5xibk,0;T,j,1c6gp8,1c6hr0,1c78wo,8,j2d,1ocmk513b7c3l,4g,aym6x0qo,68qv4,68qv4,0;T,k,1cgr2k,1cgsoa,1chjtr,8,j7k,2hx6fcx1h9a0x,4o,c32bquio,6jzeo,6jzeo,0;T,l,1cr1fw,1cr1s8,1crsxw,8,jcq,xvydxtsgnfup,4w,d9hhoq9s,6v7y8,6v7y8,0;T,m,1d1bt8,1d1cpb,1d23us,8,jhx,2fzg1s0ssruo1,54,ehvoqo00,76ghs,76ghs,0;T,n,1dbm6k,1dbnm0,1dcerv,8,jn4,30iu3939xgwzl,5c,fs8wwnpc,7hp1c,7hp1c,0;T,o,1dlwjw,1dlwyi,1dmo46,8,jsa,2zqrtdcpsmnep,5k,h4l66pds,7sxkw,7sxkw,0;T,p,1dw6x8,1dw7vs,1dwz19,8,jxh,1syx1mv3krawx,5s,iiwgkt1c,8464g,8464g,0;T,q,1e6hak,1e6iq5,1e79w0,8,k2o,1z82f2c6ivq4h,60,jz6s2yo0,8feo0,8feo0,0;T,r,1egrnw,1egryr,1ehj4m,8,k7u,2498h2yqf8h6p,68,lhg4p69s,8qn7k,8qn7k,0;T,s,1er218,1er2sx,1ertys,8,kd1,1zicgi2qmy2o1,6g,n1oiffuo,91vr4,91vr4,0;T,t,1f1cek,1f1dwm,1f252h,8,ki8,1m86bl6i9a39d,6o,onvx9reo,9d4ao,9d4ao,0;T,u,1fbmrw,1fbn4g,1fcea4,8,kne,jmn9v6lc9b0h,6w,qc2d84xs,9ocu8,9ocu8,0;T,v,1flx58,1flxzz,1fmp6f,8,ksl,1bnn654auc2yp,74,s27uakg0,9zlds,9zlds,0;R,w,1,1,0,4lx,957uo,959fp,0,1l1",
+        "prefix": ""
+      },
+      "original": "LINUX_PHASE_DATA version=2 encoding=table36 cookie=1 rows=35 payload_bytes=2393 crc32=3642088949 payload=H,2,1,z;S,0,16luh8,16luit,g93,1wfbfrcagxxj5,0,0,0,0,0;S,1,1fr2bw,1fr3yi,kv0,7yu0aj9mh5hd,74,s27uakg0,9zlds,9zlds,0;T,0,16qznw,16r0ja,16rrr3,8,gbv,2hp5p0w07v7r5,8,zikq9s,b8jk,b8jk,0;T,1,171a18,171bgr,1722nz,8,gh2,vld4i1hntypt,g,3y29iio,mh34,mh34,0;T,2,17bkek,17bkpr,17cbx6,8,gm8,1n6ak4qplfny9,o,8vn2cqo,xpmo,xpmo,0;T,3,17lurw,17lvso,17mmyq,8,grf,hkmypcsnbjsx,w,fs8z8xs,18y68,18y68,0;T,4,17w558,17w6qq,17wxwl,8,gwm,1b9egti37oni9,14,onw0740,1k6ps,1k6ps,0;T,5,186fik,186fx0,18772h,8,h1s,3rceyqka6xt6p,1c,zik579c,1vf9c,1vf9c,0;T,6,18gpvw,18gqqz,18hhwu,8,h6z,nmftlrxs6xoh,1k,1cc9e9ds,26nsw,26nsw,0;T,7,18r098,18r1o9,18rsub,8,hc6,3ruok254bqmm9,1s,1r4zrdhc,2hwcg,2hwcg,0;T,8,191amk,191b24,192286,8,hhc,2mugnlijda801,20,27wr8jk0,2t4w0,2t4w0,0;T,9,19bkzw,19bm67,19cdbv,8,hmj,1bwh5hm0hhaf5,28,2qnjtrls,34dfk,34dfk,0;T,a,19lvd8,19lx1c,19mo6t,8,hrq,2p9q8yczq7cap,2g,3bddj1mo,3flz4,3flz4,0;T,b,19w5qk,19w671,19wxd3,8,hww,hvqji4849a81,2o,3y28cdmo,3quio,3quio,0;T,c,1a6g3w,1a6h44,1a789s,8,i23,ugnu4blm6j29,2w,4mq49rls,42328,42328,0;T,d,1agqh8,1agrn0,1ahiso,8,i79,2kxakgr4rbfup,34,5dd1b7k0,4dbls,4dbls,0;T,e,1ar0uk,1ar11g,1ars7i,8,icf,3la2svf5bfw8x,3c,65yzgphc,4ok5c,4ok5c,0;T,f,1b1b7w,1b1bwl,1b2322,8,ihm,2i8dqxb8i64u9,3k,70jyq9ds,4zsow,4zsow,0;T,g,1bbll8,1bbmpz,1bcdvn,8,imt,160joyfe91u69,3s,7x3z3v9c,5b18g,5b18g,0;T,h,1blvyk,1blvyz,1bmn4n,8,irz,hitcpgoeyosh,40,8vn0lj40,5m9s0,5m9s0,0;T,i,1bw6bw,1bw6r7,1bwxwo,8,ix6,1is9c1zjp3e9t,48,9w5378xs,5xibk,5xibk,0;T,j,1c6gp8,1c6hr0,1c78wo,8,j2d,1ocmk513b7c3l,4g,aym6x0qo,68qv4,68qv4,0;T,k,1cgr2k,1cgsoa,1chjtr,8,j7k,2hx6fcx1h9a0x,4o,c32bquio,6jzeo,6jzeo,0;T,l,1cr1fw,1cr1s8,1crsxw,8,jcq,xvydxtsgnfup,4w,d9hhoq9s,6v7y8,6v7y8,0;T,m,1d1bt8,1d1cpb,1d23us,8,jhx,2fzg1s0ssruo1,54,ehvoqo00,76ghs,76ghs,0;T,n,1dbm6k,1dbnm0,1dcerv,8,jn4,30iu3939xgwzl,5c,fs8wwnpc,7hp1c,7hp1c,0;T,o,1dlwjw,1dlwyi,1dmo46,8,jsa,2zqrtdcpsmnep,5k,h4l66pds,7sxkw,7sxkw,0;T,p,1dw6x8,1dw7vs,1dwz19,8,jxh,1syx1mv3krawx,5s,iiwgkt1c,8464g,8464g,0;T,q,1e6hak,1e6iq5,1e79w0,8,k2o,1z82f2c6ivq4h,60,jz6s2yo0,8feo0,8feo0,0;T,r,1egrnw,1egryr,1ehj4m,8,k7u,2498h2yqf8h6p,68,lhg4p69s,8qn7k,8qn7k,0;T,s,1er218,1er2sx,1ertys,8,kd1,1zicgi2qmy2o1,6g,n1oiffuo,91vr4,91vr4,0;T,t,1f1cek,1f1dwm,1f252h,8,ki8,1m86bl6i9a39d,6o,onvx9reo,9d4ao,9d4ao,0;T,u,1fbmrw,1fbn4g,1fcea4,8,kne,jmn9v6lc9b0h,6w,qc2d84xs,9ocu8,9ocu8,0;T,v,1flx58,1flxzz,1fmp6f,8,ksl,1bnn654auc2yp,74,s27uakg0,9zlds,9zlds,0;R,w,1,1,0,4lx,957uo,959fp,0,1l1\r\n",
+      "mutated": "LINUX_PHA",
+      "rejected": true,
+      "scope": "local parser rule only; no normal end-to-end GREEN"
+    },
+    {
+      "rule": "runtime-kind-missing",
+      "source": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/intensity-v3-b01-irq2x-0-32.log",
+        "sha256": "b7d63e456db20e93756a94f665734afbfb588a69610d24cfa85231bbcc2002f8",
+        "span": {
+          "line": 1494,
+          "offset": 299299,
+          "bytes": 87,
+          "sha256": "528963d97d6b1a218f2ab25c950db8ec826057f5467422f66c1fb7fe29c17312",
+          "marker": "VIRQ_RUNTIME",
+          "text": "VIRQ_RUNTIME cpu=0 sequence=0 ticks=1061998667 kind=Marker thread=0 value0=0 value1=0",
+          "prefix": ""
+        }
+      },
+      "original": "VIRQ_RUNTIME cpu=0 sequence=0 ticks=1061998667 kind=Marker thread=0 value0=0 value1=0",
+      "mutated": "VIRQ_RUNTIME cpu=0 sequence=0 ticks=1061998667 thread=0 value0=0 value1=0",
+      "rejected": true,
+      "scope": "local parser rule only; no normal end-to-end GREEN"
+    },
+    {
+      "rule": "runtime-kind-closed-set",
+      "source": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/intensity-v3-b01-irq2x-0-32.log",
+        "sha256": "b7d63e456db20e93756a94f665734afbfb588a69610d24cfa85231bbcc2002f8",
+        "span": {
+          "line": 1494,
+          "offset": 299299,
+          "bytes": 87,
+          "sha256": "528963d97d6b1a218f2ab25c950db8ec826057f5467422f66c1fb7fe29c17312",
+          "marker": "VIRQ_RUNTIME",
+          "text": "VIRQ_RUNTIME cpu=0 sequence=0 ticks=1061998667 kind=Marker thread=0 value0=0 value1=0",
+          "prefix": ""
+        }
+      },
+      "original": "VIRQ_RUNTIME cpu=0 sequence=0 ticks=1061998667 kind=Marker thread=0 value0=0 value1=0",
+      "mutated": "VIRQ_RUNTIME cpu=0 sequence=0 ticks=1061998667 kind=Unknown thread=0 value0=0 value1=0",
+      "rejected": true,
+      "scope": "local parser rule only; no normal end-to-end GREEN"
+    },
+    {
+      "rule": "runtime-field-set",
+      "source": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/intensity-v3-b01-irq2x-0-32.log",
+        "sha256": "b7d63e456db20e93756a94f665734afbfb588a69610d24cfa85231bbcc2002f8",
+        "span": {
+          "line": 1494,
+          "offset": 299299,
+          "bytes": 87,
+          "sha256": "528963d97d6b1a218f2ab25c950db8ec826057f5467422f66c1fb7fe29c17312",
+          "marker": "VIRQ_RUNTIME",
+          "text": "VIRQ_RUNTIME cpu=0 sequence=0 ticks=1061998667 kind=Marker thread=0 value0=0 value1=0",
+          "prefix": ""
+        }
+      },
+      "original": "VIRQ_RUNTIME cpu=0 sequence=0 ticks=1061998667 kind=Marker thread=0 value0=0 value1=0",
+      "mutated": "VIRQ_RUNTIME cpu=0 sequence=0 ticks=1061998667 kind=Marker thread=0 value0=0 value1=0 ignored=1",
+      "rejected": true,
+      "scope": "local parser rule only; no normal end-to-end GREEN"
+    },
+    {
+      "rule": "runtime-intid",
+      "source": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/intensity-v3-b01-irq2x-0-32.log",
+        "sha256": "b7d63e456db20e93756a94f665734afbfb588a69610d24cfa85231bbcc2002f8",
+        "span": {
+          "line": 3130,
+          "offset": 473670,
+          "bytes": 97,
+          "sha256": "7104c61e2aec451969d3f814ff063995c83458f83efa5d5bdb8e9d87d8da51ed",
+          "marker": "VIRQ_RUNTIME",
+          "text": "VIRQ_RUNTIME cpu=0 sequence=1636 ticks=1167499405 kind=HostIrqEntry thread=0 value0=30 value1=1",
+          "prefix": ""
+        }
+      },
+      "original": "VIRQ_RUNTIME cpu=0 sequence=1636 ticks=1167499405 kind=HostIrqEntry thread=0 value0=30 value1=1",
+      "mutated": "VIRQ_RUNTIME cpu=0 sequence=1636 ticks=1167499405 kind=HostIrqEntry thread=0 value0=31 value1=1",
+      "rejected": true,
+      "scope": "local parser rule only; no normal end-to-end GREEN"
+    },
+    {
+      "rule": "runtime-context",
+      "source": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/intensity-v3-b01-irq2x-0-32.log",
+        "sha256": "b7d63e456db20e93756a94f665734afbfb588a69610d24cfa85231bbcc2002f8",
+        "span": {
+          "line": 3130,
+          "offset": 473670,
+          "bytes": 97,
+          "sha256": "7104c61e2aec451969d3f814ff063995c83458f83efa5d5bdb8e9d87d8da51ed",
+          "marker": "VIRQ_RUNTIME",
+          "text": "VIRQ_RUNTIME cpu=0 sequence=1636 ticks=1167499405 kind=HostIrqEntry thread=0 value0=30 value1=1",
+          "prefix": ""
+        }
+      },
+      "original": "VIRQ_RUNTIME cpu=0 sequence=1636 ticks=1167499405 kind=HostIrqEntry thread=0 value0=30 value1=1",
+      "mutated": "VIRQ_RUNTIME cpu=0 sequence=1636 ticks=1167499405 kind=HostIrqEntry thread=0 value0=30 value1=2",
+      "rejected": true,
+      "scope": "local parser rule only; no normal end-to-end GREEN"
+    },
+    {
+      "rule": "runtime-irq-cpu",
+      "source": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/intensity-v3-b01-irq2x-0-32.log",
+        "sha256": "b7d63e456db20e93756a94f665734afbfb588a69610d24cfa85231bbcc2002f8",
+        "span": {
+          "line": 3130,
+          "offset": 473670,
+          "bytes": 97,
+          "sha256": "7104c61e2aec451969d3f814ff063995c83458f83efa5d5bdb8e9d87d8da51ed",
+          "marker": "VIRQ_RUNTIME",
+          "text": "VIRQ_RUNTIME cpu=0 sequence=1636 ticks=1167499405 kind=HostIrqEntry thread=0 value0=30 value1=1",
+          "prefix": ""
+        }
+      },
+      "original": "VIRQ_RUNTIME cpu=0 sequence=1636 ticks=1167499405 kind=HostIrqEntry thread=0 value0=30 value1=1",
+      "mutated": "VIRQ_RUNTIME cpu=1 sequence=1636 ticks=1167499405 kind=HostIrqEntry thread=0 value0=30 value1=1",
+      "rejected": true,
+      "scope": "local parser rule only; no normal end-to-end GREEN"
+    },
+    {
+      "rule": "arm-intid",
+      "source": {
+        "line": 1586,
+        "offset": 119719,
+        "bytes": 76,
+        "sha256": "63434051488823524693c88c69246a8eee4a498ce4e0f535ef19a229dc455261",
+        "marker": "VIRQ_PHYSICAL_ARM",
+        "text": "VIRQ_PHYSICAL_ARM policy=fair sample=1 due_ticks=1240828271 intid=30 cpu=0",
+        "prefix": ""
+      },
+      "original": "VIRQ_PHYSICAL_ARM policy=fair sample=1 due_ticks=1240828271 intid=30 cpu=0\r\n",
+      "mutated": "VIRQ_PHYSICAL_ARM policy=fair sample=1 due_ticks=1240828271 intid=31 cpu=0\r\n",
+      "rejected": true,
+      "scope": "local parser rule only; no normal end-to-end GREEN"
+    },
+    {
+      "rule": "arm-cpu",
+      "source": {
+        "line": 1586,
+        "offset": 119719,
+        "bytes": 76,
+        "sha256": "63434051488823524693c88c69246a8eee4a498ce4e0f535ef19a229dc455261",
+        "marker": "VIRQ_PHYSICAL_ARM",
+        "text": "VIRQ_PHYSICAL_ARM policy=fair sample=1 due_ticks=1240828271 intid=30 cpu=0",
+        "prefix": ""
+      },
+      "original": "VIRQ_PHYSICAL_ARM policy=fair sample=1 due_ticks=1240828271 intid=30 cpu=0\r\n",
+      "mutated": "VIRQ_PHYSICAL_ARM policy=fair sample=1 due_ticks=1240828271 intid=30 cpu=1\r\n",
+      "rejected": true,
+      "scope": "local parser rule only; no normal end-to-end GREEN"
+    }
+  ],
+  "normal_end_to_end_GREEN": false,
+  "scope": "actual parser rule regressions only; no normal verdict or successful Guest/Trace constructed"
+}

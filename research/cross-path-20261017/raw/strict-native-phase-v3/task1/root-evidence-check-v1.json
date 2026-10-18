@@ -1,0 +1,15 @@
+{
+  "Joint": false,
+  "M2": false,
+  "all_SHA_size_mode_match": true,
+  "archive_members": 108,
+  "archive_path_safety_and_unique_members": true,
+  "freeze_sha256": "0bf9ff1cbc154583c60c6dd34688c9b498b6f63b0ef8014d1dbcec04f7ed28e8",
+  "frozen_members": 107,
+  "goal_complete": false,
+  "indexed_evidence_count": 83,
+  "normal_Host_proven": false,
+  "observed_utc": "2026-10-18T12:22:55.583087+00:00",
+  "scope": "Root read-only exact evidence/frozen tools/archive consistency; no runtime gate or hardware",
+  "task1_report_sha256": "e1ce19382c35cc1c7c791bf618b07c7ea2840aa6a284efebf1d7da44038a9e59"
+}

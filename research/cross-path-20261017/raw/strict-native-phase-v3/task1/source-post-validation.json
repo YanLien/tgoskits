@@ -1,0 +1,14 @@
+{
+  "Cargo.lock": {
+    "bytes": 226383,
+    "mode": 436,
+    "sha256": "a0be52dac049ec52fe3bea67243cca4fd3bbbd992212b0eb8b078a054e4292fe"
+  },
+  "Rust_validation": "inherited actual v2 receipts; not rerun in v3",
+  "all_source_bytes_modes_equal_parent": true,
+  "changed_source_members": [],
+  "ordinary_files": 9642,
+  "ordinary_manifest_sha256": "f4bd9bb6dadd056e35faa2b3243a1be410a588f531f6bceb7d71c89e520e3c86",
+  "source702_count": 702,
+  "source702_manifest_sha256": "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb"
+}

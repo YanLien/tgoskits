@@ -1,0 +1,303 @@
+{
+  "accepted_generated_cache": {
+    "zephyr/.cache/ToolchainCapabilityDatabase/05da2205348003dfe5271c28d712af9f": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/062368b451f5487e8f003151eb892d7a": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/06d2b33cac6c0533391e042a4174648f": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/09af45f48e451cf73f915508269d5499": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/0bea09c476ad82c66b9ffc8907a7bd69": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/0d110fcceba91841099851c43f2352ba": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/0fb844a6a025b9db9dc6251eee3592b2": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/1351a32f6aa485044dd889d92cd9fe1e": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/1552eb2ef22255c2194a00eb6756e140": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/1ad121159468e1b0bd3edf54fd30b7d4": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/218093d45e2aba526a238e0b542dc3c8": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/331b9aff03a086914a3c4d4430ce67f7": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/3cc7bd857655417c36f7357c98eac733": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/40e5493622ebc5c752f82b54aebfb51d": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/46c0d59b77acca70b463dc272f983003": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/4f17dceca1a22f70cd4b1554f9917fdf": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/57e15a50936cb46e8b0275d8655e67cb": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/6eb57c77bceefeb22f40b8e615be2acd": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/724115d81e1332a7b5b067932e01464a": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/735062bedb82c56356a8f83758bdbefe": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/741fe11b5405c43f6a3ebb7288a2740f": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/74e315abf546d1821098e5f043e181e5": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/75517c064ac1a593543297f1cdcd12f0": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/7b465690583d70789236b11d0b349f40": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/8298b16b3d3e56721f86977a8f7073ce": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/86e458ea2a1da28c4f45b2341622b59d": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/89d31106475273df497844fbbf034e41": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/8de8b0ecb75855366d48273f7cd3eb4a": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/95310eb1961fe5be329d791f9c8c27b2": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/961e5d49281ab641c510590e7bfba008": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/98e3b4325af2ec75c924da2b944e25ed": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/a4de79b844bcb958c2a66328f2ee7df5": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/a5ff6000ffd32b791914c113d3cb3daa": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/aaede064668d6ae670a682e66ada8d95": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/af3d03d9b2a287af3104543cd4a67421": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/b9a9ea0255cda86a922e02d4ae95039b": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/baf76ec8bfd784806f375f13935d783b": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/cb599e11f2efc9d9336b59e2874d30ec": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/d82a0c5f2bbd62ab80a47a875070108a": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/de96e7696d80bb7aed9309efdc044999": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/e53acb39fe8c5f560b4763c4551e3363": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/e72a08a8e0e1c33a872c0f52796ffff2": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/f03e9b13eb339058b22abaab12f2f4f4": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/f5b6f37c9b05eae2b2108728709f0c0c": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/fac8681c5918f6834c6f39718735d843": {
+      "bytes": 1,
+      "mode": 436,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "zephyr/.cache/ToolchainCapabilityDatabase/log.txt": {
+      "bytes": 53100,
+      "mode": 436,
+      "sha256": "fc299dd97eb043daa14b3f38f9f4f153ffd8dd5a01be4202a97f72c179339a76"
+    }
+  },
+  "candidate_manifest": {
+    "bytes": 10242769,
+    "mode": 436,
+    "sha256": "a85b5b610617777761be40d469bc507c2895e287635bf21c57c6471242d4a3d6"
+  },
+  "changed_files": [
+    "venv/bin/activate",
+    "venv/bin/activate.csh",
+    "venv/bin/activate.fish",
+    "venv/bin/ccmake",
+    "venv/bin/cmake",
+    "venv/bin/cpack",
+    "venv/bin/ctest",
+    "venv/bin/pip",
+    "venv/bin/pip3",
+    "venv/bin/pip3.12",
+    "venv/bin/pykwalify",
+    "venv/bin/readelf.py",
+    "venv/pyvenv.cfg"
+  ],
+  "copy_method": "shutil.copytree(symlinks=True), directory mode copystat; verified allowed members only",
+  "directories_manifest": {
+    "bytes": 2166162,
+    "mode": 436,
+    "sha256": "dca2a114c1ec0241196d7d7e2163504239076f283ec034e8d39f5e97bc8e738e"
+  },
+  "downloads": false,
+  "generated_cache_authorization": {
+    "accepted_added_count": 45,
+    "accepted_existing_changed": [
+      "zephyr/.cache/ToolchainCapabilityDatabase/log.txt"
+    ],
+    "decision": "exact generated-cache delta accepted before final freeze after Root precise audit and independent PASS",
+    "no_runtime_policy_change": true,
+    "production_prepare_reexecuted": false,
+    "references": [
+      {
+        "path": "design/phase2-native-cache-topology-v3-generated-cache-addendum-v1.md",
+        "sha256": "cae498e3864857a19282d1d3238367e1ba84bc1883b74d85831dfed7c5995a07"
+      },
+      {
+        "path": "results/strict-native-cache-v3-generated-cache-addendum-review-v1.json",
+        "sha256": "7a54b78c549e79c94f2d007cabb6eac4d9f143b41d2dbd1f8104cbee3e9477c2"
+      },
+      {
+        "path": "raw/strict-native-phase-v3/task1/post-prepare-unexpected-zephyr-cache.json",
+        "sha256": "ed18aef34492553ded7763856eed42fdd4cb488706f75823fd4129da9d849aec"
+      },
+      {
+        "path": "raw/strict-native-phase-v3/task1/zephyr-capability-cache-cause.json",
+        "sha256": "b863d65a1e58c8876f75a6554ad9591992edee5ba74cacc5e8fad53959bb434c"
+      }
+    ]
+  },
+  "host_prepare_actual_wait": 0,
+  "parent_manifest": {
+    "bytes": 10233724,
+    "mode": 436,
+    "sha256": "bca20fa858c47ad366fe02531b24f469c5ec963940798127c8c273437014590d"
+  },
+  "private": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache",
+  "restored_empty_git_directories": [
+    "branches",
+    "objects/info",
+    "refs",
+    "refs/heads",
+    "refs/tags"
+  ],
+  "source": "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache"
+}

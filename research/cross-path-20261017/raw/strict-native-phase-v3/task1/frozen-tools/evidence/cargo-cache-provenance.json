@@ -1,0 +1,18 @@
+{
+  "all_immutable_equal_parent": true,
+  "candidate_runtime_after_prepare": {
+    "bytes": 437,
+    "mode": 436,
+    "sha256": "d1d017aed13f66174bed39315a91363b635fab369bec339ae84b7381b56a3e6c"
+  },
+  "downloads": false,
+  "new_credentials_or_config": false,
+  "parent_runtime_at_copy": {
+    "bytes": 437,
+    "mode": 436,
+    "sha256": "68a3767e3e2319b7929eb09c3aca6c8941d1f5b62a53e09651db089141758f2e"
+  },
+  "private": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/cargo",
+  "runtime_not_immutable": true,
+  "source": "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/cargo"
+}

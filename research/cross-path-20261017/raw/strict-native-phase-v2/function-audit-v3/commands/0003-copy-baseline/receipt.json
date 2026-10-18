@@ -1,0 +1,31 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "-c",
+    "from pathlib import Path;import json,hashlib;b=Path(\"research/cross-path-20261017/raw/strict-native-phase-v2\");src=b/\"function-audit-v2\";dst=b/\"function-audit-v3\";rows={};\nfor name in [\"audit.py\",\"source-identities.json\",\"test_audit.py\",\"test_review_rules.py\"]:\n raw=(src/name).read_bytes()\n if name==\"audit.py\":assert hashlib.sha256(raw).hexdigest()==\"1e4f19515aa9bc285e1201a85378a166f7b7a7805067ab4b4f6032fa1ad0a22b\"\n with (dst/name).open(\"xb\") as out:out.write(raw)\n rows[name]={\"path\":str((src/name).resolve()),\"bytes\":len(raw),\"sha256\":hashlib.sha256(raw).hexdigest()}\nwith (dst/\"baseline-copy.json\").open(\"x\") as out:out.write(json.dumps(rows,indent=2)+\"\\n\")\nprint(json.dumps(rows,indent=2))"
+  ],
+  "env": {
+    "PATH": "/usr/bin:/bin",
+    "LANG": "C.UTF-8",
+    "TZ": "UTC",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "cwd": "/home/yanlien/Program/hypervisor/tgoskits",
+  "started_ns": 1792325547606476286,
+  "forced_stop": false,
+  "pid": 3,
+  "wait_returncode": 0,
+  "returncode": 0,
+  "ended_ns": 1792325547653926963,
+  "stdout": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/commands/0003-copy-baseline/stdout",
+    "size": 1111,
+    "sha256": "aadaf5c23e8daf3ba29586860b338b82e49047f5ddcf286cf61712fd9f290d98"
+  },
+  "stderr": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/commands/0003-copy-baseline/stderr",
+    "size": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

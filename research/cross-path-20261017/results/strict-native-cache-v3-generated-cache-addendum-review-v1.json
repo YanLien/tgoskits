@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "review_kind": "independent_targeted_addendum_review",
+  "decision": "PASS",
+  "blockers": [],
+  "required_revisions": [],
+  "may_continue_original_task1_remaining_steps": true,
+  "scope": "允许在尚未最终冻结的当前 v3 候选中接纳准确已生成 cache 差异，继续原 Task1；不接纳 Task1 最终实现或真板",
+  "reviewed_addendum": {
+    "path": "design/phase2-native-cache-topology-v3-generated-cache-addendum-v1.md",
+    "bytes": 3958,
+    "sha256": "cae498e3864857a19282d1d3238367e1ba84bc1883b74d85831dfed7c5995a07"
+  },
+  "unchanged_original_plan_sha256": "5e355eb109871df9791d85953ff158dbe54b7416f615aea5a27b3d866e8eeb7d",
+  "candidate": {
+    "source": "/tmp/crosspath-native-cache-v3-src-hr23qnrs",
+    "tools": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t",
+    "target": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru",
+    "current_final_freeze_absent": true,
+    "current_case_markers_absent": true,
+    "current_candidate_modified_by_reviewer": false
+  },
+  "findings": [
+    {
+      "id": "FINITE-GENERATED-OUTPUT-SCOPE",
+      "result": "PASS",
+      "evidence": "差异清单准确列出 zephyr/.cache/ToolchainCapabilityDatabase 下 45 个新增结果文件和唯一已有 log.txt 的变化；新增文件各 1 字节、mode0664。定向读取这 45 个文件与保存身份一致，44 个值为 1、1 个为 0。补充不接纳目录整体的任意内容，也不增加 runtime 例外。"
+    },
+    {
+      "id": "ACTUAL-CMAKE-CAUSAL-CHAIN",
+      "result": "PASS",
+      "evidence": "定向核三份实际 Zephyr CMake 源码 SHA，且逐文件字节与容量 v2 父 cache 相同。user_cache.cmake 选择/打印缓存位置；target_toolchain_flags.cmake 将编译器内容 MD5 及绝对路径/ID/version 纳入签名；extensions.cmake 将 cacheformat、TOOLCHAIN_SIGNATURE、lang、option、CMAKE_REQUIRED_FLAGS 形成 key_string，再以 MD5 命名结果并追加诊断日志。实际 45 行均包含新工具链绝对路径，文件名、key_string MD5 和结果内容一一对应，符合迁移后新 key 的生成规则。MD5 仅解释上游 key 命名，证据身份仍为 SHA256。"
+    },
+    {
+      "id": "LOG-APPEND-AND-SAVED-EXECUTION",
+      "result": "PASS",
+      "evidence": "直接读取父与候选两份准确 log.txt：26042 字节父内容为 53100 字节新日志的精确前缀，追加27058字节/45行，新 SHA 为 fc299dd97eb043daa14b3f38f9f4f153ffd8dd5a01be4202a97f72c179339a76。完整 host_prepare 保存收据 actual_Popen_wait=0、elapsed_seconds=72.17154478497105，准确 argv/cwd 与补充相符；对应17008字节 stdout 和14232字节 stderr 的当前 SHA/size 与该收据一致。本审阅未重新执行 preparation。"
+    },
+    {
+      "id": "STOP-BEFORE-FINAL-FREEZE",
+      "result": "PASS",
+      "evidence": "finalize.first-error.json 保留真实 extra 成员拒绝；candidate-stopped-state.json 记载 host_prepare_calls=1、post_cache_gate_rejected=true、freeze/ready/目录负例未执行、无板卡/QEMU/marker。当前准确工具根仍无 freeze-manifest.json 或三项 .once。原计划要求意外变化先停止，此次 helper 行为正确；补充现在为最终冻结前的明确产物分类决定，不要求先生成一个旧最终 freeze，也不覆盖先前失败。"
+    },
+    {
+      "id": "UNCHANGED-ADMISSION-BOUNDARIES",
+      "result": "PASS",
+      "evidence": "补充只允许将准确45项及准确log新身份纳入最终不可变清单；不重跑 prepare、不删生成结果、不写父 cache、不增加 .cache runtime 例外。最终所有文件与目录仍由 verify_static 精确约束；其他差异须停止。源702/普通树/Rust/worker/测量参数/压力/预算/单次及正常判据延续原计划。Spec→Quality、Root 验收及外部功能审计器的同次身份绑定修复继续为后续条件。"
+    }
+  ],
+  "targeted_observations": {
+    "added_file_count": 45,
+    "added_bytes": 45,
+    "result_values": {"0": 1, "1": 44},
+    "log_parent_bytes": 26042,
+    "log_new_bytes": 53100,
+    "log_appended_bytes": 27058,
+    "log_appended_lines": 45,
+    "log_parent_prefix_identical": true,
+    "md5_key_path_value_bijection": true,
+    "three_cmake_source_files_equal_parent": true,
+    "saved_host_prepare_actual_wait": 0,
+    "saved_host_prepare_stdout_stderr_identities_match": true
+  },
+  "remaining_task1_conditions": [
+    "修订后续 helper 时仅允许精确清单中的45个新增结果文件和这一个 log 新身份；原停止、helper 修订和完整 preparation 原始收据保持。",
+    "完成原目录门真实负例与恢复；恢复后生成最终全部文件及目录身份、inputs、freeze，再取得真实最终 ready0。",
+    "最终报告与冻结材料绑定本补充、差异清单、因果诊断和此次独立审阅，确认除此之外的不可变成员保持原要求。",
+    "新 Task1 仍须独立 Spec→Quality 与 Root 工具副本验收；任何后续新差异继续拒绝并停止。"
+  ],
+  "evidence": {
+    "difference_manifest": {"path": "raw/strict-native-phase-v3/task1/post-prepare-unexpected-zephyr-cache.json", "bytes": 28463, "sha256": "ed18aef34492553ded7763856eed42fdd4cb488706f75823fd4129da9d849aec"},
+    "causal_diagnosis": {"path": "raw/strict-native-phase-v3/task1/zephyr-capability-cache-cause.json", "bytes": 12007, "sha256": "b863d65a1e58c8876f75a6554ad9591992edee5ba74cacc5e8fad53959bb434c"},
+    "host_prepare_receipt": {"path": "raw/strict-native-phase-v3/task1/host-prepare.receipt.json", "bytes": 3124, "sha256": "76b6d244fabc4add3bc9cfafddb4b95d86dfd6de10c60d4b7bdbe804b6edefbb"},
+    "candidate_stopped_state": {"path": "raw/strict-native-phase-v3/task1/candidate-stopped-state.json", "bytes": 363, "sha256": "8f3bb5e3919b228df03258c1d0fcec7df1a2e546706ce494a6c9f57769ed1ca3"},
+    "first_finalization_refusal": {"path": "raw/strict-native-phase-v3/task1/finalize.first-error.json", "bytes": 3619, "sha256": "71672383c13a17f651f3220f8bd72814bbc1d9cbef7ba1829e9d5e63d9875055"}
+  },
+  "fixed_cmake_source_sha256": {
+    "zephyr/cmake/modules/user_cache.cmake": "ef232cd93f3645c098ec8efc3234caa4e5090cad3dab6c0edb9081a9b01c4c74",
+    "zephyr/cmake/target_toolchain_flags.cmake": "c6ab0156ed86133f8202b7cf31eaf0d7c2ad3775faa299e4b42e9c2fabee9615",
+    "zephyr/cmake/modules/extensions.cmake": "2ab40de151bc73503c65e730df2f6962cfe8997b2f0d4d12b051fc138328af68"
+  },
+  "review_execution": {
+    "method": "定向只读补充、保存的小文件/收据、3份明确源码、45份明确的一字节结果与两份准确日志；只新建本次两个审阅报告",
+    "targeted_read_only_consistency_command_exit": 0,
+    "full_cache_or_source_scan": false,
+    "build_or_host_prepare_or_ready_or_test_executed": false,
+    "git_or_network_or_proc_or_signal_operations": false,
+    "hardware_or_qemu_started": 0,
+    "plan_addendum_candidate_or_parent_cache_modified": false
+  },
+  "task1_final_accepted": false,
+  "hardware_authorized_by_this_review": false,
+  "normal_Host_proven": false,
+  "zero_loss_proven": false,
+  "stable_interaction_proven": false,
+  "M2": false,
+  "Joint": false,
+  "goal_complete": false
+}

@@ -1,0 +1,587 @@
+{
+  "schema_version": 1,
+  "review_kind": "independent_local_spec_review",
+  "created_utc": "2026-10-18T12:24:12.128958+00:00",
+  "decision": "PASS",
+  "scope": "严格原生缓存 v3 Task1 离线实施的 Spec 审阅；不是 PR 审查，不授予硬件运行权限。",
+  "blockers": [],
+  "blocking_findings": [],
+  "main_HEAD_context_only_not_git_reverified": "97f5bdecd0c24ed6f27da331ef036f76a519a949",
+  "reviewed_reports": {
+    "json": {
+      "path": "results/strict-native-cache-v3-task1.json",
+      "sha256": "e1ce19382c35cc1c7c791bf618b07c7ea2840aa6a284efebf1d7da44038a9e59",
+      "bytes": 52634,
+      "mode": 436
+    },
+    "markdown": {
+      "path": "results/strict-native-cache-v3-task1.md",
+      "sha256": "a3f42ef837f6df2652e2f0699d06223e6ac91c550730c4372520588ee5ba184d",
+      "bytes": 4502,
+      "mode": 436
+    }
+  },
+  "candidate": {
+    "capture": {
+      "bytes": 33173,
+      "mode": 436,
+      "sha256": "61717a37b528e2e93d8cbcae1c1dafbc6249ac3417fbf0b8011b984a03a4c683"
+    },
+    "cargo_cache": {
+      "bytes": 24119362,
+      "mode": 436,
+      "sha256": "75ba73a00cbf7150fa1b0bb1319091e329c470316f9d1eeda63f84d5a18e0d9f"
+    },
+    "controller": {
+      "bytes": 21727,
+      "mode": 436,
+      "sha256": "8b871b1ea3cfb8a8ad8272bc7fa5ca37dc648b3efed45fe4af9ae0f374a24902"
+    },
+    "directory_manifest": {
+      "bytes": 2166162,
+      "mode": 436,
+      "sha256": "dca2a114c1ec0241196d7d7e2163504239076f283ec034e8d39f5e97bc8e738e"
+    },
+    "freeze_manifest": {
+      "bytes": 19347,
+      "mode": 436,
+      "sha256": "0bf9ff1cbc154583c60c6dd34688c9b498b6f63b0ef8014d1dbcec04f7ed28e8"
+    },
+    "frozen_members": 107,
+    "inputs": {
+      "bytes": 5547,
+      "mode": 436,
+      "sha256": "8fac8a1fb86d79a1e74bf9591bf68fa2dd88f6d261edcf0ea576dfbd6ace0060"
+    },
+    "normal702": {
+      "bytes": 85467,
+      "mode": 436,
+      "sha256": "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb"
+    },
+    "ordinary": {
+      "bytes": 1727818,
+      "mode": 436,
+      "sha256": "f4bd9bb6dadd056e35faa2b3243a1be410a588f531f6bceb7d71c89e520e3c86"
+    },
+    "parent_freeze_sha256": "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9",
+    "paths": {
+      "hardware_started": 0,
+      "qemu_started": 0,
+      "source": "/tmp/crosspath-native-cache-v3-src-hr23qnrs",
+      "target": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru",
+      "target_initial_members": [],
+      "tools": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t"
+    },
+    "sources702_tar": {
+      "bytes": 1337626,
+      "mode": 436,
+      "sha256": "072c67c53641c3428ddfaa031692a506443105b0a023376dff90e307e1f8f29d"
+    },
+    "virq_cache": {
+      "bytes": 10242769,
+      "mode": 436,
+      "sha256": "a85b5b610617777761be40d469bc507c2895e287635bf21c57c6471242d4a3d6"
+    }
+  },
+  "plan": {
+    "path": "design/phase2-native-cache-topology-v3-plan.md",
+    "sha256": "5e355eb109871df9791d85953ff158dbe54b7416f615aea5a27b3d866e8eeb7d",
+    "bytes": 11813,
+    "mode": 436
+  },
+  "generated_cache_authorities": [
+    {
+      "path": "design/phase2-native-cache-topology-v3-generated-cache-addendum-v1.md",
+      "sha256": "cae498e3864857a19282d1d3238367e1ba84bc1883b74d85831dfed7c5995a07",
+      "bytes": 3958,
+      "mode": 436
+    },
+    {
+      "path": "results/strict-native-cache-v3-generated-cache-addendum-review-v1.json",
+      "sha256": "7a54b78c549e79c94f2d007cabb6eac4d9f143b41d2dbd1f8104cbee3e9477c2",
+      "bytes": 7162,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/post-prepare-unexpected-zephyr-cache.json",
+      "sha256": "ed18aef34492553ded7763856eed42fdd4cb488706f75823fd4129da9d849aec",
+      "bytes": 28463,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/zephyr-capability-cache-cause.json",
+      "sha256": "b863d65a1e58c8876f75a6554ad9591992edee5ba74cacc5e8fad53959bb434c",
+      "bytes": 12007,
+      "mode": 436
+    }
+  ],
+  "checks": [
+    {
+      "id": "SPEC-01-SOURCE-AND-PARENT",
+      "result": "PASS",
+      "requirement": "新普通副本保持容量 v2 的 9642 文件、702 源与 Rust 字节；失败输入和 marker 保留。",
+      "observation": "两份最终源清单与父清单逐字节相同，SHA 与固定计划一致；直接定向核 Cargo.lock、生产 prepare.py、frequency sidecar 及 guest_build.rs 的实际候选字节，均匹配普通清单。source-post-validation 保存全树比对无差异；父 source/cache 完整 lstat 与集合保护由已落收据证明，本审阅未重扫两棵树。直接核原 v1 run-result/capture、v2 run-result/失败报告及旧 AB1.once，当前 SHA 与 protected.before 相同。",
+      "evidence": [
+        "raw/strict-native-phase-v3/task1/source-post-validation.json",
+        "raw/strict-native-phase-v3/task1/parent-metadata-protection.after.json",
+        "raw/strict-native-phase-v3/task1/protected.before.json",
+        "raw/strict-native-phase-v3/task1/protected.after.json"
+      ]
+    },
+    {
+      "id": "SPEC-02-COPY-AND-ENTRIES",
+      "result": "PASS",
+      "requirement": "copytree 保留目录、mode、批准 symlink；只补父已核五空 Git 目录并重定位批准的 13 项 venv 路径。",
+      "observation": "prepare.py 使用 shutil.copytree(...,symlinks=True)，模板逐项 lstat、0775 与空成员核验后仅在新根补 branches、objects/info、refs、refs/heads、refs/tags。13 项替换边界来自父批准清单；精确 diff 仅为 v2→v3 venv 前缀。既有 Python/CMake probe wait0 的输出明确 sys.prefix/module/CMAKE_BIN_DIR/binary 属新 cache，直接 CMake wait0；真实 Git rev-parse wait0 返回 32229d0b6cc60a1906307311b8e79ec483ad1e88，status wait0 且空输出，receipt 的 stdout/stderr 当前 SHA 全部匹配。生产 verify_zephyr_source() 仍实际调用 Git。",
+      "evidence": [
+        "raw/strict-native-phase-v3/task1/restored-git-directories.json",
+        "raw/strict-native-phase-v3/task1/cache-relocation.json",
+        "raw/strict-native-phase-v3/task1/cache-relocation.patch",
+        "raw/strict-native-phase-v3/task1/cache-python-probe.receipt.json",
+        "raw/strict-native-phase-v3/task1/cache-cmake-direct.receipt.json",
+        "raw/strict-native-phase-v3/task1/zephyr-git-revparse.receipt.json",
+        "raw/strict-native-phase-v3/task1/zephyr-git-status.receipt.json"
+      ]
+    },
+    {
+      "id": "SPEC-03-PRODUCTION-PREPARATION",
+      "result": "PASS",
+      "requirement": "完整生产 argv 在新 source、新 target、空继承精确 AB1 白名单中仅执行一次，300 秒预算，准确父 wait 与真实资源身份。",
+      "observation": "frequency/guest-builds.toml 的 host_prepare 是准确 python3 virtualization/axvm/tests/guests/virq/prepare.py --linux-peer；run_host_prepare() 从 workspace 导出 AXBUILD_TARGET_DIR。prepare helper 将精确新 inputs 环境与 AB1 合并，只增加原控制器式 STRICT_NATIVE_RUN_TOKEN，直接 Popen(env=env,start_new_session=True) 并保存父 wait。实际收据 wait0、72.17154478497105 秒、timeout_seconds=300，无 timeout/cleanup；对应 17008B stdout 与 14232B stderr 的当前 SHA 匹配。最终 stdout 到达 Zephyr revision、vm config 和资源末尾；工件、worker 与 rootfs 报告保持身份。本审阅没有再次运行该命令。",
+      "evidence": [
+        "raw/strict-native-phase-v3/task1/host-prepare.receipt.json",
+        "raw/strict-native-phase-v3/task1/host-prepare.stdout",
+        "raw/strict-native-phase-v3/task1/host-prepare.stderr",
+        "raw/strict-native-phase-v3/task1/host-prepare-preconditions.json",
+        "raw/strict-native-phase-v3/task1/host-prepare-artifacts.json",
+        "raw/strict-native-phase-v3/task1/actual-rootfs-verification.json"
+      ]
+    },
+    {
+      "id": "SPEC-04-INHERITED-RUST-AND-LIMITS",
+      "result": "PASS",
+      "requirement": "Rust 未改，只继承父实际 fmt0 与项目 Clippy29/29；研究参数与既有预算不变。",
+      "observation": "直接比较父/候选 inputs：顶层仅 source、target、execution_tools_root、environment 不同；环境键集合相同，仅五个精确路径值不同，cases/limits/cache_policy 等全同。AB1 准备环境与最终输入加所有权 token 精确一致。继承 Rust 收据的当前 SHA 与 inherited-rust-validation.json 一致，原 actual_Popen_wait 均为0，Clippy29通过/0失败/0跳过；rerun_in_v3=false。生产准备内部正常构建 xtask 不被误称为重跑 fmt/Clippy。",
+      "evidence": [
+        "raw/strict-native-phase-v3/task1/input-equivalence.json",
+        "raw/strict-native-phase-v3/task1/inherited-rust-validation.json"
+      ]
+    },
+    {
+      "id": "SPEC-05-GENERATED-CACHE-AUTHORITY",
+      "result": "PASS",
+      "requirement": "意外生成缓存先真实停止；仅经精确补充批准的45项和 log 新身份纳入最终不可变清单，无 runtime 例外。",
+      "observation": "补充、独立 PASS 审阅、差异清单及因果诊断四个准确 SHA 均现场核对，并且最终 reviewed-identities、authorities 与 freeze 绑定一致。直接比较已落父/最终文件 manifest：最终 VIRQ 清单恰为父54019项覆盖13项重定位和 log 新身份再加45项，合计54064；Cargo108002项逐项 JSON 相等。cache_policy 完全继承，未将 .cache 或能力结果加入 runtime。首次 finalizer wait1/首错与 stopped-state 保留，未把后续接纳回写为首次成功。",
+      "evidence": [
+        "design/phase2-native-cache-topology-v3-generated-cache-addendum-v1.md",
+        "results/strict-native-cache-v3-generated-cache-addendum-review-v1.json",
+        "raw/strict-native-phase-v3/task1/post-prepare-unexpected-zephyr-cache.json",
+        "raw/strict-native-phase-v3/task1/zephyr-capability-cache-cause.json",
+        "raw/strict-native-phase-v3/task1/finalize.first-error.json",
+        "raw/strict-native-phase-v3/task1/candidate-stopped-state.json",
+        "raw/strict-native-phase-v3/task1/cache-post-validation.json"
+      ]
+    },
+    {
+      "id": "SPEC-06-DIRECTORY-ADMISSION",
+      "result": "PASS",
+      "requirement": "verify_static 在原 os.walk 中核两组全部真实目录含根 . 的规范路径、类型和 S_IMODE；各组在其缓存大文件 hash 前拒绝目录差异，既有文件/symlink/Cargo规则继承。",
+      "observation": "直接阅读最终 verify_static：组名和 root 精确核对，拒绝绝对/.. /非规范路径与非法 mode；root 与遍历节点 lstat 必须真实目录，实际集合和 mode 精确比较；真实目录被 symlink 替代明确拒绝，批准 symlink 仍走原 target/内部边界检查。目录比较位于每组原文件集合和 identity() 哈希之前。目录 manifest 规范性定向解析通过，VIRQ9874/Cargo17749个真实目录，均含 .，root mode0775。capture 在 verify_static 外全部字节相同，controller 仅输出根 v2→v3；原 FIT/newc/所有权/单次/实际退出函数未改。",
+      "evidence": [
+        "raw/strict-native-phase-v3/task1/capture_native.py.patch",
+        "raw/strict-native-phase-v3/task1/native_once.py.patch",
+        "raw/strict-native-phase-v3/task1/capture-scope.json"
+      ]
+    },
+    {
+      "id": "SPEC-07-REAL-NEGATIVE-AND-READY",
+      "result": "PASS",
+      "requirement": "最终冻结前在实际暂存 cache 得到缺 refs 的真实新目录门 RED，恢复后冻结并取得真实 ready0，不修改冻结根取负例。",
+      "observation": "audited_entry.py 直接调用最终 capture.verify_static()。finalize_after_addendum.py 在 freeze 不存在时 rmdir 空 refs/heads/tags，真实父 wait2 的输出明确缺三目录而非 freeze 缺失；finally 恢复三目录与准确0775，完整目录集合/mode 恢复收据绑定最终 directory manifest。之后才生成107项 freeze，真实 native_once --check-ready wait0、stdout STRICT_NATIVE_READY，702/9642/all_match 均匹配，stdout/stderr 当前 SHA 对应 receipt。target 前后元数据相同由 helper 与收据证明；三项 .once 当前确实不存在。本审阅没有重跑负例或 ready。",
+      "evidence": [
+        "raw/strict-native-phase-v3/task1/audited_entry.py",
+        "raw/strict-native-phase-v3/task1/directory-missing-refs-negative.receipt.json",
+        "raw/strict-native-phase-v3/task1/directory-missing-refs-negative.stdout",
+        "raw/strict-native-phase-v3/task1/directory-negative-restoration.json",
+        "raw/strict-native-phase-v3/task1/candidate-check-ready.receipt.json",
+        "raw/strict-native-phase-v3/task1/candidate-check-ready.stdout",
+        "raw/strict-native-phase-v3/task1/candidate-ready-state.json"
+      ]
+    },
+    {
+      "id": "SPEC-08-FREEZE-AND-ARCHIVE",
+      "result": "PASS",
+      "requirement": "准确 freeze/inputs/capture/controller/directory identities 与107成员和工具归档绑定；预算1GiB，cache/target单列。",
+      "observation": "最终准确身份经定向新哈希核对，与 report、candidate-identities、freeze 中对应条目一致。107项 frozen 相对路径均安全；完整工具tar当前 SHA/size/mode 与归档 receipt 一致，receipt 记录108成员=107+freeze，逐项实际 parse 的mode/size/payloadSHA匹配。阅读实际 complete_report.py 确认仅归档该集合且不含 cache/target；本审阅未重复逐成员解包校验。report记录归档原始目录210003658B，小于1GiB，缓存/target容量另列。最终报告JSON/MD当前SHA与final-report-verification一致。",
+      "evidence": [
+        "raw/strict-native-phase-v3/task1/candidate-identities.json",
+        "raw/strict-native-phase-v3/task1/tools-archive-verification.json",
+        "raw/strict-native-phase-v3/task1/final-report-verification.json",
+        "raw/strict-native-phase-v3/task1/complete_report.py"
+      ]
+    },
+    {
+      "id": "SPEC-09-FAILURE-HISTORY",
+      "result": "PASS",
+      "requirement": "本地 helper 首错、冻结拒绝、归档 metadata 首错真实保留；不混为硬件失败或重复生产准备。",
+      "observation": "初次普通源路径断言过宽、外部 GCC alias 使用 symlink 身份比较的前置首错均保留快照/输出/纠错diff，生产 Popen 位于二者之后。初次 exec exit1 未单独采集直接 Popen.wait 的限制在 provenance 和最终报告明示。TarInfo.mode 首次断言的原 stderr、wait1和20B部分tar保持，修正为 stat.S_IMODE 后最终 archive helper wait0；只改报告helper，不触碰冻结候选。最终报告准确区分了以上错误与首次 cache finalizer 拒绝。",
+      "evidence": [
+        "raw/strict-native-phase-v3/task1/prepare.first-error.json",
+        "raw/strict-native-phase-v3/task1/prepare.initial-failed-log-provenance.json",
+        "raw/strict-native-phase-v3/task1/host-prepare.external-precondition-first-error.json",
+        "raw/strict-native-phase-v3/task1/complete-report.archive-metadata-failed.launch.json",
+        "raw/strict-native-phase-v3/task1/complete-report.archive-metadata-failed.stderr",
+        "raw/strict-native-phase-v3/task1/complete-report-archive-mode-correction.patch",
+        "raw/strict-native-phase-v3/task1/complete-report.launch.json"
+      ]
+    },
+    {
+      "id": "SPEC-10-SCOPE",
+      "result": "PASS",
+      "requirement": "只认可 Task1 离线；正常Host/零丢样/M2/Joint/goal与硬件授权不能由准备推定。",
+      "observation": "正式 JSON/MD 均为 OFFLINE_READY_PENDING_SPEC_QUALITY_ROOTCOPY，独立验收尚未标完成，相关研究与授权字段均 false；没有板卡/QEMU或新Trace证据。Task2 的外部 normal 审计器同次运行身份问题、后续 Quality/Rootcopy 和 Root 单次硬件门继续存在。Spec PASS 仅交付给后续 Quality，不构成 Task1 最终独立验收或硬件放行。",
+      "evidence": [
+        "results/strict-native-cache-v3-task1.json",
+        "results/strict-native-cache-v3-task1.md"
+      ]
+    }
+  ],
+  "evidence_identities": [
+    {
+      "path": "design/phase2-native-cache-topology-v3-generated-cache-addendum-v1.md",
+      "sha256": "cae498e3864857a19282d1d3238367e1ba84bc1883b74d85831dfed7c5995a07",
+      "bytes": 3958,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/actual-rootfs-verification.json",
+      "sha256": "ad9f1c3306edcafa0a07c3bfd8cf600a517b2823654509c01911e1631a7f1820",
+      "bytes": 1856,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/audited_entry.py",
+      "sha256": "f6f7085b44df70a238afe491fde2267f68ebb7e52c53b2ba06a7e15cbcd09044",
+      "bytes": 590,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/cache-cmake-direct.receipt.json",
+      "sha256": "47ba25450559020f3dd7aac6913407365823237e1832a3e8b7a0ce92f5df7be1",
+      "bytes": 884,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/cache-post-validation.json",
+      "sha256": "1fc044f61ccda0e3a4ae4ca23b623e058841161ad4d9ee00e883cdd730eed72b",
+      "bytes": 5713,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/cache-python-probe.receipt.json",
+      "sha256": "5542877f9742ba6e40a28a3d25852a7592bcef4478f18f7954d59cde9484fd14",
+      "bytes": 1337,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/cache-relocation.json",
+      "sha256": "ae9206414fcf46ec8ec0b7ef56ff8172d304500539bfdfbf20d3f7b059c8cbeb",
+      "bytes": 9907,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/cache-relocation.patch",
+      "sha256": "69d58fde200b5063f0233eb55d2d45ca877bd94f45546841d78f45a0207193f4",
+      "bytes": 4646,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/candidate-check-ready.receipt.json",
+      "sha256": "efa6d1dc4a3b129cdc2d93d4c8da6eb130712baf2ddf98eed8ae3ee1db7d13ba",
+      "bytes": 810,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/candidate-check-ready.stdout",
+      "sha256": "ac66697923c198cd7f9b62c740b34ce0b159aed72ce5decc149c9ff7a9c9d771",
+      "bytes": 813,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/candidate-identities.json",
+      "sha256": "27cfb775c9072e4a005822cb7e16b6fe4c4fa32e8f967daffbd622ebbba6155a",
+      "bytes": 1839,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/candidate-ready-state.json",
+      "sha256": "121f2085e9781dd2bd4cd9034787499ff8b119916b351fea4de56eff52eda649",
+      "bytes": 1258,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/candidate-stopped-state.json",
+      "sha256": "8f3bb5e3919b228df03258c1d0fcec7df1a2e546706ce494a6c9f57769ed1ca3",
+      "bytes": 363,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/capture-scope.json",
+      "sha256": "2944fda62bd2bcdbda1b40778162f255c4ff7141234185935c496c0044e53ca0",
+      "bytes": 480,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/capture_native.py.patch",
+      "sha256": "67e4a9312b52f475f664b2d6c6d7b817126ce4b5dd1f965f692c503754d3a87e",
+      "bytes": 4480,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/complete-report-archive-mode-correction.patch",
+      "sha256": "d473096781afdae713cca9948726da04e5b2fd0ba74f4a91475ec5a5d05fceca",
+      "bytes": 5201,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/complete-report.archive-metadata-failed.launch.json",
+      "sha256": "00b1adb5676ab75f9471b1107b168d1de6c9f5647c05849e366bfa69ee403f16",
+      "bytes": 238,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/complete-report.archive-metadata-failed.stderr",
+      "sha256": "f5960c878235c7175760f6d2ddba30d54974fac71d1192d3115af52dfe78ff97",
+      "bytes": 408,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/complete-report.launch.json",
+      "sha256": "ee3743884088215e7fbc2557ada6f60a59e3d57bbc23c5dd979a9cec6805e0af",
+      "bytes": 238,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/complete_report.py",
+      "sha256": "654ec96319c98ce287af09e0b22e19cdc25b61b10ca2f598db3dbbfcd428bfe8",
+      "bytes": 18188,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/directory-missing-refs-negative.receipt.json",
+      "sha256": "d4ab8910ad84ebac0b5ca272a2b35b3773074ada669303cff5c7af89986eef3b",
+      "bytes": 748,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/directory-missing-refs-negative.stdout",
+      "sha256": "0d97065dbaf7328557ad6368a6916a6930d003cbff11b4ea67a9af229508bf6a",
+      "bytes": 195,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/directory-negative-restoration.json",
+      "sha256": "efb55ea42536670c002e4e7b825cd6137ab7ec66f8c11d9114f984d014861de4",
+      "bytes": 631,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/final-report-verification.json",
+      "sha256": "4aa0f841f7ede82cedb4461243fa0e652a177ce66644c09943412efecd9f93e3",
+      "bytes": 519,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/finalize.first-error.json",
+      "sha256": "71672383c13a17f651f3220f8bd72814bbc1d9cbef7ba1829e9d5e63d9875055",
+      "bytes": 3619,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/host-prepare-artifacts.json",
+      "sha256": "b3056004bfecdeaa263304fd6dab54038c0865e1720cd72ee75193ef95a1e6a6",
+      "bytes": 5253,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/host-prepare-preconditions.json",
+      "sha256": "7510384818df159d1a9e8664c2ce611dd409e0a53cf841988b1205abe07a0165",
+      "bytes": 2714,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/host-prepare.external-precondition-first-error.json",
+      "sha256": "dbe4f4065ba24ad85dd71cb0da5ff5a37540f9f637f3bd03e428a8211adf9bce",
+      "bytes": 128,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/host-prepare.receipt.json",
+      "sha256": "76b6d244fabc4add3bc9cfafddb4b95d86dfd6de10c60d4b7bdbe804b6edefbb",
+      "bytes": 3124,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/host-prepare.stderr",
+      "sha256": "883a8251738a4de53a8328c871e1c74cefded7ed05b47fc23b55d472c6b20c1c",
+      "bytes": 14232,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/host-prepare.stdout",
+      "sha256": "a389b69c28a0bf7016e165389f06331446bdfbbf7352cea375e4c1a0fcb212ac",
+      "bytes": 17008,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/inherited-rust-validation.json",
+      "sha256": "955df5e14c0f5793c8ab755c92dd5da256901a28d66e4e2e3b51e485d799cf1e",
+      "bytes": 1038,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/input-equivalence.json",
+      "sha256": "a41481a87e364af622683cc6e6f5f0aaf2b7f9df82d80c786a4a227941025534",
+      "bytes": 377,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/native_once.py.patch",
+      "sha256": "1c3bd4148941aa73eadf14679e21d1f7f99af73f04bcc924ee32d557066b4c99",
+      "bytes": 491,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/parent-metadata-protection.after.json",
+      "sha256": "7e2abe9b9ae6130250836653be485a9f0cead6f132680cabb929e8b2dbfad00f",
+      "bytes": 299,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/post-prepare-unexpected-zephyr-cache.json",
+      "sha256": "ed18aef34492553ded7763856eed42fdd4cb488706f75823fd4129da9d849aec",
+      "bytes": 28463,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/prepare.first-error.json",
+      "sha256": "87317efdd99ea02cb2fae1cd8d725a90eb4f46e7ec79a7904a213ad8c2497031",
+      "bytes": 142,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/prepare.initial-failed-log-provenance.json",
+      "sha256": "1db6a3a6a833b82b5d8e5e33523c9ce979fc4a77b9d268cd46fd57c48b1e22e1",
+      "bytes": 217,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/protected.after.json",
+      "sha256": "73673c15c0b4e25422f5d8408d7e96e3082f5e79cff4175671039ace1805b93b",
+      "bytes": 19309,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/protected.before.json",
+      "sha256": "73673c15c0b4e25422f5d8408d7e96e3082f5e79cff4175671039ace1805b93b",
+      "bytes": 19309,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/restored-git-directories.json",
+      "sha256": "8a0e9b8da0c7eb8d4d19be196570a07fb6126e4cfd2c9160e5050c0ee0afd1c2",
+      "bytes": 1717,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/source-post-validation.json",
+      "sha256": "ba07ef50985c52146fde077f1b236ac988a22cb2fdb09d46de54cc3011873831",
+      "bytes": 543,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/tools-archive-verification.json",
+      "sha256": "8ca8106a92429d6937b66162c64d49cbf163e6f555f03a46605c4f6cc92a2adc",
+      "bytes": 563,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/zephyr-capability-cache-cause.json",
+      "sha256": "b863d65a1e58c8876f75a6554ad9591992edee5ba74cacc5e8fad53959bb434c",
+      "bytes": 12007,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/zephyr-git-revparse.receipt.json",
+      "sha256": "857009d5943c3f5adde060f0110eab31ffe77b350f2f307d42fc3ea0c2a83c7b",
+      "bytes": 911,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/zephyr-git-status.receipt.json",
+      "sha256": "10007d9ac9cb24c3b1637df019d3f1dc61d9f5cc42e9b192535296dc1b6c1ab6",
+      "bytes": 941,
+      "mode": 436
+    },
+    {
+      "path": "results/strict-native-cache-v3-generated-cache-addendum-review-v1.json",
+      "sha256": "7a54b78c549e79c94f2d007cabb6eac4d9f143b41d2dbd1f8104cbee3e9477c2",
+      "bytes": 7162,
+      "mode": 436
+    },
+    {
+      "path": "results/strict-native-cache-v3-task1.json",
+      "sha256": "e1ce19382c35cc1c7c791bf618b07c7ea2840aa6a284efebf1d7da44038a9e59",
+      "bytes": 52634,
+      "mode": 436
+    },
+    {
+      "path": "results/strict-native-cache-v3-task1.md",
+      "sha256": "a3f42ef837f6df2652e2f0699d06223e6ac91c550730c4372520588ee5ba184d",
+      "bytes": 4502,
+      "mode": 436
+    }
+  ],
+  "independent_readonly_consistency": {
+    "actual_command_exit": 0,
+    "output_chunk": "92ba3e",
+    "report_identities_checked": true,
+    "selected_candidate_frozen_identities_checked": true,
+    "manifest_json_delta_exact": true,
+    "capture_outside_verify_static_bytes_exact": true,
+    "controller_only_output_root_change": true,
+    "receipt_output_identities_match": true,
+    "exact_AB1_environment_plus_ownership_token": true,
+    "tar_SHA_size_mode_checked": true,
+    "saved_archive_member_verification_reviewed": true,
+    "tar_member_payloads_not_reread_by_reviewer": true
+  },
+  "review_execution": {
+    "candidate_parent_and_main_source_modified": false,
+    "only_new_review_json_and_md_written": true,
+    "build_prepare_ready_tests_hardware_qemu_executed": false,
+    "git_network_proc_signal_operations": false,
+    "full_main96_source_or_cache_content_hash_scan": false,
+    "initial_path_locator_traversed_cache_pathnames": true,
+    "path_locator_note": "定位 AGENTS 时一次 rg --files 把工具根包含在搜索范围，因而遍历缓存路径名；未做缓存内容/哈希全扫，之后所有读取均定向。该只读路径发现偏差已即时告知 Root。",
+    "candidate_functions_executed": false,
+    "rust_validation_rerun": false
+  },
+  "remaining_conditions": [
+    "Quality 对同一准确冻结与报告作独立审阅。",
+    "Root 复制准确冻结工具而不复制 cache，按计划完成真实只读 ready、单一执行根正式拒绝、实际 wait、无 marker 与 target 元数据绑定。",
+    "Task2 前外部 normal 审计器修复同次运行身份与规定三处 Spec 阻断，并经 Spec→Quality。",
+    "Root 单次硬件批准继续约束准确 source/tool/input/freeze/target/Cargo runtime/fresh host witness/所有权和原预算；AB1完整正常门通过后才可AB0，再0。"
+  ],
+  "Task1_spec_accepted": true,
+  "Task1_final_independently_accepted": false,
+  "Quality_review_complete": false,
+  "Root_copy_acceptance_complete": false,
+  "hardware_authorized_by_this_review": false,
+  "normal_Host_proven": false,
+  "capacity_zero_loss_proven": false,
+  "stable_interaction_proven": false,
+  "M2": false,
+  "Joint": false,
+  "goal_complete": false
+}

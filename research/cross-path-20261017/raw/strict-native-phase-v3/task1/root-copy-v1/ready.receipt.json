@@ -1,0 +1,29 @@
+{
+  "actual_Popen_wait": 0,
+  "actual_child_pid": 4,
+  "argv": [
+    "/usr/bin/python3",
+    "-B",
+    "-c",
+    "\nimport runpy,sys\nscript=sys.argv[1];sys.argv=sys.argv[1:]\ndef forbid(event,args):\n    if event.startswith(('socket.','subprocess.')) or event in ('os.system','os.kill','os.killpg','os.mkdir','os.remove','os.rename','os.rmdir'):\n        raise RuntimeError('OFFLINE_SIDE_EFFECT_FORBIDDEN:'+event)\n    if event=='open':\n        mode=args[1];flags=args[2]\n        if (isinstance(mode,str) and any(c in mode for c in 'wax+')) or (isinstance(flags,int) and flags & 3):\n            raise RuntimeError('OFFLINE_WRITE_FORBIDDEN')\nsys.addaudithook(forbid)\nsys.path.insert(0,str(__import__('pathlib').Path(script).resolve().parent))\nrunpy.run_path(script,run_name='__main__')\n",
+    "/tmp/crosspath-native-cache-v3-root-copy-8d7f__x3/native_once.py",
+    "--check-ready"
+  ],
+  "cwd": "/tmp/crosspath-native-cache-v3-root-copy-8d7f__x3",
+  "end_ns": 1792326914220377962,
+  "environment": {
+    "PATH": "/usr/bin:/bin",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "start_ns": 1792326850976233634,
+  "stderr": {
+    "bytes": 0,
+    "mode": 436,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stdout": {
+    "bytes": 813,
+    "mode": 436,
+    "sha256": "ac66697923c198cd7f9b62c740b34ce0b159aed72ce5decc149c9ff7a9c9d771"
+  }
+}

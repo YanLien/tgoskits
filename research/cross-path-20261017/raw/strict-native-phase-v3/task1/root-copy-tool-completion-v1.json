@@ -1,0 +1,9 @@
+{
+  "actual_parent_Popen_wait": 0,
+  "actual_unified_exec_exit": 0,
+  "completion_tool_chunk": "e0cb5d",
+  "observed_utc": "2026-10-18T12:37:54.952526+00:00",
+  "original_unified_exec_session": 81327,
+  "parent_wait_receipt_sha256": "b2b2f33deaa25c2dc85b6fc951906faae28f083598350a90346792f431fcfcdb",
+  "scope": "original exact tool completion; independent offline copy only"
+}

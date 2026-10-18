@@ -1,0 +1,429 @@
+{
+  "schema_version": 1,
+  "case_id": "AB1",
+  "scope": "complete native normal-function audit only; no performance/phase-overlap/I_AB claim",
+  "handoff_sha256": "30d2613204648b7ebd89a202ee642b725678c94c056dada23e58de34b88cdd91",
+  "auditor_sha256": "35efe04deacc18de5556505b8567cabc988b1c85eefe6455cf3da1c2c4deb6c8",
+  "full_function_passed": false,
+  "source_contract_sha256": "07649250263cacf6d4d03ba32b6200059b60dd2160c44c3e12ecae8a5c4c597b",
+  "input_references": {
+    "actual_command": {
+      "bytes": 2703,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1/actual-command.json",
+      "sha256": "29ec08fb40b33d1b4eea5deb0fd1795f3ba9ea39a5584f4066937c5af7d9df28"
+    },
+    "approval": {
+      "bytes": 3994,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-approval-v1.json",
+      "sha256": "683d3be29859ce8b8b9734106687b084a92a870f0db1d47783206d81ee6a6f0f"
+    },
+    "capture": {
+      "bytes": 618,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1/capture.json",
+      "sha256": "8bbc740841eb5d59ea0936551647277946ade96da12c5d8c89afd2980aa8270a"
+    },
+    "freeze_manifest": {
+      "bytes": 12230,
+      "path": "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/freeze-manifest.json",
+      "sha256": "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9"
+    },
+    "frozen_inputs": {
+      "bytes": 5571,
+      "path": "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/inputs.json",
+      "sha256": "a785de09f1017498360677338ef0f0c4af40a9ed7bc81a9c824c52b58841abbd"
+    },
+    "host_preflight": {
+      "bytes": 1046,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-host-preflight-v1.json",
+      "sha256": "631009b7e2c03f6b5ac9a9d4be9dd5c842a6e1eca88ecfecd3591d73dff8d313"
+    },
+    "primary_delivery": {
+      "bytes": 4824,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/intensity-v3-final-delivery.json",
+      "sha256": "fe7b8cd40aa21855eaaaedfb0ed92022eac37eed329dc51b06352710d4525bb7"
+    },
+    "raw": {
+      "bytes": 2283,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1/xtask.log",
+      "sha256": "61b7be0f9809b04a574c57f0ca5411f3ad15f28e92825c4fbf9f6b20034788e1"
+    },
+    "root_launch": {
+      "bytes": 4211,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-launch.json",
+      "sha256": "cb56c12f473c0bcaa476a56da81cb5749bea99362053cbbfe3a2c6e2a03bdc2c"
+    },
+    "root_tool_completion": {
+      "bytes": 407,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-supervisor-completion-v1.json",
+      "sha256": "0dcd33d8b741190b959cc90c34fbc15cb4362147f1fbda32aa6eb00fce4de95f"
+    },
+    "root_wait": {
+      "bytes": 2166,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-wait.json",
+      "sha256": "821155a848d38653eab2fe9c240db35240ca088280305c40bbbc9aacd677d9ff"
+    },
+    "run_result": {
+      "bytes": 1828,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1/run-result.json",
+      "sha256": "b69e27dab4491a467830da92a63840ab73bc396baf94704b9065d88639490aa8"
+    },
+    "task1_Quality": {
+      "bytes": 34343,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-trace-capacity-v2-task1-quality-review-v1.json",
+      "sha256": "6309db23595f07550ecb1b8ebf36bd022f09d31e9cdbf94d49c7a9c6d29a20e4"
+    },
+    "task1_Spec": {
+      "bytes": 19095,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-trace-capacity-v2-task1-spec-review-v1.json",
+      "sha256": "4b3c61913884343e5207fc62b7533d7a38ebe00d9076d1c998f586018785d0d0"
+    },
+    "task1_acceptance": {
+      "bytes": 4170,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-trace-capacity-v2-task1-root-acceptance-v1.json",
+      "sha256": "1539cd651b743fc85377bfd8fcce11531b1ce2b0f907bb4dddfaf8920cb0c9b5"
+    },
+    "wrapper_review": {
+      "bytes": 7687,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-trace-capacity-v2-AB1-wrapper-review-v1.json",
+      "sha256": "9a6f0a1d9582ba93632b70d5307e050030da474597d23354e560da1def54c63c"
+    }
+  },
+  "gates": [
+    {
+      "name": "bound-document-capture",
+      "passed": true,
+      "evidence": {
+        "bytes": 618,
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1/capture.json",
+        "sha256": "8bbc740841eb5d59ea0936551647277946ade96da12c5d8c89afd2980aa8270a"
+      }
+    },
+    {
+      "name": "bound-document-run_result",
+      "passed": true,
+      "evidence": {
+        "bytes": 1828,
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1/run-result.json",
+        "sha256": "b69e27dab4491a467830da92a63840ab73bc396baf94704b9065d88639490aa8"
+      }
+    },
+    {
+      "name": "bound-document-root_wait",
+      "passed": true,
+      "evidence": {
+        "bytes": 2166,
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-wait.json",
+        "sha256": "821155a848d38653eab2fe9c240db35240ca088280305c40bbbc9aacd677d9ff"
+      }
+    },
+    {
+      "name": "bound-document-actual_command",
+      "passed": true,
+      "evidence": {
+        "bytes": 2703,
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1/actual-command.json",
+        "sha256": "29ec08fb40b33d1b4eea5deb0fd1795f3ba9ea39a5584f4066937c5af7d9df28"
+      }
+    },
+    {
+      "name": "bound-document-freeze_manifest",
+      "passed": true,
+      "evidence": {
+        "bytes": 12230,
+        "path": "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/freeze-manifest.json",
+        "sha256": "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9"
+      }
+    },
+    {
+      "name": "bound-document-frozen_inputs",
+      "passed": true,
+      "evidence": {
+        "bytes": 5571,
+        "path": "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/inputs.json",
+        "sha256": "a785de09f1017498360677338ef0f0c4af40a9ed7bc81a9c824c52b58841abbd"
+      }
+    },
+    {
+      "name": "bound-document-approval",
+      "passed": true,
+      "evidence": {
+        "bytes": 3994,
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-approval-v1.json",
+        "sha256": "683d3be29859ce8b8b9734106687b084a92a870f0db1d47783206d81ee6a6f0f"
+      }
+    },
+    {
+      "name": "bound-document-root_launch",
+      "passed": true,
+      "evidence": {
+        "bytes": 4211,
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-launch.json",
+        "sha256": "cb56c12f473c0bcaa476a56da81cb5749bea99362053cbbfe3a2c6e2a03bdc2c"
+      }
+    },
+    {
+      "name": "bound-document-root_tool_completion",
+      "passed": true,
+      "evidence": {
+        "bytes": 407,
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-supervisor-completion-v1.json",
+        "sha256": "0dcd33d8b741190b959cc90c34fbc15cb4362147f1fbda32aa6eb00fce4de95f"
+      }
+    },
+    {
+      "name": "source-tool-case-binding",
+      "passed": true,
+      "evidence": {
+        "source_702_sha256": "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb",
+        "tools_freeze_sha256": "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9",
+        "specific_source_files": 17,
+        "exact_case_environment": true
+      }
+    },
+    {
+      "name": "same-run-launch-wait-completion-binding",
+      "passed": true,
+      "evidence": {
+        "case_id": "AB1",
+        "driver": {
+          "pid": 2246622,
+          "pgid": 2246622,
+          "starttime": "50588692",
+          "argv": [
+            "/usr/bin/python3",
+            "-B",
+            "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/native_once.py",
+            "--run",
+            "AB1",
+            "--approved-manifest",
+            "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9",
+            "--approval",
+            "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-approval-v1.json",
+            "--approval-sha256",
+            "683d3be29859ce8b8b9734106687b084a92a870f0db1d47783206d81ee6a6f0f",
+            "--source-manifest-sha",
+            "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb"
+          ]
+        },
+        "supervisor": {
+          "pid": 2246621,
+          "pgid": 2246621,
+          "starttime": "50588445",
+          "argv": [
+            "/usr/bin/python3",
+            "-B",
+            "research/cross-path-20261017/raw/strict-native-phase-v2/AB1-launch-supervisor.py",
+            "--acceptance-sha256",
+            "1539cd651b743fc85377bfd8fcce11531b1ce2b0f907bb4dddfaf8920cb0c9b5"
+          ]
+        },
+        "supervisor_source_sha256": "74806ad5a84b3078cd6afe88438a6ba3a9c242724f09f68222f0c355a1acfc0e",
+        "root_completion_session": 15037,
+        "root_completion_chunk": "6268a7",
+        "root_wait_exit": 1,
+        "xtask_wait_exit": 1,
+        "driver_wait_exit": 1,
+        "scope": "same-run identity only; numerical success and release remain separate gates"
+      }
+    },
+    {
+      "name": "final-raw-bytes",
+      "passed": true,
+      "evidence": {
+        "bytes": 2283,
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1/xtask.log",
+        "sha256": "61b7be0f9809b04a574c57f0ca5411f3ad15f28e92825c4fbf9f6b20034788e1"
+      }
+    },
+    {
+      "name": "complete-exact-fixture-and-policy-records",
+      "passed": false,
+      "reason": "AuditError: VIRQ_LINUX_PHASE_CONFIG: expected 2, observed 0"
+    },
+    {
+      "name": "pure-wire-source",
+      "passed": true,
+      "evidence": {
+        "reference": {
+          "path": "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/virtualization/axvm/tests/guests/linux-load/verify-native-phase.py",
+          "bytes": 35913,
+          "sha256": "c29cce43852ec2016f735af82b55410d63acebf866766275bffd36d98af7317b"
+        },
+        "extracted_functions": [
+          "checksum",
+          "memory_sum",
+          "verify_work",
+          "decode_data"
+        ],
+        "excluded": "all imports, Worker, CLI and target execution"
+      }
+    },
+    {
+      "name": "two-complete-raw-DATA",
+      "passed": false,
+      "reason": "AuditError: exactly two decoded actual DATA/R with known answers required"
+    },
+    {
+      "name": "policy-protocol-fair",
+      "passed": false,
+      "reason": "AuditError: VIRQ_LINUX_PHASE_PLAN/fair: expected one, observed 0"
+    },
+    {
+      "name": "policy-protocol-fifo80",
+      "passed": false,
+      "reason": "AuditError: VIRQ_LINUX_PHASE_PLAN/fifo80: expected one, observed 0"
+    },
+    {
+      "name": "single-global-zero-loss-complete-export",
+      "passed": false,
+      "reason": "AuditError: VIRQ_TRACE_FROZEN/None: expected one, observed 0"
+    },
+    {
+      "name": "two-complete-retirement-groups",
+      "passed": false,
+      "reason": "AuditError: two VM retirement groups required"
+    },
+    {
+      "name": "full-suite-no-additional-failure-or-tail",
+      "passed": false,
+      "reason": "AuditError: failure/diagnostic/unclassified error candidate or unframed final bytes observed"
+    },
+    {
+      "name": "actual-artifact-use-chain",
+      "passed": false,
+      "reason": "AuditError: capture use chain incomplete: ['expected one actual kernel path in log']"
+    },
+    {
+      "name": "actual-exits-and-frozen-explicit-release",
+      "passed": false,
+      "reason": "AuditError: actual xtask/driver Popen wait not all zero"
+    }
+  ],
+  "data": [],
+  "unverified": [
+    "pressure-fair: complete policy counter context unavailable",
+    "pressure-fifo80: complete policy counter context unavailable",
+    "complete-exact-fixture-and-policy-records: AuditError: VIRQ_LINUX_PHASE_CONFIG: expected 2, observed 0",
+    "two-complete-raw-DATA: AuditError: exactly two decoded actual DATA/R with known answers required",
+    "policy-protocol-fair: AuditError: VIRQ_LINUX_PHASE_PLAN/fair: expected one, observed 0",
+    "policy-protocol-fifo80: AuditError: VIRQ_LINUX_PHASE_PLAN/fifo80: expected one, observed 0",
+    "single-global-zero-loss-complete-export: AuditError: VIRQ_TRACE_FROZEN/None: expected one, observed 0",
+    "two-complete-retirement-groups: AuditError: two VM retirement groups required",
+    "full-suite-no-additional-failure-or-tail: AuditError: failure/diagnostic/unclassified error candidate or unframed final bytes observed",
+    "actual-artifact-use-chain: AuditError: capture use chain incomplete: ['expected one actual kernel path in log']",
+    "actual-exits-and-frozen-explicit-release: AuditError: actual xtask/driver Popen wait not all zero"
+  ],
+  "M2": false,
+  "Joint": false,
+  "goal_complete": false,
+  "first_explicit_failure": {
+    "line": 7,
+    "offset": 781,
+    "bytes": 35,
+    "sha256": "5b5219954d38b8245d6083467c9471169a66e4dd94a1a76bacdbdf21758a9ee6",
+    "marker": null,
+    "text": "Traceback (most recent call last):",
+    "error_classification": "explicit-host-or-guest-failure",
+    "requires_rejection": true
+  },
+  "first_error_candidate": {
+    "line": 7,
+    "offset": 781,
+    "bytes": 35,
+    "sha256": "5b5219954d38b8245d6083467c9471169a66e4dd94a1a76bacdbdf21758a9ee6",
+    "marker": null,
+    "text": "Traceback (most recent call last):",
+    "error_classification": "explicit-host-or-guest-failure",
+    "requires_rejection": true
+  },
+  "explicit_failures": [
+    {
+      "line": 7,
+      "offset": 781,
+      "bytes": 35,
+      "sha256": "5b5219954d38b8245d6083467c9471169a66e4dd94a1a76bacdbdf21758a9ee6",
+      "marker": null,
+      "text": "Traceback (most recent call last):",
+      "error_classification": "explicit-host-or-guest-failure",
+      "requires_rejection": true
+    },
+    {
+      "line": 24,
+      "offset": 2024,
+      "bytes": 195,
+      "sha256": "2232662ad8188a63fc0236ce9dcaab23f3c0140b479a033eeae1764a000e3c05",
+      "marker": null,
+      "text": "subprocess.CalledProcessError: Command '['git', '-C', '/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/zephyr', 'rev-parse', 'HEAD']' returned non-zero exit status 128.",
+      "error_classification": "explicit-host-or-guest-failure",
+      "requires_rejection": true
+    },
+    {
+      "line": 25,
+      "offset": 2219,
+      "bytes": 64,
+      "sha256": "9af0da39e7c28ed9c92bdfd3d0066d33fdf5c46a4078e2b1c933b61eacb6fe17",
+      "marker": null,
+      "text": "Error: host_prepare `python3` failed with status exit status: 1",
+      "error_classification": "explicit-host-or-guest-failure",
+      "requires_rejection": true
+    }
+  ],
+  "diagnostics": [],
+  "error_candidates": [
+    {
+      "line": 7,
+      "offset": 781,
+      "bytes": 35,
+      "sha256": "5b5219954d38b8245d6083467c9471169a66e4dd94a1a76bacdbdf21758a9ee6",
+      "marker": null,
+      "text": "Traceback (most recent call last):",
+      "error_classification": "explicit-host-or-guest-failure",
+      "requires_rejection": true
+    },
+    {
+      "line": 24,
+      "offset": 2024,
+      "bytes": 195,
+      "sha256": "2232662ad8188a63fc0236ce9dcaab23f3c0140b479a033eeae1764a000e3c05",
+      "marker": null,
+      "text": "subprocess.CalledProcessError: Command '['git', '-C', '/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/zephyr', 'rev-parse', 'HEAD']' returned non-zero exit status 128.",
+      "error_classification": "explicit-host-or-guest-failure",
+      "requires_rejection": true
+    },
+    {
+      "line": 25,
+      "offset": 2219,
+      "bytes": 64,
+      "sha256": "9af0da39e7c28ed9c92bdfd3d0066d33fdf5c46a4078e2b1c933b61eacb6fe17",
+      "marker": null,
+      "text": "Error: host_prepare `python3` failed with status exit status: 1",
+      "error_classification": "explicit-host-or-guest-failure",
+      "requires_rejection": true
+    }
+  ],
+  "error_candidate_policy": "all candidates classified; unknown error prose rejects pending a source-bound normal contract",
+  "protocol_partial_tails": [],
+  "allowed_tool_tails": [],
+  "marker_counts": {},
+  "exit_release": {
+    "xtask_wait_exit": 1,
+    "driver_return_code": 1,
+    "driver_wait_exit": 1,
+    "root_wait_exit": 1,
+    "root_completion_session": 15037,
+    "root_completion_chunk": "6268a7",
+    "release": "unknown",
+    "independent_board_tool_wait": null,
+    "forced_signals": [],
+    "cleanup": {
+      "child_wait": 1,
+      "owned_group_empty": true,
+      "release": "not-forced-group-empty",
+      "signals": []
+    }
+  },
+  "other_case_status": {
+    "AB0": "not audited by this report",
+    "0": "not audited by this report"
+  }
+}

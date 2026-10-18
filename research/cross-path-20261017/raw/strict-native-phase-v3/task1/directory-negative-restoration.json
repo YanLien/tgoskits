@@ -1,0 +1,26 @@
+{
+  "before_final_freeze": true,
+  "directory_manifest": {
+    "bytes": 2166162,
+    "mode": 436,
+    "sha256": "dca2a114c1ec0241196d7d7e2163504239076f283ec034e8d39f5e97bc8e738e"
+  },
+  "file_mutations_performed": false,
+  "groups": {
+    "cache-identities.json": {
+      "all_directories_and_modes_restored": true,
+      "directory_count": 9874
+    },
+    "cargo-cache-identities.json": {
+      "all_directories_and_modes_restored": true,
+      "directory_count": 17749
+    }
+  },
+  "new_directory_gate_rejected": true,
+  "real_candidate_cache_used": true,
+  "saved_modes": {
+    ".": 509,
+    "heads": 509,
+    "tags": 509
+  }
+}

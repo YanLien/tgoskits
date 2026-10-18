@@ -1,0 +1,31 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "-c",
+    "from pathlib import Path;import json,hashlib,ast,copy,difflib;b=Path(\"research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1\").resolve();old=b.parents[1]/\"strict-native-phase-v2/function-audit-v3\";raw=(old/\"audit.py\").read_bytes();sha=lambda x:hashlib.sha256(x).hexdigest();assert sha(raw)==\"35efe04deacc18de5556505b8567cabc988b1c85eefe6455cf3da1c2c4deb6c8\";contract=(b/\"source-identities.json\").read_bytes();assert sha(contract)==\"8ff5e4a14fc159d0b0ec81bd26c00fe1860c62611d9e6a0f38c15989e6518d0e\";references=json.loads(contract);oldtext=raw.decode();text=oldtext;changes={\"CONTRACT_SHA\":(\"07649250263cacf6d4d03ba32b6200059b60dd2160c44c3e12ecae8a5c4c597b\",sha(contract)),\"FREEZE_SHA\":(\"6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9\",\"0bf9ff1cbc154583c60c6dd34688c9b498b6f63b0ef8014d1dbcec04f7ed28e8\")};\nfor name,(before,after) in changes.items():\n needle=name+\" = \"+repr(before);assert text.count(needle)==1;text=text.replace(needle,name+\" = \"+repr(after),1)\nsource=text.encode();oldtree=ast.parse(raw);newtree=ast.parse(source);compile(newtree,str(b/\"audit.py\"),\"exec\");functions=[];before_nodes=[n for n in ast.walk(oldtree) if isinstance(n,(ast.FunctionDef,ast.AsyncFunctionDef))];after_nodes=[n for n in ast.walk(newtree) if isinstance(n,(ast.FunctionDef,ast.AsyncFunctionDef))];assert len(before_nodes)==len(after_nodes)\nfor before,after in zip(before_nodes,after_nodes):\n before_text=ast.get_source_segment(oldtext,before);after_text=ast.get_source_segment(text,after);assert before.name==after.name and ast.dump(before,include_attributes=False)==ast.dump(after,include_attributes=False) and before_text==after_text;functions.append({\"name\":before.name,\"line\":before.lineno,\"end_line\":before.end_lineno,\"source_bytes_sha256\":sha(before_text.encode()),\"AST_unchanged\":True,\"source_bytes_unchanged\":True})\nfor tree in (oldtree,newtree):\n for node in tree.body:\n  if isinstance(node,ast.Assign) and len(node.targets)==1 and isinstance(node.targets[0],ast.Name) and node.targets[0].id in changes:node.value=ast.Constant(value=\"BOUND_METADATA_ONLY\")\nassert ast.dump(oldtree,include_attributes=False)==ast.dump(newtree,include_attributes=False)\nwith (b/\"audit.py\").open(\"xb\") as out:out.write(source)\npatch=\"\".join(difflib.unified_diff(oldtext.splitlines(keepends=True),text.splitlines(keepends=True),fromfile=\"strict-native-phase-v2/function-audit-v3/audit.py\",tofile=\"strict-native-phase-v3/function-audit-v1/audit.py\"));(b/\"metadata-only.patch\").write_text(patch);inputs=json.loads(Path(references[\"inputs\"][\"path\"]).read_text());old_inputs=json.loads(Path(json.loads((old/\"source-identities.json\").read_text())[\"inputs\"][\"path\"]).read_text());used=[\"cases\",\"argv\",\"source\",\"target\",\"repo_root\",\"execution_tools_root\",\"environment\",\"normal702_sha256\"];assert all(k in inputs for k in used);assert inputs[\"cases\"]==old_inputs[\"cases\"] and inputs[\"argv\"]==old_inputs[\"argv\"] and inputs[\"normal702_sha256\"]==old_inputs[\"normal702_sha256\"]==\"0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb\";assert inputs[\"source\"]==\"/tmp/crosspath-native-cache-v3-src-hr23qnrs\" and inputs[\"execution_tools_root\"]==\"/tmp/crosspath-native-cache-v3-tools-jrhcn15t\";report={\"prior_auditor\":{\"path\":str(old/\"audit.py\"),\"bytes\":len(raw),\"sha256\":sha(raw)},\"migrated_auditor\":{\"path\":str(b/\"audit.py\"),\"bytes\":len(source),\"sha256\":sha(source)},\"constant_changes\":{n:{\"before\":a,\"after\":z} for n,(a,z) in changes.items()},\"entire_module_AST_equal_after_two_metadata_assignments_masked\":True,\"all_top_level_nested_and_method_functions\":functions,\"function_count\":len(functions),\"normal_function_logic_changed\":False,\"new_input_schema_compatible_without_function_changes\":True,\"target_from_actual_frozen_inputs\":inputs[\"target\"],\"normal_end_to_end_GREEN\":False};(b/\"identity-AST-comparison.json\").write_text(json.dumps(report,indent=2)+\"\\n\");print(patch);print(json.dumps({k:v for k,v in report.items() if k!=\"all_top_level_nested_and_method_functions\"},indent=2))"
+  ],
+  "env": {
+    "PATH": "/usr/bin:/bin",
+    "LANG": "C.UTF-8",
+    "TZ": "UTC",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "cwd": "/home/yanlien/Program/hypervisor/tgoskits",
+  "started_ns": 1792326325991718947,
+  "forced_stop": false,
+  "pid": 3,
+  "wait_returncode": 0,
+  "returncode": 0,
+  "ended_ns": 1792326326289737749,
+  "stdout": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/commands/0002-bind-auditor-and-compare/stdout",
+    "size": 2121,
+    "sha256": "185dc02035ffa328c1cb2778e8fc54450a03c1a9e10eba98ee153cabf1e32c62"
+  },
+  "stderr": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/commands/0002-bind-auditor-and-compare/stderr",
+    "size": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

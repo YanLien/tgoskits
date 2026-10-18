@@ -1,0 +1,87 @@
+{
+  "wire": {
+    "path": "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/virtualization/axvm/tests/guests/linux-load/verify-native-phase.py",
+    "bytes": 35913,
+    "sha256": "c29cce43852ec2016f735af82b55410d63acebf866766275bffd36d98af7317b"
+  },
+  "runtime": {
+    "path": "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/virtualization/axvm/tests/vcpu_runtime.rs",
+    "bytes": 56137,
+    "sha256": "ce3c367d9041df79f0a4443bfc08ec6a854973a75c7815390af1f7c66fe292e5"
+  },
+  "phase": {
+    "path": "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/virtualization/axvm/tests/support/linux_phase.rs",
+    "bytes": 34310,
+    "sha256": "11b270191001c8076af05ea21da2d133437955cfc6900ab88f90f2eea4185d1b"
+  },
+  "linux": {
+    "path": "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/virtualization/axvm/tests/support/linux.rs",
+    "bytes": 29220,
+    "sha256": "f08bb53c4311f6b7664cb4eb8671b703a59149e5d0b518294f71ee36e8edaeda"
+  },
+  "support": {
+    "path": "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/virtualization/axvm/tests/support/mod.rs",
+    "bytes": 17760,
+    "sha256": "19f9e7394d888c7bdedd340dcead25e542b1f19489283ebf3006d98684f2f1c4"
+  },
+  "clock": {
+    "path": "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/virtualization/axvm/tests/support/clock.rs",
+    "bytes": 4319,
+    "sha256": "58d4c016b73577d24edc7473780aa138170aa5c3021c70ff027b39e47dac75c8"
+  },
+  "task": {
+    "path": "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/virtualization/axvm/tests/support/task_completion.rs",
+    "bytes": 4632,
+    "sha256": "c8e018737cf11dd2919f411b067724a5739921b5f2dbd6c681e7a2983ac31679"
+  },
+  "pressure": {
+    "path": "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/virtualization/axvm/tests/support/irq_pressure.rs",
+    "bytes": 15303,
+    "sha256": "b43a9617ddf259e363455c5e58220811cda4da359993b7283d0234f9bdd300c8"
+  },
+  "diagnostics": {
+    "path": "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/virtualization/axvm/src/diagnostics.rs",
+    "bytes": 9967,
+    "sha256": "d06a5fcc5797d09c1f5bbeb29bade2a09f3232979edc2d6ce231034a7bb162de"
+  },
+  "source_manifest": {
+    "path": "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/evidence/sources-702.json",
+    "bytes": 85467,
+    "sha256": "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb"
+  },
+  "freeze": {
+    "path": "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/freeze-manifest.json",
+    "bytes": 12230,
+    "sha256": "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9"
+  },
+  "inputs": {
+    "path": "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/inputs.json",
+    "bytes": 5571,
+    "sha256": "a785de09f1017498360677338ef0f0c4af40a9ed7bc81a9c824c52b58841abbd"
+  },
+  "capture_source": {
+    "path": "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/capture_native.py",
+    "bytes": 30745,
+    "sha256": "e1e573ed9ecd8a1dd77c80d6a06fff3739e4fa8114815cc2b6b5c826206a14b2"
+  },
+  "driver_source": {
+    "path": "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/native_once.py",
+    "bytes": 21727,
+    "sha256": "88608867d42ce9adbf4aa900dd8da71667b8e1090e3c52c82174c9949f3d21f4"
+  },
+  "worker_build": {
+    "path": "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/evidence/approved-worker-build.json",
+    "bytes": 1867,
+    "sha256": "3825ba405a2ba60ed0889b77e64cf6bf3135dfb943b3ce40d583a114a15f49a8"
+  },
+  "ostool_mod": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-plan-refs/ostool-0.30.3/src/board/mod.rs",
+    "bytes": 21377,
+    "sha256": "c965cb1cc042caa9e44ac515369e0a4659a362fcb6104b528ffa994fe3365fc7"
+  },
+  "ostool_session": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-plan-refs/ostool-0.30.3/src/board/session.rs",
+    "bytes": 14500,
+    "sha256": "80ea70ce71b116a808e5797e175a4760636cd8a9c86a19d3182d1be8c87cdb8f"
+  }
+}

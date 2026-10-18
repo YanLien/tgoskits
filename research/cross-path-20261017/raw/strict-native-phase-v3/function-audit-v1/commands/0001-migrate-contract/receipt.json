@@ -1,0 +1,31 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "-c",
+    "from pathlib import Path\nimport json,hashlib,stat\nold=Path('research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3').resolve(); new=Path('research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1').resolve(); refs=json.loads((old/'source-identities.json').read_text());assert hashlib.sha256((old/'audit.py').read_bytes()).hexdigest()=='35efe04deacc18de5556505b8567cabc988b1c85eefe6455cf3da1c2c4deb6c8';assert hashlib.sha256((old/'source-identities.json').read_bytes()).hexdigest()=='07649250263cacf6d4d03ba32b6200059b60dd2160c44c3e12ecae8a5c4c597b'\nold_src=Path('/tmp/crosspath-native-capacity-v2-src-z2au9vz8'); old_tools=Path('/tmp/crosspath-native-capacity-v2-tools-ksjtks3x'); src=Path('/tmp/crosspath-native-cache-v3-src-hr23qnrs'); tools=Path('/tmp/crosspath-native-cache-v3-tools-jrhcn15t'); expected={'freeze':'0bf9ff1cbc154583c60c6dd34688c9b498b6f63b0ef8014d1dbcec04f7ed28e8','inputs':'8fac8a1fb86d79a1e74bf9591bf68fa2dd88f6d261edcf0ea576dfbd6ace0060','driver_source':'8b871b1ea3cfb8a8ad8272bc7fa5ca37dc648b3efed45fe4af9ae0f374a24902','capture_source':'61717a37b528e2e93d8cbcae1c1dafbc6249ac3417fbf0b8011b984a03a4c683'}; result={};differences=[]\nfor name,ref in refs.items():\n path=Path(ref['path'])\n if path.is_relative_to(old_src): path=src/path.relative_to(old_src)\n elif path.is_relative_to(old_tools): path=tools/path.relative_to(old_tools)\n assert path.is_absolute() and path.resolve()==path and not path.is_symlink()\n before=path.stat();assert stat.S_ISREG(before.st_mode)\n digest=hashlib.sha256()\n with path.open('rb') as f:\n  for chunk in iter(lambda:f.read(1048576),b''):digest.update(chunk)\n after=path.stat();assert (before.st_ino,before.st_size,before.st_mtime_ns)==(after.st_ino,after.st_size,after.st_mtime_ns)\n row={'path':str(path),'bytes':after.st_size,'sha256':digest.hexdigest()};assert row['sha256']==expected.get(name,ref['sha256']),(name,row)\n result[name]=row;differences.append({'label':name,'before':ref,'after':row,'content_changed':row['sha256']!=ref['sha256'],'path_changed':row['path']!=ref['path']})\nassert len(result)==17\nfreeze=json.loads(Path(result['freeze']['path']).read_text());source=json.loads(Path(result['source_manifest']['path']).read_text())\nfor name,row in result.items():\n path=Path(row['path'])\n if path.is_relative_to(src):assert source[str(path.relative_to(src))]==row['sha256']\n elif path.is_relative_to(tools) and name!='freeze':assert freeze[str(path.relative_to(tools))]['sha256']==row['sha256']\nraw=(json.dumps(result,indent=2)+'\\n').encode()\nwith (new/'source-identities.json').open('xb') as f:f.write(raw)\nwith (new/'contract-migration.json').open('x') as f:f.write(json.dumps({'references_checked':17,'differences':differences,'source_702_sha256':result['source_manifest']['sha256'],'expected_new_tool_SHAs':expected,'normal_end_to_end_GREEN':False},indent=2)+'\\n')\nwith (new/'run_command.py').open('xb') as f:f.write((old/'run_command.py').read_bytes())\nprint(json.dumps({'references_checked':17,'contract_sha256':hashlib.sha256(raw).hexdigest(),'content_changed':[d['label'] for d in differences if d['content_changed']],'path_changed':[d['label'] for d in differences if d['path_changed']],'all_references':result},indent=2))\n"
+  ],
+  "env": {
+    "PATH": "/usr/bin:/bin",
+    "LANG": "C.UTF-8",
+    "TZ": "UTC",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "cwd": "/home/yanlien/Program/hypervisor/tgoskits",
+  "pid": 3,
+  "wait_returncode": 0,
+  "returncode": 0,
+  "started_ns": 1792326272550825065,
+  "ended_ns": 1792326272595411155,
+  "forced_stop": false,
+  "stdout": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/commands/0001-migrate-contract/stdout",
+    "bytes": 4517,
+    "sha256": "0a044401ba1325be8da83d670831c2106dab1e4e9280bd502f6a385bedaed1b2"
+  },
+  "stderr": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/commands/0001-migrate-contract/stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

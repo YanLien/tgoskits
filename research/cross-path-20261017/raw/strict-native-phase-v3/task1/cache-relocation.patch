@@ -1,0 +1,117 @@
+--- venv/bin/activate.v2
++++ venv/bin/activate.v3
+@@ -39,10 +39,10 @@
+ if [ "${OSTYPE:-}" = "cygwin" ] || [ "${OSTYPE:-}" = "msys" ] ; then
+     # transform D:\path\to\venv to /d/path/to/venv on MSYS
+     # and to /cygdrive/d/path/to/venv on Cygwin
+-    export VIRTUAL_ENV=$(cygpath /tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/venv)
++    export VIRTUAL_ENV=$(cygpath /tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache/venv)
+ else
+     # use the path as-is
+-    export VIRTUAL_ENV=/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/venv
++    export VIRTUAL_ENV=/tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache/venv
+ fi
+ 
+ _OLD_VIRTUAL_PATH="$PATH"
+--- venv/bin/activate.csh.v2
++++ venv/bin/activate.csh.v3
+@@ -9,7 +9,7 @@
+ # Unset irrelevant variables.
+ deactivate nondestructive
+ 
+-setenv VIRTUAL_ENV /tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/venv
++setenv VIRTUAL_ENV /tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache/venv
+ 
+ set _OLD_VIRTUAL_PATH="$PATH"
+ setenv PATH "$VIRTUAL_ENV/"bin":$PATH"
+--- venv/bin/activate.fish.v2
++++ venv/bin/activate.fish.v3
+@@ -33,7 +33,7 @@
+ # Unset irrelevant variables.
+ deactivate nondestructive
+ 
+-set -gx VIRTUAL_ENV /tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/venv
++set -gx VIRTUAL_ENV /tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache/venv
+ 
+ set -gx _OLD_VIRTUAL_PATH $PATH
+ set -gx PATH "$VIRTUAL_ENV/"bin $PATH
+--- venv/bin/ccmake.v2
++++ venv/bin/ccmake.v3
+@@ -1,4 +1,4 @@
+-#!/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/venv/bin/python3
++#!/tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache/venv/bin/python3
+ # -*- coding: utf-8 -*-
+ import re
+ import sys
+--- venv/bin/cmake.v2
++++ venv/bin/cmake.v3
+@@ -1,4 +1,4 @@
+-#!/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/venv/bin/python3
++#!/tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache/venv/bin/python3
+ # -*- coding: utf-8 -*-
+ import re
+ import sys
+--- venv/bin/cpack.v2
++++ venv/bin/cpack.v3
+@@ -1,4 +1,4 @@
+-#!/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/venv/bin/python3
++#!/tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache/venv/bin/python3
+ # -*- coding: utf-8 -*-
+ import re
+ import sys
+--- venv/bin/ctest.v2
++++ venv/bin/ctest.v3
+@@ -1,4 +1,4 @@
+-#!/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/venv/bin/python3
++#!/tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache/venv/bin/python3
+ # -*- coding: utf-8 -*-
+ import re
+ import sys
+--- venv/bin/pip.v2
++++ venv/bin/pip.v3
+@@ -1,4 +1,4 @@
+-#!/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/venv/bin/python3
++#!/tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache/venv/bin/python3
+ # -*- coding: utf-8 -*-
+ import re
+ import sys
+--- venv/bin/pip3.v2
++++ venv/bin/pip3.v3
+@@ -1,4 +1,4 @@
+-#!/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/venv/bin/python3
++#!/tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache/venv/bin/python3
+ # -*- coding: utf-8 -*-
+ import re
+ import sys
+--- venv/bin/pip3.12.v2
++++ venv/bin/pip3.12.v3
+@@ -1,4 +1,4 @@
+-#!/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/venv/bin/python3
++#!/tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache/venv/bin/python3
+ # -*- coding: utf-8 -*-
+ import re
+ import sys
+--- venv/bin/pykwalify.v2
++++ venv/bin/pykwalify.v3
+@@ -1,4 +1,4 @@
+-#!/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/venv/bin/python3
++#!/tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache/venv/bin/python3
+ # -*- coding: utf-8 -*-
+ import re
+ import sys
+--- venv/bin/readelf.py.v2
++++ venv/bin/readelf.py.v3
+@@ -1,4 +1,4 @@
+-#!/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/venv/bin/python3
++#!/tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache/venv/bin/python3
+ #-------------------------------------------------------------------------------
+ # scripts/readelf.py
+ #
+--- venv/pyvenv.cfg.v2
++++ venv/pyvenv.cfg.v3
+@@ -2,4 +2,4 @@
+ include-system-site-packages = false
+ version = 3.12.3
+ executable = /usr/bin/python3.12
+-command = /usr/bin/python3 -m venv /tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/venv
++command = /usr/bin/python3 -m venv /tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache/venv

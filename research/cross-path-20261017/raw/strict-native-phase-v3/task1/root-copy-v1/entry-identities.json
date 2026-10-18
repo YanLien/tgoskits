@@ -1,0 +1,24 @@
+{
+  "Quality": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-task1-quality-review-v1.json",
+    "sha256": "5a2151b3784d58e914c7a3a205cea50950e1f84a0a1bf74ed66aebb53fbd0e47"
+  },
+  "Spec": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-task1-spec-review-v1.json",
+    "sha256": "996b32e95319ea5a3a94096b141153cf0b11b2bdaec39a8aea7de30e3cbd90f7"
+  },
+  "audit_source": {
+    "bytes": 666,
+    "mode": 436,
+    "sha256": "14853a3af0234bd04fe2ed1c95bd27280108fee5d33aab7caf6204593932f594"
+  },
+  "copy": "/tmp/crosspath-native-cache-v3-root-copy-8d7f__x3",
+  "freeze_sha256": "0bf9ff1cbc154583c60c6dd34688c9b498b6f63b0ef8014d1dbcec04f7ed28e8",
+  "frozen_members": 107,
+  "script": {
+    "bytes": 6002,
+    "mode": 436,
+    "sha256": "49b653d336a87db8734cd57aaedae7983e8e75028201c7c6c8001a5ae6edf5ef"
+  },
+  "task1_report_sha256": "e1ce19382c35cc1c7c791bf618b07c7ea2840aa6a284efebf1d7da44038a9e59"
+}

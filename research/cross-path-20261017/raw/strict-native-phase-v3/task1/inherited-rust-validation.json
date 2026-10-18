@@ -1,0 +1,30 @@
+{
+  "basis": "actual final source inventory confirms all9642 ordinary files,702 source manifest and Cargo.lock identical to v2",
+  "fmt": {
+    "actual_v2_wait": 0,
+    "identity": {
+      "bytes": 2642,
+      "mode": 436,
+      "sha256": "fd7c0f142cd3bb7cce30cc58d51b39bbe733d5efdcd296b766a0c8257be99013"
+    },
+    "receipt": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/cargo-fmt.receipt.json"
+  },
+  "rerun_in_v3": false,
+  "xtask_clippy": {
+    "actual_v2_wait": 0,
+    "failed": 0,
+    "identity": {
+      "bytes": 2675,
+      "mode": 436,
+      "sha256": "852c7fbfafb5f0f04b756a4c9176d8a7b723e0b885c6faa3f22cf9d1b0715bc0"
+    },
+    "passed": 29,
+    "receipt": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/cargo-xtask-clippy.receipt.json",
+    "skipped": 0,
+    "stdout": {
+      "bytes": 22292,
+      "mode": 436,
+      "sha256": "4ee12b4cdcb25e8e6cb6d61b72109805507ff1cc9d7d0ca076eefe3a5cf058d4"
+    }
+  }
+}

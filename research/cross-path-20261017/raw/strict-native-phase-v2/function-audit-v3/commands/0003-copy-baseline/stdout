@@ -1,0 +1,22 @@
+{
+  "audit.py": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v2/audit.py",
+    "bytes": 57661,
+    "sha256": "1e4f19515aa9bc285e1201a85378a166f7b7a7805067ab4b4f6032fa1ad0a22b"
+  },
+  "source-identities.json": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v2/source-identities.json",
+    "bytes": 3885,
+    "sha256": "07649250263cacf6d4d03ba32b6200059b60dd2160c44c3e12ecae8a5c4c597b"
+  },
+  "test_audit.py": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v2/test_audit.py",
+    "bytes": 2279,
+    "sha256": "6ba16562382870c2ba658cbdcc62f10b9c5c0752ff311b3242fedc16901d5bbd"
+  },
+  "test_review_rules.py": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v2/test_review_rules.py",
+    "bytes": 13083,
+    "sha256": "fa00e5a350f03501a9fbfe671900ac97dbe75d103deceebcef178600240d2d16"
+  }
+}

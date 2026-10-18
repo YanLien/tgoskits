@@ -1,0 +1,27 @@
+{
+  "accepted_added_count": 45,
+  "accepted_existing_changed": [
+    "zephyr/.cache/ToolchainCapabilityDatabase/log.txt"
+  ],
+  "decision": "exact generated-cache delta accepted before final freeze after Root precise audit and independent PASS",
+  "no_runtime_policy_change": true,
+  "production_prepare_reexecuted": false,
+  "references": [
+    {
+      "path": "design/phase2-native-cache-topology-v3-generated-cache-addendum-v1.md",
+      "sha256": "cae498e3864857a19282d1d3238367e1ba84bc1883b74d85831dfed7c5995a07"
+    },
+    {
+      "path": "results/strict-native-cache-v3-generated-cache-addendum-review-v1.json",
+      "sha256": "7a54b78c549e79c94f2d007cabb6eac4d9f143b41d2dbd1f8104cbee3e9477c2"
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/post-prepare-unexpected-zephyr-cache.json",
+      "sha256": "ed18aef34492553ded7763856eed42fdd4cb488706f75823fd4129da9d849aec"
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/zephyr-capability-cache-cause.json",
+      "sha256": "b863d65a1e58c8876f75a6554ad9591992edee5ba74cacc5e8fad53959bb434c"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "Quality_sha256": "5a2151b3784d58e914c7a3a205cea50950e1f84a0a1bf74ed66aebb53fbd0e47",
+  "actual_Popen_wait": 0,
+  "actual_child_pid": 3,
+  "argv": [
+    "/usr/bin/python3",
+    "-B",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/task1/root-copy-check-v1.py"
+  ],
+  "cwd": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017",
+  "environment": {
+    "LANG": "C.UTF-8",
+    "PATH": "/usr/bin:/bin",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "finished_unix_ns": 1792326972787851154,
+  "forced_stop": false,
+  "script_sha256": "49b653d336a87db8734cd57aaedae7983e8e75028201c7c6c8001a5ae6edf5ef",
+  "started_unix_ns": 1792326849941807896,
+  "stderr": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stdout": {
+    "bytes": 726,
+    "sha256": "5990b7247b385b674352dd7d92c0a8360487a2a9f96cd1fa492b25868b7142b9"
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "references_checked": 17,
+  "contract_sha256": "8ff5e4a14fc159d0b0ec81bd26c00fe1860c62611d9e6a0f38c15989e6518d0e",
+  "content_changed": [
+    "freeze",
+    "inputs",
+    "capture_source",
+    "driver_source"
+  ],
+  "path_changed": [
+    "wire",
+    "runtime",
+    "phase",
+    "linux",
+    "support",
+    "clock",
+    "task",
+    "pressure",
+    "diagnostics",
+    "source_manifest",
+    "freeze",
+    "inputs",
+    "capture_source",
+    "driver_source",
+    "worker_build"
+  ],
+  "all_references": {
+    "wire": {
+      "path": "/tmp/crosspath-native-cache-v3-src-hr23qnrs/virtualization/axvm/tests/guests/linux-load/verify-native-phase.py",
+      "bytes": 35913,
+      "sha256": "c29cce43852ec2016f735af82b55410d63acebf866766275bffd36d98af7317b"
+    },
+    "runtime": {
+      "path": "/tmp/crosspath-native-cache-v3-src-hr23qnrs/virtualization/axvm/tests/vcpu_runtime.rs",
+      "bytes": 56137,
+      "sha256": "ce3c367d9041df79f0a4443bfc08ec6a854973a75c7815390af1f7c66fe292e5"
+    },
+    "phase": {
+      "path": "/tmp/crosspath-native-cache-v3-src-hr23qnrs/virtualization/axvm/tests/support/linux_phase.rs",
+      "bytes": 34310,
+      "sha256": "11b270191001c8076af05ea21da2d133437955cfc6900ab88f90f2eea4185d1b"
+    },
+    "linux": {
+      "path": "/tmp/crosspath-native-cache-v3-src-hr23qnrs/virtualization/axvm/tests/support/linux.rs",
+      "bytes": 29220,
+      "sha256": "f08bb53c4311f6b7664cb4eb8671b703a59149e5d0b518294f71ee36e8edaeda"
+    },
+    "support": {
+      "path": "/tmp/crosspath-native-cache-v3-src-hr23qnrs/virtualization/axvm/tests/support/mod.rs",
+      "bytes": 17760,
+      "sha256": "19f9e7394d888c7bdedd340dcead25e542b1f19489283ebf3006d98684f2f1c4"
+    },
+    "clock": {
+      "path": "/tmp/crosspath-native-cache-v3-src-hr23qnrs/virtualization/axvm/tests/support/clock.rs",
+      "bytes": 4319,
+      "sha256": "58d4c016b73577d24edc7473780aa138170aa5c3021c70ff027b39e47dac75c8"
+    },
+    "task": {
+      "path": "/tmp/crosspath-native-cache-v3-src-hr23qnrs/virtualization/axvm/tests/support/task_completion.rs",
+      "bytes": 4632,
+      "sha256": "c8e018737cf11dd2919f411b067724a5739921b5f2dbd6c681e7a2983ac31679"
+    },
+    "pressure": {
+      "path": "/tmp/crosspath-native-cache-v3-src-hr23qnrs/virtualization/axvm/tests/support/irq_pressure.rs",
+      "bytes": 15303,
+      "sha256": "b43a9617ddf259e363455c5e58220811cda4da359993b7283d0234f9bdd300c8"
+    },
+    "diagnostics": {
+      "path": "/tmp/crosspath-native-cache-v3-src-hr23qnrs/virtualization/axvm/src/diagnostics.rs",
+      "bytes": 9967,
+      "sha256": "d06a5fcc5797d09c1f5bbeb29bade2a09f3232979edc2d6ce231034a7bb162de"
+    },
+    "source_manifest": {
+      "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/evidence/sources-702.json",
+      "bytes": 85467,
+      "sha256": "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb"
+    },
+    "freeze": {
+      "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/freeze-manifest.json",
+      "bytes": 19347,
+      "sha256": "0bf9ff1cbc154583c60c6dd34688c9b498b6f63b0ef8014d1dbcec04f7ed28e8"
+    },
+    "inputs": {
+      "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/inputs.json",
+      "bytes": 5547,
+      "sha256": "8fac8a1fb86d79a1e74bf9591bf68fa2dd88f6d261edcf0ea576dfbd6ace0060"
+    },
+    "capture_source": {
+      "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/capture_native.py",
+      "bytes": 33173,
+      "sha256": "61717a37b528e2e93d8cbcae1c1dafbc6249ac3417fbf0b8011b984a03a4c683"
+    },
+    "driver_source": {
+      "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/native_once.py",
+      "bytes": 21727,
+      "sha256": "8b871b1ea3cfb8a8ad8272bc7fa5ca37dc648b3efed45fe4af9ae0f374a24902"
+    },
+    "worker_build": {
+      "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/evidence/approved-worker-build.json",
+      "bytes": 1867,
+      "sha256": "3825ba405a2ba60ed0889b77e64cf6bf3135dfb943b3ce40d583a114a15f49a8"
+    },
+    "ostool_mod": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-plan-refs/ostool-0.30.3/src/board/mod.rs",
+      "bytes": 21377,
+      "sha256": "c965cb1cc042caa9e44ac515369e0a4659a362fcb6104b528ffa994fe3365fc7"
+    },
+    "ostool_session": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-plan-refs/ostool-0.30.3/src/board/session.rs",
+      "bytes": 14500,
+      "sha256": "80ea70ce71b116a808e5797e175a4760636cd8a9c86a19d3182d1be8c87cdb8f"
+    }
+  }
+}

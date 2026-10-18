@@ -1,0 +1,13 @@
+
+import runpy,sys
+script=sys.argv[1];sys.argv=sys.argv[1:]
+def forbid(event,args):
+    if event.startswith(('socket.','subprocess.')) or event in ('os.system','os.kill','os.killpg','os.mkdir','os.remove','os.rename','os.rmdir'):
+        raise RuntimeError('OFFLINE_SIDE_EFFECT_FORBIDDEN:'+event)
+    if event=='open':
+        mode=args[1];flags=args[2]
+        if (isinstance(mode,str) and any(c in mode for c in 'wax+')) or (isinstance(flags,int) and flags & 3):
+            raise RuntimeError('OFFLINE_WRITE_FORBIDDEN')
+sys.addaudithook(forbid)
+sys.path.insert(0,str(__import__('pathlib').Path(script).resolve().parent))
+runpy.run_path(script,run_name='__main__')

@@ -1,0 +1,137 @@
+{
+  "Joint": false,
+  "M2": false,
+  "actual_copied_formal_refusal_wait": 2,
+  "actual_ready_wait": 0,
+  "candidate_manifest_sha256": "0bf9ff1cbc154583c60c6dd34688c9b498b6f63b0ef8014d1dbcec04f7ed28e8",
+  "capacity_zero_loss_proven": false,
+  "created_utc": "2026-10-18T12:37:54.958098+00:00",
+  "evidence": {
+    "Root_copy": {
+      "bytes": 1844,
+      "path": "raw/strict-native-phase-v3/task1/root-copy-v1/result.json",
+      "sha256": "6d1d35b423687c0bf819e5b7680104cf5907447c9372f2527c3c5303b947a3e4"
+    },
+    "Root_copy_entry": {
+      "bytes": 1036,
+      "path": "raw/strict-native-phase-v3/task1/root-copy-v1/entry-identities.json",
+      "sha256": "b8828f0583bc8f19214262b77b9432c6f19932a4847c52e278e28ee0bdf47cfc"
+    },
+    "Root_copy_metadata": {
+      "bytes": 111,
+      "path": "raw/strict-native-phase-v3/task1/root-copy-v1/target-metadata.after.json",
+      "sha256": "f91761e8a96b380f8c529cc5e62ee472111bb2c7cf47de27539d35def7d9c523"
+    },
+    "Root_copy_parent": {
+      "bytes": 949,
+      "path": "raw/strict-native-phase-v3/task1/root-copy-parent-v1.receipt.json",
+      "sha256": "b2b2f33deaa25c2dc85b6fc951906faae28f083598350a90346792f431fcfcdb"
+    },
+    "Root_copy_ready_receipt": {
+      "bytes": 1380,
+      "path": "raw/strict-native-phase-v3/task1/root-copy-v1/ready.receipt.json",
+      "sha256": "bc63396aff37e7f6102abce2109d36eff5dc6fc998191f2650c6d3acea45aa50"
+    },
+    "Root_copy_refusal_receipt": {
+      "bytes": 1583,
+      "path": "raw/strict-native-phase-v3/task1/root-copy-v1/copied-formal-refusal.receipt.json",
+      "sha256": "b25008083359abd62a9bd696415d45bdf78f63b09d892874229a6fe04b656127"
+    },
+    "Root_copy_tool_completion": {
+      "bytes": 378,
+      "path": "raw/strict-native-phase-v3/task1/root-copy-tool-completion-v1.json",
+      "sha256": "7c7a8d3fbc037ff4a32768f016c95eaf8f15a5c005585d0a6b2cb089db0bfed7"
+    },
+    "Root_evidence_check": {
+      "bytes": 601,
+      "path": "raw/strict-native-phase-v3/task1/root-evidence-check-v1.json",
+      "sha256": "986826edcf3a4b1b11b1d1525f16b4036c1181bc9c1909cb84c3a2a1dce115fd"
+    },
+    "Task1_Quality": {
+      "bytes": 30075,
+      "path": "results/strict-native-cache-v3-task1-quality-review-v1.json",
+      "sha256": "5a2151b3784d58e914c7a3a205cea50950e1f84a0a1bf74ed66aebb53fbd0e47"
+    },
+    "Task1_Spec": {
+      "bytes": 28775,
+      "path": "results/strict-native-cache-v3-task1-spec-review-v1.json",
+      "sha256": "996b32e95319ea5a3a94096b141153cf0b11b2bdaec39a8aea7de30e3cbd90f7"
+    },
+    "Task1_report": {
+      "bytes": 52634,
+      "path": "results/strict-native-cache-v3-task1.json",
+      "sha256": "e1ce19382c35cc1c7c791bf618b07c7ea2840aa6a284efebf1d7da44038a9e59"
+    },
+    "current_wrapper_source": {
+      "bytes": 11352,
+      "path": "raw/strict-native-phase-v3/AB1-launch-supervisor.py",
+      "sha256": "d7ebb6948ac065c3fddfd1e618bfb381e9355029d7261cd0a4a9808e704d90f2"
+    },
+    "inherited_wrapper_review": {
+      "bytes": 7687,
+      "path": "results/strict-native-trace-capacity-v2-AB1-wrapper-review-v1.json",
+      "sha256": "9a6f0a1d9582ba93632b70d5307e050030da474597d23354e560da1def54c63c"
+    },
+    "normal_Quality": {
+      "bytes": 32856,
+      "path": "results/strict-native-function-audit-v3-quality-review-v1.json",
+      "sha256": "04c99a4182148523e862acb6d20af07fdd74df7be42b95ecb1a04179e7f87b28"
+    },
+    "normal_auditor_contract": {
+      "bytes": 3840,
+      "path": "raw/strict-native-phase-v3/function-audit-v1/source-identities.json",
+      "sha256": "8ff5e4a14fc159d0b0ec81bd26c00fe1860c62611d9e6a0f38c15989e6518d0e"
+    },
+    "normal_auditor_source": {
+      "bytes": 64442,
+      "path": "raw/strict-native-phase-v3/function-audit-v1/audit.py",
+      "sha256": "6fa57d1bb99a9fbdb49613ffc90cb4b648aa9511465957aec25b9e58e34e76aa"
+    },
+    "normal_auditor_status": {
+      "bytes": 10945,
+      "path": "raw/strict-native-phase-v3/function-audit-v1/status.json",
+      "sha256": "72410947af68e123395e6cee6a890db0887c471010a819dfd17b9e7bb68c28db"
+    },
+    "normal_binding_Spec": {
+      "bytes": 9627,
+      "path": "results/strict-native-function-audit-v3-spec-binding-addendum-v1.json",
+      "sha256": "265cc08b54998f117807fc408e1351ce1304bca37833f9becd5290e355ca1adc"
+    },
+    "normal_binding_report": {
+      "bytes": 1807,
+      "path": "results/strict-native-cache-v3-function-audit-metadata-migration-v1.json",
+      "sha256": "98f8b0fe4f74bac54d41748711d94a329e0638f4a4e0f69af46d9a3cb7ebcb6c"
+    },
+    "normal_logic_Spec": {
+      "bytes": 25563,
+      "path": "results/strict-native-function-audit-v3-spec-review-v1.json",
+      "sha256": "cd8ea9a2820235bfdcd2a71a3abd22668f26e2e3e1d30c9c2cb48aeb4223d628"
+    },
+    "normal_logic_revision": {
+      "bytes": 1485,
+      "path": "results/strict-native-function-audit-v3-revision-v1.json",
+      "sha256": "4f8fd9170d72d9b3de87a4f494ab387d724deadb2bb7a2ebabc889f6dce09498"
+    }
+  },
+  "external_normal_auditor": {
+    "auditor_sha256": "6fa57d1bb99a9fbdb49613ffc90cb4b648aa9511465957aec25b9e58e34e76aa",
+    "candidate_manifest_sha256": "0bf9ff1cbc154583c60c6dd34688c9b498b6f63b0ef8014d1dbcec04f7ed28e8",
+    "complete_normal_end_to_end_GREEN": false,
+    "offline_accepted": true,
+    "source_contract_sha256": "8ff5e4a14fc159d0b0ec81bd26c00fe1860c62611d9e6a0f38c15989e6518d0e"
+  },
+  "frozen_tools_count": 107,
+  "goal_complete": false,
+  "hardware_execution_by_this_acceptance": false,
+  "hardware_started": 0,
+  "markers_created": 0,
+  "next_gate": "Root verifies exact current launcher delta, fresh actual-host ownership and availability, then one AB1 only; full functional audit and Spec/Quality before later cases",
+  "normal_Host_proven": false,
+  "offline_task1_passed": true,
+  "qemu_started": 0,
+  "root_copy_actual_parent_Popen_wait": 0,
+  "root_copy_original_tool_exit": 0,
+  "schema_version": 1,
+  "scope": "Root offline Task1 and exact normal-auditor implementation acceptance; normal hardware success remains unverified",
+  "source_702_sha256": "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb"
+}

@@ -1,0 +1,69 @@
+FFFFFFFF
+======================================================================
+FAIL: test_one_recorded_run_cannot_borrow_other_run_receipts (__main__.ReceiptBinding.test_one_recorded_run_cannot_borrow_other_run_receipts) (identity_edge='foreign-case-pair')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/test_exit_binding.py", line 155, in test_one_recorded_run_cannot_borrow_other_run_receipts
+    self.assertTrue(rejected,'same-run receipt rule accepted '+name)
+AssertionError: False is not true : same-run receipt rule accepted foreign-case-pair
+
+======================================================================
+FAIL: test_one_recorded_run_cannot_borrow_other_run_receipts (__main__.ReceiptBinding.test_one_recorded_run_cannot_borrow_other_run_receipts) (identity_edge='foreign-Popen-child')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/test_exit_binding.py", line 155, in test_one_recorded_run_cannot_borrow_other_run_receipts
+    self.assertTrue(rejected,'same-run receipt rule accepted '+name)
+AssertionError: False is not true : same-run receipt rule accepted foreign-Popen-child
+
+======================================================================
+FAIL: test_one_recorded_run_cannot_borrow_other_run_receipts (__main__.ReceiptBinding.test_one_recorded_run_cannot_borrow_other_run_receipts) (identity_edge='wrong-driver-source')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/test_exit_binding.py", line 155, in test_one_recorded_run_cannot_borrow_other_run_receipts
+    self.assertTrue(rejected,'same-run receipt rule accepted '+name)
+AssertionError: False is not true : same-run receipt rule accepted wrong-driver-source
+
+======================================================================
+FAIL: test_one_recorded_run_cannot_borrow_other_run_receipts (__main__.ReceiptBinding.test_one_recorded_run_cannot_borrow_other_run_receipts) (identity_edge='detached-command-approval')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/test_exit_binding.py", line 155, in test_one_recorded_run_cannot_borrow_other_run_receipts
+    self.assertTrue(rejected,'same-run receipt rule accepted '+name)
+AssertionError: False is not true : same-run receipt rule accepted detached-command-approval
+
+======================================================================
+FAIL: test_one_recorded_run_cannot_borrow_other_run_receipts (__main__.ReceiptBinding.test_one_recorded_run_cannot_borrow_other_run_receipts) (identity_edge='detached-launch')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/test_exit_binding.py", line 155, in test_one_recorded_run_cannot_borrow_other_run_receipts
+    self.assertTrue(rejected,'same-run receipt rule accepted '+name)
+AssertionError: False is not true : same-run receipt rule accepted detached-launch
+
+======================================================================
+FAIL: test_one_recorded_run_cannot_borrow_other_run_receipts (__main__.ReceiptBinding.test_one_recorded_run_cannot_borrow_other_run_receipts) (identity_edge='detached-completion')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/test_exit_binding.py", line 155, in test_one_recorded_run_cannot_borrow_other_run_receipts
+    self.assertTrue(rejected,'same-run receipt rule accepted '+name)
+AssertionError: False is not true : same-run receipt rule accepted detached-completion
+
+======================================================================
+FAIL: test_one_recorded_run_cannot_borrow_other_run_receipts (__main__.ReceiptBinding.test_one_recorded_run_cannot_borrow_other_run_receipts) (identity_edge='contradictory-completion-exit')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/test_exit_binding.py", line 155, in test_one_recorded_run_cannot_borrow_other_run_receipts
+    self.assertTrue(rejected,'same-run receipt rule accepted '+name)
+AssertionError: False is not true : same-run receipt rule accepted contradictory-completion-exit
+
+======================================================================
+FAIL: test_one_recorded_run_cannot_borrow_other_run_receipts (__main__.ReceiptBinding.test_one_recorded_run_cannot_borrow_other_run_receipts) (identity_edge='missing-original-completion')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/test_exit_binding.py", line 155, in test_one_recorded_run_cannot_borrow_other_run_receipts
+    self.assertTrue(rejected,'same-run receipt rule accepted '+name)
+AssertionError: False is not true : same-run receipt rule accepted missing-original-completion
+
+----------------------------------------------------------------------
+Ran 1 test in 0.154s
+
+FAILED (failures=8)

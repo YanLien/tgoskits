@@ -1,0 +1,65 @@
+--- capture_native.py.v2
++++ capture_native.py.v3
+@@ -204,12 +204,26 @@
+     for path,row in json.loads((EVIDENCE/'reviewed-identities.json').read_text()).items():
+         if identity(Path(path)) != row:
+             raise ValueError('reviewed authority or input identity differs: '+path)
++    directory_identities = json.loads((EVIDENCE/'cache-directory-identities.json').read_text())
++    if set(directory_identities) != {'cache-identities.json','cargo-cache-identities.json'}:
++        raise ValueError('private cache directory manifest groups differ')
+     cache_runtime_state = {'cargo':{}}
+     for manifest_name,cache_root in [('cache-identities.json',Path(INPUTS['environment']['VIRQ_CACHE_DIR'])),
+                                      ('cargo-cache-identities.json',Path(INPUTS['environment']['CARGO_HOME']))]:
+         cache = json.loads((EVIDENCE/manifest_name).read_text())
+         if cache_root.is_symlink():
+             raise ValueError('private cache root became a symlink')
++        directory_group = directory_identities[manifest_name]
++        if directory_group['root'] != str(cache_root) or not stat.S_ISDIR(cache_root.lstat().st_mode):
++            raise ValueError('private cache directory root differs')
++        expected_directories = directory_group['directories']
++        if '.' not in expected_directories:
++            raise ValueError('private cache directory manifest has no root')
++        for relative,mode in expected_directories.items():
++            rel = PurePosixPath(relative)
++            if (not relative or rel.is_absolute() or '..' in rel.parts or str(rel)!=relative
++                    or type(mode) is not int or not 0 <= mode <= 0o7777):
++                raise ValueError('unsafe private cache directory identity path or mode')
+         cargo_cache = manifest_name=='cargo-cache-identities.json'
+         runtime_allowed = INPUTS['cache_policy']['cargo_runtime_files'] if cargo_cache else {}
+         if cargo_cache:
+@@ -218,17 +232,35 @@
+                     raise ValueError('forbidden CARGO_HOME input: '+name)
+         # Inventory every file and symlink; optional bookkeeping is never an immutable build input.
+         actual = set()
++        actual_directories = {}
+         for directory,children,files in os.walk(cache_root,followlinks=False):
++            directory_path = Path(directory)
++            directory_mode = directory_path.lstat().st_mode
++            if not stat.S_ISDIR(directory_mode) or directory_path.is_symlink():
++                raise ValueError('private cache directory type differs')
++            actual_directories[str(directory_path.relative_to(cache_root))] = stat.S_IMODE(directory_mode)
+             actual.update(str((Path(directory)/name).relative_to(cache_root)) for name in files)
+             for child in children:
+                 path = Path(directory)/child
+                 if path.is_symlink():
+                     relative = str(path.relative_to(cache_root))
+                     actual.add(relative)
++                    if relative in expected_directories:
++                        raise ValueError('private cache directory replaced by symlink: '+relative)
+                     expected_link = cache.get(relative,{})
+                     if (expected_link.get('type')!='symlink' or os.readlink(path)!=expected_link.get('target')
+                             or not path.resolve().is_relative_to(cache_root)):
+                         raise ValueError('private cache contains an unapproved symlink directory')
++        # Directory topology is an immutable build input, including empty Git refs.
++        # Reject it before hashing any potentially large cache file.
++        if actual_directories != expected_directories:
++            missing_directories = sorted(set(expected_directories)-set(actual_directories))
++            extra_directories = sorted(set(actual_directories)-set(expected_directories))
++            changed_modes = sorted(name for name in set(actual_directories)&set(expected_directories)
++                                   if actual_directories[name] != expected_directories[name])
++            raise ValueError('private cache directory identity differs: '+manifest_name
++                             +' missing='+repr(missing_directories)+' extra='+repr(extra_directories)
++                             +' modes='+repr(changed_modes))
+         missing = set(cache)-actual
+         extra = actual-set(cache)
+         if missing or extra-set(runtime_allowed):

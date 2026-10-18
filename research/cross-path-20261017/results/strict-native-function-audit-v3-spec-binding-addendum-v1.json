@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "review_type": "independent-Spec-exact-binding-addendum",
+  "created_utc": "2026-10-18T12:29:31.934027+00:00",
+  "decision": "PASS",
+  "blockers": [],
+  "scope": "作为已封function-audit-v3 Spec报告的窄附录，联合接纳其行为修订结论与新phase-v3/function-audit-v1的准确metadata迁移；仅核两常量、17引用、当前冻结输入及无函数字节变化，不重做全审或目标验证。",
+  "bindings": {
+    "parent_spec": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-function-audit-v3-spec-review-v1.json",
+      "bytes": 25563,
+      "sha256": "cd8ea9a2820235bfdcd2a71a3abd22668f26e2e3e1d30c9c2cb48aeb4223d628"
+    },
+    "parent_spec_md": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-function-audit-v3-spec-review-v1.md",
+      "bytes": 2788,
+      "sha256": "4633431bf4f87ddcac427a6b612c851f5b4bfe3c24da2d2af15ac6ee97ea8fd6"
+    },
+    "old_auditor": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/audit.py",
+      "bytes": 64442,
+      "sha256": "35efe04deacc18de5556505b8567cabc988b1c85eefe6455cf3da1c2c4deb6c8"
+    },
+    "old_status": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/status.json",
+      "bytes": 12547,
+      "sha256": "72e0b3ad003fc3e4eb2494f1fec6d1f4bbfc9f1b03a2c589310209570e2476a0"
+    },
+    "new_auditor": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/audit.py",
+      "bytes": 64442,
+      "sha256": "6fa57d1bb99a9fbdb49613ffc90cb4b648aa9511465957aec25b9e58e34e76aa"
+    },
+    "new_status": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/status.json",
+      "bytes": 10945,
+      "sha256": "72410947af68e123395e6cee6a890db0887c471010a819dfd17b9e7bb68c28db"
+    },
+    "new_contract": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/source-identities.json",
+      "bytes": 3840,
+      "sha256": "8ff5e4a14fc159d0b0ec81bd26c00fe1860c62611d9e6a0f38c15989e6518d0e"
+    },
+    "migration_report": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-function-audit-metadata-migration-v1.json",
+      "bytes": 1807,
+      "sha256": "98f8b0fe4f74bac54d41748711d94a329e0638f4a4e0f69af46d9a3cb7ebcb6c"
+    },
+    "contract_migration": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/contract-migration.json",
+      "bytes": 10543,
+      "sha256": "906d199a341a86a312db979575d841320c62b15a7a979e720ea8deefb889663b"
+    },
+    "AST_comparison": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/identity-AST-comparison.json",
+      "bytes": 9940,
+      "sha256": "7a29189edee6913926f44eaad7fcd4c1994d4983f893ece3a008c3540bfa32d0"
+    },
+    "metadata_patch": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/metadata-only.patch",
+      "bytes": 837,
+      "sha256": "b6a00c6dbf75c5cbb1028061d41d62e9c9057c4f873eb877ecb3c2fbfad83a7e"
+    },
+    "readme": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/README.md",
+      "bytes": 1828,
+      "sha256": "be561a3120fc6aef1e859007193f3b5af4803f7c5da05f185deb677aba6eedee"
+    }
+  },
+  "parent_report_preserved": true,
+  "combined_quality_review_may_start": true,
+  "hardware_execution_approved": false,
+  "auditor_logic_identity": {
+    "all_function_count": 35,
+    "all_function_source_bytes_equal": true,
+    "all_function_AST_equal": true,
+    "whole_module_AST_equal_after_two_assignment_values_masked": true,
+    "whole_file_bytes_equal_after_exact_two_assignment_replacement": true,
+    "only_changed_assignments": [
+      "CONTRACT_SHA",
+      "FREEZE_SHA"
+    ],
+    "source_702_unchanged": true,
+    "no_accept_arbitrary_contract_logic_added": true
+  },
+  "exact_contract_binding": {
+    "references_verified": 17,
+    "contract_sha256": "8ff5e4a14fc159d0b0ec81bd26c00fe1860c62611d9e6a0f38c15989e6518d0e",
+    "source_702_sha256": "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb",
+    "new_freeze_sha256": "0bf9ff1cbc154583c60c6dd34688c9b498b6f63b0ef8014d1dbcec04f7ed28e8",
+    "source_root": "/tmp/crosspath-native-cache-v3-src-hr23qnrs",
+    "tools_root": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t",
+    "target": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru",
+    "actual_content_changed_reference_labels": [
+      "freeze",
+      "inputs",
+      "capture_source",
+      "driver_source"
+    ],
+    "content_changed_references": {
+      "freeze": {
+        "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/freeze-manifest.json",
+        "bytes": 19347,
+        "sha256": "0bf9ff1cbc154583c60c6dd34688c9b498b6f63b0ef8014d1dbcec04f7ed28e8"
+      },
+      "inputs": {
+        "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/inputs.json",
+        "bytes": 5547,
+        "sha256": "8fac8a1fb86d79a1e74bf9591bf68fa2dd88f6d261edcf0ea576dfbd6ace0060"
+      },
+      "capture_source": {
+        "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/capture_native.py",
+        "bytes": 33173,
+        "sha256": "61717a37b528e2e93d8cbcae1c1dafbc6249ac3417fbf0b8011b984a03a4c683"
+      },
+      "driver_source": {
+        "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/native_once.py",
+        "bytes": 21727,
+        "sha256": "8b871b1ea3cfb8a8ad8272bc7fa5ca37dc648b3efed45fe4af9ae0f374a24902"
+      }
+    },
+    "unchanged_reference_content_count": 13,
+    "specific_source_reference_hashes_match_source702_manifest": true,
+    "driver_capture_inputs_source_manifest_hashes_match_exact_freeze_entries": true,
+    "new_inputs_equal_old_after_exact_source_tools_target_prefix_relocation": true,
+    "case_matrix_argv_limits_and_nonpath_environment_unchanged": true
+  },
+  "existing_metadata_command_receipts": {
+    "0001-migrate-contract": {
+      "reference": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/commands/0001-migrate-contract/receipt.json",
+        "bytes": 4220,
+        "sha256": "628c98228249d1fab5b924be48dab9eb9dd5e67cec6eacd59575411f020e5da7"
+      },
+      "actual_wait": 0,
+      "stdout_stderr_SHA_size_verified": true,
+      "scope": "existing metadata/hash/AST command receipt only; not auditor or normal-case execution"
+    },
+    "0002-bind-auditor-and-compare": {
+      "reference": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/commands/0002-bind-auditor-and-compare/receipt.json",
+        "bytes": 5130,
+        "sha256": "b6975153eb6f1726156b6e6d77d0c1ac13ad32f33035a1b59dde00f79d00053d"
+      },
+      "actual_wait": 0,
+      "stdout_stderr_SHA_size_verified": true,
+      "scope": "existing metadata/hash/AST command receipt only; not auditor or normal-case execution"
+    }
+  },
+  "logic_evidence_inherited_from_parent": {
+    "identity_RED_GREEN": "parent准确报告引用同一8条身份连接反例，v2实际wait1/8漏拒，v3 wait0/8全拒；真实基线1/1/1不改。",
+    "retained_rules_and_checks": "原18规则/2检查及两份真实失败的精确证据只作为旧合同逻辑验证；本次不重跑。",
+    "new_contract_execution": "none; no new handoff or case audited",
+    "normal_end_to_end_GREEN": false
+  },
+  "nonweakening_judgment": "由于全文件除两项精确身份赋值外完全相同，前述同次run、退出/释放、DATA/工作量/时间界/压力/退休/Trace/suite/工件门逐字节保留；新常量只允许准确8ff5合同/0bf9freeze，不接受任意来源。动态source/tools/target来自同schema准确冻结inputs，不需要函数行为迁移。",
+  "read_scope": "已指定新旧两份auditor/contract、迁移status/report/patch/AST说明和2份已有收据及其streams；沿17准确普通文件引用读取SHA/size与单个702清单字段，仅读指定文件，没有扫描702成员/cache/主96，也未执行候选代码或任何audit/tests/build/ready/QEMU/board/proc/signal/network/Git。",
+  "unverified": [
+    "新合同下正常端到端GREEN及新AB1实际完整审计",
+    "AB0/0真实运行与Aoff/Bzero正常成功",
+    "成功完整Trace/suite/工件链/显式释放",
+    "legacy生命周期RED/GREEN及完整Host",
+    "硬件启动前的Root当前所有权/一次性准确批准"
+  ],
+  "conclusions": {
+    "metadata_migration_passed_within_scope": true,
+    "logic_revision_passed_as_bound_by_parent": true,
+    "normal_end_to_end_GREEN": false,
+    "full_function_passed": false,
+    "Host_function_passed": false,
+    "capacity_fix_verified": false,
+    "M2": false,
+    "Joint": false,
+    "goal_complete": false
+  },
+  "next": "将本附录与原function-audit-v3 Spec报告一同交Quality，覆盖同次运行逻辑修订及新合同精确绑定；通过仍不自动批准硬件。",
+  "writes": "只新增本窄binding附录JSON/MD；已封父报告及全部新旧候选/证据原字节不变。"
+}

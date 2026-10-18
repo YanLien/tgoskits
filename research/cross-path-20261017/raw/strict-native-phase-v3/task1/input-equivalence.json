@@ -1,0 +1,19 @@
+{
+  "all_other_values_exact_equal": true,
+  "cases_exact": true,
+  "changed_environment_paths": [
+    "AXBUILD_TARGET_DIR",
+    "CARGO_HOME",
+    "CARGO_TARGET_DIR",
+    "CCACHE_DIR",
+    "VIRQ_CACHE_DIR"
+  ],
+  "changed_top_level": [
+    "environment",
+    "execution_tools_root",
+    "source",
+    "target"
+  ],
+  "limits_exact": true,
+  "source702_sha256_unchanged": true
+}

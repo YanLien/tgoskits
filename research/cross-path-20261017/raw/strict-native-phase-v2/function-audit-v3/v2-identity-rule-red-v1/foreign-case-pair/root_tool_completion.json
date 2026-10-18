@@ -1,0 +1,9 @@
+{
+  "actual_unified_exec_exit": 1,
+  "completion_tool_chunk": "6268a7",
+  "driver_Popen_wait_from_own_parent": 1,
+  "driver_Popen_wait_receipt_sha256": "28dbb53eede9c31e2ea4fb832718462d24a80075bbe1a9978291456615905f18",
+  "observed_utc": "2026-10-18T11:27:46.817368+00:00",
+  "original_unified_exec_session": 15037,
+  "scope": "original exact tool session completion; not reconstructed from proc absence"
+}

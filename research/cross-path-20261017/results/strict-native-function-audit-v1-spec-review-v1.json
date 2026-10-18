@@ -1,0 +1,582 @@
+{
+  "schema_version": 1,
+  "review_type": "independent-Spec",
+  "created_utc": "2026-10-18T11:40:01.416383+00:00",
+  "decision": "FAIL",
+  "implementation_spec_passed": false,
+  "quality_review_may_start": false,
+  "scope": "审阅function-audit-v1在Task2及继承3.1/3.2完整正常门的静态落实、准确最终handoff消费与现有负例证据；不执行目标、不修cache、不批准新运行。",
+  "bindings": {
+    "status": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/status.json",
+      "bytes": 4699,
+      "sha256": "3f2e487e8c87d816a204b3132fd0a097d07aaa9f88dc029611892d3061ff9a32"
+    },
+    "audit": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/audit.py",
+      "bytes": 49442,
+      "sha256": "14f93a9a22ead29ad5b8b6b0d112078ba6fae407746d705c553a29fedeccfaf3"
+    },
+    "design": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/DESIGN.md",
+      "bytes": 3231,
+      "sha256": "e8ec32614a1e7e494344216fe8d76254703c0a187baeb6d3a5488d2211120175"
+    },
+    "readme": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/README.md",
+      "bytes": 2013,
+      "sha256": "aea7b456cf070c582eb22e33639deb356918e83feec63d55b8d14b30ed0ea5be"
+    },
+    "source_identities": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/source-identities.json",
+      "bytes": 3885,
+      "sha256": "07649250263cacf6d4d03ba32b6200059b60dd2160c44c3e12ecae8a5c4c597b"
+    },
+    "test_audit": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/test_audit.py",
+      "bytes": 2279,
+      "sha256": "6ba16562382870c2ba658cbdcc62f10b9c5c0752ff311b3242fedc16901d5bbd"
+    },
+    "run_command": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/run_command.py",
+      "bytes": 1889,
+      "sha256": "a37f8a26838081d8fb1190bfe832e3469b0747f6bf28a1f19047f826f04646a0"
+    },
+    "current_plan": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/design/phase2-native-trace-capacity-v2-plan-v2.md",
+      "bytes": 8655,
+      "sha256": "54a43488604d56ea9bf02b5cdf06d1ab9b6d8bceb4248f91504c00e491534e27"
+    },
+    "inherited_plan": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/design/phase2-strict-native-verification-path-plan.md",
+      "bytes": 17634,
+      "sha256": "390653b962e49008a265be157d15390cf0f8733ae79dc28142305b1387685fec"
+    },
+    "final_handoff": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-final-handoff-v1.json",
+      "bytes": 5347,
+      "sha256": "30d2613204648b7ebd89a202ee642b725678c94c056dada23e58de34b88cdd91"
+    },
+    "new_failure_audit": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/new-v2-AB1-red-v1/report.json",
+      "bytes": 12941,
+      "sha256": "294a0d76edcc656455d33706401d1cfa35e0f715ae6ac0ccc797ab8bfdc16d21"
+    },
+    "old_failure_audit": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/old-AB1-red-v2/report.json",
+      "bytes": 59477,
+      "sha256": "7cc0336aa5531c06302e1307a42476f26bf026c30ed7a08a83c3d48d1e7ae5b5"
+    },
+    "prepare_failure_report": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-trace-capacity-v2-AB1-prepare-failure-v1.json",
+      "bytes": 3704,
+      "sha256": "f142c02ec9ff99d4db01cbc409cfa35ffb3933d77b0e435e3dc13c1f762044c5"
+    },
+    "tool_tests_receipt": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/commands/0033-tool-tests/receipt.json",
+      "bytes": 1022,
+      "sha256": "fb94841df3c84ef72af50dc63b2242586fa87129592ec5295d4effdb340af826"
+    },
+    "new_failure_receipt": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/commands/0034-new-v2-final-red/receipt.json",
+      "bytes": 1439,
+      "sha256": "67118659f04e155338dbc1319268bfad3360bf06ffee9f54a9d9b9220a155332"
+    },
+    "old_failure_receipt": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/commands/0035-old-final-red/receipt.json",
+      "bytes": 1430,
+      "sha256": "c18027586d1915cbe38155e4f1b6225374d92599e8a184f44592fc176ae45c1e"
+    },
+    "review_probe_failed_receipt": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-function-audit-v1-spec-review-v1/receipt.json",
+      "bytes": 1371,
+      "sha256": "4f3da48b20661451aee0f720df144fdae0a3654dee2c83ff22c4bb6fa2720bc3"
+    },
+    "review_probe_final_receipt": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-function-audit-v1-spec-review-v1/receipt-v2.json",
+      "bytes": 1393,
+      "sha256": "d8ed04c19b28be959cdca8b5258842ef8f9186f2b32d66016797563512e31684"
+    },
+    "review_probe_final_output": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-function-audit-v1-spec-review-v1/stdout-v2.json",
+      "bytes": 3842,
+      "sha256": "1a6c9b221f6de73f18fd10c1514b4c7b79824ceb0d4c467a739307448bf299d7"
+    },
+    "review_probe_initial_source": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-function-audit-v1-spec-review-v1/check.py",
+      "bytes": 4425,
+      "sha256": "3b339b40c7d48540579437c20bcf86ed5ce27bff14b3ad49c8b571f825080b43"
+    },
+    "review_probe_final_source": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-function-audit-v1-spec-review-v1/check-v2.py",
+      "bytes": 4420,
+      "sha256": "8459a3fa304fa35c72ec5228b2cbc08e1683b40455fe497e2dae9c5ecda03674"
+    }
+  },
+  "source_702_sha256": "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb",
+  "tools_freeze_sha256": "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9",
+  "blockers": [
+    {
+      "id": "SPEC-FAILURE-AND-TAIL-GATE",
+      "severity": "blocking",
+      "requirement": "Task2 2.1及继承3.2：完整suite，无附加失败或协议残尾；保留首错与全部附加错误。",
+      "locations": [
+        {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/audit.py",
+          "line": 21,
+          "end_line": 23
+        },
+        {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/audit.py",
+          "line": 123,
+          "end_line": 141
+        },
+        {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/audit.py",
+          "line": 403,
+          "end_line": 415
+        }
+      ],
+      "finding": "Log保存非EXPLICIT error_candidates，但validate_suite不消费它们。VIRQ_IRQ_PRESSURE_FAILURE既不在EXPLICIT，也不是DIAGNOSTIC或VIRQ_FAILURE_。因此该真实协议的失败marker及其errors=1可在suite之前存在而不触发suite拒绝。partial仅对已完整匹配MARKER的行登记；例如未换行LINUX_PHA前缀既不进入rows也不进入partial，完整suite后残留时亦可漏掉。",
+      "source_contract": [
+        {
+          "reference": {
+            "path": "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/virtualization/axvm/tests/support/irq_pressure.rs",
+            "bytes": 15303,
+            "sha256": "b43a9617ddf259e363455c5e58220811cda4da359993b7283d0234f9bdd300c8"
+          },
+          "line": 244,
+          "end_line": 255
+        }
+      ],
+      "evidence": "窄分类检查确认failure marker explicit=false/diagnostic=false、candidate=true；validate_suite未引用log.candidates。LINUX_PHA未被marker/candidate识别。没有构造成功日志。",
+      "required_change": "对已知失败协议及非零错误字段设明确拒绝规则；一般error候选须明确分类并留存，不能静默无效。独立记录并拒绝协议截断/非完整尾字节，同时容许有明确合同的正常工具尾文。保留原始span及首错。"
+    },
+    {
+      "id": "SPEC-RAW-WORKLOAD-PROTOCOL",
+      "severity": "blocking",
+      "requirement": "Task2全功能/DATA/R/已知答案/同代协议与继承3.2的B关闭真实零访问，不能以ACCEPT代替整个协议。",
+      "locations": [
+        {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/audit.py",
+          "line": 21
+        },
+        {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/audit.py",
+          "line": 197,
+          "end_line": 221
+        },
+        {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/audit.py",
+          "line": 246,
+          "end_line": 251
+        },
+        {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/audit.py",
+          "line": 284,
+          "end_line": 321
+        }
+      ],
+      "finding": "审计只验证PHASE/FENCE readiness、DATA和fences；LINUX_LOAD_READY/LINUX_LOAD_PROGRESS没有判定，LINUX_MEMORY_READY甚至未被MARKER覆盖。Progress真实合同中的readiness顺序、guest_cpu、单调批次与CPU known-answer、阶段内memory_batches/logical_bytes/memory_checksum均未独立核对。因此原始progress与DATA/ACCEPT矛盾、尤其B关闭时出现真实非零访问观察，仍可能不被这些正常门拒绝。原始整份日志仍有SHA引用，问题是缺判定而非删除字节。",
+      "source_contract": [
+        {
+          "reference": {
+            "path": "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/virtualization/axvm/tests/support/linux.rs",
+            "bytes": 29220,
+            "sha256": "f08bb53c4311f6b7664cb4eb8671b703a59149e5d0b518294f71ee36e8edaeda"
+          },
+          "line": 431,
+          "end_line": 529
+        },
+        {
+          "reference": {
+            "path": "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/virtualization/axvm/tests/support/linux_phase.rs",
+            "bytes": 34310,
+            "sha256": "11b270191001c8076af05ea21da2d133437955cfc6900ab88f90f2eea4185d1b"
+          },
+          "line": 757,
+          "end_line": 772
+        }
+      ],
+      "evidence": "仅对旧真实失败fair的首份LINUX_LOAD_PROGRESS将checksum改0；validate_policy仍返回t6_count32，原full_function_passed=false不变。窄检查未执行整体audit、未删旧失败或伪造GREEN。",
+      "required_change": "扩展原始协议观察与每策略绑定，按冻结Progress/Session合同独立检查workload/memory readiness、进展已知答案和阶段允许的内存累计值；B关闭须审计所有实际workload观察中的零访问。"
+    },
+    {
+      "id": "SPEC-TRACE-AND-PHYSICAL-IDENTITY",
+      "severity": "blocking",
+      "requirement": "Task2完整原始Trace、实际逐事件数、同代计数域和固定physical_timer_ppi/current_el/CPU0功能证据。",
+      "locations": [
+        {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/audit.py",
+          "line": 274,
+          "end_line": 283
+        },
+        {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/audit.py",
+          "line": 356,
+          "end_line": 383
+        }
+      ],
+      "finding": "validate_trace逐行仅检查CPU/sequence及几个整数；expected(event,{})为空，kind缺失或闭集外名称未被拒绝。物理IRQ只按kind=HostIrqEntry计64，不核INTID/value1上下文，ARM的intid/cpu也被忽略。故连续数量正确但事件类型非法、来源不是PPI30或上下文不符的导出仍可满足此门。零loss及数量门已经存在，仍不足以证明保存的是固定协议的完整合法事件流。",
+      "source_contract": [
+        {
+          "reference": {
+            "path": "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/virtualization/axvm/src/diagnostics.rs",
+            "bytes": 9967,
+            "sha256": "d06a5fcc5797d09c1f5bbeb29bade2a09f3232979edc2d6ce231034a7bb162de"
+          },
+          "line": 33,
+          "end_line": 89
+        },
+        {
+          "reference": {
+            "path": "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/virtualization/axvm/src/diagnostics.rs",
+            "bytes": 9967,
+            "sha256": "d06a5fcc5797d09c1f5bbeb29bade2a09f3232979edc2d6ce231034a7bb162de"
+          },
+          "line": 289,
+          "end_line": 307
+        },
+        {
+          "reference": {
+            "path": "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/virtualization/axvm/tests/vcpu_runtime.rs",
+            "bytes": 56137,
+            "sha256": "ce3c367d9041df79f0a4443bfc08ec6a854973a75c7815390af1f7c66fe292e5"
+          },
+          "line": 1280,
+          "end_line": 1285
+        }
+      ],
+      "evidence": "窄检查仅把旧真实fair首份VIRQ_PHYSICAL_ARM.intid由30改31，validate_policy仍接受；Trace的kind/IRQ字段遗漏由源码精确核对确认，未制造成功Trace。",
+      "required_change": "校验冻结EventKind闭集与完整记录字段；独立核固定物理源/INTID/上下文及ARM路由，并保留现有逐CPU连续sequence、实际逐事件数与单一全局zero-loss核对。不得用追加标记计数替代。"
+    }
+  ],
+  "requirement_mapping": [
+    {
+      "requirement": "准确final handoff及新source/freeze/case环境绑定",
+      "status": "implemented; current saved negative execution binds exact bytes",
+      "locations": [
+        {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/audit.py",
+          "line": 579,
+          "end_line": 597
+        },
+        {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/audit.py",
+          "line": 615,
+          "end_line": 645
+        }
+      ],
+      "limit": "本审阅不重复完整702/cache/主96扫描；已批准前置和冻结身份作为既有材料引用。"
+    },
+    {
+      "requirement": "64T6/32slots/2snapshots与DATA/R/ACCEPT已知答案",
+      "status": "substantial static gates and saved old real DATA checks; incomplete full raw protocol",
+      "locations": [
+        {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/audit.py",
+          "line": 164,
+          "end_line": 221
+        },
+        {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/audit.py",
+          "line": 224,
+          "end_line": 324
+        }
+      ],
+      "blockers": [
+        "SPEC-RAW-WORKLOAD-PROTOCOL",
+        "SPEC-TRACE-AND-PHYSICAL-IDENTITY"
+      ]
+    },
+    {
+      "requirement": "同代counter、64 before/after probes、250us/4ms",
+      "status": "implemented static candidate; current v2 no runtime coverage",
+      "locations": [
+        {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/audit.py",
+          "line": 231,
+          "end_line": 283
+        },
+        {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/audit.py",
+          "line": 287,
+          "end_line": 324
+        }
+      ]
+    },
+    {
+      "requirement": "A全部B/T6覆盖、skip0，Aoff明确off无事件；Bzero",
+      "status": "A static branches present; complete Bzero raw-workload obligation blocked",
+      "locations": [
+        {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/audit.py",
+          "line": 217,
+          "end_line": 220
+        },
+        {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/audit.py",
+          "line": 287,
+          "end_line": 321
+        },
+        {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/audit.py",
+          "line": 327,
+          "end_line": 353
+        }
+      ],
+      "blockers": [
+        "SPEC-RAW-WORKLOAD-PROTOCOL"
+      ]
+    },
+    {
+      "requirement": "退休后校时与两组完整退休",
+      "status": "source order independently inspected and auditor gate exists; new v2 not executed",
+      "locations": [
+        {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/audit.py",
+          "line": 322,
+          "end_line": 324
+        },
+        {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/audit.py",
+          "line": 386,
+          "end_line": 400
+        }
+      ],
+      "source_evidence": [
+        {
+          "reference": {
+            "path": "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/virtualization/axvm/tests/vcpu_runtime.rs",
+            "bytes": 56137,
+            "sha256": "ce3c367d9041df79f0a4443bfc08ec6a854973a75c7815390af1f7c66fe292e5"
+          },
+          "line": 1117,
+          "end_line": 1142
+        },
+        {
+          "reference": {
+            "path": "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/virtualization/axvm/tests/support/linux.rs",
+            "bytes": 29220,
+            "sha256": "f08bb53c4311f6b7664cb4eb8671b703a59149e5d0b518294f71ee36e8edaeda"
+          },
+          "line": 534,
+          "end_line": 585
+        }
+      ],
+      "limit": "准确冻结源Progress.finish停止/join并verify_retired(Inactive)先于after校时。有限静态/旧负例证据不证明legacy RED/GREEN。"
+    },
+    {
+      "requirement": "单一全局zero-loss与实际逐事件数",
+      "status": "zero-loss/count/sequence gates implemented; valid event schema and physical identity incomplete",
+      "locations": [
+        {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/audit.py",
+          "line": 356,
+          "end_line": 383
+        }
+      ],
+      "blockers": [
+        "SPEC-TRACE-AND-PHYSICAL-IDENTITY"
+      ]
+    },
+    {
+      "requirement": "完整suite无附加失败/残尾",
+      "status": "incomplete rejection gate",
+      "locations": [
+        {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/audit.py",
+          "line": 403,
+          "end_line": 415
+        }
+      ],
+      "blockers": [
+        "SPEC-FAILURE-AND-TAIL-GATE"
+      ]
+    },
+    {
+      "requirement": "实际工件使用链/解FIT和initramfs/rootfs",
+      "status": "static candidate covers post-exit log/FIT/embedded identities; positive path unverified",
+      "locations": [
+        {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/audit.py",
+          "line": 491,
+          "end_line": 576
+        }
+      ],
+      "limit": "准确保存post-exit标识，不冒称boot前已核；当前v2无工件。没有要求重建补缺。"
+    },
+    {
+      "requirement": "实际xtask/driver/Root退出与显式释放",
+      "status": "strict static zero-wait/unforced/owned-group/release gate present; actual v2 rejects",
+      "locations": [
+        {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/audit.py",
+          "line": 600,
+          "end_line": 612
+        }
+      ],
+      "limit": "当前1/1/1、releaseunknown；归档冻结ostool合同与实际成功退出绑定的正路径尚未验证。"
+    },
+    {
+      "requirement": "原始span/首错/失败证据不可覆盖",
+      "status": "current report retains raw SHA, spans, DATA/R, first explicit failure and all collected errors",
+      "locations": [
+        {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/audit.py",
+          "line": 110,
+          "end_line": 142
+        },
+        {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/audit.py",
+          "line": 643,
+          "end_line": 673
+        }
+      ],
+      "limit": "collector/rejection遗漏见SPEC-FAILURE-AND-TAIL-GATE及RAW-WORKLOAD；没有把后续局部通过覆盖旧整体失败。"
+    }
+  ],
+  "current_actual_evidence": {
+    "handoff_sha256": "30d2613204648b7ebd89a202ee642b725678c94c056dada23e58de34b88cdd91",
+    "audit_wait": 1,
+    "first_explicit_failure": {
+      "line": 7,
+      "offset": 781,
+      "bytes": 35,
+      "sha256": "5b5219954d38b8245d6083467c9471169a66e4dd94a1a76bacdbdf21758a9ee6",
+      "text": "Traceback (most recent call last):"
+    },
+    "DATA_count": 0,
+    "trace_observed": false,
+    "artifact_chain_complete": false,
+    "xtask_driver_root_actual_wait": [
+      1,
+      1,
+      1
+    ],
+    "forced_signals": [],
+    "owned_group_empty": true,
+    "release": "unknown",
+    "failed_normal_gate_count": 9,
+    "failed_normal_gates": [
+      "complete-exact-fixture-and-policy-records",
+      "two-complete-raw-DATA",
+      "policy-protocol-fair",
+      "policy-protocol-fifo80",
+      "single-global-zero-loss-complete-export",
+      "two-complete-retirement-groups",
+      "full-suite-no-additional-failure-or-tail",
+      "actual-artifact-use-chain",
+      "actual-exits-and-frozen-explicit-release"
+    ],
+    "AB0": "unexecuted",
+    "0": "unexecuted",
+    "same_candidate_retry_authorized": false,
+    "capacity_problem_fixed": false
+  },
+  "verification": {
+    "existing_tests_repeated": false,
+    "existing_receipts_verified": {
+      "tool_tests": 0,
+      "old_failed_audit": 1,
+      "new_failed_audit": 1
+    },
+    "new_narrow_probe_waits": [
+      1,
+      0
+    ],
+    "new_probe_final": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-function-audit-v1-spec-review-v1/receipt-v2.json",
+      "bytes": 1393,
+      "sha256": "d8ed04c19b28be959cdca8b5258842ef8f9186f2b32d66016797563512e31684"
+    },
+    "probe_scope": "仅复用已保存失败观察的单记录负向突变，调用policy gate及分类正则；不运行完整audit、build/QEMU/board/ready/proc/signal/network/Git。",
+    "initial_probe_failure": "首轮残尾样例LINUX_PHASE_DA仍被通配marker匹配，review断言失败；原脚本和exit1收据保留。v2仅改为协议前缀LINUX_PHA，实际wait0。",
+    "negative_mutation_results": [
+      {
+        "marker": "VIRQ_HOST_SAMPLE",
+        "field": "pulse_ns",
+        "replacement": "18446744073709551615",
+        "source_span": {
+          "line": 1458,
+          "offset": 102571,
+          "bytes": 77,
+          "sha256": "b121f61723493a42b7b1b2ea092789145262c34e84490187789f3675010c0c87"
+        },
+        "original_text": "VIRQ_HOST_SAMPLE policy=fair sample=1 pulse_ns=4083 ack_observed_ns=2424042",
+        "mutated_text": "VIRQ_HOST_SAMPLE policy=fair sample=1 pulse_ns=18446744073709551615 ack_observed_ns=2424042",
+        "policy_gate_accepted_negative_mutation": true
+      },
+      {
+        "marker": "VIRQ_PHYSICAL_ARM",
+        "field": "intid",
+        "replacement": "31",
+        "source_span": {
+          "line": 1586,
+          "offset": 119719,
+          "bytes": 76,
+          "sha256": "63434051488823524693c88c69246a8eee4a498ce4e0f535ef19a229dc455261"
+        },
+        "original_text": "VIRQ_PHYSICAL_ARM policy=fair sample=1 due_ticks=1240828271 intid=30 cpu=0",
+        "mutated_text": "VIRQ_PHYSICAL_ARM policy=fair sample=1 due_ticks=1240828271 intid=31 cpu=0",
+        "policy_gate_accepted_negative_mutation": true
+      },
+      {
+        "marker": "LINUX_LOAD_PROGRESS",
+        "field": "checksum",
+        "replacement": "0",
+        "source_span": {
+          "line": 1331,
+          "offset": 86452,
+          "bytes": 126,
+          "sha256": "c429ac12a1e209a06ff61b93d543ee6af76c2a64d9e8252f7736827593e29fb6"
+        },
+        "original_text": "LINUX_LOAD_PROGRESS batches=256 checksum=17224921168723574785 guest_cpu=0 memory_batches=0 logical_bytes=0 memory_checksum=0",
+        "mutated_text": "LINUX_LOAD_PROGRESS batches=256 checksum=0 guest_cpu=0 memory_batches=0 logical_bytes=0 memory_checksum=0",
+        "policy_gate_accepted_negative_mutation": true
+      }
+    ],
+    "normal_GREEN_created": false
+  },
+  "nonblocking_observations": [
+    {
+      "id": "HOST-SAMPLE-PERFORMANCE-FIELDS",
+      "locations": [
+        {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/audit.py",
+          "line": 275
+        }
+      ],
+      "finding": "VIRQ_HOST_SAMPLE只核sample ID，不审pulse_ns/ack_observed_ns。窄负向pulse突变被接受；这些字段可能仅供性能输出，本次没有证明它独立违反Task2功能合同，故列建议而不列阻断。",
+      "recommendation": "在明确单位/因果合同后选择格式核验或说明仅保留为非验收测量字段；不要将其当正常功能已验证证据。"
+    }
+  ],
+  "independently_uncompleted_evidence": [
+    "正常完整端到端GREEN；不得用构造成功日志补足",
+    "真实AB0与0/Aoff/Bzero",
+    "成功完整Trace导出及正常suite",
+    "成功FIT/工件使用链",
+    "成功显式释放路径",
+    "legacy生命周期RED/GREEN及整个Host最终功能双审"
+  ],
+  "conclusions": {
+    "negative_evidence_preservation_accepted_within_scope": true,
+    "complete_normal_function_auditor_accepted": false,
+    "new_AB1_function_passed": false,
+    "normal_end_to_end_GREEN": false,
+    "full_Host_passed": false,
+    "M2": false,
+    "Joint": false,
+    "goal_complete": false
+  },
+  "next": "原实施者在新的不可覆盖版本修复三个阻断，冻结准确新身份后重新Spec；只有Spec通过后进行Quality。原v1和新v2失败、quota与释放unknown保持，不重启原候选。",
+  "skills_used": [
+    "orthome-verification",
+    "superpowers:subagent-driven-development (Spec-review role)",
+    "superpowers:verification-before-completion",
+    "test-quality",
+    "feature-development",
+    "rust-concurrency-safety (lifecycle scope)"
+  ],
+  "writes": "仅新增本审阅证据目录及results JSON/MD；既有候选、源/工具/cache/Root wrapper/历史报告未改。"
+}

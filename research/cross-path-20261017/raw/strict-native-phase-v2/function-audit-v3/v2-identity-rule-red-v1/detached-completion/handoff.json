@@ -1,0 +1,111 @@
+{
+  "Guest_boot_observed": false,
+  "Joint": false,
+  "M2": false,
+  "actual_driver_wait_exit": 1,
+  "actual_root_wait_exit": 1,
+  "actual_xtask_wait_exit": 1,
+  "artifact_chain_complete": false,
+  "board_session_observed": false,
+  "case_id": "AB1",
+  "case_quota_consumed": true,
+  "created_utc": "2026-10-18T11:27:46.820471+00:00",
+  "files": {
+    "actual_command": {
+      "bytes": 2703,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1/actual-command.json",
+      "sha256": "29ec08fb40b33d1b4eea5deb0fd1795f3ba9ea39a5584f4066937c5af7d9df28"
+    },
+    "approval": {
+      "bytes": 3994,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-approval-v1.json",
+      "sha256": "683d3be29859ce8b8b9734106687b084a92a870f0db1d47783206d81ee6a6f0f"
+    },
+    "capture": {
+      "bytes": 618,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1/capture.json",
+      "sha256": "8bbc740841eb5d59ea0936551647277946ade96da12c5d8c89afd2980aa8270a"
+    },
+    "freeze_manifest": {
+      "bytes": 12230,
+      "path": "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/freeze-manifest.json",
+      "sha256": "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9"
+    },
+    "frozen_inputs": {
+      "bytes": 5571,
+      "path": "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/inputs.json",
+      "sha256": "a785de09f1017498360677338ef0f0c4af40a9ed7bc81a9c824c52b58841abbd"
+    },
+    "host_preflight": {
+      "bytes": 1046,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-host-preflight-v1.json",
+      "sha256": "631009b7e2c03f6b5ac9a9d4be9dd5c842a6e1eca88ecfecd3591d73dff8d313"
+    },
+    "primary_delivery": {
+      "bytes": 4824,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/intensity-v3-final-delivery.json",
+      "sha256": "fe7b8cd40aa21855eaaaedfb0ed92022eac37eed329dc51b06352710d4525bb7"
+    },
+    "raw": {
+      "bytes": 2283,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1/xtask.log",
+      "sha256": "61b7be0f9809b04a574c57f0ca5411f3ad15f28e92825c4fbf9f6b20034788e1"
+    },
+    "root_launch": {
+      "bytes": 4211,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-launch.json",
+      "sha256": "cb56c12f473c0bcaa476a56da81cb5749bea99362053cbbfe3a2c6e2a03bdc2c"
+    },
+    "root_tool_completion": {
+      "bytes": 407,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/v2-identity-rule-red-v1/detached-completion/root_tool_completion.json",
+      "sha256": "43864c982e7a9e73d7bcd4e42ed36697e763befb658e830154e68e42854a5eec"
+    },
+    "root_wait": {
+      "bytes": 2166,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-wait.json",
+      "sha256": "821155a848d38653eab2fe9c240db35240ca088280305c40bbbc9aacd677d9ff"
+    },
+    "run_result": {
+      "bytes": 1828,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1/run-result.json",
+      "sha256": "b69e27dab4491a467830da92a63840ab73bc396baf94704b9065d88639490aa8"
+    },
+    "task1_Quality": {
+      "bytes": 34343,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-trace-capacity-v2-task1-quality-review-v1.json",
+      "sha256": "6309db23595f07550ecb1b8ebf36bd022f09d31e9cdbf94d49c7a9c6d29a20e4"
+    },
+    "task1_Spec": {
+      "bytes": 19095,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-trace-capacity-v2-task1-spec-review-v1.json",
+      "sha256": "4b3c61913884343e5207fc62b7533d7a38ebe00d9076d1c998f586018785d0d0"
+    },
+    "task1_acceptance": {
+      "bytes": 4170,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-trace-capacity-v2-task1-root-acceptance-v1.json",
+      "sha256": "1539cd651b743fc85377bfd8fcce11531b1ce2b0f907bb4dddfaf8920cb0c9b5"
+    },
+    "wrapper_review": {
+      "bytes": 7687,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-trace-capacity-v2-AB1-wrapper-review-v1.json",
+      "sha256": "9a6f0a1d9582ba93632b70d5307e050030da474597d23354e560da1def54c63c"
+    }
+  },
+  "forced_signals": [],
+  "forced_stop": false,
+  "goal_complete": false,
+  "later_cases_unexecuted": [
+    "AB0",
+    "0"
+  ],
+  "new_trace_records_observed": 0,
+  "normal_function_passed": false,
+  "release": "unknown",
+  "root_cause_not_yet_proven": "host_prepare git rev-parse HEAD returns128 in new cache; cache topology diagnosis separate",
+  "schema_version": 1,
+  "scope": "new capacity v2 one-shot failed in host_prepare before Guest evidence; no normal function or performance acceptance",
+  "source_702_sha256": "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb",
+  "state": "final",
+  "tools_freeze_sha256": "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9"
+}

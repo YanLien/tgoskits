@@ -1,0 +1,186 @@
+{
+  "schema_version": 1,
+  "review_kind": "narrow_offline_wrapper_inheritance_addendum",
+  "created_utc": "2026-10-18T12:41:34.038086+00:00",
+  "decision": "PASS",
+  "blockers": [],
+  "required_revisions": [],
+  "scope": "仅复核已审v2 Root AB1 supervisor到v3的准确身份/路径/描述迁移、Rootcopy与target metadata绑定；沿用原Popen wait修复审阅，不重审完整候选或normal审计器逻辑。",
+  "wrapper": {
+    "path": "raw/strict-native-phase-v3/AB1-launch-supervisor.py",
+    "sha256": "d7ebb6948ac065c3fddfd1e618bfb381e9355029d7261cd0a4a9808e704d90f2",
+    "bytes": 11352,
+    "mode": 436
+  },
+  "parent_wrapper": {
+    "path": "raw/strict-native-phase-v2/AB1-launch-supervisor.py",
+    "sha256": "74806ad5a84b3078cd6afe88438a6ba3a9c242724f09f68222f0c355a1acfc0e",
+    "bytes": 11341,
+    "mode": 436
+  },
+  "inherited_review": {
+    "path": "results/strict-native-trace-capacity-v2-AB1-wrapper-review-v1.json",
+    "sha256": "9a6f0a1d9582ba93632b70d5307e050030da474597d23354e560da1def54c63c",
+    "bytes": 7687,
+    "mode": 436
+  },
+  "Root_Task1_acceptance": {
+    "path": "results/strict-native-cache-v3-task1-root-acceptance-v1.json",
+    "sha256": "79d2b66a2f6291b2f6cf25dbb3749c1636c7967482030a1b65139ceac8d53f83",
+    "bytes": 6069,
+    "mode": 436
+  },
+  "candidate": {
+    "tools": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t",
+    "source": "/tmp/crosspath-native-cache-v3-src-hr23qnrs",
+    "target": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru",
+    "freeze_sha256": "0bf9ff1cbc154583c60c6dd34688c9b498b6f63b0ef8014d1dbcec04f7ed28e8",
+    "expected_SHA256": {
+      "native_once.py": "8b871b1ea3cfb8a8ad8272bc7fa5ca37dc648b3efed45fe4af9ae0f374a24902",
+      "capture_native.py": "61717a37b528e2e93d8cbcae1c1dafbc6249ac3417fbf0b8011b984a03a4c683",
+      "inputs.json": "8fac8a1fb86d79a1e74bf9591bf68fa2dd88f6d261edcf0ea576dfbd6ace0060",
+      "freeze-manifest.json": "0bf9ff1cbc154583c60c6dd34688c9b498b6f63b0ef8014d1dbcec04f7ed28e8"
+    }
+  },
+  "checks": [
+    {
+      "id": "INHERITANCE-01-EXACT-DELTA",
+      "result": "PASS",
+      "observation": "父源码执行10项各恰出现一次的已知文本替换后，与新源码全部字节相同，完整AST亦相同。替换只含输出/工具路径、freeze/native/capture/inputs四身份、Root acceptance文件名、两处prepare描述和receipt描述key。保存patch与真实diff全同。没有新增运行行为。"
+    },
+    {
+      "id": "INHERITANCE-02-ACTUAL-WAIT",
+      "result": "PASS",
+      "observation": "含唯一subprocess.Popen的实际With块在新旧源码中逐字节及AST全同，块SHA cc1652e2157b4f3642d47d5247cfec250fa48e2c5c9f5a502b72dda3297de99b。Popen成功后记录driver_pid、identity、launch-save和sha均仍在try，finally对同一原始child调用wait并记录实际退出，之后原异常继续由外层error收据保存。继承原准确源码的异常路径回归审阅，不重跑。"
+    },
+    {
+      "id": "INHERITANCE-03-ROOTCOPY-METADATA",
+      "result": "PASS",
+      "observation": "wrapper读取指定v3 acceptance且要求调用者提供准确SHA，再核offline_task1_passed、freeze和hardware_started=0以及全部evidence SHA。Rootcopy要求passed及同freeze；metadata引用须为Rootcopy结果同目录target-metadata.after.json并匹配接纳SHA，再以原算法对当前target逐项lstat比对。接纳metadata为7784项、metadata_sha256=9b601bda1535cdff156a8e0dd2e9111a73583e9b44a6e5a7a43843d3d6db9b66；metadata文件自身SHA为f91761e8a96b380f8c529cc5e62ee472111bb2c7cf47de27539d35def7d9c523。本次未遍历target，未取得当前target状态。"
+    },
+    {
+      "id": "INHERITANCE-04-ACCURATE-INPUTS",
+      "result": "PASS",
+      "observation": "当前四个工具文件SHA与wrapper常量全同；准确inputs的source、tools、target和source702对应v3接纳。Root acceptance的21项引用当前SHA/size全部匹配，包括新wrapper、Rootcopy、Task1 Spec/Quality和normal审计器/Spec附录/Quality；normal Quality当前SHA为04c99a4182148523e862acb6d20af07fdd74df7be42b95ecb1a04179e7f87b28。normal逻辑与端到端GREEN不属于本附录重审范围。"
+    },
+    {
+      "id": "INHERITANCE-05-UNCHANGED-GUARDS",
+      "result": "PASS",
+      "observation": "准确迁移后的全部代码等价保留case/output/*.once拒绝、exclusive receipt创建、唯一driver Popen、host namespace/boot核对、只读进程所有权/conflict/unknown拒绝和有界服务GET快照。approval继续从Rootcopy actual_ready.static派生准确Cargo runtime，正式native再次按最新ready精确比较；原60秒host witness及900/920/10/30秒、512MiB限制未放宽，输入limits当前亦完全相符。未创建fresh witness或读取当前服务/进程。"
+    },
+    {
+      "id": "INHERITANCE-06-EXISTING-COPY-RECEIPTS",
+      "result": "PASS",
+      "observation": "只读现有Rootcopy实际收据：ready父wait0、复制正式执行拒绝wait2、Root直接父Popen.wait0、原统一工具session81327实际exit0/chunk e0cb5d；result记target metadata未变、无marker、无硬件。以上均为已有准确证据，本附录未运行copy/ready/拒绝门。"
+    }
+  ],
+  "static_consistency": {
+    "actual_command_exit": 0,
+    "output_chunk": "79292d",
+    "whole_source_exact_after_10_single_occurrence_substitutions": true,
+    "complete_normalized_AST_equal": true,
+    "Popen_With_block_bytes_and_AST_identical": true,
+    "saved_patch_matches_actual_diff": true,
+    "acceptance_references_SHA_size_checked": 21,
+    "current_four_tool_SHA_checked": true,
+    "existing_Task1_Quality_JSON_and_MD_hashes_unchanged": true,
+    "diff_exit1_means_expected_differences": true
+  },
+  "evidence_identities": [
+    {
+      "path": "raw/strict-native-phase-v3/AB1-launch-supervisor.py",
+      "sha256": "d7ebb6948ac065c3fddfd1e618bfb381e9355029d7261cd0a4a9808e704d90f2",
+      "bytes": 11352,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v2/AB1-launch-supervisor.py",
+      "sha256": "74806ad5a84b3078cd6afe88438a6ba3a9c242724f09f68222f0c355a1acfc0e",
+      "bytes": 11341,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/AB1-launch-supervisor.v2-to-v3.patch",
+      "sha256": "52840d807585f2f37b4495a89a7eb917570dca33e5988d3db71bc759cbc84e66",
+      "bytes": 3390,
+      "mode": 436
+    },
+    {
+      "path": "results/strict-native-trace-capacity-v2-AB1-wrapper-review-v1.json",
+      "sha256": "9a6f0a1d9582ba93632b70d5307e050030da474597d23354e560da1def54c63c",
+      "bytes": 7687,
+      "mode": 436
+    },
+    {
+      "path": "results/strict-native-cache-v3-task1-root-acceptance-v1.json",
+      "sha256": "79d2b66a2f6291b2f6cf25dbb3749c1636c7967482030a1b65139ceac8d53f83",
+      "bytes": 6069,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/root-copy-v1/result.json",
+      "sha256": "6d1d35b423687c0bf819e5b7680104cf5907447c9372f2527c3c5303b947a3e4",
+      "bytes": 1844,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/root-copy-v1/target-metadata.after.json",
+      "sha256": "f91761e8a96b380f8c529cc5e62ee472111bb2c7cf47de27539d35def7d9c523",
+      "bytes": 111,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/root-copy-parent-v1.receipt.json",
+      "sha256": "b2b2f33deaa25c2dc85b6fc951906faae28f083598350a90346792f431fcfcdb",
+      "bytes": 949,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/root-copy-tool-completion-v1.json",
+      "sha256": "7c7a8d3fbc037ff4a32768f016c95eaf8f15a5c005585d0a6b2cb089db0bfed7",
+      "bytes": 378,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/root-copy-v1/ready.receipt.json",
+      "sha256": "bc63396aff37e7f6102abce2109d36eff5dc6fc998191f2650c6d3acea45aa50",
+      "bytes": 1380,
+      "mode": 436
+    },
+    {
+      "path": "raw/strict-native-phase-v3/task1/root-copy-v1/copied-formal-refusal.receipt.json",
+      "sha256": "b25008083359abd62a9bd696415d45bdf78f63b09d892874229a6fe04b656127",
+      "bytes": 1583,
+      "mode": 436
+    },
+    {
+      "path": "results/strict-native-cache-v3-task1-quality-review-v1.json",
+      "sha256": "5a2151b3784d58e914c7a3a205cea50950e1f84a0a1bf74ed66aebb53fbd0e47",
+      "bytes": 30075,
+      "mode": 436
+    }
+  ],
+  "review_execution": {
+    "method": "只读文本/SHA/JSON/AST检查，随后只新建本附录JSON和MD。",
+    "reviewed_code_imported_or_executed": false,
+    "wrapper_ready_prepare_build_test_hardware_executed": false,
+    "git_network_proc_signal_operations": false,
+    "full_candidate_cache_source_target_or_primary96_scan": false,
+    "new_tests_or_implementation_review_matrix": false,
+    "existing_Task1_Quality_or_other_sealed_files_modified": false
+  },
+  "remaining_conditions": [
+    "Root在实际单次启动时仍须取得当前真实host namespace/ownership无竞争和服务availability证明；60秒fresh witness按原门执行。",
+    "必须用准确Root acceptance SHA及本次准确wrapper/inputs/freeze身份运行；旧copy证明不代替启动时的实时检查。",
+    "实际AB1须另取完整退出、工件、释放和正常功能证据并经Spec→Quality；未通过前停止AB0/0。"
+  ],
+  "offline_launch_preparation_inheritance_accepted": true,
+  "current_host_or_service_proven_by_this_review": false,
+  "hardware_authorized_by_this_review": false,
+  "actual_AB1_complete": false,
+  "normal_Host_proven": false,
+  "capacity_zero_loss_proven": false,
+  "M2": false,
+  "Joint": false,
+  "goal_complete": false
+}

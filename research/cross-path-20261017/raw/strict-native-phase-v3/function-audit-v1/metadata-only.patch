@@ -1,0 +1,14 @@
+--- strict-native-phase-v2/function-audit-v3/audit.py
++++ strict-native-phase-v3/function-audit-v1/audit.py
+@@ -14,9 +14,9 @@
+ import zlib
+ 
+ HERE = Path(__file__).resolve().parent
+-CONTRACT_SHA = '07649250263cacf6d4d03ba32b6200059b60dd2160c44c3e12ecae8a5c4c597b'
++CONTRACT_SHA = '8ff5e4a14fc159d0b0ec81bd26c00fe1860c62611d9e6a0f38c15989e6518d0e'
+ SOURCE_SHA = '0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb'
+-FREEZE_SHA = '6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9'
++FREEZE_SHA = '0bf9ff1cbc154583c60c6dd34688c9b498b6f63b0ef8014d1dbcec04f7ed28e8'
+ MASK = (1 << 64) - 1
+ ANSI = re.compile(r'\x1b\[[0-?]*[ -/]*[@-~]')
+ MARKER = re.compile(r'(?<![A-Za-z0-9_])(?:VIRQ_[A-Z0-9_]+|LINUX_(?:PHASE|FENCE|LOAD|MEMORY)_[A-Z0-9_]+|AXTEST_[A-Z_]+|AXVM_TEST_FAILED|SOFTWARE VIRQ (?:COMPLETE|FAIL))(?= |$)')

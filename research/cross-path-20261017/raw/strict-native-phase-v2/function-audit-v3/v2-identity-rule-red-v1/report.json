@@ -1,0 +1,398 @@
+{
+  "auditor": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v2/audit.py",
+    "sha256": "1e4f19515aa9bc285e1201a85378a166f7b7a7805067ab4b4f6032fa1ad0a22b"
+  },
+  "actual_handoff": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-final-handoff-v1.json",
+    "sha256": "30d2613204648b7ebd89a202ee642b725678c94c056dada23e58de34b88cdd91"
+  },
+  "original_receipts": {
+    "actual_command": {
+      "bytes": 2703,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1/actual-command.json",
+      "sha256": "29ec08fb40b33d1b4eea5deb0fd1795f3ba9ea39a5584f4066937c5af7d9df28"
+    },
+    "approval": {
+      "bytes": 3994,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-approval-v1.json",
+      "sha256": "683d3be29859ce8b8b9734106687b084a92a870f0db1d47783206d81ee6a6f0f"
+    },
+    "capture": {
+      "bytes": 618,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1/capture.json",
+      "sha256": "8bbc740841eb5d59ea0936551647277946ade96da12c5d8c89afd2980aa8270a"
+    },
+    "freeze_manifest": {
+      "bytes": 12230,
+      "path": "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/freeze-manifest.json",
+      "sha256": "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9"
+    },
+    "frozen_inputs": {
+      "bytes": 5571,
+      "path": "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/inputs.json",
+      "sha256": "a785de09f1017498360677338ef0f0c4af40a9ed7bc81a9c824c52b58841abbd"
+    },
+    "host_preflight": {
+      "bytes": 1046,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-host-preflight-v1.json",
+      "sha256": "631009b7e2c03f6b5ac9a9d4be9dd5c842a6e1eca88ecfecd3591d73dff8d313"
+    },
+    "primary_delivery": {
+      "bytes": 4824,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/intensity-v3-final-delivery.json",
+      "sha256": "fe7b8cd40aa21855eaaaedfb0ed92022eac37eed329dc51b06352710d4525bb7"
+    },
+    "raw": {
+      "bytes": 2283,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1/xtask.log",
+      "sha256": "61b7be0f9809b04a574c57f0ca5411f3ad15f28e92825c4fbf9f6b20034788e1"
+    },
+    "root_launch": {
+      "bytes": 4211,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-launch.json",
+      "sha256": "cb56c12f473c0bcaa476a56da81cb5749bea99362053cbbfe3a2c6e2a03bdc2c"
+    },
+    "root_tool_completion": {
+      "bytes": 407,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-supervisor-completion-v1.json",
+      "sha256": "0dcd33d8b741190b959cc90c34fbc15cb4362147f1fbda32aa6eb00fce4de95f"
+    },
+    "root_wait": {
+      "bytes": 2166,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-wait.json",
+      "sha256": "821155a848d38653eab2fe9c240db35240ca088280305c40bbbc9aacd677d9ff"
+    },
+    "run_result": {
+      "bytes": 1828,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1/run-result.json",
+      "sha256": "b69e27dab4491a467830da92a63840ab73bc396baf94704b9065d88639490aa8"
+    },
+    "task1_Quality": {
+      "bytes": 34343,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-trace-capacity-v2-task1-quality-review-v1.json",
+      "sha256": "6309db23595f07550ecb1b8ebf36bd022f09d31e9cdbf94d49c7a9c6d29a20e4"
+    },
+    "task1_Spec": {
+      "bytes": 19095,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-trace-capacity-v2-task1-spec-review-v1.json",
+      "sha256": "4b3c61913884343e5207fc62b7533d7a38ebe00d9076d1c998f586018785d0d0"
+    },
+    "task1_acceptance": {
+      "bytes": 4170,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-trace-capacity-v2-task1-root-acceptance-v1.json",
+      "sha256": "1539cd651b743fc85377bfd8fcce11531b1ce2b0f907bb4dddfaf8920cb0c9b5"
+    },
+    "wrapper_review": {
+      "bytes": 7687,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-trace-capacity-v2-AB1-wrapper-review-v1.json",
+      "sha256": "9a6f0a1d9582ba93632b70d5307e050030da474597d23354e560da1def54c63c"
+    }
+  },
+  "observations": [
+    {
+      "identity_edge": "foreign-case-pair",
+      "changes": [
+        {
+          "field": "/root_wait/case_id",
+          "original": "AB1",
+          "mutated": "AB0"
+        },
+        {
+          "field": "/root_wait/driver/argv",
+          "original": [
+            "/usr/bin/python3",
+            "-B",
+            "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/native_once.py",
+            "--run",
+            "AB1",
+            "--approved-manifest",
+            "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9",
+            "--approval",
+            "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-approval-v1.json",
+            "--approval-sha256",
+            "683d3be29859ce8b8b9734106687b084a92a870f0db1d47783206d81ee6a6f0f",
+            "--source-manifest-sha",
+            "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb"
+          ],
+          "mutated": [
+            "/usr/bin/python3",
+            "-B",
+            "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/native_once.py",
+            "--run",
+            "AB0",
+            "--approved-manifest",
+            "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9",
+            "--approval",
+            "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-approval-v1.json",
+            "--approval-sha256",
+            "683d3be29859ce8b8b9734106687b084a92a870f0db1d47783206d81ee6a6f0f",
+            "--source-manifest-sha",
+            "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb"
+          ]
+        },
+        {
+          "field": "/run_result/case_id",
+          "original": "AB1",
+          "mutated": "AB0"
+        }
+      ],
+      "test_handoff": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/v2-identity-rule-red-v1/foreign-case-pair/handoff.json",
+        "bytes": 5506,
+        "sha256": "3670181a1f73ea496e71c5aad76d633c5c4ae6e82ed5705bff939300e277ec7a"
+      },
+      "rejected": false,
+      "reason": null,
+      "scope": "receipt identity rule only; actual waits remain nonzero; no successful Popen/Guest/Trace fabricated"
+    },
+    {
+      "identity_edge": "foreign-Popen-child",
+      "changes": [
+        {
+          "field": "/root_wait/driver/pid",
+          "original": 2246622,
+          "mutated": 2246623
+        },
+        {
+          "field": "/root_wait/driver/starttime",
+          "original": "50588692",
+          "mutated": "50588693"
+        },
+        {
+          "field": "/root_wait/driver_pid_from_Popen",
+          "original": 2246622,
+          "mutated": 2246623
+        }
+      ],
+      "test_handoff": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/v2-identity-rule-red-v1/foreign-Popen-child/handoff.json",
+        "bytes": 5454,
+        "sha256": "5b2fe903a81a9924e6f550a7c4c9c5cc0269b942f5f1fe4b7f64560bc55f19ad"
+      },
+      "rejected": false,
+      "reason": null,
+      "scope": "receipt identity rule only; actual waits remain nonzero; no successful Popen/Guest/Trace fabricated"
+    },
+    {
+      "identity_edge": "wrong-driver-source",
+      "changes": [
+        {
+          "field": "/root_launch/argv",
+          "original": [
+            "/usr/bin/python3",
+            "-B",
+            "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/native_once.py",
+            "--run",
+            "AB1",
+            "--approved-manifest",
+            "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9",
+            "--approval",
+            "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-approval-v1.json",
+            "--approval-sha256",
+            "683d3be29859ce8b8b9734106687b084a92a870f0db1d47783206d81ee6a6f0f",
+            "--source-manifest-sha",
+            "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb"
+          ],
+          "mutated": [
+            "/usr/bin/python3",
+            "-B",
+            "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/native_once.py",
+            "--run",
+            "AB1",
+            "--approved-manifest",
+            "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9",
+            "--approval",
+            "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-approval-v1.json",
+            "--approval-sha256",
+            "683d3be29859ce8b8b9734106687b084a92a870f0db1d47783206d81ee6a6f0f",
+            "--source-manifest-sha",
+            "1f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb"
+          ]
+        },
+        {
+          "field": "/root_launch/driver/argv",
+          "original": [
+            "/usr/bin/python3",
+            "-B",
+            "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/native_once.py",
+            "--run",
+            "AB1",
+            "--approved-manifest",
+            "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9",
+            "--approval",
+            "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-approval-v1.json",
+            "--approval-sha256",
+            "683d3be29859ce8b8b9734106687b084a92a870f0db1d47783206d81ee6a6f0f",
+            "--source-manifest-sha",
+            "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb"
+          ],
+          "mutated": [
+            "/usr/bin/python3",
+            "-B",
+            "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/native_once.py",
+            "--run",
+            "AB1",
+            "--approved-manifest",
+            "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9",
+            "--approval",
+            "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-approval-v1.json",
+            "--approval-sha256",
+            "683d3be29859ce8b8b9734106687b084a92a870f0db1d47783206d81ee6a6f0f",
+            "--source-manifest-sha",
+            "1f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb"
+          ]
+        },
+        {
+          "field": "/root_wait/driver/argv",
+          "original": [
+            "/usr/bin/python3",
+            "-B",
+            "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/native_once.py",
+            "--run",
+            "AB1",
+            "--approved-manifest",
+            "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9",
+            "--approval",
+            "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-approval-v1.json",
+            "--approval-sha256",
+            "683d3be29859ce8b8b9734106687b084a92a870f0db1d47783206d81ee6a6f0f",
+            "--source-manifest-sha",
+            "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb"
+          ],
+          "mutated": [
+            "/usr/bin/python3",
+            "-B",
+            "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/native_once.py",
+            "--run",
+            "AB1",
+            "--approved-manifest",
+            "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9",
+            "--approval",
+            "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-approval-v1.json",
+            "--approval-sha256",
+            "683d3be29859ce8b8b9734106687b084a92a870f0db1d47783206d81ee6a6f0f",
+            "--source-manifest-sha",
+            "1f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb"
+          ]
+        }
+      ],
+      "test_handoff": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/v2-identity-rule-red-v1/wrong-driver-source/handoff.json",
+        "bytes": 5512,
+        "sha256": "6b3032852ff34887ea602a1afaf1bfffec221221c3a4d048d41ae4faa3115945"
+      },
+      "rejected": false,
+      "reason": null,
+      "scope": "receipt identity rule only; actual waits remain nonzero; no successful Popen/Guest/Trace fabricated"
+    },
+    {
+      "identity_edge": "detached-command-approval",
+      "changes": [
+        {
+          "field": "/actual_command/approval_sha256",
+          "original": "683d3be29859ce8b8b9734106687b084a92a870f0db1d47783206d81ee6a6f0f",
+          "mutated": "183d3be29859ce8b8b9734106687b084a92a870f0db1d47783206d81ee6a6f0f"
+        }
+      ],
+      "test_handoff": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/v2-identity-rule-red-v1/detached-command-approval/handoff.json",
+        "bytes": 5411,
+        "sha256": "3d6c183a832baa257cd9cffe427a44ee5df4d15449901792be2d8b078c3d97c4"
+      },
+      "rejected": false,
+      "reason": null,
+      "scope": "receipt identity rule only; actual waits remain nonzero; no successful Popen/Guest/Trace fabricated"
+    },
+    {
+      "identity_edge": "detached-launch",
+      "changes": [
+        {
+          "field": "/root_wait/launch_sha256",
+          "original": "cb56c12f473c0bcaa476a56da81cb5749bea99362053cbbfe3a2c6e2a03bdc2c",
+          "mutated": "1b56c12f473c0bcaa476a56da81cb5749bea99362053cbbfe3a2c6e2a03bdc2c"
+        }
+      ],
+      "test_handoff": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/v2-identity-rule-red-v1/detached-launch/handoff.json",
+        "bytes": 5446,
+        "sha256": "8b8adaf3a194f8390881aa3b1abe441996c3e54d81f8fd5fd3b1f71b9f8da805"
+      },
+      "rejected": false,
+      "reason": null,
+      "scope": "receipt identity rule only; actual waits remain nonzero; no successful Popen/Guest/Trace fabricated"
+    },
+    {
+      "identity_edge": "detached-completion",
+      "changes": [
+        {
+          "field": "/root_tool_completion/driver_Popen_wait_receipt_sha256",
+          "original": "821155a848d38653eab2fe9c240db35240ca088280305c40bbbc9aacd677d9ff",
+          "mutated": "121155a848d38653eab2fe9c240db35240ca088280305c40bbbc9aacd677d9ff"
+        }
+      ],
+      "test_handoff": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/v2-identity-rule-red-v1/detached-completion/handoff.json",
+        "bytes": 5396,
+        "sha256": "23fcc47d2fb789892d2d8cea37e9d0bc77064650eac4e384b09dcd9d2aebe634"
+      },
+      "rejected": false,
+      "reason": null,
+      "scope": "receipt identity rule only; actual waits remain nonzero; no successful Popen/Guest/Trace fabricated"
+    },
+    {
+      "identity_edge": "contradictory-completion-exit",
+      "changes": [
+        {
+          "field": "/root_tool_completion/actual_unified_exec_exit",
+          "original": 1,
+          "mutated": 2
+        }
+      ],
+      "test_handoff": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/v2-identity-rule-red-v1/contradictory-completion-exit/handoff.json",
+        "bytes": 5406,
+        "sha256": "833d8b691ffdccc0cae6d2008ff3617bf2e698d5f4de8a6b390fa56abdde4d4f"
+      },
+      "rejected": false,
+      "reason": null,
+      "scope": "receipt identity rule only; actual waits remain nonzero; no successful Popen/Guest/Trace fabricated"
+    },
+    {
+      "identity_edge": "missing-original-completion",
+      "changes": [
+        {
+          "field": "/root_tool_completion",
+          "original": {
+            "actual_unified_exec_exit": 1,
+            "completion_tool_chunk": "6268a7",
+            "driver_Popen_wait_from_own_parent": 1,
+            "driver_Popen_wait_receipt_sha256": "821155a848d38653eab2fe9c240db35240ca088280305c40bbbc9aacd677d9ff",
+            "observed_utc": "2026-10-18T11:27:46.817368+00:00",
+            "original_unified_exec_session": 15037,
+            "scope": "original exact tool session completion; not reconstructed from proc absence"
+          },
+          "mutated": null
+        }
+      ],
+      "test_handoff": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/v2-identity-rule-red-v1/missing-original-completion/handoff.json",
+        "bytes": 5053,
+        "sha256": "67b839c5ae16293d23127db17cc7eefd1fd1848739c04b00e57e9c545874a7b5"
+      },
+      "rejected": false,
+      "reason": null,
+      "scope": "receipt identity rule only; actual waits remain nonzero; no successful Popen/Guest/Trace fabricated"
+    }
+  ],
+  "tests_run": 1,
+  "failures": 8,
+  "errors": 0,
+  "baseline_actual_xtask_driver_Root_exit": [
+    1,
+    1,
+    1
+  ],
+  "scope": "same-run receipt binding only; no target execution and no success fixture",
+  "normal_end_to_end_GREEN": false
+}

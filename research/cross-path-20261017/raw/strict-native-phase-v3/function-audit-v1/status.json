@@ -1,0 +1,228 @@
+{
+  "schema_version": 1,
+  "state": "metadata-only-integration-candidate-awaiting-combined-Spec-then-Quality",
+  "scope": "new exact source/tool metadata for the sealed function-audit-v3 logic; no function changes and no execution of the new case",
+  "prior_sealed_auditor": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/audit.py",
+    "bytes": 64442,
+    "sha256": "35efe04deacc18de5556505b8567cabc988b1c85eefe6455cf3da1c2c4deb6c8"
+  },
+  "prior_sealed_status": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/status.json",
+    "bytes": 12547,
+    "sha256": "72e0b3ad003fc3e4eb2494f1fec6d1f4bbfc9f1b03a2c589310209570e2476a0"
+  },
+  "files": {
+    "audit.py": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/audit.py",
+      "bytes": 64442,
+      "sha256": "6fa57d1bb99a9fbdb49613ffc90cb4b648aa9511465957aec25b9e58e34e76aa"
+    },
+    "source-identities.json": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/source-identities.json",
+      "bytes": 3840,
+      "sha256": "8ff5e4a14fc159d0b0ec81bd26c00fe1860c62611d9e6a0f38c15989e6518d0e"
+    },
+    "contract-migration.json": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/contract-migration.json",
+      "bytes": 10543,
+      "sha256": "906d199a341a86a312db979575d841320c62b15a7a979e720ea8deefb889663b"
+    },
+    "metadata-only.patch": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/metadata-only.patch",
+      "bytes": 837,
+      "sha256": "b6a00c6dbf75c5cbb1028061d41d62e9c9057c4f873eb877ecb3c2fbfad83a7e"
+    },
+    "identity-AST-comparison.json": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/identity-AST-comparison.json",
+      "bytes": 9940,
+      "sha256": "7a29189edee6913926f44eaad7fcd4c1994d4983f893ece3a008c3540bfa32d0"
+    },
+    "run_command.py": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/run_command.py",
+      "bytes": 1889,
+      "sha256": "a37f8a26838081d8fb1190bfe832e3469b0747f6bf28a1f19047f826f04646a0"
+    },
+    "README.md": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/README.md",
+      "bytes": 1828,
+      "sha256": "be561a3120fc6aef1e859007193f3b5af4803f7c5da05f185deb677aba6eedee"
+    }
+  },
+  "source_702_sha256": "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb",
+  "tools_freeze_sha256": "0bf9ff1cbc154583c60c6dd34688c9b498b6f63b0ef8014d1dbcec04f7ed28e8",
+  "source_root": "/tmp/crosspath-native-cache-v3-src-hr23qnrs",
+  "tools_root": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t",
+  "offline_identity_migration_passed": true,
+  "references_checked": 17,
+  "actual_content_changes": [
+    {
+      "label": "freeze",
+      "before": {
+        "path": "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/freeze-manifest.json",
+        "bytes": 12230,
+        "sha256": "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9"
+      },
+      "after": {
+        "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/freeze-manifest.json",
+        "bytes": 19347,
+        "sha256": "0bf9ff1cbc154583c60c6dd34688c9b498b6f63b0ef8014d1dbcec04f7ed28e8"
+      },
+      "content_changed": true,
+      "path_changed": true
+    },
+    {
+      "label": "inputs",
+      "before": {
+        "path": "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/inputs.json",
+        "bytes": 5571,
+        "sha256": "a785de09f1017498360677338ef0f0c4af40a9ed7bc81a9c824c52b58841abbd"
+      },
+      "after": {
+        "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/inputs.json",
+        "bytes": 5547,
+        "sha256": "8fac8a1fb86d79a1e74bf9591bf68fa2dd88f6d261edcf0ea576dfbd6ace0060"
+      },
+      "content_changed": true,
+      "path_changed": true
+    },
+    {
+      "label": "capture_source",
+      "before": {
+        "path": "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/capture_native.py",
+        "bytes": 30745,
+        "sha256": "e1e573ed9ecd8a1dd77c80d6a06fff3739e4fa8114815cc2b6b5c826206a14b2"
+      },
+      "after": {
+        "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/capture_native.py",
+        "bytes": 33173,
+        "sha256": "61717a37b528e2e93d8cbcae1c1dafbc6249ac3417fbf0b8011b984a03a4c683"
+      },
+      "content_changed": true,
+      "path_changed": true
+    },
+    {
+      "label": "driver_source",
+      "before": {
+        "path": "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/native_once.py",
+        "bytes": 21727,
+        "sha256": "88608867d42ce9adbf4aa900dd8da71667b8e1090e3c52c82174c9949f3d21f4"
+      },
+      "after": {
+        "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/native_once.py",
+        "bytes": 21727,
+        "sha256": "8b871b1ea3cfb8a8ad8272bc7fa5ca37dc648b3efed45fe4af9ae0f374a24902"
+      },
+      "content_changed": true,
+      "path_changed": true
+    }
+  ],
+  "all_functions_source_bytes_and_AST_unchanged": true,
+  "function_count": 35,
+  "only_auditor_assignments_changed": [
+    "CONTRACT_SHA",
+    "FREEZE_SHA"
+  ],
+  "entire_module_AST_equal_after_two_metadata_assignments_masked": true,
+  "input_schema_compatible_without_behavior_change": true,
+  "verification": {
+    "actual_commands": {
+      "0001-migrate-contract": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/commands/0001-migrate-contract/receipt.json",
+        "bytes": 4220,
+        "sha256": "628c98228249d1fab5b924be48dab9eb9dd5e67cec6eacd59575411f020e5da7"
+      },
+      "0002-bind-auditor-and-compare": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/commands/0002-bind-auditor-and-compare/receipt.json",
+        "bytes": 5130,
+        "sha256": "b6975153eb6f1726156b6e6d77d0c1ac13ad32f33035a1b59dde00f79d00053d"
+      }
+    },
+    "all_wait_exits": 0,
+    "methods": [
+      "17 exact current reference paths/SHA/bytes and approved manifest entries",
+      "all 35 function source bytes and AST plus masked whole-module AST",
+      "specific used input schema, unchanged case matrix and xtask argv",
+      "prior sealed report hashes only"
+    ],
+    "not_executed": [
+      "auditor on new or old handoff",
+      "new AB1 or any hardware",
+      "18-rule or 2-check rerun",
+      "Rust/build/ready/QEMU",
+      "cache or source-tree scan",
+      "main96 replay",
+      "proc/signal/network/Git"
+    ]
+  },
+  "historical_logic_validation": {
+    "v2-identity-rule-red-v1/report.json": {
+      "reference": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/v2-identity-rule-red-v1/report.json",
+        "bytes": 17906,
+        "sha256": "08754eddded492ccf09d94d70ea2f1e80eb53dd5ea56b682019922b45dcbd0cc"
+      },
+      "scope": "historical logic validation under previous capacity-v2 source/tool contract; not executed for the new cache-v3 case"
+    },
+    "v3-final-identity-green-v1/report.json": {
+      "reference": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/v3-final-identity-green-v1/report.json",
+        "bytes": 18293,
+        "sha256": "16c450950f887fb8e15c8037d8d98b1dd9bab0d9d044f04822ee263a1d779b84"
+      },
+      "scope": "historical logic validation under previous capacity-v2 source/tool contract; not executed for the new cache-v3 case"
+    },
+    "retained-18-rules-green.json": {
+      "reference": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/retained-18-rules-green.json",
+        "bytes": 21219,
+        "sha256": "7798d0c4502fb3aa5431fb81602adf555e63a9e84f03075f5053ead659fa5aa8"
+      },
+      "scope": "historical logic validation under previous capacity-v2 source/tool contract; not executed for the new cache-v3 case"
+    },
+    "old-AB1-red-v1/report.json": {
+      "reference": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/old-AB1-red-v1/report.json",
+        "bytes": 64366,
+        "sha256": "67baacf82c136f20a3a2cf373e7c63b3bc055f89166cff79c5d5a4c15dfdf958"
+      },
+      "scope": "historical logic validation under previous capacity-v2 source/tool contract; not executed for the new cache-v3 case"
+    },
+    "new-v2-AB1-red-v1/report.json": {
+      "reference": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/new-v2-AB1-red-v1/report.json",
+        "bytes": 17508,
+        "sha256": "06493d2cd9515e257091f1f5b0e64abf859a71d7edbaab525e0273db45b3890e"
+      },
+      "scope": "historical logic validation under previous capacity-v2 source/tool contract; not executed for the new cache-v3 case"
+    },
+    "0008-retained-2-checks": {
+      "reference": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/commands/0008-retained-2-checks/receipt.json",
+        "bytes": 1036,
+        "sha256": "1cbdec3627881b76c7e75f4a70f9da6b2e401c75ceb3de34b1b6e55515931852"
+      },
+      "scope": "historical two inherited checks only; not rerun during metadata migration"
+    }
+  },
+  "historical_results_scope": "previous v3 identity RED wait1/8 misses then GREEN wait0/8 rejects; previous 18 rules and 2 checks wait0; previous two actual failed audits wait1. Those are not new cache-v3 executions or Host success.",
+  "case_status": {
+    "AB1": "not executed or audited in this migration",
+    "AB0": "not executed",
+    "0": "not executed"
+  },
+  "normal_end_to_end_GREEN": false,
+  "full_function_passed": false,
+  "Host_function_passed": false,
+  "M2": false,
+  "Joint": false,
+  "goal_complete": false,
+  "unchanged_prior_v3_auditor": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/audit.py",
+    "bytes": 64442,
+    "sha256": "35efe04deacc18de5556505b8567cabc988b1c85eefe6455cf3da1c2c4deb6c8"
+  },
+  "unchanged_scope": "prior candidates/reports and frozen source/tools/cache/Root material not modified",
+  "archive_bytes_before_this_status_and_receipt": 109307,
+  "archive_budget_bytes": 104857600
+}

@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "state": "metadata-only-integration-candidate-awaiting-combined-Spec-then-Quality",
+  "status": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/status.json",
+    "bytes": 10945,
+    "sha256": "72410947af68e123395e6cee6a890db0887c471010a819dfd17b9e7bb68c28db"
+  },
+  "auditor": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/audit.py",
+    "bytes": 64442,
+    "sha256": "6fa57d1bb99a9fbdb49613ffc90cb4b648aa9511465957aec25b9e58e34e76aa"
+  },
+  "contract": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/source-identities.json",
+    "bytes": 3840,
+    "sha256": "8ff5e4a14fc159d0b0ec81bd26c00fe1860c62611d9e6a0f38c15989e6518d0e"
+  },
+  "prior_sealed_auditor": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/audit.py",
+    "bytes": 64442,
+    "sha256": "35efe04deacc18de5556505b8567cabc988b1c85eefe6455cf3da1c2c4deb6c8"
+  },
+  "source_702_sha256": "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb",
+  "tools_freeze_sha256": "0bf9ff1cbc154583c60c6dd34688c9b498b6f63b0ef8014d1dbcec04f7ed28e8",
+  "references_checked": 17,
+  "content_changed_tool_references": [
+    "freeze",
+    "inputs",
+    "capture_source",
+    "driver_source"
+  ],
+  "unchanged_function_count": 35,
+  "only_two_identity_assignments_changed": true,
+  "offline_identity_migration_passed": true,
+  "new_case_execution": "not executed",
+  "normal_end_to_end_GREEN": false,
+  "Host_function_passed": false,
+  "M2": false,
+  "Joint": false,
+  "goal_complete": false
+}

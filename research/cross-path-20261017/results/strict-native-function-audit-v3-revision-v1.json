@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "state": "same-run-binding-revision-awaiting-Spec-then-Quality",
+  "status": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/status.json",
+    "bytes": 12547,
+    "sha256": "72e0b3ad003fc3e4eb2494f1fec6d1f4bbfc9f1b03a2c589310209570e2476a0"
+  },
+  "auditor": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/audit.py",
+    "bytes": 64442,
+    "sha256": "35efe04deacc18de5556505b8567cabc988b1c85eefe6455cf3da1c2c4deb6c8"
+  },
+  "review": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-function-audit-v2-quality-review-v1.json",
+    "bytes": 24333,
+    "sha256": "1aaae34325c49b66d381ebd8e6e266623b662b65f824954abc16fff6da3a20f3"
+  },
+  "scope": "only QUALITY-EXIT-RUN-IDENTITY in a fresh auditor directory; exact capacity-v2 contract remains fixed",
+  "tool_identity_rule_RED_wait": 1,
+  "tool_identity_rule_GREEN_wait": 0,
+  "identity_mutations_rejected": 8,
+  "retained_18_rules_wait": 0,
+  "retained_2_checks_wait": 0,
+  "actual_old_failure_audit_wait": 1,
+  "actual_new_failure_audit_wait": 1,
+  "actual_new_same_run_identity_binding_passed": true,
+  "normal_end_to_end_GREEN": false,
+  "Spec_passed": false,
+  "Quality_started": false,
+  "Host_function_passed": false,
+  "M2": false,
+  "Joint": false,
+  "goal_complete": false
+}

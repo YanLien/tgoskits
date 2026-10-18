@@ -1,0 +1,427 @@
+{
+  "/home/yanlien/.agents/skills/superpowers/verification-before-completion/SKILL.md": {
+    "bytes": 4201,
+    "mode": 436,
+    "sha256": "ea52d15aabaf72bc6b558efe2c126f161b53961090ddcd712000273bfe8c7b6c"
+  },
+  "/home/yanlien/.agents/skills/superpowers/writing-plans/SKILL.md": {
+    "bytes": 5399,
+    "mode": 436,
+    "sha256": "d936159ad11f2e79ba8ae8b8653f87bb924ddaf78ae11dc3a424b4032ad1bd23"
+  },
+  "/home/yanlien/.agents/skills/superpowers/writing-plans/plan-document-reviewer-prompt.md": {
+    "bytes": 1714,
+    "mode": 436,
+    "sha256": "6fce2aa83c63715697e9dd86050c820716100b91efbd9f12bab8477ecc060256"
+  },
+  "/home/yanlien/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ostool-0.30.3/src/artifact/runtime.rs": {
+    "bytes": 13072,
+    "mode": 420,
+    "sha256": "713f4e08c7169d18dc993bdc1e43fa4fca5c8fabbfeea532dbbb566d1f33b677"
+  },
+  "/home/yanlien/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ostool-0.30.3/src/boot/fit.rs": {
+    "bytes": 19129,
+    "mode": 420,
+    "sha256": "09ec1b82a7f59accc07e5578cd4c4fe145118c47194d927fd450a2ae12ab4e51"
+  },
+  "/home/yanlien/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ostool-0.30.3/src/run/uboot.rs": {
+    "bytes": 96785,
+    "mode": 420,
+    "sha256": "a07dd610334e083876e6d74a8e0d613182aa8326299ce182a16f1f3328e17d11"
+  },
+  "/home/yanlien/.codex/skills/orthome-verification/SKILL.md": {
+    "bytes": 3778,
+    "mode": 436,
+    "sha256": "8e0e09c1fc7d14fc4b5cce5e2578bbfed7cbeef39d05a38b9067bc2172ae07cc"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/.agents/skills/arceos-test-adapter/SKILL.md": {
+    "bytes": 8514,
+    "mode": 436,
+    "sha256": "a1918a6bd233097c0c8ee6432bbc4a2190c11ac5bbf27ad6d12ffe69725dc35f"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/.agents/skills/feature-development/SKILL.md": {
+    "bytes": 2189,
+    "mode": 436,
+    "sha256": "a57343f8132a7a03eb4104ea274445269df64743ac67ddbc3801f500a47c7bdd"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/.agents/skills/feature-development/references/design-and-delivery.md": {
+    "bytes": 4945,
+    "mode": 436,
+    "sha256": "ddb9d4a31e1439779128c08e29d559a1ecddc4c102275f142e2983e7792d3a0f"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/.agents/skills/feature-development/references/risk-and-research.md": {
+    "bytes": 3877,
+    "mode": 436,
+    "sha256": "564c2ce8fd6f13c64373baca187f28b7931cb5d19f073c120bb068830c8fc9bf"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/.agents/skills/rust-code-quality/SKILL.md": {
+    "bytes": 2771,
+    "mode": 436,
+    "sha256": "16d10d6f4d4f70989acb1aceeddd5e22fabe9d06e9d8e0575d4e16a463acd790"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/.agents/skills/rust-code-quality/references/errors-and-tests.md": {
+    "bytes": 5387,
+    "mode": 436,
+    "sha256": "32cc3d42aafc7059003ffcacc441b5d3d562aa03aa23877ac11766c13c31a470"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/.agents/skills/rust-code-quality/references/implementation.md": {
+    "bytes": 6448,
+    "mode": 436,
+    "sha256": "438135830dd429927ae6a965ab27559cf935dda1a1fc84fc755c5d0a0e716859"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/.agents/skills/rust-concurrency-safety/SKILL.md": {
+    "bytes": 2211,
+    "mode": 436,
+    "sha256": "a3bb332ba8802b6f351727c2e8ea2da6f58e422e0e653e2cb2e1c64f15ec8ceb"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/.agents/skills/rust-concurrency-safety/references/locking-and-lifecycle.md": {
+    "bytes": 3634,
+    "mode": 436,
+    "sha256": "39a51702b48c63f2a74ab6ec060d7e1cd0bbf45e00f8c7e973e0250d4a10dd5c"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/.agents/skills/rust-unsafe-safety/SKILL.md": {
+    "bytes": 2468,
+    "mode": 436,
+    "sha256": "dab3fb5cdce336eaa6755693db2fd1ba1f59f119590902baf81dc250b4535570"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/.agents/skills/starry-test-suit/SKILL.md": {
+    "bytes": 15739,
+    "mode": 436,
+    "sha256": "cb378309a2a2c5e50ec2ee4d02e7b1ccc1753b1c26805995c90dded0a5b34686"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/.agents/skills/test-quality/SKILL.md": {
+    "bytes": 19321,
+    "mode": 436,
+    "sha256": "6d74d41207f7a566fbe464b2fbab08288f9f1ffa37d912f7011b65fd10e1798a"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/AGENTS.md": {
+    "bytes": 8803,
+    "mode": 436,
+    "sha256": "b9635deb296b6099fbde1125a06332fa081880e777ad3e73213ca4c86969a48d"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/configs/strict-native-primary-delivery-contract-v1.json": {
+    "bytes": 4270,
+    "mode": 436,
+    "sha256": "cfdee098b8a8a7427d2e125d5bfb75d448c1c9f3621d4a562f035350da4ada09"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/configs/strict-native-primary-delivery-evidence-addendum-v1.json": {
+    "bytes": 846,
+    "mode": 436,
+    "sha256": "6df0e47e7918dd4c91cffe372e73c78f0f321e69cad64698e51eba784a005d27"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/configs/topology-native-v3/board.toml": {
+    "bytes": 415,
+    "mode": 436,
+    "sha256": "c470be5974956ed52db09b8dfceae70f815e2fbc84e4df7805c88882a83984f4"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/configs/topology-native-v3/guest-builds.toml": {
+    "bytes": 121,
+    "mode": 436,
+    "sha256": "5c010cdfa7053666b7d2eb2a326d68c45b6905295c919d1277b782ad885050a2"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/configs/topology-native-v3/host-initramfs.toml": {
+    "bytes": 169,
+    "mode": 436,
+    "sha256": "f162eaf16c3283735a113f165a40b969cd5caba0bb999e75a40df3739bd49a58"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/design/phase2-native-cache-topology-v3-generated-cache-addendum-v1.md": {
+    "bytes": 3958,
+    "mode": 436,
+    "sha256": "cae498e3864857a19282d1d3238367e1ba84bc1883b74d85831dfed7c5995a07"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/design/phase2-native-cache-topology-v3-plan.md": {
+    "bytes": 11813,
+    "mode": 436,
+    "sha256": "5e355eb109871df9791d85953ff158dbe54b7416f615aea5a27b3d866e8eeb7d"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/design/phase2-native-trace-capacity-v2-design.md": {
+    "bytes": 4791,
+    "mode": 436,
+    "sha256": "5dbf286e5275dde7f8553de3785835b246f8df6ef7ad2b2e010bbe9357bb3ccd"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/design/phase2-native-trace-capacity-v2-plan-v2.md": {
+    "bytes": 8655,
+    "mode": 436,
+    "sha256": "54a43488604d56ea9bf02b5cdf06d1ab9b6d8bceb4248f91504c00e491534e27"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/design/phase2-phase-analysis-v2-protocol-addendum.md": {
+    "bytes": 6269,
+    "mode": 436,
+    "sha256": "02d2c8498cc2c4958ea4dc9b72bb9e375d9e7c044db5bd4342ae2e32a52df6ba"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/design/phase2-phase-only-init-plan.md": {
+    "bytes": 14529,
+    "mode": 436,
+    "sha256": "01b085c7ad270d7cc95ff34ad5a5e768c23447c12e5d5ed2a2ad4820f9de55b3"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/design/phase2-strict-native-verification-path-design.md": {
+    "bytes": 10004,
+    "mode": 436,
+    "sha256": "a47a20be3ba4c5fdd2dbd06d38f72d3de14eb62f237b6b41c1a68fbda8ea5077"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/design/phase2-strict-native-verification-path-plan.md": {
+    "bytes": 17634,
+    "mode": 436,
+    "sha256": "390653b962e49008a265be157d15390cf0f8733ae79dc28142305b1387685fec"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/compact-host-phase-init-v1/actual/evidence/boot-sources.json": {
+    "bytes": 85467,
+    "mode": 436,
+    "sha256": "9e2fe24f40d95cf54390ad476d89c8162e2bfba9e257966a4a2cb3b9c31b918f"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/compact-host-phase-init-v1/task1/evidence/init.expected": {
+    "bytes": 390,
+    "mode": 436,
+    "sha256": "c45b529e79f820e58926d461eee79595a841d107d78422af15be412eb96df930"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/compact-host-phase-init-v1/task1/evidence/ordinary-sources.json": {
+    "bytes": 1197059,
+    "mode": 436,
+    "sha256": "f0a1e2932ecb81f7eafdc442c68feba085a19d048c5d19d07df38ad9f96908e8"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/compact-host-phase-init-v1/task1/evidence/original-init.expected": {
+    "bytes": 210,
+    "mode": 436,
+    "sha256": "73a9c0838935be3fcc1877ec9e140847556d18bc540ca82f825301abbe4f7529"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/compact-host-phase-init-v1/task1/evidence/sources-702.tar.gz": {
+    "bytes": 1364273,
+    "mode": 436,
+    "sha256": "51e1c5430da0cd4cc3e0538fd925f58da17e093f0e0aea94ae3d7cbc3a4d2b05"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/compact-host-phase-init-v1/task1/evidence/task1-report.json": {
+    "bytes": 17925,
+    "mode": 436,
+    "sha256": "5beae249f4b90dd2ae63316761e97ae12d86738967ce3db98c64c0fc193e3743"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/compact-host-phase-init-v1/task1/source/Cargo.lock": {
+    "bytes": 226383,
+    "mode": 436,
+    "sha256": "a0be52dac049ec52fe3bea67243cca4fd3bbbd992212b0eb8b078a054e4292fe"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/compact-linux-worker-v2/initial/aarch64-final/linux/build.json": {
+    "bytes": 1867,
+    "mode": 436,
+    "sha256": "3825ba405a2ba60ed0889b77e64cf6bf3135dfb943b3ce40d583a114a15f49a8"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/repaired/capture_native.py": {
+    "bytes": 30745,
+    "mode": 436,
+    "sha256": "e1e573ed9ecd8a1dd77c80d6a06fff3739e4fa8114815cc2b6b5c826206a14b2"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-plan-refs/ostool-0.30.3/source-identity.json": {
+    "bytes": 519,
+    "mode": 436,
+    "sha256": "f432ecf250f1c6d24c46c73b261e9096747f2c978654583dc32213cbf786f47e"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-plan-refs/ostool-0.30.3/src/board/mod.rs": {
+    "bytes": 21377,
+    "mode": 420,
+    "sha256": "c965cb1cc042caa9e44ac515369e0a4659a362fcb6104b528ffa994fe3365fc7"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-plan-refs/ostool-0.30.3/src/board/session.rs": {
+    "bytes": 14500,
+    "mode": 420,
+    "sha256": "80ea70ce71b116a808e5797e175a4760636cd8a9c86a19d3182d1be8c87cdb8f"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/task1/post-prepare-unexpected-zephyr-cache.json": {
+    "bytes": 28463,
+    "mode": 436,
+    "sha256": "ed18aef34492553ded7763856eed42fdd4cb488706f75823fd4129da9d849aec"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/task1/zephyr-capability-cache-cause.json": {
+    "bytes": 12007,
+    "mode": 436,
+    "sha256": "b863d65a1e58c8876f75a6554ad9591992edee5ba74cacc5e8fad53959bb434c"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/compact-host-phase-init-v1-actual-audit.json": {
+    "bytes": 46308,
+    "mode": 436,
+    "sha256": "0ef057487f14039bcbd25c9292e3fff34af7f6d6eddded47b2045556fcf4317b"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/compact-host-phase-init-v1-task1-archive-audit.json": {
+    "bytes": 172994,
+    "mode": 436,
+    "sha256": "42ebd9be34f0114d2176f8630d1df3e4fa81d45417f60a0072e7324b1fefc9a9"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/phase2-phase-init-actual-quality-review.json": {
+    "bytes": 25830,
+    "mode": 436,
+    "sha256": "35f2665f61e10980cb8b3b2ac2d934c113bda4af314b0185ca809522b4f133c1"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/phase2-phase-init-actual-review-state-v1.json": {
+    "bytes": 3423,
+    "mode": 436,
+    "sha256": "68defbe0bbe9b2e24d280b558bec97746975c28239f22348e6ac50b5e2b2a8ef"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/phase2-phase-init-actual-spec-review.json": {
+    "bytes": 20408,
+    "mode": 436,
+    "sha256": "9263fcb14592a5d318813c46ccf258e51357521f21efb5b12509da3ee8a889ae"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/phase2-phase-init-task1-quality-review.json": {
+    "bytes": 16403,
+    "mode": 436,
+    "sha256": "a52d19345f053c0fa2cc20650848b86c9ca68e354ee16359492a1ea3e85ac9ee"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/phase2-phase-init-task1-spec-review.json": {
+    "bytes": 28893,
+    "mode": 436,
+    "sha256": "276eb3a9af6e86b47ca2bd2dff2712637267297e8bb9d9dab19ba15156ae8c80"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/phase2-strict-native-task1-spec-review.json": {
+    "bytes": 37624,
+    "mode": 436,
+    "sha256": "190815175c4a33a02364b4a79632f0730f78b88e23634e4bc96e8fc68a60a03b"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/phase2-strict-native-verification-path-design-review.json": {
+    "bytes": 16986,
+    "mode": 436,
+    "sha256": "812d9980e51ffe7d6c3afa02cd7b0890cd262d6e6d5e3cf2f5e6296e469c430d"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/phase2-strict-native-verification-path-plan-review.json": {
+    "bytes": 21184,
+    "mode": 436,
+    "sha256": "7d664dab69b558c20127c1b20f6a6ea1fa165616776943a59017a2addd18dfb5"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-design-plan-review-v1.json": {
+    "bytes": 15033,
+    "mode": 436,
+    "sha256": "8230304f179eac906d642078521b1813f4e30d9dabc8e7b06c80b3c5a64d7a9d"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-generated-cache-addendum-review-v1.json": {
+    "bytes": 7162,
+    "mode": 436,
+    "sha256": "7a54b78c549e79c94f2d007cabb6eac4d9f143b41d2dbd1f8104cbee3e9477c2"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-fit-capture-repair-quality-review-v1.json": {
+    "bytes": 22284,
+    "mode": 436,
+    "sha256": "745cef5a7bfd243a0686abd1e27d11594d60554cef7ef867ac808f530c0084af"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-fit-capture-repair-root-acceptance-v1.json": {
+    "bytes": 23316,
+    "mode": 436,
+    "sha256": "5245d7a61f00710a6e11bb7adf0fc3e9c64a0432aa4ccecfd71931207707a1dc"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-fit-capture-repair-spec-review-v1.json": {
+    "bytes": 31462,
+    "mode": 436,
+    "sha256": "9eb529c4ed59975c59a282d3e76c6279f2eaf255dee0246f1431cddf6ff3d9e6"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-trace-capacity-v2-design-plan-review-v2.json": {
+    "bytes": 10861,
+    "mode": 436,
+    "sha256": "df19eac41e66bbb608ec7ee944bd55aac404ab6629de778ce997529848fae4fd"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/run-topology-native-timechain.sh": {
+    "bytes": 3727,
+    "mode": 436,
+    "sha256": "a1ab254528f5248ff365d493881c0f807ccc843e01be3dd972bbf9ac1b6ded9f"
+  },
+  "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/topology_native.py": {
+    "bytes": 9803,
+    "mode": 436,
+    "sha256": "87c26756786ff058f85dd4474896bae62e13a57f98f586fd15b705485e4d2015"
+  },
+  "/tmp/crosspath-phase-init-4t5vp_6s/scripts/axbuild/src/axvisor/bundle.rs": {
+    "bytes": 17886,
+    "mode": 436,
+    "sha256": "4a4b4e30c80c5b3deac3af32a126202342df518dc42f10c480643b1e2a813f5d"
+  },
+  "/tmp/crosspath-phase-init-4t5vp_6s/scripts/axbuild/src/axvisor/mod.rs": {
+    "bytes": 15607,
+    "mode": 436,
+    "sha256": "4cb5f7b54509b67ee10f6ee634ea1a17cb36fd76f27838613cf06228a41366dc"
+  },
+  "/tmp/crosspath-phase-init-4t5vp_6s/scripts/axbuild/src/axvisor/test/guest_build.rs": {
+    "bytes": 8441,
+    "mode": 436,
+    "sha256": "975582c9f8042fa7f0b56f7ca840031b405b40973a09b6f3213ce1a80b2bc14d"
+  },
+  "/tmp/crosspath-phase-init-4t5vp_6s/scripts/axbuild/src/board.rs": {
+    "bytes": 6164,
+    "mode": 436,
+    "sha256": "ff9092d02c37453522f4e195ed656cbb0479cbfedea60db3b093d5bb1840c170"
+  },
+  "/tmp/crosspath-phase-init-4t5vp_6s/scripts/axbuild/src/context/mod.rs": {
+    "bytes": 27383,
+    "mode": 436,
+    "sha256": "a1ffb29cfea45af4b30f9b8c57dd268db6450e9f74dd0a97508191d5a7dd8fdb"
+  },
+  "/tmp/crosspath-phase-init-4t5vp_6s/scripts/axbuild/src/context/workspace.rs": {
+    "bytes": 6296,
+    "mode": 436,
+    "sha256": "c5d46de7710d1471e79c8861ae5227caea592c0fadaef3e7d2aaf0e53bce4ae7"
+  },
+  "/tmp/crosspath-phase-init-4t5vp_6s/scripts/axbuild/src/ktest/mod.rs": {
+    "bytes": 48146,
+    "mode": 436,
+    "sha256": "0a45bb6cac9bb7e36c58ff0c9ba1039a3ab956352af6a03c7546f010a4216ba3"
+  },
+  "/tmp/crosspath-phase-init-4t5vp_6s/scripts/axbuild/src/test/qemu/host_initramfs.rs": {
+    "bytes": 11118,
+    "mode": 436,
+    "sha256": "51960a277f429973d93f0845da95a2730c33be4f37b5c05f5a7525e33f155d62"
+  },
+  "/tmp/crosspath-phase-init-4t5vp_6s/virtualization/axvm/Cargo.toml": {
+    "bytes": 4618,
+    "mode": 420,
+    "sha256": "fbca08e97a1e36f28292e7d98de48ca2a28ba183510577243b2d1c17712d19fe"
+  },
+  "/tmp/crosspath-phase-init-4t5vp_6s/virtualization/axvm/tests/guests/guest_firmware.py": {
+    "bytes": 1500,
+    "mode": 420,
+    "sha256": "1f1a59e60aee39bb1c1c4eeece63e5e8c12c2edefcaee80a684760dedd362744"
+  },
+  "/tmp/crosspath-phase-init-4t5vp_6s/virtualization/axvm/tests/guests/linux-load/prepare.py": {
+    "bytes": 10030,
+    "mode": 420,
+    "sha256": "7bbe3e3c5a05227c9e53dee7c2ff0b3a95a1739706023b9b9497caa2e11f1b84"
+  },
+  "/tmp/crosspath-phase-init-4t5vp_6s/virtualization/axvm/tests/guests/linux-load/workload.c": {
+    "bytes": 9643,
+    "mode": 420,
+    "sha256": "c54eb8aa52e345ac4cf6dd42ce6567d1765bc77aa498ff7d05c317e9b47e14f2"
+  },
+  "/tmp/crosspath-phase-init-4t5vp_6s/virtualization/axvm/tests/guests/virq/prepare.py": {
+    "bytes": 27918,
+    "mode": 420,
+    "sha256": "5f0be0c95dfd7e20001a99a0f12a4f2ca338d764e25a0c8c6f3d08088fdbe490"
+  },
+  "/tmp/crosspath-phase-init-4t5vp_6s/virtualization/axvm/tests/support/linux.rs": {
+    "bytes": 29220,
+    "mode": 420,
+    "sha256": "f08bb53c4311f6b7664cb4eb8671b703a59149e5d0b518294f71ee36e8edaeda"
+  },
+  "/tmp/crosspath-phase-init-4t5vp_6s/virtualization/axvm/tests/vcpu-runtime/frequency/build-orangepi-5-plus.toml": {
+    "bytes": 189,
+    "mode": 420,
+    "sha256": "af0713e255da0f4fbda080a6527df92c48b73811f30933dae5fbebe0316fdf9c"
+  },
+  "/tmp/crosspath-phase-init-4t5vp_6s/virtualization/axvm/tests/vcpu-runtime/frequency/guest-builds.toml": {
+    "bytes": 121,
+    "mode": 420,
+    "sha256": "5c010cdfa7053666b7d2eb2a326d68c45b6905295c919d1277b782ad885050a2"
+  },
+  "/tmp/crosspath-phase-init-4t5vp_6s/virtualization/axvm/tests/vcpu-runtime/frequency/host-initramfs.toml": {
+    "bytes": 169,
+    "mode": 420,
+    "sha256": "f162eaf16c3283735a113f165a40b969cd5caba0bb999e75a40df3739bd49a58"
+  },
+  "/tmp/crosspath-phase-init-4t5vp_6s/virtualization/axvm/tests/vcpu-runtime/linux/build-aarch64-unknown-none-softfloat.toml": {
+    "bytes": 85,
+    "mode": 436,
+    "sha256": "034392ceb0853a5679007121d2e6dcf637f3ebed9ec84aadf00631489c1976ad"
+  },
+  "/tmp/crosspath-phase-init-4t5vp_6s/virtualization/axvm/tests/vcpu-runtime/linux/qemu-aarch64.toml": {
+    "bytes": 286,
+    "mode": 436,
+    "sha256": "f8860171e740f065df0956f5a2cc012e44b0c1c3b8601272174bbfc125e98749"
+  },
+  "/tmp/crosspath-phase-init-4t5vp_6s/virtualization/axvm/tests/vcpu_runtime.rs": {
+    "bytes": 56137,
+    "mode": 420,
+    "sha256": "ce3c367d9041df79f0a4443bfc08ec6a854973a75c7815390af1f7c66fe292e5"
+  }
+}

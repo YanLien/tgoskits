@@ -1,0 +1,13 @@
+--- a/research/cross-path-20261017/raw/strict-native-phase-v3/task1/prepare.py
++++ b/research/cross-path-20261017/raw/strict-native-phase-v3/task1/prepare.py
+@@ -115,8 +115,8 @@
+         except BaseException as error:
+             receipt['exception'] = type(error).__name__+': '+str(error)
+             if child is not None and owned:
+-                # Ordinary successful preparation never reads /proc. Only a real exception
+-                # activates the unchanged parent's exact token/PGID cleanup guard.
++                # The successful path records only the owned child's spawn identity.
++                # An exception rechecks it before the unchanged token/PGID cleanup.
+                 try:
+                     recorded = controller.process_record(child.pid)
+                     initial = receipt['owned_record_at_spawn']

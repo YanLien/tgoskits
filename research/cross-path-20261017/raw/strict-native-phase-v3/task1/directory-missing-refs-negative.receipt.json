@@ -1,0 +1,28 @@
+{
+  "actual_Popen_wait": 2,
+  "argv": [
+    "python3",
+    "-B",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/task1/audited_entry.py"
+  ],
+  "cwd": "/tmp/crosspath-native-cache-v3-src-hr23qnrs",
+  "end_unix_ns": 1792325655606511594,
+  "environment": {
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PATH": "/usr/bin:/bin",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "pid": 4,
+  "start_unix_ns": 1792325647105202301,
+  "stderr": {
+    "bytes": 0,
+    "mode": 436,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stdout": {
+    "bytes": 195,
+    "mode": 436,
+    "sha256": "0d97065dbaf7328557ad6368a6916a6930d003cbff11b4ea67a9af229508bf6a"
+  }
+}

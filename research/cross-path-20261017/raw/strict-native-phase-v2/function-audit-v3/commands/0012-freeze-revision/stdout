@@ -1,0 +1,46 @@
+{
+  "status": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/status.json",
+    "bytes": 12547,
+    "sha256": "72e0b3ad003fc3e4eb2494f1fec6d1f4bbfc9f1b03a2c589310209570e2476a0"
+  },
+  "result": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-function-audit-v3-revision-v1.json",
+    "bytes": 1485,
+    "sha256": "4f8fd9170d72d9b3de87a4f494ab387d724deadb2bb7a2ebabc889f6dce09498"
+  },
+  "auditor": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/audit.py",
+    "bytes": 64442,
+    "sha256": "35efe04deacc18de5556505b8567cabc988b1c85eefe6455cf3da1c2c4deb6c8"
+  },
+  "binding_RED": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/v2-identity-rule-red-v1/report.json",
+    "bytes": 17906,
+    "sha256": "08754eddded492ccf09d94d70ea2f1e80eb53dd5ea56b682019922b45dcbd0cc"
+  },
+  "binding_GREEN": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/v3-final-identity-green-v1/report.json",
+    "bytes": 18293,
+    "sha256": "16c450950f887fb8e15c8037d8d98b1dd9bab0d9d044f04822ee263a1d779b84"
+  },
+  "old_real_failure": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/old-AB1-red-v1/report.json",
+    "bytes": 64366,
+    "sha256": "67baacf82c136f20a3a2cf373e7c63b3bc055f89166cff79c5d5a4c15dfdf958"
+  },
+  "new_real_failure": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/new-v2-AB1-red-v1/report.json",
+    "bytes": 17508,
+    "sha256": "06493d2cd9515e257091f1f5b0e64abf859a71d7edbaab525e0273db45b3890e"
+  },
+  "final_waits": [
+    1,
+    0,
+    0,
+    0,
+    1,
+    1
+  ],
+  "archive_bytes": 3371482
+}

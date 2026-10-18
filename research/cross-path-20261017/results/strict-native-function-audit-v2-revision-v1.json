@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "state": "revised-candidate-awaiting-Spec-rereview",
+  "status": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v2/status.json",
+    "bytes": 11060,
+    "sha256": "51a710820c85f11900a5b156a764a314c6464e15ed147cb2dfb0747cf87f9af6"
+  },
+  "implementation": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v2/audit.py",
+    "bytes": 57661,
+    "sha256": "1e4f19515aa9bc285e1201a85378a166f7b7a7805067ab4b4f6032fa1ad0a22b"
+  },
+  "review": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-function-audit-v1-spec-review-v1.json",
+    "bytes": 27907,
+    "sha256": "98737fba25ea1a1ac3fb0c2fcf1f61359e7f9625e4e9e2d23366349ae4b48560"
+  },
+  "scope": "only three logic blockers from the source-bound v1 Spec FAIL; no new hardware/version acceptance",
+  "tool_rule_RED_exit": 1,
+  "tool_rule_GREEN_exit": 0,
+  "actual_old_failure_audit_exit": 1,
+  "actual_new_failure_audit_exit": 1,
+  "normal_end_to_end_GREEN": false,
+  "Spec_passed": false,
+  "Quality_started": false,
+  "M2": false,
+  "Joint": false,
+  "goal_complete": false
+}

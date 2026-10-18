@@ -1,0 +1,17 @@
+{
+  "actual_host_prepare_wait": 0,
+  "actual_ready_executed": false,
+  "directory_negative_executed": false,
+  "freeze_exists": false,
+  "hardware_started": 0,
+  "host_prepare_calls": 1,
+  "markers": {
+    "0": false,
+    "AB0": false,
+    "AB1": false
+  },
+  "no_cleanup_invoked": true,
+  "post_cache_gate_rejected": true,
+  "qemu_started": 0,
+  "signals": []
+}

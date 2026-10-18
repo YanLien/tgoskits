@@ -1,0 +1,36 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/audit.py",
+    "--handoff",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-final-handoff-v1.json",
+    "--handoff-sha256",
+    "30d2613204648b7ebd89a202ee642b725678c94c056dada23e58de34b88cdd91",
+    "--output-dir",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/new-v2-AB1-red-v1"
+  ],
+  "env": {
+    "PATH": "/usr/bin:/bin",
+    "LANG": "C.UTF-8",
+    "TZ": "UTC",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "cwd": "/home/yanlien/Program/hypervisor/tgoskits",
+  "started_ns": 1792325868294708582,
+  "forced_stop": false,
+  "pid": 3,
+  "wait_returncode": 1,
+  "returncode": 1,
+  "ended_ns": 1792325868401388452,
+  "stdout": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/commands/0010-new-v2-actual-failure/stdout",
+    "size": 541,
+    "sha256": "361ba557fff941f381c35c13c22c85859683614623883cc4f10e18e9b20f93df"
+  },
+  "stderr": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/commands/0010-new-v2-actual-failure/stderr",
+    "size": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

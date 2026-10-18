@@ -1,0 +1,1290 @@
+{
+  "Joint": false,
+  "M2": false,
+  "Quality_review_complete": false,
+  "Root_copy_acceptance_complete": false,
+  "Spec_review_complete": false,
+  "Task1_independently_accepted": false,
+  "actual_ready": {
+    "actual_Popen_wait": 0,
+    "additional_primary96_scan": false,
+    "case_markers_absent": true,
+    "only_required_primary96_ready_gate_run": true,
+    "ready": {
+      "primary": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/intensity-v3-final-delivery.json",
+        "seal_sha256": "433495638e3affc408a80be94de3d8b39035ec32adfee87b9cef05dcc8b29f46",
+        "sha256": "fe7b8cd40aa21855eaaaedfb0ed92022eac37eed329dc51b06352710d4525bb7"
+      },
+      "static": {
+        "all_match": true,
+        "cache_runtime_state": {
+          "cargo": {
+            ".global-cache": {
+              "bytes": 139264,
+              "mode": 420,
+              "sha256": "04d4202d99ad27b141f8db3f29136651521d8ea20f1646ddad85c3e0e0a8be93"
+            },
+            ".package-cache": {
+              "bytes": 0,
+              "mode": 436,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            ".package-cache-mutate": {
+              "bytes": 0,
+              "mode": 436,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          }
+        },
+        "normal702_count": 702,
+        "ordinary_count": 9642
+      }
+    },
+    "receipt": {
+      "bytes": 810,
+      "mode": 436,
+      "sha256": "efa6d1dc4a3b129cdc2d93d4c8da6eb130712baf2ddf98eed8ae3ee1db7d13ba"
+    },
+    "target_metadata_before_after_unchanged": true
+  },
+  "authority": {
+    "generated_cache_exact_authorization": {
+      "accepted_added_count": 45,
+      "accepted_existing_changed": [
+        "zephyr/.cache/ToolchainCapabilityDatabase/log.txt"
+      ],
+      "decision": "exact generated-cache delta accepted before final freeze after Root precise audit and independent PASS",
+      "no_runtime_policy_change": true,
+      "production_prepare_reexecuted": false,
+      "references": [
+        {
+          "path": "design/phase2-native-cache-topology-v3-generated-cache-addendum-v1.md",
+          "sha256": "cae498e3864857a19282d1d3238367e1ba84bc1883b74d85831dfed7c5995a07"
+        },
+        {
+          "path": "results/strict-native-cache-v3-generated-cache-addendum-review-v1.json",
+          "sha256": "7a54b78c549e79c94f2d007cabb6eac4d9f143b41d2dbd1f8104cbee3e9477c2"
+        },
+        {
+          "path": "raw/strict-native-phase-v3/task1/post-prepare-unexpected-zephyr-cache.json",
+          "sha256": "ed18aef34492553ded7763856eed42fdd4cb488706f75823fd4129da9d849aec"
+        },
+        {
+          "path": "raw/strict-native-phase-v3/task1/zephyr-capability-cache-cause.json",
+          "sha256": "b863d65a1e58c8876f75a6554ad9591992edee5ba74cacc5e8fad53959bb434c"
+        }
+      ]
+    },
+    "original_design_review": {
+      "identity": {
+        "bytes": 15033,
+        "mode": 436,
+        "sha256": "8230304f179eac906d642078521b1813f4e30d9dabc8e7b06c80b3c5a64d7a9d"
+      },
+      "path": "results/strict-native-cache-v3-design-plan-review-v1.json"
+    },
+    "original_plan": {
+      "identity": {
+        "bytes": 11813,
+        "mode": 436,
+        "sha256": "5e355eb109871df9791d85953ff158dbe54b7416f615aea5a27b3d866e8eeb7d"
+      },
+      "path": "design/phase2-native-cache-topology-v3-plan.md"
+    }
+  },
+  "candidate": "strict-native-cache-v3",
+  "candidate_identities": {
+    "capture": {
+      "bytes": 33173,
+      "mode": 436,
+      "sha256": "61717a37b528e2e93d8cbcae1c1dafbc6249ac3417fbf0b8011b984a03a4c683"
+    },
+    "cargo_cache": {
+      "bytes": 24119362,
+      "mode": 436,
+      "sha256": "75ba73a00cbf7150fa1b0bb1319091e329c470316f9d1eeda63f84d5a18e0d9f"
+    },
+    "controller": {
+      "bytes": 21727,
+      "mode": 436,
+      "sha256": "8b871b1ea3cfb8a8ad8272bc7fa5ca37dc648b3efed45fe4af9ae0f374a24902"
+    },
+    "directory_manifest": {
+      "bytes": 2166162,
+      "mode": 436,
+      "sha256": "dca2a114c1ec0241196d7d7e2163504239076f283ec034e8d39f5e97bc8e738e"
+    },
+    "freeze_manifest": {
+      "bytes": 19347,
+      "mode": 436,
+      "sha256": "0bf9ff1cbc154583c60c6dd34688c9b498b6f63b0ef8014d1dbcec04f7ed28e8"
+    },
+    "frozen_members": 107,
+    "inputs": {
+      "bytes": 5547,
+      "mode": 436,
+      "sha256": "8fac8a1fb86d79a1e74bf9591bf68fa2dd88f6d261edcf0ea576dfbd6ace0060"
+    },
+    "normal702": {
+      "bytes": 85467,
+      "mode": 436,
+      "sha256": "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb"
+    },
+    "ordinary": {
+      "bytes": 1727818,
+      "mode": 436,
+      "sha256": "f4bd9bb6dadd056e35faa2b3243a1be410a588f531f6bceb7d71c89e520e3c86"
+    },
+    "parent_freeze_sha256": "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9",
+    "paths": {
+      "hardware_started": 0,
+      "qemu_started": 0,
+      "source": "/tmp/crosspath-native-cache-v3-src-hr23qnrs",
+      "target": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru",
+      "target_initial_members": [],
+      "tools": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t"
+    },
+    "sources702_tar": {
+      "bytes": 1337626,
+      "mode": 436,
+      "sha256": "072c67c53641c3428ddfaa031692a506443105b0a023376dff90e307e1f8f29d"
+    },
+    "virq_cache": {
+      "bytes": 10242769,
+      "mode": 436,
+      "sha256": "a85b5b610617777761be40d469bc507c2895e287635bf21c57c6471242d4a3d6"
+    }
+  },
+  "capacity_zero_loss_proven": false,
+  "copy_and_entry": {
+    "actual_entry_proof": {
+      "cleared": [
+        "PYTHONPATH",
+        "PYTHONHOME"
+      ],
+      "direct_entry": {
+        "bytes": 277,
+        "mode": 509,
+        "sha256": "56e236928bfb1bf703f370f0db42cf93b88ba2a66dfbcaa899b29d63bdf77c67"
+      },
+      "module": {
+        "bytes": 2081,
+        "mode": 436,
+        "sha256": "d8ea7563f5f6c99804344a4305a12057e59b353791a0c76fe916df5c36a4de4e"
+      },
+      "probe": {
+        "CMAKE_BIN_DIR": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache/venv/lib/python3.12/site-packages/cmake/data/bin",
+        "base_prefix": "/usr",
+        "cmake_binary": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache/venv/lib/python3.12/site-packages/cmake/data/bin/cmake",
+        "cmake_binary_sha256": "84962dbf5de6a863507ae89347aa9414d978c0c610055b16c7c8f4233d8a339c",
+        "cmake_module": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache/venv/lib/python3.12/site-packages/cmake/__init__.py",
+        "interpreter_realpath": "/usr/bin/python3.12",
+        "sys_executable": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache/venv/bin/python3",
+        "sys_prefix": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache/venv"
+      },
+      "production_prepare": {
+        "bytes": 27918,
+        "mode": 420,
+        "sha256": "5f0be0c95dfd7e20001a99a0f12a4f2ca338d764e25a0c8c6f3d08088fdbe490"
+      }
+    },
+    "all_other_venv_vendor_toolchain_bytes_same_except_explicit_generated_cache": true,
+    "cache_copy": "shutil.copytree(symlinks=True) retains actual directories and modes; only approved inputs",
+    "cmake_direct_wait": 0,
+    "git_revision": "32229d0b6cc60a1906307311b8e79ec483ad1e88",
+    "git_revparse_wait": 0,
+    "git_status_empty": true,
+    "git_status_wait": 0,
+    "new_git_directories": {
+      "added": [
+        "branches",
+        "objects/info",
+        "refs",
+        "refs/heads",
+        "refs/tags"
+      ],
+      "mode": 509,
+      "new_cache_only": true,
+      "template_observed_readonly": {
+        "branches": {
+          "children": [],
+          "mode": 509,
+          "path": "/tmp/strict-native-phase-tools-kevemo32/cache/vcpu-runtime-cache/zephyr/.git/branches",
+          "stamp": [
+            24162907,
+            4096,
+            1792223385273306874,
+            1792301564233601206,
+            16893
+          ]
+        },
+        "objects/info": {
+          "children": [],
+          "mode": 509,
+          "path": "/tmp/strict-native-phase-tools-kevemo32/cache/vcpu-runtime-cache/zephyr/.git/objects/info",
+          "stamp": [
+            23906180,
+            4096,
+            1792223385275306827,
+            1792301564078600671,
+            16893
+          ]
+        },
+        "refs": {
+          "children": [
+            "heads",
+            "tags"
+          ],
+          "mode": 509,
+          "path": "/tmp/strict-native-phase-tools-kevemo32/cache/vcpu-runtime-cache/zephyr/.git/refs",
+          "stamp": [
+            23360103,
+            4096,
+            1792223385274306851,
+            1792301564070600643,
+            16893
+          ]
+        },
+        "refs/heads": {
+          "children": [],
+          "mode": 509,
+          "path": "/tmp/strict-native-phase-tools-kevemo32/cache/vcpu-runtime-cache/zephyr/.git/refs/heads",
+          "stamp": [
+            23490134,
+            4096,
+            1792223385274306851,
+            1792301564070600643,
+            16893
+          ]
+        },
+        "refs/tags": {
+          "children": [],
+          "mode": 509,
+          "path": "/tmp/strict-native-phase-tools-kevemo32/cache/vcpu-runtime-cache/zephyr/.git/refs/tags",
+          "stamp": [
+            23490135,
+            4096,
+            1792223385274306851,
+            1792301564070600643,
+            16893
+          ]
+        }
+      }
+    },
+    "python_probe_wait": 0,
+    "venv_exact_relocated_count": 13
+  },
+  "created_utc": "2026-10-18T12:17:42.422547+00:00",
+  "directory_gate": {
+    "actual_negative_error": "AUDITED_ENTRY_REJECT ValueError: private cache directory identity differs: cache-identities.json missing=['zephyr/.git/refs', 'zephyr/.git/refs/heads', 'zephyr/.git/refs/tags'] extra=[] modes=[]\n",
+    "actual_negative_wait": 2,
+    "actual_ready_wait": 0,
+    "all_directory_modes_restored": true,
+    "all_non_symlink_directory_paths_and_modes_exact": true,
+    "before_cache_file_hashes": true,
+    "frozen_execution_root_mutated_for_negative": false,
+    "group_directory_counts": {
+      "cache-identities.json": 9874,
+      "cargo-cache-identities.json": 17749
+    },
+    "integrated_in_original_os_walk": true,
+    "manifest": {
+      "bytes": 2166162,
+      "mode": 436,
+      "sha256": "dca2a114c1ec0241196d7d7e2163504239076f283ec034e8d39f5e97bc8e738e"
+    },
+    "negative_moved_only_empty_refs_hierarchy": true,
+    "negative_used_actual_staging_cache_before_final_freeze": true,
+    "root_relative_path": "."
+  },
+  "evidence": {
+    "raw/strict-native-phase-v3/task1/actual-rootfs-verification.json": {
+      "bytes": 1856,
+      "mode": 436,
+      "sha256": "ad9f1c3306edcafa0a07c3bfd8cf600a517b2823654509c01911e1631a7f1820"
+    },
+    "raw/strict-native-phase-v3/task1/actual-zephyr-cmake-build-identity.json": {
+      "bytes": 1457,
+      "mode": 436,
+      "sha256": "56ab5457c38d2ba93f63928767afa3646a3c85bd3b1917b1c35edaf52bed4572"
+    },
+    "raw/strict-native-phase-v3/task1/audited_entry.py": {
+      "bytes": 590,
+      "mode": 436,
+      "sha256": "f6f7085b44df70a238afe491fde2267f68ebb7e52c53b2ba06a7e15cbcd09044"
+    },
+    "raw/strict-native-phase-v3/task1/cache-cmake-direct.receipt.json": {
+      "bytes": 884,
+      "mode": 436,
+      "sha256": "47ba25450559020f3dd7aac6913407365823237e1832a3e8b7a0ce92f5df7be1"
+    },
+    "raw/strict-native-phase-v3/task1/cache-post-validation.json": {
+      "bytes": 5713,
+      "mode": 436,
+      "sha256": "1fc044f61ccda0e3a4ae4ca23b623e058841161ad4d9ee00e883cdd730eed72b"
+    },
+    "raw/strict-native-phase-v3/task1/cache-production-entry-link.json": {
+      "bytes": 1323,
+      "mode": 436,
+      "sha256": "e63837e69252a7ff28070ec8245968a82b65e7e7bfbe2af526e2908015913e9b"
+    },
+    "raw/strict-native-phase-v3/task1/cache-python-probe.receipt.json": {
+      "bytes": 1337,
+      "mode": 436,
+      "sha256": "5542877f9742ba6e40a28a3d25852a7592bcef4478f18f7954d59cde9484fd14"
+    },
+    "raw/strict-native-phase-v3/task1/cache-relocation.json": {
+      "bytes": 9907,
+      "mode": 436,
+      "sha256": "ae9206414fcf46ec8ec0b7ef56ff8172d304500539bfdfbf20d3f7b059c8cbeb"
+    },
+    "raw/strict-native-phase-v3/task1/cache-relocation.patch": {
+      "bytes": 4646,
+      "mode": 436,
+      "sha256": "69d58fde200b5063f0233eb55d2d45ca877bd94f45546841d78f45a0207193f4"
+    },
+    "raw/strict-native-phase-v3/task1/candidate-check-ready.receipt.json": {
+      "bytes": 810,
+      "mode": 436,
+      "sha256": "efa6d1dc4a3b129cdc2d93d4c8da6eb130712baf2ddf98eed8ae3ee1db7d13ba"
+    },
+    "raw/strict-native-phase-v3/task1/candidate-check-ready.stderr": {
+      "bytes": 0,
+      "mode": 436,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "raw/strict-native-phase-v3/task1/candidate-check-ready.stdout": {
+      "bytes": 813,
+      "mode": 436,
+      "sha256": "ac66697923c198cd7f9b62c740b34ce0b159aed72ce5decc149c9ff7a9c9d771"
+    },
+    "raw/strict-native-phase-v3/task1/candidate-identities.json": {
+      "bytes": 1839,
+      "mode": 436,
+      "sha256": "27cfb775c9072e4a005822cb7e16b6fe4c4fa32e8f967daffbd622ebbba6155a"
+    },
+    "raw/strict-native-phase-v3/task1/candidate-ready-state.json": {
+      "bytes": 1258,
+      "mode": 436,
+      "sha256": "121f2085e9781dd2bd4cd9034787499ff8b119916b351fea4de56eff52eda649"
+    },
+    "raw/strict-native-phase-v3/task1/candidate-stopped-state.json": {
+      "bytes": 363,
+      "mode": 436,
+      "sha256": "8f3bb5e3919b228df03258c1d0fcec7df1a2e546706ce494a6c9f57769ed1ca3"
+    },
+    "raw/strict-native-phase-v3/task1/capture-scope.json": {
+      "bytes": 480,
+      "mode": 436,
+      "sha256": "2944fda62bd2bcdbda1b40778162f255c4ff7141234185935c496c0044e53ca0"
+    },
+    "raw/strict-native-phase-v3/task1/capture_native.py.patch": {
+      "bytes": 4480,
+      "mode": 436,
+      "sha256": "67e4a9312b52f475f664b2d6c6d7b817126ce4b5dd1f965f692c503754d3a87e"
+    },
+    "raw/strict-native-phase-v3/task1/cargo-bookkeeping.after.json": {
+      "bytes": 437,
+      "mode": 436,
+      "sha256": "d1d017aed13f66174bed39315a91363b635fab369bec339ae84b7381b56a3e6c"
+    },
+    "raw/strict-native-phase-v3/task1/cargo-bookkeeping.before.json": {
+      "bytes": 437,
+      "mode": 436,
+      "sha256": "68a3767e3e2319b7929eb09c3aca6c8941d1f5b62a53e09651db089141758f2e"
+    },
+    "raw/strict-native-phase-v3/task1/cargo-post-validation.json": {
+      "bytes": 612,
+      "mode": 436,
+      "sha256": "5802c35e8ba4a90983fbbcdbf379762783c15283c8fabe53190825d14f0a350d"
+    },
+    "raw/strict-native-phase-v3/task1/complete-report-archive-mode-correction.patch": {
+      "bytes": 5201,
+      "mode": 436,
+      "sha256": "d473096781afdae713cca9948726da04e5b2fd0ba74f4a91475ec5a5d05fceca"
+    },
+    "raw/strict-native-phase-v3/task1/complete-report.archive-metadata-failed.launch.json": {
+      "bytes": 238,
+      "mode": 436,
+      "sha256": "00b1adb5676ab75f9471b1107b168d1de6c9f5647c05849e366bfa69ee403f16"
+    },
+    "raw/strict-native-phase-v3/task1/complete-report.archive-metadata-failed.stderr": {
+      "bytes": 408,
+      "mode": 436,
+      "sha256": "f5960c878235c7175760f6d2ddba30d54974fac71d1192d3115af52dfe78ff97"
+    },
+    "raw/strict-native-phase-v3/task1/complete-report.archive-metadata-failed.stdout": {
+      "bytes": 0,
+      "mode": 436,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "raw/strict-native-phase-v3/task1/complete_report.archive-metadata-failed.py": {
+      "bytes": 17276,
+      "mode": 436,
+      "sha256": "44b7713f5cffd4bdba493f378e893d5da3509b4f990a6f9e992449de926eaa26"
+    },
+    "raw/strict-native-phase-v3/task1/complete_report.py": {
+      "bytes": 18188,
+      "mode": 436,
+      "sha256": "654ec96319c98ce287af09e0b22e19cdc25b61b10ca2f598db3dbbfcd428bfe8"
+    },
+    "raw/strict-native-phase-v3/task1/directory-missing-refs-negative.receipt.json": {
+      "bytes": 748,
+      "mode": 436,
+      "sha256": "d4ab8910ad84ebac0b5ca272a2b35b3773074ada669303cff5c7af89986eef3b"
+    },
+    "raw/strict-native-phase-v3/task1/directory-missing-refs-negative.stderr": {
+      "bytes": 0,
+      "mode": 436,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "raw/strict-native-phase-v3/task1/directory-missing-refs-negative.stdout": {
+      "bytes": 195,
+      "mode": 436,
+      "sha256": "0d97065dbaf7328557ad6368a6916a6930d003cbff11b4ea67a9af229508bf6a"
+    },
+    "raw/strict-native-phase-v3/task1/directory-negative-restoration.json": {
+      "bytes": 631,
+      "mode": 436,
+      "sha256": "efb55ea42536670c002e4e7b825cd6137ab7ec66f8c11d9114f984d014861de4"
+    },
+    "raw/strict-native-phase-v3/task1/finalize-after-addendum.launch.json": {
+      "bytes": 246,
+      "mode": 436,
+      "sha256": "61cef4e66fabefb03b6f320c3885a546ca4bbee19685d88e7768f200c01b9846"
+    },
+    "raw/strict-native-phase-v3/task1/finalize-after-addendum.stderr": {
+      "bytes": 0,
+      "mode": 436,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "raw/strict-native-phase-v3/task1/finalize-after-addendum.stdout": {
+      "bytes": 294,
+      "mode": 436,
+      "sha256": "5e0c6a32361dd9443edb5e8f820a08d63da5c65bce3722886d84580dfcceba5c"
+    },
+    "raw/strict-native-phase-v3/task1/finalize-generated-cache-addendum.patch": {
+      "bytes": 14210,
+      "mode": 436,
+      "sha256": "4f503f0af2c876f3207665aaef72080d980764a430f2e279b1ccdabf54b60740"
+    },
+    "raw/strict-native-phase-v3/task1/finalize.first-error.json": {
+      "bytes": 3619,
+      "mode": 436,
+      "sha256": "71672383c13a17f651f3220f8bd72814bbc1d9cbef7ba1829e9d5e63d9875055"
+    },
+    "raw/strict-native-phase-v3/task1/finalize.launch.json": {
+      "bytes": 231,
+      "mode": 436,
+      "sha256": "9177fbf5ea4504555331c6247822dad7fdd8e079da890c498256f3c3b2a94d3a"
+    },
+    "raw/strict-native-phase-v3/task1/finalize.py": {
+      "bytes": 16420,
+      "mode": 436,
+      "sha256": "753959b659eae45aa58f861fa3204b64b7329b00b7f8a357a274546b420b3117"
+    },
+    "raw/strict-native-phase-v3/task1/finalize.stderr": {
+      "bytes": 4232,
+      "mode": 436,
+      "sha256": "3cb10ca05b1b4b30e20c3f91972ee3bed5380e7d4da2680c0e7932c8fd361686"
+    },
+    "raw/strict-native-phase-v3/task1/finalize.stdout": {
+      "bytes": 0,
+      "mode": 436,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "raw/strict-native-phase-v3/task1/finalize_after_addendum.py": {
+      "bytes": 17139,
+      "mode": 436,
+      "sha256": "87ebe970b61436ae8b47d9652b9b959b74f9fb34864ee28762d70789b54dff83"
+    },
+    "raw/strict-native-phase-v3/task1/frozen-tools.archive-metadata-failed.tar.gz": {
+      "bytes": 20,
+      "mode": 436,
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "raw/strict-native-phase-v3/task1/generated-cache-authorization.json": {
+      "bytes": 1083,
+      "mode": 436,
+      "sha256": "f70f8bfbedfa46e2711817d68b7a4885462c76f7037e6a985ab711307e731d42"
+    },
+    "raw/strict-native-phase-v3/task1/host-prepare-artifacts.json": {
+      "bytes": 5253,
+      "mode": 436,
+      "sha256": "b3056004bfecdeaa263304fd6dab54038c0865e1720cd72ee75193ef95a1e6a6"
+    },
+    "raw/strict-native-phase-v3/task1/host-prepare-helper.launch.json": {
+      "bytes": 250,
+      "mode": 436,
+      "sha256": "921c88b1c41e6dd153a651a85f0b388ccb36c689df1b6527acab291ab7f98966"
+    },
+    "raw/strict-native-phase-v3/task1/host-prepare-helper.precondition-failed.launch.json": {
+      "bytes": 250,
+      "mode": 436,
+      "sha256": "e3d447cab64a984b1973b0a4b2a665c911187c68d7b224bfc538e5036a6efce1"
+    },
+    "raw/strict-native-phase-v3/task1/host-prepare-helper.precondition-failed.stderr": {
+      "bytes": 573,
+      "mode": 436,
+      "sha256": "508072872f086806630091c132daf1df983b6abe3f606de31ffcb750ad0be73f"
+    },
+    "raw/strict-native-phase-v3/task1/host-prepare-helper.precondition-failed.stdout": {
+      "bytes": 0,
+      "mode": 436,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "raw/strict-native-phase-v3/task1/host-prepare-preconditions.json": {
+      "bytes": 2714,
+      "mode": 436,
+      "sha256": "7510384818df159d1a9e8664c2ce611dd409e0a53cf841988b1205abe07a0165"
+    },
+    "raw/strict-native-phase-v3/task1/host-prepare.external-precondition-first-error.json": {
+      "bytes": 128,
+      "mode": 436,
+      "sha256": "dbe4f4065ba24ad85dd71cb0da5ff5a37540f9f637f3bd03e428a8211adf9bce"
+    },
+    "raw/strict-native-phase-v3/task1/host-prepare.receipt.json": {
+      "bytes": 3124,
+      "mode": 436,
+      "sha256": "76b6d244fabc4add3bc9cfafddb4b95d86dfd6de10c60d4b7bdbe804b6edefbb"
+    },
+    "raw/strict-native-phase-v3/task1/host-prepare.stderr": {
+      "bytes": 14232,
+      "mode": 436,
+      "sha256": "883a8251738a4de53a8328c871e1c74cefded7ed05b47fc23b55d472c6b20c1c"
+    },
+    "raw/strict-native-phase-v3/task1/host-prepare.stdout": {
+      "bytes": 17008,
+      "mode": 436,
+      "sha256": "a389b69c28a0bf7016e165389f06331446bdfbbf7352cea375e4c1a0fcb212ac"
+    },
+    "raw/strict-native-phase-v3/task1/host-python-identity.json": {
+      "bytes": 181,
+      "mode": 436,
+      "sha256": "70843674cf4db220c28da747c36dbedb94176a1e76bad0e2755a42ea25b261c8"
+    },
+    "raw/strict-native-phase-v3/task1/inherited-rust-validation.json": {
+      "bytes": 1038,
+      "mode": 436,
+      "sha256": "955df5e14c0f5793c8ab755c92dd5da256901a28d66e4e2e3b51e485d799cf1e"
+    },
+    "raw/strict-native-phase-v3/task1/input-equivalence.json": {
+      "bytes": 377,
+      "mode": 436,
+      "sha256": "a41481a87e364af622683cc6e6f5f0aaf2b7f9df82d80c786a4a227941025534"
+    },
+    "raw/strict-native-phase-v3/task1/native_once.py.patch": {
+      "bytes": 491,
+      "mode": 436,
+      "sha256": "1c3bd4148941aa73eadf14679e21d1f7f99af73f04bcc924ee32d557066b4c99"
+    },
+    "raw/strict-native-phase-v3/task1/parent-metadata-protection.after.json": {
+      "bytes": 299,
+      "mode": 436,
+      "sha256": "7e2abe9b9ae6130250836653be485a9f0cead6f132680cabb929e8b2dbfad00f"
+    },
+    "raw/strict-native-phase-v3/task1/patch_capture.py": {
+      "bytes": 4764,
+      "mode": 436,
+      "sha256": "51510fdd6084cf918f76954d83eb2657d6dc9954571fa0597def6b217db0818e"
+    },
+    "raw/strict-native-phase-v3/task1/paths.json": {
+      "bytes": 262,
+      "mode": 436,
+      "sha256": "42e2f0e84b94c0e525c2ffa3d265333620802ac377b24bcbb89c92aabf152b31"
+    },
+    "raw/strict-native-phase-v3/task1/post-prepare-unexpected-zephyr-cache.json": {
+      "bytes": 28463,
+      "mode": 436,
+      "sha256": "ed18aef34492553ded7763856eed42fdd4cb488706f75823fd4129da9d849aec"
+    },
+    "raw/strict-native-phase-v3/task1/prepare-assertion-correction.patch": {
+      "bytes": 5754,
+      "mode": 436,
+      "sha256": "7e7b3b8e954b93ed260a947c6f0c98cca46659d56490917dcbd43dc9f972da36"
+    },
+    "raw/strict-native-phase-v3/task1/prepare-external-precondition-correction.patch": {
+      "bytes": 1303,
+      "mode": 436,
+      "sha256": "e4fea2259e76855824976f74e59b66774d44b201dee77e49988e74ace69f69d6"
+    },
+    "raw/strict-native-phase-v3/task1/prepare-resume.launch.json": {
+      "bytes": 252,
+      "mode": 436,
+      "sha256": "004d28ff110095e7a18c72213b810889bcaba58f061c3488af8823de18a3d949"
+    },
+    "raw/strict-native-phase-v3/task1/prepare.external-precondition-failed.py": {
+      "bytes": 19342,
+      "mode": 436,
+      "sha256": "d5124a84a10e3a49804d90e9298e0f33809fe0057258f40ae4481af159d69e52"
+    },
+    "raw/strict-native-phase-v3/task1/prepare.first-error.json": {
+      "bytes": 142,
+      "mode": 436,
+      "sha256": "87317efdd99ea02cb2fae1cd8d725a90eb4f46e7ec79a7904a213ad8c2497031"
+    },
+    "raw/strict-native-phase-v3/task1/prepare.initial-failed-launch.json": {
+      "bytes": 835,
+      "mode": 436,
+      "sha256": "9914bcb4a474ff8ed1b8215ae968da1f8cd505ad17329617ed999e2950e8f239"
+    },
+    "raw/strict-native-phase-v3/task1/prepare.initial-failed-log-provenance.json": {
+      "bytes": 217,
+      "mode": 436,
+      "sha256": "1db6a3a6a833b82b5d8e5e33523c9ce979fc4a77b9d268cd46fd57c48b1e22e1"
+    },
+    "raw/strict-native-phase-v3/task1/prepare.initial-failed.py": {
+      "bytes": 18401,
+      "mode": 436,
+      "sha256": "18c2124b25e758c3dacfe4254c3d0b62e65b259dd4d43500e020427809fd3738"
+    },
+    "raw/strict-native-phase-v3/task1/prepare.initial-failed.stderr": {
+      "bytes": 663,
+      "mode": 436,
+      "sha256": "e12c7181771ca44bb05d502bb47286451235e99fcc336f094a408b94db050035"
+    },
+    "raw/strict-native-phase-v3/task1/prepare.initial-failed.stdout": {
+      "bytes": 258,
+      "mode": 436,
+      "sha256": "c79a2195976c0d1b845696cc49bfa4ec17e663e476d7c5de9c18aaaffbfd53d0"
+    },
+    "raw/strict-native-phase-v3/task1/prepare.py": {
+      "bytes": 19427,
+      "mode": 436,
+      "sha256": "e3c1e8c792795a3a95fbb1e4354c5b246f0279bd69a5ecfd7c7a91ca22f01958"
+    },
+    "raw/strict-native-phase-v3/task1/protected.after.json": {
+      "bytes": 19309,
+      "mode": 436,
+      "sha256": "73673c15c0b4e25422f5d8408d7e96e3082f5e79cff4175671039ace1805b93b"
+    },
+    "raw/strict-native-phase-v3/task1/protected.before.json": {
+      "bytes": 19309,
+      "mode": 436,
+      "sha256": "73673c15c0b4e25422f5d8408d7e96e3082f5e79cff4175671039ace1805b93b"
+    },
+    "raw/strict-native-phase-v3/task1/relocate.launch.json": {
+      "bytes": 246,
+      "mode": 436,
+      "sha256": "1c5ccd70663a5e44ff78276a32813113bafdb443aedad3bc3f8bf9f54426226d"
+    },
+    "raw/strict-native-phase-v3/task1/restored-git-directories.json": {
+      "bytes": 1717,
+      "mode": 436,
+      "sha256": "8a0e9b8da0c7eb8d4d19be196570a07fb6126e4cfd2c9160e5050c0ee0afd1c2"
+    },
+    "raw/strict-native-phase-v3/task1/source-partial-before-resume.json": {
+      "bytes": 999242,
+      "mode": 436,
+      "sha256": "95638a5b17b6b75d38e8d935d960ca500e09804ea3b650977cbd8ba7cc12465f"
+    },
+    "raw/strict-native-phase-v3/task1/source-post-validation.json": {
+      "bytes": 543,
+      "mode": 436,
+      "sha256": "ba07ef50985c52146fde077f1b236ac988a22cb2fdb09d46de54cc3011873831"
+    },
+    "raw/strict-native-phase-v3/task1/space.after-prepare.json": {
+      "bytes": 427,
+      "mode": 436,
+      "sha256": "674f1d6dc24fe1f4f49f7f64c13703e08325989afdb46a2624fc6b2202ab9ef8"
+    },
+    "raw/strict-native-phase-v3/task1/target.after-prepare.metadata.json": {
+      "bytes": 1664653,
+      "mode": 436,
+      "sha256": "9c6d03075c5cee31ed2a79357916b0a23f3c4763f135d41e1d26a31a9a670364"
+    },
+    "raw/strict-native-phase-v3/task1/tools-archive-verification.json": {
+      "bytes": 563,
+      "mode": 436,
+      "sha256": "8ca8106a92429d6937b66162c64d49cbf163e6f555f03a46605c4f6cc92a2adc"
+    },
+    "raw/strict-native-phase-v3/task1/zephyr-capability-cache-cause.json": {
+      "bytes": 12007,
+      "mode": 436,
+      "sha256": "b863d65a1e58c8876f75a6554ad9591992edee5ba74cacc5e8fad53959bb434c"
+    },
+    "raw/strict-native-phase-v3/task1/zephyr-git-revparse.receipt.json": {
+      "bytes": 911,
+      "mode": 436,
+      "sha256": "857009d5943c3f5adde060f0110eab31ffe77b350f2f307d42fc3ea0c2a83c7b"
+    },
+    "raw/strict-native-phase-v3/task1/zephyr-git-status.receipt.json": {
+      "bytes": 941,
+      "mode": 436,
+      "sha256": "10007d9ac9cb24c3b1637df019d3f1dc61d9f5cc42e9b192535296dc1b6c1ab6"
+    }
+  },
+  "formal_case_quota_consumed": false,
+  "generated_cache": {
+    "Cargo_immutable_members": 108002,
+    "accepted_only_before_final_freeze": true,
+    "added_file_bytes": 45,
+    "added_files": 45,
+    "all_Cargo_immutable_exact_parent": true,
+    "all_added_keys_values_MD5_names_and_log_prefix_exact": true,
+    "all_other_VIRQ_immutable_members_exact_parent": true,
+    "appended_log_bytes": 27058,
+    "appended_log_lines": 45,
+    "changed_existing_log": [
+      "zephyr/.cache/ToolchainCapabilityDatabase/log.txt"
+    ],
+    "final_cache_report": {
+      "cargo": {
+        "added_directories": [],
+        "changed_immutable_members": [],
+        "directory_count": 17749,
+        "files_bytes": 2140427249,
+        "immutable_members": 108002,
+        "manifest": {
+          "bytes": 24119362,
+          "mode": 436,
+          "sha256": "75ba73a00cbf7150fa1b0bb1319091e329c470316f9d1eeda63f84d5a18e0d9f"
+        },
+        "new_generated_immutable_files": [],
+        "parent_immutable_members": 108002,
+        "runtime": {
+          ".global-cache": {
+            "bytes": 139264,
+            "mode": 420,
+            "sha256": "04d4202d99ad27b141f8db3f29136651521d8ea20f1646ddad85c3e0e0a8be93"
+          },
+          ".package-cache": {
+            "bytes": 0,
+            "mode": 436,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          ".package-cache-mutate": {
+            "bytes": 0,
+            "mode": 436,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      "vcpu-runtime-cache": {
+        "added_directories": [
+          "zephyr/.git/branches",
+          "zephyr/.git/objects/info",
+          "zephyr/.git/refs",
+          "zephyr/.git/refs/heads",
+          "zephyr/.git/refs/tags"
+        ],
+        "changed_immutable_members": [
+          "venv/bin/activate",
+          "venv/bin/activate.csh",
+          "venv/bin/activate.fish",
+          "venv/bin/ccmake",
+          "venv/bin/cmake",
+          "venv/bin/cpack",
+          "venv/bin/ctest",
+          "venv/bin/pip",
+          "venv/bin/pip3",
+          "venv/bin/pip3.12",
+          "venv/bin/pykwalify",
+          "venv/bin/readelf.py",
+          "venv/pyvenv.cfg",
+          "zephyr/.cache/ToolchainCapabilityDatabase/log.txt"
+        ],
+        "directory_count": 9874,
+        "files_bytes": 1064656119,
+        "immutable_members": 54064,
+        "manifest": {
+          "bytes": 10242769,
+          "mode": 436,
+          "sha256": "a85b5b610617777761be40d469bc507c2895e287635bf21c57c6471242d4a3d6"
+        },
+        "new_generated_immutable_files": [
+          "zephyr/.cache/ToolchainCapabilityDatabase/05da2205348003dfe5271c28d712af9f",
+          "zephyr/.cache/ToolchainCapabilityDatabase/062368b451f5487e8f003151eb892d7a",
+          "zephyr/.cache/ToolchainCapabilityDatabase/06d2b33cac6c0533391e042a4174648f",
+          "zephyr/.cache/ToolchainCapabilityDatabase/09af45f48e451cf73f915508269d5499",
+          "zephyr/.cache/ToolchainCapabilityDatabase/0bea09c476ad82c66b9ffc8907a7bd69",
+          "zephyr/.cache/ToolchainCapabilityDatabase/0d110fcceba91841099851c43f2352ba",
+          "zephyr/.cache/ToolchainCapabilityDatabase/0fb844a6a025b9db9dc6251eee3592b2",
+          "zephyr/.cache/ToolchainCapabilityDatabase/1351a32f6aa485044dd889d92cd9fe1e",
+          "zephyr/.cache/ToolchainCapabilityDatabase/1552eb2ef22255c2194a00eb6756e140",
+          "zephyr/.cache/ToolchainCapabilityDatabase/1ad121159468e1b0bd3edf54fd30b7d4",
+          "zephyr/.cache/ToolchainCapabilityDatabase/218093d45e2aba526a238e0b542dc3c8",
+          "zephyr/.cache/ToolchainCapabilityDatabase/331b9aff03a086914a3c4d4430ce67f7",
+          "zephyr/.cache/ToolchainCapabilityDatabase/3cc7bd857655417c36f7357c98eac733",
+          "zephyr/.cache/ToolchainCapabilityDatabase/40e5493622ebc5c752f82b54aebfb51d",
+          "zephyr/.cache/ToolchainCapabilityDatabase/46c0d59b77acca70b463dc272f983003",
+          "zephyr/.cache/ToolchainCapabilityDatabase/4f17dceca1a22f70cd4b1554f9917fdf",
+          "zephyr/.cache/ToolchainCapabilityDatabase/57e15a50936cb46e8b0275d8655e67cb",
+          "zephyr/.cache/ToolchainCapabilityDatabase/6eb57c77bceefeb22f40b8e615be2acd",
+          "zephyr/.cache/ToolchainCapabilityDatabase/724115d81e1332a7b5b067932e01464a",
+          "zephyr/.cache/ToolchainCapabilityDatabase/735062bedb82c56356a8f83758bdbefe",
+          "zephyr/.cache/ToolchainCapabilityDatabase/741fe11b5405c43f6a3ebb7288a2740f",
+          "zephyr/.cache/ToolchainCapabilityDatabase/74e315abf546d1821098e5f043e181e5",
+          "zephyr/.cache/ToolchainCapabilityDatabase/75517c064ac1a593543297f1cdcd12f0",
+          "zephyr/.cache/ToolchainCapabilityDatabase/7b465690583d70789236b11d0b349f40",
+          "zephyr/.cache/ToolchainCapabilityDatabase/8298b16b3d3e56721f86977a8f7073ce",
+          "zephyr/.cache/ToolchainCapabilityDatabase/86e458ea2a1da28c4f45b2341622b59d",
+          "zephyr/.cache/ToolchainCapabilityDatabase/89d31106475273df497844fbbf034e41",
+          "zephyr/.cache/ToolchainCapabilityDatabase/8de8b0ecb75855366d48273f7cd3eb4a",
+          "zephyr/.cache/ToolchainCapabilityDatabase/95310eb1961fe5be329d791f9c8c27b2",
+          "zephyr/.cache/ToolchainCapabilityDatabase/961e5d49281ab641c510590e7bfba008",
+          "zephyr/.cache/ToolchainCapabilityDatabase/98e3b4325af2ec75c924da2b944e25ed",
+          "zephyr/.cache/ToolchainCapabilityDatabase/a4de79b844bcb958c2a66328f2ee7df5",
+          "zephyr/.cache/ToolchainCapabilityDatabase/a5ff6000ffd32b791914c113d3cb3daa",
+          "zephyr/.cache/ToolchainCapabilityDatabase/aaede064668d6ae670a682e66ada8d95",
+          "zephyr/.cache/ToolchainCapabilityDatabase/af3d03d9b2a287af3104543cd4a67421",
+          "zephyr/.cache/ToolchainCapabilityDatabase/b9a9ea0255cda86a922e02d4ae95039b",
+          "zephyr/.cache/ToolchainCapabilityDatabase/baf76ec8bfd784806f375f13935d783b",
+          "zephyr/.cache/ToolchainCapabilityDatabase/cb599e11f2efc9d9336b59e2874d30ec",
+          "zephyr/.cache/ToolchainCapabilityDatabase/d82a0c5f2bbd62ab80a47a875070108a",
+          "zephyr/.cache/ToolchainCapabilityDatabase/de96e7696d80bb7aed9309efdc044999",
+          "zephyr/.cache/ToolchainCapabilityDatabase/e53acb39fe8c5f560b4763c4551e3363",
+          "zephyr/.cache/ToolchainCapabilityDatabase/e72a08a8e0e1c33a872c0f52796ffff2",
+          "zephyr/.cache/ToolchainCapabilityDatabase/f03e9b13eb339058b22abaab12f2f4f4",
+          "zephyr/.cache/ToolchainCapabilityDatabase/f5b6f37c9b05eae2b2108728709f0c0c",
+          "zephyr/.cache/ToolchainCapabilityDatabase/fac8681c5918f6834c6f39718735d843"
+        ],
+        "parent_immutable_members": 54019,
+        "runtime": {}
+      }
+    },
+    "final_immutable_members": 54064,
+    "first_finalization_actual_wait": 1,
+    "first_refusal_preserved": true,
+    "future_cache_changes_rejected": true,
+    "new_log_sha256": "fc299dd97eb043daa14b3f38f9f4f153ffd8dd5a01be4202a97f72c179339a76",
+    "new_runtime_exceptions": false,
+    "runtime_policy_exact_parent": true
+  },
+  "goal_complete": false,
+  "hardware_authorized": false,
+  "hardware_started": 0,
+  "inherited_rust_validation": {
+    "basis": "actual final source inventory confirms all9642 ordinary files,702 source manifest and Cargo.lock identical to v2",
+    "fmt": {
+      "actual_v2_wait": 0,
+      "identity": {
+        "bytes": 2642,
+        "mode": 436,
+        "sha256": "fd7c0f142cd3bb7cce30cc58d51b39bbe733d5efdcd296b766a0c8257be99013"
+      },
+      "receipt": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/cargo-fmt.receipt.json"
+    },
+    "rerun_in_v3": false,
+    "xtask_clippy": {
+      "actual_v2_wait": 0,
+      "failed": 0,
+      "identity": {
+        "bytes": 2675,
+        "mode": 436,
+        "sha256": "852c7fbfafb5f0f04b756a4c9176d8a7b723e0b885c6faa3f22cf9d1b0715bc0"
+      },
+      "passed": 29,
+      "receipt": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/cargo-xtask-clippy.receipt.json",
+      "skipped": 0,
+      "stdout": {
+        "bytes": 22292,
+        "mode": 436,
+        "sha256": "4ee12b4cdcb25e8e6cb6d61b72109805507ff1cc9d7d0ca076eefe3a5cf058d4"
+      }
+    }
+  },
+  "input_equivalence": {
+    "all_other_values_exact_equal": true,
+    "cases_exact": true,
+    "changed_environment_paths": [
+      "AXBUILD_TARGET_DIR",
+      "CARGO_HOME",
+      "CARGO_TARGET_DIR",
+      "CCACHE_DIR",
+      "VIRQ_CACHE_DIR"
+    ],
+    "changed_top_level": [
+      "environment",
+      "execution_tools_root",
+      "source",
+      "target"
+    ],
+    "limits_exact": true,
+    "source702_sha256_unchanged": true
+  },
+  "local_helper_precondition_errors": [
+    {
+      "correction_patch": "prepare-assertion-correction.patch",
+      "direct_Popen_wait_not_separately_recorded": true,
+      "initial_actual_exec_exit": 1,
+      "kind": "overbroad ordinary path exclusion",
+      "production_prepare_started": false,
+      "resume_actual_Popen_wait": 0,
+      "snapshot": "prepare.initial-failed.py"
+    },
+    {
+      "actual_helper_Popen_wait": 1,
+      "correction_patch": "prepare-external-precondition-correction.patch",
+      "kind": "fixed compiler alias compared using cache symlink identity instead of original external follow-stat semantics",
+      "production_prepare_started": false,
+      "snapshot": "prepare.external-precondition-failed.py"
+    },
+    {
+      "actual_archive_helper_Popen_wait": 1,
+      "correction_patch": "complete-report-archive-mode-correction.patch",
+      "failed_partial_tar_preserved": true,
+      "frozen_candidate_mutated": false,
+      "kind": "unserialized TarInfo.mode includes regular-file type bits; compare permission field with stat.S_IMODE",
+      "snapshot": "complete_report.archive-metadata-failed.py"
+    }
+  ],
+  "next_gate": "independent Spec, then Quality, then Root exact tools-copy acceptance; no hardware by this report",
+  "normal_Host_validation": false,
+  "offline_implementation_complete": true,
+  "parent": {
+    "freeze_manifest_sha256": "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9",
+    "ordinary_manifest_sha256": "f4bd9bb6dadd056e35faa2b3243a1be410a588f531f6bceb7d71c89e520e3c86",
+    "source": "/tmp/crosspath-native-capacity-v2-src-z2au9vz8",
+    "source702_manifest_sha256": "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb",
+    "tools": "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x"
+  },
+  "paths": {
+    "hardware_started": 0,
+    "qemu_started": 0,
+    "source": "/tmp/crosspath-native-cache-v3-src-hr23qnrs",
+    "target": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru",
+    "target_initial_members": [],
+    "tools": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t"
+  },
+  "production_host_prepare": {
+    "actual_Popen_wait": 0,
+    "actual_artifacts": {
+      "artifacts": {
+        "guest/zephyr/.config": {
+          "bytes": 24645,
+          "mode": 436,
+          "sha256": "bcff0cfdd171f6887f549eeea39a9c20b2e18f1e5a3eac448eb59f06afb06632"
+        },
+        "guest/zephyr/zephyr.bin": {
+          "bytes": 45320,
+          "mode": 509,
+          "sha256": "8e047c995362183b8cf755c4e8f5344a2e88982b9de78747fec8891f106a70c6"
+        },
+        "guest/zephyr/zephyr.dtb": {
+          "bytes": 3202,
+          "mode": 436,
+          "sha256": "63a5d5a043670b162f91804ccb1219efc1d9b4b3bd46aa4ae32dc3a49ec20c30"
+        },
+        "guest/zephyr/zephyr.dts": {
+          "bytes": 3514,
+          "mode": 436,
+          "sha256": "7fd871e4536f16e13222c8bc11fb50b868e4dc38a667eba81dd9a3b37e41c0af"
+        },
+        "guest/zephyr/zephyr.elf": {
+          "bytes": 778880,
+          "mode": 509,
+          "sha256": "f40c7c378cf80de6ac2cc64d6b1d1a4fbb64f7d4335141ad5d213aabaef62f93"
+        },
+        "linux/build.json": {
+          "bytes": 1922,
+          "mode": 436,
+          "sha256": "f25053cc3f1b21424cb1169039f34d7bfa98881ea7ae0ef90754709c3637e11a"
+        },
+        "linux/initramfs.cpio.gz": {
+          "bytes": 1475198,
+          "mode": 384,
+          "sha256": "ca47218b5b9cccb5e9e46c9eba5dcf52b6e04bec8778eaafa8b08e9b4b934f25"
+        },
+        "linux/linux.kernel": {
+          "bytes": 52558336,
+          "mode": 436,
+          "sha256": "c5403e99b9ae7a8c60c393fb2a97e637ded3e049179bb1b2f63cf6b94dd2a61a"
+        },
+        "linux/machine.dtb": {
+          "bytes": 1287,
+          "mode": 436,
+          "sha256": "3e7bce66056190d990705f723b72a9774c37e36629cf34f707ec480c69c87552"
+        },
+        "linux/ordinary-load": {
+          "bytes": 701752,
+          "mode": 509,
+          "sha256": "b9db9b8fc7925bf2c18e2d9edfbd3c0ee10a5a0f57985151e2f7b0073122ffc2"
+        },
+        "linux/vm.toml": {
+          "bytes": 502,
+          "mode": 436,
+          "sha256": "58b7866531b3cfa7bda1c03cf5c3a71fa00b18fe459b52115ddfb0e7f7c1ec99"
+        },
+        "resources/tests/vcpu-runtime.toml": {
+          "bytes": 874,
+          "mode": 436,
+          "sha256": "44ed9b70a060a4e7b5fe9e305e4e5a1e85304451ba85f41db06fc592e73a582b"
+        },
+        "vm.toml": {
+          "bytes": 388,
+          "mode": 436,
+          "sha256": "392f378ccedaff970bbbb29a6a14bb90738914760c397cdf852365aafb72fa4f"
+        }
+      },
+      "hardware_started": 0,
+      "linux_build": {
+        "base_initramfs_sha256": "a6fe2ed7dace805e29b65c5dbee766e1c13449b162664faaf65f1775c630aa5b",
+        "base_profile": "registry-v0.0.14",
+        "command": [
+          "/usr/bin/aarch64-linux-gnu-gcc",
+          "-O2",
+          "-static",
+          "-std=c11",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "/tmp/crosspath-native-cache-v3-src-hr23qnrs/virtualization/axvm/tests/guests/linux-load/workload.c",
+          "/tmp/crosspath-native-cache-v3-src-hr23qnrs/virtualization/axvm/tests/guests/linux-load/phase.c",
+          "-o",
+          "/tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/linux/ordinary-load",
+          "-DLINUX_MEMORY_BYTES=16777216ULL",
+          "-DLINUX_MEMORY_EVERY=1",
+          "-DLINUX_FENCES=1",
+          "-DLINUX_PHASE=1",
+          "-DLINUX_PHASE_TEST_CLOCK=0"
+        ],
+        "compiler_path": "/usr/bin/aarch64-linux-gnu-gcc-13",
+        "compiler_sha256": "cd90adc7801f4595267f61a5d25bd3a0c6beb2f9f1f107ab919a97a12972dc9a",
+        "compiler_version": "aarch64-linux-gnu-gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+        "dtb_sha256": "3e7bce66056190d990705f723b72a9774c37e36629cf34f707ec480c69c87552",
+        "explicit_dtb": true,
+        "fences_enabled": true,
+        "guest_gic_layout": "rk3588",
+        "host_cpu": 3,
+        "initramfs_sha256": "ca47218b5b9cccb5e9e46c9eba5dcf52b6e04bec8778eaafa8b08e9b4b934f25",
+        "kernel_sha256": "c5403e99b9ae7a8c60c393fb2a97e637ded3e049179bb1b2f63cf6b94dd2a61a",
+        "memory_every_batches": 1,
+        "phase_enabled": true,
+        "phase_test_clock": false,
+        "source_sha256": {
+          "phase.c": "c09a42adf6e58ab692a0a76222d2814108b4f4e9889aef2f4b3cb46c369a776a",
+          "phase.h": "0148526cb38f3c5ef5fa5e9d28e756b152a3da31d974df50024ecaa58da9635a",
+          "workload.c": "c54eb8aa52e345ac4cf6dd42ce6567d1765bc77aa498ff7d05c317e9b47e14f2"
+        },
+        "working_set_bytes": 16777216,
+        "workload_elf_sha256": "b9db9b8fc7925bf2c18e2d9edfbd3c0ee10a5a0f57985151e2f7b0073122ffc2",
+        "workload_source_sha256": "c54eb8aa52e345ac4cf6dd42ce6567d1765bc77aa498ff7d05c317e9b47e14f2"
+      },
+      "normal_host_validation": false,
+      "output": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime",
+      "qemu_started": 0,
+      "resource_text": "# Generated by virtualization/axvm/tests/guests/virq/prepare.py.\n# `entry` and `mailbox` stay fixed for the pinned guest revision.\nsamples = 32\nrecording = \"on\"\ntask_enabled = true\ntask_wait = \"blocked\"\ntask_deadline_ns = 10000000\ntask_rounds = 4096\nperiod_us = 20000\nentry = 0x400010e8\nmailbox = 0x40014fa0\nscenario = \"linux_memory\"\nsource = \"physical_timer_ppi\"\nmemory_bytes = 16777216\nlinux_memory_bytes = 16777216\nlinux_memory_every = 1\nlinux_fences_enabled = true\nlinux_phase_enabled = true\nlinux_phase_offset = 1\nlinux_phase_b_enabled = true\nlinux_host_cpu = 3\nexplicit_dtb_enabled = true\nguest_gic_layout = \"rk3588\"\nservice_placement = \"cpu0\"\nirq_context = \"current_el\"\nirq_service = \"off\"\nirq_pressure = \"sgi\"\nirq_pressure_period_us = 2000\nirq_pressure_burst = 2\nirq_service_rounds = 8\nirq_service_window_us = 1000\ninversion_witness = false\nguest_rtc_unused = false\n"
+    },
+    "actual_rootfs": {
+      "archive_bytes": 1475198,
+      "archive_sha256": "ca47218b5b9cccb5e9e46c9eba5dcf52b6e04bec8778eaafa8b08e9b4b934f25",
+      "binary_bytes_equal_original": true,
+      "changed_content": [
+        "init"
+      ],
+      "init_equals_actual_source_expression": true,
+      "members": {
+        ".": {
+          "bytes": 0,
+          "mode": 493,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "type": "directory"
+        },
+        "bin": {
+          "bytes": 0,
+          "mode": 509,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "type": "directory"
+        },
+        "bin/busybox": {
+          "bytes": 2237080,
+          "mode": 509,
+          "sha256": "a93cdb45dd0b1abddf72c5c4d7c269316243e23d5479b9117c5dafc57805f96d",
+          "type": "file"
+        },
+        "bin/ordinary-load": {
+          "bytes": 701752,
+          "mode": 493,
+          "sha256": "b9db9b8fc7925bf2c18e2d9edfbd3c0ee10a5a0f57985151e2f7b0073122ffc2",
+          "type": "file"
+        },
+        "dev": {
+          "bytes": 0,
+          "mode": 509,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "type": "directory"
+        },
+        "init": {
+          "bytes": 390,
+          "mode": 493,
+          "sha256": "c45b529e79f820e58926d461eee79595a841d107d78422af15be412eb96df930",
+          "type": "file"
+        },
+        "proc": {
+          "bytes": 0,
+          "mode": 509,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "type": "directory"
+        },
+        "sys": {
+          "bytes": 0,
+          "mode": 509,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "type": "directory"
+        },
+        "tmp": {
+          "bytes": 0,
+          "mode": 509,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "type": "directory"
+        }
+      },
+      "runtime_PID1_or_drain_proven": false,
+      "trailing_zero_bytes": 0
+    },
+    "argv": [
+      "python3",
+      "virtualization/axvm/tests/guests/virq/prepare.py",
+      "--linux-peer"
+    ],
+    "artifact_scope": "preparation resources only; no Host/Guest boot or Trace",
+    "budget_seconds": 300,
+    "cleanup_invoked": false,
+    "cwd": "/tmp/crosspath-native-cache-v3-src-hr23qnrs",
+    "downloads": false,
+    "elapsed_seconds": 72.17154478497105,
+    "environment": {
+      "AXBUILD_TARGET_DIR": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru",
+      "CARGO_HOME": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/cargo",
+      "CARGO_NET_OFFLINE": "true",
+      "CARGO_TARGET_DIR": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru",
+      "CCACHE_DIR": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/ccache",
+      "GIT_OPTIONAL_LOCKS": "0",
+      "HOME": "/home/yanlien",
+      "LANG": "C.UTF-8",
+      "LC_ALL": "C.UTF-8",
+      "PATH": "/home/yanlien/.cargo/bin:/usr/local/bin:/usr/bin:/bin",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "RUSTUP_HOME": "/home/yanlien/.rustup",
+      "RUST_LOG": "info,uboot_shell=debug",
+      "STRICT_NATIVE_RUN_TOKEN": "fddb566848f34bb2afbb88f518d8a51e",
+      "VIRQ_CACHE_DIR": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache",
+      "VIRQ_EXPLICIT_DTB": "1",
+      "VIRQ_FREQUENCY_REQUEST": "enabled",
+      "VIRQ_GIC_LAYOUT": "rk3588",
+      "VIRQ_HOST_LOAD": "linux_memory",
+      "VIRQ_IRQ_CONTEXT": "current_el",
+      "VIRQ_IRQ_PRESSURE": "sgi",
+      "VIRQ_IRQ_PRESSURE_BURST": "2",
+      "VIRQ_IRQ_PRESSURE_PERIOD_US": "2000",
+      "VIRQ_IRQ_SERVICE": "off",
+      "VIRQ_LINUX_BASE_PROFILE": "registry-v0.0.14",
+      "VIRQ_LINUX_CC": "/usr/bin/aarch64-linux-gnu-gcc",
+      "VIRQ_LINUX_FENCES": "1",
+      "VIRQ_LINUX_HOST_CPU": "3",
+      "VIRQ_LINUX_INITRAMFS_BASE": "/home/yanlien/Program/hypervisor/tgoskits/target/research-assets/images/initramfs-aarch64-busybox.cpio.gz/initramfs-aarch64-busybox.cpio.gz",
+      "VIRQ_LINUX_KERNEL": "/home/yanlien/Program/hypervisor/tgoskits/target/research-assets/images/qemu-aarch64/linux/linux-qemu",
+      "VIRQ_LINUX_MEMORY_BYTES": "16777216",
+      "VIRQ_LINUX_MEMORY_EVERY": "1",
+      "VIRQ_LINUX_PHASE": "1",
+      "VIRQ_LINUX_PHASE_B": "1",
+      "VIRQ_LINUX_PHASE_OFFSET": "1",
+      "VIRQ_LINUX_PHASE_TEST_CLOCK": "0",
+      "VIRQ_PERIOD_US": "20000",
+      "VIRQ_RECORDING": "on",
+      "VIRQ_SAMPLES": "32",
+      "VIRQ_SERVICE_PLACEMENT": "cpu0",
+      "VIRQ_SOURCE": "physical_timer_ppi",
+      "VIRQ_TASK": "1",
+      "VIRQ_TASK_DEADLINE_US": "10000",
+      "VIRQ_TASK_ROUNDS": "4096",
+      "VIRQ_TASK_WAIT": "blocked",
+      "VIRQ_THERMAL_REQUEST": "enabled"
+    },
+    "environment_extra_ownership_marker": "STRICT_NATIVE_RUN_TOKEN follows original controller convention",
+    "executions": 1,
+    "fixed_kernel_and_base_paths_SHA_unchanged": true,
+    "init_bytes": 390,
+    "known_worker_sha256": "b9db9b8fc7925bf2c18e2d9edfbd3c0ee10a5a0f57985151e2f7b0073122ffc2",
+    "owned_record_at_spawn": {
+      "argv": [
+        "python3",
+        "virtualization/axvm/tests/guests/virq/prepare.py",
+        "--linux-peer"
+      ],
+      "pgid": 5,
+      "pid": 5,
+      "starttime": "50805943",
+      "state": "R"
+    },
+    "proc_scope": "only exact owned child PID identity; no host process scan",
+    "signals": [],
+    "start_new_session": true,
+    "timeout": false
+  },
+  "protection": {
+    "main_source_modified": false,
+    "old_cache_or_failed_candidate_modified": false,
+    "parent_all_cache_immutable_SHA_verified_before_copy": true,
+    "parent_source_and_cache_all_lstat_fields_and_members_unchanged": true,
+    "selected_parent_tools_manifests_and_failed_records_SHA_unchanged": true,
+    "source702_ordinary_Rust_protocol_budget_pressure_variables_unchanged": true,
+    "target_after_ready_matches_actual_prepare_snapshot": true
+  },
+  "qemu_started": 0,
+  "schema_version": 1,
+  "source": {
+    "Cargo.lock": {
+      "bytes": 226383,
+      "mode": 436,
+      "sha256": "a0be52dac049ec52fe3bea67243cca4fd3bbbd992212b0eb8b078a054e4292fe"
+    },
+    "Rust_validation": "inherited actual v2 receipts; not rerun in v3",
+    "all_source_bytes_modes_equal_parent": true,
+    "changed_source_members": [],
+    "ordinary_files": 9642,
+    "ordinary_manifest_sha256": "f4bd9bb6dadd056e35faa2b3243a1be410a588f531f6bceb7d71c89e520e3c86",
+    "source702_count": 702,
+    "source702_manifest_sha256": "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb"
+  },
+  "space": {
+    "archive_budget_bytes": 1073741824,
+    "archive_raw_bytes_after_tool_archive": 210003658,
+    "cargo_cache_regular_file_bytes": 2140427249,
+    "filesystem_free": 145324347392,
+    "filesystem_total": 580898160640,
+    "old_inputs_deleted": false,
+    "raw_task1_bytes_at_measurement": 40803167,
+    "source_regular_file_bytes": 137851050,
+    "target_regular_file_bytes": 3330188444,
+    "temp_cache_target_separate_from_archive_budget": true,
+    "virq_cache_regular_file_bytes": 1064656119
+  },
+  "state": "OFFLINE_READY_PENDING_SPEC_QUALITY_ROOTCOPY",
+  "tool_archive": {
+    "all_payload_SHA_mode_size_match_frozen_tools": true,
+    "cache_included": false,
+    "identity": {
+      "bytes": 30870837,
+      "mode": 436,
+      "sha256": "8a64c8b14183c7124299cc2fa9d1e7dcfcc1fee826d368617875203a7892fc97"
+    },
+    "member_count": 108,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/task1/frozen-tools.tar.gz",
+    "sources702_tar": {
+      "bytes": 1337626,
+      "mode": 436,
+      "sha256": "072c67c53641c3428ddfaa031692a506443105b0a023376dff90e307e1f8f29d"
+    },
+    "target_included": false
+  },
+  "tools": {
+    "all_other_capture_bytes_exact": true,
+    "capture_parent_sha256": "e1e573ed9ecd8a1dd77c80d6a06fff3739e4fa8114815cc2b6b5c826206a14b2",
+    "capture_scope": {
+      "all_bytes_outside_verify_static_exact": true,
+      "all_other_function_AST_exact": true,
+      "candidate_sha256": "61717a37b528e2e93d8cbcae1c1dafbc6249ac3417fbf0b8011b984a03a4c683",
+      "changed_functions": [
+        "verify_static"
+      ],
+      "only_imports_globals_outside_function_unchanged": true,
+      "outside_verify_static_sha256": "d031f1da1f9cff41a4c880c694b4a657a815630999b0ee0bd5926061b43cbd50",
+      "parent_sha256": "e1e573ed9ecd8a1dd77c80d6a06fff3739e4fa8114815cc2b6b5c826206a14b2"
+    },
+    "controller_change": "only output root raw/strict-native-phase-v2 -> raw/strict-native-phase-v3",
+    "old_file_symlink_primary96_quota_loss_full_FIT_newc_ownership_wait_rules_retained": true
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "command": [
+    "/usr/bin/aarch64-linux-gnu-gcc",
+    "-O2",
+    "-static",
+    "-std=c11",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "/tmp/crosspath-topology-work/virtualization/axvm/tests/guests/linux-load/workload.c",
+    "/tmp/crosspath-topology-work/virtualization/axvm/tests/guests/linux-load/phase.c",
+    "-o",
+    "/tmp/crosspath-compact-c-pnfghufp/aarch64-final/linux/ordinary-load",
+    "-DLINUX_MEMORY_BYTES=16777216ULL",
+    "-DLINUX_MEMORY_EVERY=1",
+    "-DLINUX_FENCES=1",
+    "-DLINUX_PHASE=1",
+    "-DLINUX_PHASE_TEST_CLOCK=0"
+  ],
+  "compiler_version": "aarch64-linux-gnu-gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "working_set_bytes": 16777216,
+  "memory_every_batches": 1,
+  "fences_enabled": true,
+  "phase_enabled": true,
+  "phase_test_clock": false,
+  "source_sha256": {
+    "workload.c": "c54eb8aa52e345ac4cf6dd42ce6567d1765bc77aa498ff7d05c317e9b47e14f2",
+    "phase.c": "c09a42adf6e58ab692a0a76222d2814108b4f4e9889aef2f4b3cb46c369a776a",
+    "phase.h": "0148526cb38f3c5ef5fa5e9d28e756b152a3da31d974df50024ecaa58da9635a"
+  },
+  "compiler_path": "/usr/bin/aarch64-linux-gnu-gcc-13",
+  "compiler_sha256": "cd90adc7801f4595267f61a5d25bd3a0c6beb2f9f1f107ab919a97a12972dc9a",
+  "explicit_dtb": true,
+  "host_cpu": 3,
+  "guest_gic_layout": "rk3588",
+  "dtb_sha256": "3e7bce66056190d990705f723b72a9774c37e36629cf34f707ec480c69c87552",
+  "kernel_sha256": "c5403e99b9ae7a8c60c393fb2a97e637ded3e049179bb1b2f63cf6b94dd2a61a",
+  "base_profile": "registry-v0.0.14",
+  "base_initramfs_sha256": "a6fe2ed7dace805e29b65c5dbee766e1c13449b162664faaf65f1775c630aa5b",
+  "workload_source_sha256": "c54eb8aa52e345ac4cf6dd42ce6567d1765bc77aa498ff7d05c317e9b47e14f2",
+  "workload_elf_sha256": "b9db9b8fc7925bf2c18e2d9edfbd3c0ee10a5a0f57985151e2f7b0073122ffc2",
+  "initramfs_sha256": "c66718c5e0d87b32dae004513862fba534f82c9ebb01f9bcf9ed3e0470f62263"
+}

@@ -1,0 +1,31 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "-c",
+    "from pathlib import Path;import ast,json,hashlib,difflib;b=Path(\"research/cross-path-20261017/raw/strict-native-phase-v2\");old=(b/\"function-audit-v2/audit.py\").read_bytes();assert hashlib.sha256(old).hexdigest()==\"1e4f19515aa9bc285e1201a85378a166f7b7a7805067ab4b4f6032fa1ad0a22b\";new=(b/\"function-audit-v3/audit.py\").read_bytes();p=\"\".join(difflib.unified_diff(old.decode().splitlines(keepends=True),new.decode().splitlines(keepends=True),fromfile=\"function-audit-v2/audit.py\",tofile=\"function-audit-v3/audit.py\"));(b/\"function-audit-v3/audit-v2-to-v3.patch\").write_text(p);print(p); t1={n.name:ast.dump(n,include_attributes=False) for n in ast.parse(old).body if isinstance(n,ast.FunctionDef)};t2={n.name:ast.dump(n,include_attributes=False) for n in ast.parse(new).body if isinstance(n,ast.FunctionDef)};print(\"FUNCTION DIFF\",json.dumps({\"modified\":[k for k in t1 if k in t2 and t1[k]!=t2[k]],\"added\":[k for k in t2 if k not in t1],\"removed\":[k for k in t1 if k not in t2]},indent=2));r=json.loads((b/\"function-audit-v3/new-v2-AB1-red-v1/report.json\").read_text());print(\"ACTUAL RUN IDENTITY\",json.dumps(next(g for g in r[\"gates\"] if g[\"name\"]==\"same-run-launch-wait-completion-binding\"),indent=2));print(\"ACTUAL EXIT RELEASE\",json.dumps(r[\"exit_release\"],indent=2))"
+  ],
+  "env": {
+    "PATH": "/usr/bin:/bin",
+    "LANG": "C.UTF-8",
+    "TZ": "UTC",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "cwd": "/home/yanlien/Program/hypervisor/tgoskits",
+  "started_ns": 1792325969408118375,
+  "forced_stop": false,
+  "pid": 3,
+  "wait_returncode": 0,
+  "returncode": 0,
+  "ended_ns": 1792325969519727842,
+  "stdout": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/commands/0011-self-review/stdout",
+    "size": 13882,
+    "sha256": "93ddc6aaab4c23b9b8a281042e61d3733dfb61e0ab09e8e6c6e81f6100e8b0c6"
+  },
+  "stderr": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/commands/0011-self-review/stderr",
+    "size": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

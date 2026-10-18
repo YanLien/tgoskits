@@ -1,0 +1,54 @@
+--- AB1-launch-supervisor-v2.py
++++ AB1-launch-supervisor-v3.py
+@@ -12,13 +12,13 @@
+ import urllib.request
+ 
+ ROOT = Path('/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017')
+-OUT = ROOT/'raw/strict-native-phase-v2'
+-TOOLS = Path('/tmp/crosspath-native-capacity-v2-tools-ksjtks3x')
+-FREEZE = '6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9'
++OUT = ROOT/'raw/strict-native-phase-v3'
++TOOLS = Path('/tmp/crosspath-native-cache-v3-tools-jrhcn15t')
++FREEZE = '0bf9ff1cbc154583c60c6dd34688c9b498b6f63b0ef8014d1dbcec04f7ed28e8'
+ DELIVERY = 'fe7b8cd40aa21855eaaaedfb0ed92022eac37eed329dc51b06352710d4525bb7'
+-EXPECTED = {'native_once.py':'88608867d42ce9adbf4aa900dd8da71667b8e1090e3c52c82174c9949f3d21f4',
+- 'capture_native.py':'e1e573ed9ecd8a1dd77c80d6a06fff3739e4fa8114815cc2b6b5c826206a14b2',
+- 'inputs.json':'a785de09f1017498360677338ef0f0c4af40a9ed7bc81a9c824c52b58841abbd',
++EXPECTED = {'native_once.py':'8b871b1ea3cfb8a8ad8272bc7fa5ca37dc648b3efed45fe4af9ae0f374a24902',
++ 'capture_native.py':'61717a37b528e2e93d8cbcae1c1dafbc6249ac3417fbf0b8011b984a03a4c683',
++ 'inputs.json':'8fac8a1fb86d79a1e74bf9591bf68fa2dd88f6d261edcf0ea576dfbd6ace0060',
+  'freeze-manifest.json':FREEZE}
+ 
+ def sha(p):
+@@ -58,7 +58,7 @@
+         raise RuntimeError('completed primary delivery identity changed')
+     if any((OUT/case).exists() for case in ('AB1','AB0','0')) or any(TOOLS.glob('*.once')):
+         raise RuntimeError('native case or one-shot marker already exists')
+-    acceptance_path=ROOT/'results/strict-native-trace-capacity-v2-task1-root-acceptance-v1.json'
++    acceptance_path=ROOT/'results/strict-native-cache-v3-task1-root-acceptance-v1.json'
+     if sha(acceptance_path)!=args.acceptance_sha256:
+         raise RuntimeError('Root offline acceptance SHA differs')
+     acceptance=json.loads(acceptance_path.read_text())
+@@ -72,11 +72,11 @@
+     copied=json.loads(copied_path.read_text())
+     if copied.get('passed') is not True or copied.get('freeze_sha256')!=FREEZE:
+         raise RuntimeError('Root independent copy has not passed')
+-    # Task1 legitimately populated this exclusive target with xtask Clippy.
++    # Task1 populated this exclusive target with verified production Guest preparation.
+     # Its current metadata must match the completed no-write copy check.
+     target=Path(inputs['target'])
+     if target.is_symlink() or not target.is_dir() or target.stat().st_uid!=os.getuid():
+-        raise RuntimeError('new owned Clippy target identity is invalid')
++        raise RuntimeError('new owned preparation target identity is invalid')
+     metadata_ref=acceptance['evidence']['Root_copy_metadata']
+     metadata_path=ROOT/metadata_ref['path']
+     if metadata_path!=copied_path.parent/'target-metadata.after.json' or sha(metadata_path)!=metadata_ref['sha256']:
+@@ -90,7 +90,7 @@
+     if {'entries':count,'metadata_sha256':metadata_hash.hexdigest()}!=expected_meta:
+         raise RuntimeError('private target changed since Root independent copy check')
+     receipt['offline_acceptance_sha256']=args.acceptance_sha256
+-    receipt['target_preexisting_for_verified_clippy']=True
++    receipt['target_preexisting_for_verified_host_prepare']=True
+     receipt['target_metadata_before']=expected_meta
+     # This read-only availability snapshot never reserves or releases a board.
+     url='http://10.3.10.60:2999/api/v1/board-types'

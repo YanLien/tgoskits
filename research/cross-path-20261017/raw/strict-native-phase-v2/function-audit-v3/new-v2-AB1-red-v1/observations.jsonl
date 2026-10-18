@@ -1,0 +1,3 @@
+{"line": 7, "offset": 781, "bytes": 35, "sha256": "5b5219954d38b8245d6083467c9471169a66e4dd94a1a76bacdbdf21758a9ee6", "marker": null, "text": "Traceback (most recent call last):"}
+{"line": 24, "offset": 2024, "bytes": 195, "sha256": "2232662ad8188a63fc0236ce9dcaab23f3c0140b479a033eeae1764a000e3c05", "marker": null, "text": "subprocess.CalledProcessError: Command '['git', '-C', '/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/zephyr', 'rev-parse', 'HEAD']' returned non-zero exit status 128."}
+{"line": 25, "offset": 2219, "bytes": 64, "sha256": "9af0da39e7c28ed9c92bdfd3d0066d33fdf5c46a4078e2b1c933b61eacb6fe17", "marker": null, "text": "Error: host_prepare `python3` failed with status exit status: 1"}

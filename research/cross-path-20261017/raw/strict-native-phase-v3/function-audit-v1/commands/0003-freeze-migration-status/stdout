@@ -1,0 +1,31 @@
+{
+  "status": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/status.json",
+    "bytes": 10945,
+    "sha256": "72410947af68e123395e6cee6a890db0887c471010a819dfd17b9e7bb68c28db"
+  },
+  "report": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-function-audit-metadata-migration-v1.json",
+    "bytes": 1807,
+    "sha256": "98f8b0fe4f74bac54d41748711d94a329e0638f4a4e0f69af46d9a3cb7ebcb6c"
+  },
+  "auditor": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/audit.py",
+    "bytes": 64442,
+    "sha256": "6fa57d1bb99a9fbdb49613ffc90cb4b648aa9511465957aec25b9e58e34e76aa"
+  },
+  "contract": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/source-identities.json",
+    "bytes": 3840,
+    "sha256": "8ff5e4a14fc159d0b0ec81bd26c00fe1860c62611d9e6a0f38c15989e6518d0e"
+  },
+  "reference_count": 17,
+  "unchanged_function_count": 35,
+  "content_changed_refs": [
+    "freeze",
+    "inputs",
+    "capture_source",
+    "driver_source"
+  ],
+  "archive_bytes": 109307
+}

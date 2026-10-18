@@ -1,0 +1,545 @@
+{
+  "schema_version": 1,
+  "review_type": "independent-Spec-rereview",
+  "created_utc": "2026-10-18T12:24:40.495679+00:00",
+  "decision": "PASS",
+  "blockers": [],
+  "scope": "仅复核function-audit-v3对QUALITY-EXIT-RUN-IDENTITY的最小通用同次运行绑定、退出/释放门未放宽与既有证据；不重做完整Quality，不迁入新cache/freeze，不批准硬件。",
+  "implementation_spec_passed_within_scope": true,
+  "quality_review_may_start": true,
+  "quality_review_completed": false,
+  "hardware_execution_approved": false,
+  "bindings": {
+    "status": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/status.json",
+      "bytes": 12547,
+      "sha256": "72e0b3ad003fc3e4eb2494f1fec6d1f4bbfc9f1b03a2c589310209570e2476a0"
+    },
+    "auditor": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/audit.py",
+      "bytes": 64442,
+      "sha256": "35efe04deacc18de5556505b8567cabc988b1c85eefe6455cf3da1c2c4deb6c8"
+    },
+    "revision_report": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-function-audit-v3-revision-v1.json",
+      "bytes": 1485,
+      "sha256": "4f8fd9170d72d9b3de87a4f494ab387d724deadb2bb7a2ebabc889f6dce09498"
+    },
+    "quality_origin": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-function-audit-v2-quality-review-v1.json",
+      "bytes": 24333,
+      "sha256": "1aaae34325c49b66d381ebd8e6e266623b662b65f824954abc16fff6da3a20f3"
+    },
+    "prior_spec": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-function-audit-v2-spec-review-v1.json",
+      "bytes": 26610,
+      "sha256": "c771cd092714f6cd505601cbd9846f36856a882f8b4fddc91829e48bc15b93e7"
+    },
+    "source_identity_contract": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/source-identities.json",
+      "bytes": 3885,
+      "sha256": "07649250263cacf6d4d03ba32b6200059b60dd2160c44c3e12ecae8a5c4c597b"
+    },
+    "identity_test": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/test_exit_binding.py",
+      "bytes": 9710,
+      "sha256": "f093ddae9d33871b76c9e21d901d1e64c7a05779c7747f2086a88f1ccab72507"
+    },
+    "retained_rule_test": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/test_review_rules.py",
+      "bytes": 13083,
+      "sha256": "fa00e5a350f03501a9fbfe671900ac97dbe75d103deceebcef178600240d2d16"
+    },
+    "retained_inherited_test": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/test_audit.py",
+      "bytes": 2279,
+      "sha256": "6ba16562382870c2ba658cbdcc62f10b9c5c0752ff311b3242fedc16901d5bbd"
+    },
+    "identity_RED": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/v2-identity-rule-red-v1/report.json",
+      "bytes": 17906,
+      "sha256": "08754eddded492ccf09d94d70ea2f1e80eb53dd5ea56b682019922b45dcbd0cc"
+    },
+    "identity_GREEN": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/v3-final-identity-green-v1/report.json",
+      "bytes": 18293,
+      "sha256": "16c450950f887fb8e15c8037d8d98b1dd9bab0d9d044f04822ee263a1d779b84"
+    },
+    "retained_rule_GREEN": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/retained-18-rules-green.json",
+      "bytes": 21219,
+      "sha256": "7798d0c4502fb3aa5431fb81602adf555e63a9e84f03075f5053ead659fa5aa8"
+    },
+    "old_actual_failure": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/old-AB1-red-v1/report.json",
+      "bytes": 64366,
+      "sha256": "67baacf82c136f20a3a2cf373e7c63b3bc055f89166cff79c5d5a4c15dfdf958"
+    },
+    "new_actual_failure": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/new-v2-AB1-red-v1/report.json",
+      "bytes": 17508,
+      "sha256": "06493d2cd9515e257091f1f5b0e64abf859a71d7edbaab525e0273db45b3890e"
+    },
+    "final_handoff": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-final-handoff-v1.json",
+      "bytes": 5347,
+      "sha256": "30d2613204648b7ebd89a202ee642b725678c94c056dada23e58de34b88cdd91"
+    },
+    "v2_audit": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v2/audit.py",
+      "bytes": 57661,
+      "sha256": "1e4f19515aa9bc285e1201a85378a166f7b7a7805067ab4b4f6032fa1ad0a22b"
+    },
+    "v2_status": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v2/status.json",
+      "bytes": 11060,
+      "sha256": "51a710820c85f11900a5b156a764a314c6464e15ed147cb2dfb0747cf87f9af6"
+    },
+    "v1_audit": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/audit.py",
+      "bytes": 49442,
+      "sha256": "14f93a9a22ead29ad5b8b6b0d112078ba6fae407746d705c553a29fedeccfaf3"
+    },
+    "v1_status": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v1/status.json",
+      "bytes": 4699,
+      "sha256": "3f2e487e8c87d816a204b3132fd0a097d07aaa9f88dc029611892d3061ff9a32"
+    },
+    "design": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/DESIGN.md",
+      "bytes": 4077,
+      "sha256": "95e75c16ab44e62bb8f4fec43e62bb387e90758963196ad2e6d7ed2ed87b0ebb"
+    },
+    "readme": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/README.md",
+      "bytes": 1045,
+      "sha256": "1b21f0eaba79872ace767d0c928247a6315c77e49c45065ef29c503f1d265556"
+    },
+    "patch": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/audit-v2-to-v3.patch",
+      "bytes": 11735,
+      "sha256": "83dbe764fbd45080fd036febbaa9cfd56cf789bb7e46e4b1ced8de8ed3944c32"
+    }
+  },
+  "closed_blockers": [
+    {
+      "id": "QUALITY-EXIT-RUN-IDENTITY",
+      "status": "closed-within-Spec-review-scope",
+      "evidence_connections": [
+        {
+          "requirement": "准确final handoff消费approval/root_launch/root_tool_completion字节",
+          "implementation": [
+            {
+              "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/audit.py",
+              "line": 819,
+              "end_line": 845
+            }
+          ],
+          "assessment": "三个新增documents与原文件一起read_bound(SHA/size)，缺失或矛盾门记录失败；不是仅信存在或布尔值。"
+        },
+        {
+          "requirement": "handoff case、actualcommand批准、冻结inputs/case/env相连",
+          "implementation": [
+            {
+              "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/audit.py",
+              "line": 727,
+              "end_line": 747
+            }
+          ],
+          "assessment": "run/wait/launch/approval同case；command cwd/argv/完整case合并env匹配inputs，approval匹配同case env/argv/source/freeze/input SHA，command与launch批准SHA都等于准确approval引用。"
+        },
+        {
+          "requirement": "原driver完整CLI、source/freeze/approval与批准一致",
+          "implementation": [
+            {
+              "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/audit.py",
+              "line": 748,
+              "end_line": 753
+            }
+          ],
+          "assessment": "从冻结execution_tools_root生成完整expected_driver，三份launch argv/launch.driver argv/wait.driver argv一致；包含run、freeze、approval路径/SHA与source；launch的repo cwd和基础env匹配冻结producer。"
+        },
+        {
+          "requirement": "launch↔wait与原Popen直接child身份",
+          "implementation": [
+            {
+              "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/audit.py",
+              "line": 755,
+              "end_line": 774
+            }
+          ],
+          "assessment": "driver/supervisor各自PID/PGID/starttime/argv完整比较，Popen返回PID等于driver且区别supervisor；wait方法与supervisor源码SHA一致，wait指向准确launch/run_result SHA。state快照不充当退出。"
+        },
+        {
+          "requirement": "completion→waitreceiptSHA→launch与原Root session/chunk",
+          "implementation": [
+            {
+              "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/audit.py",
+              "line": 775,
+              "end_line": 799
+            }
+          ],
+          "assessment": "completion准确wait收据SHA构成传递连接；session/chunk只从completion提取，launch无此字段且未虚构重复值。driver、Root、xtask完成数值分别与父wait/handoff相符；可选outer_wait存在时也必须一致。"
+        },
+        {
+          "requirement": "identity独立于退出成功且退出门不可绕过",
+          "implementation": [
+            {
+              "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/audit.py",
+              "line": 803,
+              "end_line": 816
+            },
+            {
+              "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/audit.py",
+              "line": 843,
+              "end_line": 845
+            },
+            {
+              "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/audit.py",
+              "line": 873,
+              "end_line": 880
+            }
+          ],
+          "assessment": "audit单列identity门，validate_exit仍再次要求identity；实际xtask/driver/Root全0、无强停/timeout、ownedgroupempty、tool_errors空、explicit-finalize-success及原冻结ostool释放合同保留。Root退出从原completion取，删除只信handoff标量的退路。"
+        }
+      ],
+      "test_source": [
+        {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/test_exit_binding.py",
+          "line": 28,
+          "end_line": 48
+        },
+        {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/test_exit_binding.py",
+          "line": 63,
+          "end_line": 105
+        },
+        {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/test_exit_binding.py",
+          "line": 107,
+          "end_line": 155
+        }
+      ],
+      "judgment": "独立门真实连接已提供的准确收据，缺失/错配拒绝；没有增加成功替身或把identity GREEN当退出成功。"
+    }
+  ],
+  "nonweakening": {
+    "method": "普通精确diff及AST仅解析对照，没有执行候选代码。",
+    "unchanged_function_count": 25,
+    "unchanged_functions": [
+      "need",
+      "sha",
+      "verify_file",
+      "read_bound",
+      "contract",
+      "load_wire",
+      "fields",
+      "num",
+      "expected",
+      "decode_real_data",
+      "policy_data",
+      "validate_fixture",
+      "validate_workload",
+      "validate_policy",
+      "validate_pressure",
+      "runtime_kinds",
+      "runtime_event",
+      "validate_trace",
+      "validate_lifecycle",
+      "validate_suite",
+      "newc",
+      "fdt",
+      "validate_artifacts",
+      "validate_source",
+      "main"
+    ],
+    "modified": [
+      "validate_exit",
+      "audit"
+    ],
+    "added": [
+      "validate_run_identity"
+    ],
+    "removed": [],
+    "assessment": "除新增identity门、加载三份实际文件和报告字段外，25个原函数AST保持v2；原三个Spec规则及全部wire/DATA、工作量、时间界、压力/退休、Trace、suite、工件和源/环境门未改。validate_exit增加绑定，保留原数值成功/资源/显式释放合同。",
+    "unchanged_test_source_SHAs": {
+      "18_rules": "fa00e5a350f03501a9fbfe671900ac97dbe75d103deceebcef178600240d2d16",
+      "2_checks": "6ba16562382870c2ba658cbdcc62f10b9c5c0752ff311b3242fedc16901d5bbd"
+    },
+    "source_702_sha256": "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb",
+    "tools_freeze_sha256": "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9",
+    "contract_sha256": "07649250263cacf6d4d03ba32b6200059b60dd2160c44c3e12ecae8a5c4c597b",
+    "future_cache_freeze": "0bf9ff1cbc154583c60c6dd34688c9b498b6f63b0ef8014d1dbcec04f7ed28e8 is supplied elsewhere, not adopted/verified/accepted by this auditor or review"
+  },
+  "existing_receipt_evidence": {
+    "receipts": {
+      "0004-v2-identity-rule-red": {
+        "reference": {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/commands/0004-v2-identity-rule-red/receipt.json",
+          "bytes": 1282,
+          "sha256": "e903f233a44cadb3a330d1b51280f0d93e50dc391f5be020a635c8bf5ebf3a04"
+        },
+        "actual_wait": 1,
+        "returncode": 1,
+        "forced_stop": false,
+        "stdout_stderr_SHA_size_verified": true
+      },
+      "0006-final-identity-green": {
+        "reference": {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/commands/0006-final-identity-green/receipt.json",
+          "bytes": 1176,
+          "sha256": "83ea46d61ca127b156e699eb6ab93c3233b0e4114a2a49a41414dd52ab6dec6e"
+        },
+        "actual_wait": 0,
+        "returncode": 0,
+        "forced_stop": false,
+        "stdout_stderr_SHA_size_verified": true
+      },
+      "0007-retained-18-rules": {
+        "reference": {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/commands/0007-retained-18-rules/receipt.json",
+          "bytes": 1171,
+          "sha256": "a1c02c901c3176acac4a627edca644e59dc5e81c97f1435a3d94e0f36fb91f0a"
+        },
+        "actual_wait": 0,
+        "returncode": 0,
+        "forced_stop": false,
+        "stdout_stderr_SHA_size_verified": true
+      },
+      "0008-retained-2-checks": {
+        "reference": {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/commands/0008-retained-2-checks/receipt.json",
+          "bytes": 1036,
+          "sha256": "1cbdec3627881b76c7e75f4a70f9da6b2e401c75ceb3de34b1b6e55515931852"
+        },
+        "actual_wait": 0,
+        "returncode": 0,
+        "forced_stop": false,
+        "stdout_stderr_SHA_size_verified": true
+      },
+      "0009-old-actual-failure": {
+        "reference": {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/commands/0009-old-actual-failure/receipt.json",
+          "bytes": 1440,
+          "sha256": "d53c35947165ee5eb4c72e5453be04eb51ad40d74768cabbea0e7c0ba8466254"
+        },
+        "actual_wait": 1,
+        "returncode": 1,
+        "forced_stop": false,
+        "stdout_stderr_SHA_size_verified": true
+      },
+      "0010-new-v2-actual-failure": {
+        "reference": {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/function-audit-v3/commands/0010-new-v2-actual-failure/receipt.json",
+          "bytes": 1449,
+          "sha256": "6e58d34301ff0a98ea64263df08c71bc6656ea9503a1592256c7340cb27bb26d"
+        },
+        "actual_wait": 1,
+        "returncode": 1,
+        "forced_stop": false,
+        "stdout_stderr_SHA_size_verified": true
+      }
+    },
+    "identity_test_sha256": "f093ddae9d33871b76c9e21d901d1e64c7a05779c7747f2086a88f1ccab72507",
+    "v2_RED": {
+      "tests_run": 1,
+      "expected_missing_rejections": 8,
+      "rejected": 0,
+      "failures": 8,
+      "errors": 0,
+      "actual_wait": 1
+    },
+    "v3_GREEN": {
+      "tests_run": 1,
+      "counterexamples_rejected": 8,
+      "failures": 0,
+      "errors": 0,
+      "actual_wait": 0
+    },
+    "same_identity_changes_verified": true,
+    "identity_edges": [
+      "foreign-case-pair",
+      "foreign-Popen-child",
+      "wrong-driver-source",
+      "detached-command-approval",
+      "detached-launch",
+      "detached-completion",
+      "contradictory-completion-exit",
+      "missing-original-completion"
+    ],
+    "baseline_actual_xtask_driver_Root_exit": [
+      1,
+      1,
+      1
+    ],
+    "test_quality_disposition": "保留：一个通用同次运行绑定行为的八条证据连接反例，直接调用正式独立门；准确v2仅抽取既有两条身份表达式，以隔离无关的非零退出/释放前置。保存变异收据并按实际字节重算相依SHA，不能因只撞SHA格式错误而伪绿。",
+    "retained_rules": {
+      "groups": 3,
+      "rejected_counterexamples": 18,
+      "actual_wait": 0
+    },
+    "retained_inherited_checks": {
+      "checks": 2,
+      "actual_wait": 0
+    },
+    "normal_end_to_end_GREEN": false,
+    "rerun_performed": false,
+    "no_success_fixture": "真实失败组始终1/1/1及releaseunknown；没有成功Popen、Guest、Trace或suite构造。"
+  },
+  "actual_same_run_evidence": {
+    "final_handoff_sha256": "30d2613204648b7ebd89a202ee642b725678c94c056dada23e58de34b88cdd91",
+    "exact_receipt_references": {
+      "run_result": {
+        "bytes": 1828,
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1/run-result.json",
+        "sha256": "b69e27dab4491a467830da92a63840ab73bc396baf94704b9065d88639490aa8"
+      },
+      "root_wait": {
+        "bytes": 2166,
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-wait.json",
+        "sha256": "821155a848d38653eab2fe9c240db35240ca088280305c40bbbc9aacd677d9ff"
+      },
+      "root_launch": {
+        "bytes": 4211,
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-launch.json",
+        "sha256": "cb56c12f473c0bcaa476a56da81cb5749bea99362053cbbfe3a2c6e2a03bdc2c"
+      },
+      "root_tool_completion": {
+        "bytes": 407,
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-supervisor-completion-v1.json",
+        "sha256": "0dcd33d8b741190b959cc90c34fbc15cb4362147f1fbda32aa6eb00fce4de95f"
+      },
+      "actual_command": {
+        "bytes": 2703,
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1/actual-command.json",
+        "sha256": "29ec08fb40b33d1b4eea5deb0fd1795f3ba9ea39a5584f4066937c5af7d9df28"
+      },
+      "approval": {
+        "bytes": 3994,
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-approval-v1.json",
+        "sha256": "683d3be29859ce8b8b9734106687b084a92a870f0db1d47783206d81ee6a6f0f"
+      },
+      "frozen_inputs": {
+        "bytes": 5571,
+        "path": "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/inputs.json",
+        "sha256": "a785de09f1017498360677338ef0f0c4af40a9ed7bc81a9c824c52b58841abbd"
+      },
+      "freeze_manifest": {
+        "bytes": 12230,
+        "path": "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/freeze-manifest.json",
+        "sha256": "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9"
+      }
+    },
+    "identity_gate": {
+      "name": "same-run-launch-wait-completion-binding",
+      "passed": true,
+      "evidence": {
+        "case_id": "AB1",
+        "driver": {
+          "pid": 2246622,
+          "pgid": 2246622,
+          "starttime": "50588692",
+          "argv": [
+            "/usr/bin/python3",
+            "-B",
+            "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/native_once.py",
+            "--run",
+            "AB1",
+            "--approved-manifest",
+            "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9",
+            "--approval",
+            "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-approval-v1.json",
+            "--approval-sha256",
+            "683d3be29859ce8b8b9734106687b084a92a870f0db1d47783206d81ee6a6f0f",
+            "--source-manifest-sha",
+            "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb"
+          ]
+        },
+        "supervisor": {
+          "pid": 2246621,
+          "pgid": 2246621,
+          "starttime": "50588445",
+          "argv": [
+            "/usr/bin/python3",
+            "-B",
+            "research/cross-path-20261017/raw/strict-native-phase-v2/AB1-launch-supervisor.py",
+            "--acceptance-sha256",
+            "1539cd651b743fc85377bfd8fcce11531b1ce2b0f907bb4dddfaf8920cb0c9b5"
+          ]
+        },
+        "supervisor_source_sha256": "74806ad5a84b3078cd6afe88438a6ba3a9c242724f09f68222f0c355a1acfc0e",
+        "root_completion_session": 15037,
+        "root_completion_chunk": "6268a7",
+        "root_wait_exit": 1,
+        "xtask_wait_exit": 1,
+        "driver_wait_exit": 1,
+        "scope": "same-run identity only; numerical success and release remain separate gates"
+      }
+    },
+    "exit_gate": {
+      "name": "actual-exits-and-frozen-explicit-release",
+      "passed": false,
+      "reason": "AuditError: actual xtask/driver Popen wait not all zero"
+    },
+    "new_full_function_passed": false,
+    "new_DATA_count": 0,
+    "new_exit_release": {
+      "xtask_wait_exit": 1,
+      "driver_return_code": 1,
+      "driver_wait_exit": 1,
+      "root_wait_exit": 1,
+      "root_completion_session": 15037,
+      "root_completion_chunk": "6268a7",
+      "release": "unknown",
+      "independent_board_tool_wait": null,
+      "forced_signals": [],
+      "cleanup": {
+        "child_wait": 1,
+        "owned_group_empty": true,
+        "release": "not-forced-group-empty",
+        "signals": []
+      }
+    },
+    "old_full_function_passed": false,
+    "old_missing_completion_gate": {
+      "name": "bound-document-root_tool_completion",
+      "passed": false,
+      "reason": "KeyError: 'root_tool_completion'"
+    },
+    "old_release": "unknown",
+    "old_data_count": 2,
+    "old_dropped_rejection": {
+      "name": "single-global-zero-loss-complete-export",
+      "passed": false,
+      "reason": "AuditError: field dropped: expected 0, got 19839"
+    },
+    "AB0": "unexecuted",
+    "0": "unexecuted",
+    "same_candidate_retry_authorized": false
+  },
+  "read_scope": {
+    "candidate": "status所列15份候选/说明/结果精确文件；audit仅v2→v3差异及新增/修改路径，test_exit_binding静态通读，原18规则/2检查精确字节对照。",
+    "prior_materials": "准确v2 Quality唯一阻断、先前Spec、v1/v2 audit/status、当前最终handoff及其中8份既有批准/启动/完成/input/退出收据。",
+    "receipts": "6份已封执行收据及各自stdout/stderr精确SHA/size；RED/GREEN报告八项changes一致、结果反转；原18/2与两份整体失败判定。",
+    "excluded": "没有运行任何audit/tests/build/ready/QEMU/board/Git/proc/signal/network，没有全树/cache/702/主96扫描，也未读取或迁入新0bf9ff缓存合同。"
+  },
+  "unverified": [
+    "完整正常端到端GREEN",
+    "实际AB0/0及Aoff/Bzero正常成功",
+    "完整成功Trace/suite/工件链/显式释放",
+    "legacy生命周期RED/GREEN与完整Host",
+    "新缓存v3及其新source/freeze向审计器的准确迁移与独立审阅"
+  ],
+  "conclusions": {
+    "same_run_binding_gap_closed_within_scope": true,
+    "normal_end_to_end_GREEN": false,
+    "full_function_passed": false,
+    "Host_function_passed": false,
+    "capacity_fix_verified": false,
+    "M2": false,
+    "Joint": false,
+    "goal_complete": false
+  },
+  "next": "可针对准确function-audit-v3继续Quality复审。新cache/freeze迁移另起新合同副本并审阅；本结论不扩大硬件或重试额度。",
+  "writes": "仅新增results/strict-native-function-audit-v3-spec-review-v1.json及.md；本次未修改任何候选、旧版本或既有证据。"
+}

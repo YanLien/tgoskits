@@ -1,0 +1,62 @@
+{
+  "capture": {
+    "bytes": 33173,
+    "mode": 436,
+    "sha256": "61717a37b528e2e93d8cbcae1c1dafbc6249ac3417fbf0b8011b984a03a4c683"
+  },
+  "cargo_cache": {
+    "bytes": 24119362,
+    "mode": 436,
+    "sha256": "75ba73a00cbf7150fa1b0bb1319091e329c470316f9d1eeda63f84d5a18e0d9f"
+  },
+  "controller": {
+    "bytes": 21727,
+    "mode": 436,
+    "sha256": "8b871b1ea3cfb8a8ad8272bc7fa5ca37dc648b3efed45fe4af9ae0f374a24902"
+  },
+  "directory_manifest": {
+    "bytes": 2166162,
+    "mode": 436,
+    "sha256": "dca2a114c1ec0241196d7d7e2163504239076f283ec034e8d39f5e97bc8e738e"
+  },
+  "freeze_manifest": {
+    "bytes": 19347,
+    "mode": 436,
+    "sha256": "0bf9ff1cbc154583c60c6dd34688c9b498b6f63b0ef8014d1dbcec04f7ed28e8"
+  },
+  "frozen_members": 107,
+  "inputs": {
+    "bytes": 5547,
+    "mode": 436,
+    "sha256": "8fac8a1fb86d79a1e74bf9591bf68fa2dd88f6d261edcf0ea576dfbd6ace0060"
+  },
+  "normal702": {
+    "bytes": 85467,
+    "mode": 436,
+    "sha256": "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb"
+  },
+  "ordinary": {
+    "bytes": 1727818,
+    "mode": 436,
+    "sha256": "f4bd9bb6dadd056e35faa2b3243a1be410a588f531f6bceb7d71c89e520e3c86"
+  },
+  "parent_freeze_sha256": "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9",
+  "paths": {
+    "hardware_started": 0,
+    "qemu_started": 0,
+    "source": "/tmp/crosspath-native-cache-v3-src-hr23qnrs",
+    "target": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru",
+    "target_initial_members": [],
+    "tools": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t"
+  },
+  "sources702_tar": {
+    "bytes": 1337626,
+    "mode": 436,
+    "sha256": "072c67c53641c3428ddfaa031692a506443105b0a023376dff90e307e1f8f29d"
+  },
+  "virq_cache": {
+    "bytes": 10242769,
+    "mode": 436,
+    "sha256": "a85b5b610617777761be40d469bc507c2895e287635bf21c57c6471242d4a3d6"
+  }
+}

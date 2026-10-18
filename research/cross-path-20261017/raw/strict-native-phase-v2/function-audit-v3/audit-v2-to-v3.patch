@@ -1,0 +1,133 @@
+--- function-audit-v2/audit.py
++++ function-audit-v3/audit.py
+@@ -718,10 +718,93 @@
+     return dict(source_702_sha256=SOURCE_SHA, tools_freeze_sha256=FREEZE_SHA, specific_source_files=len(references), exact_case_environment=True)
+ 
+ 
++def validate_run_identity(documents, handoff):
++    """Bind the original launch, child wait and tool completion to one case.
++
++    Identity is independent of success: a genuinely failed run can have a
++    complete identity chain. Zero exits never substitute for this linkage.
++    All documents are loaded through the final handoff's exact byte references.
++    """
++    case = handoff['case_id']
++    run, wait = documents['run_result'], documents['root_wait']
++    launch, completion = documents['root_launch'], documents['root_tool_completion']
++    command, approval, inputs = documents['actual_command'], documents['approval'], documents['frozen_inputs']
++    references = handoff['files']
++    for label, document in [('run_result',run),('root_wait',wait),('root_launch',launch),('approval',approval)]:
++        need(document.get('case_id') == case and case in CASES, 'different/missing case in '+label)
++    need(references['frozen_inputs']['sha256'] == contract()['inputs']['sha256'] and
++         references['freeze_manifest']['sha256'] == FREEZE_SHA, 'receipt input/freeze binding differs')
++    environment = dict(inputs['environment'])
++    environment.update(next(row['environment'] for row in inputs['cases'] if row['id'] == case))
++    need(command['cwd'] == inputs['source'] and command['argv'] == inputs['argv'] and
++         command['environment'] == environment, 'actual xtask command does not belong to exact case')
++    need(approval['environment'] == environment and approval['argv'] == inputs['argv'] and
++         approval['source_702_sha256'] == SOURCE_SHA and
++         approval['candidate_manifest_sha256'] == FREEZE_SHA and
++         approval['inputs_sha256'] == references['frozen_inputs']['sha256'], 'approval does not bind exact case/source/freeze/input')
++    approval_sha = references['approval']['sha256']
++    need(command['approval_sha256'] == launch['approval_sha256'] == approval_sha,
++         'actual command/launch approval identity differs')
++    expected_driver = ['/usr/bin/python3','-B',str(Path(inputs['execution_tools_root'])/'native_once.py'),
++        '--run',case,'--approved-manifest',FREEZE_SHA,'--approval',references['approval']['path'],
++        '--approval-sha256',approval_sha,'--source-manifest-sha',SOURCE_SHA]
++    need(launch['argv'] == expected_driver and launch['driver']['argv'] == expected_driver and
++         wait['driver']['argv'] == expected_driver, 'driver argv does not bind exact run/source/approval/freeze')
++    need(launch['cwd'] == inputs['repo_root'] and launch['environment'] == inputs['environment'],
++         'driver launch cwd/base environment differs from frozen producer')
++
++    def process_identity(document, label):
++        row = document[label]
++        need(all(type(row[key]) is int and row[key] > 0 for key in ('pid','pgid')) and
++             num(row,'starttime') > 0, 'missing/invalid original process identity: '+label)
++        need(isinstance(row['argv'],list) and row['argv'] and
++             all(isinstance(arg,str) and arg for arg in row['argv']), 'invalid original process argv: '+label)
++        # The retained state snapshot may differ; PID/starttime/argv may not.
++        return {key:row[key] for key in ('pid','pgid','starttime','argv')}
++
++    driver = process_identity(launch,'driver')
++    supervisor = process_identity(launch,'supervisor')
++    need(driver == process_identity(wait,'driver') and supervisor == process_identity(wait,'supervisor'),
++         'launch/wait original driver or supervisor identity differs')
++    need(type(wait['driver_pid_from_Popen']) is int and wait['driver_pid_from_Popen'] == driver['pid'] and
++         driver['pid'] != supervisor['pid'], 'wait does not identify the original direct Popen child')
++    need(launch['wait_method'] == wait['wait_method'] and 'Popen.wait' in wait['wait_method'],
++         'original direct-child wait method missing/different')
++    need(re.fullmatch(r'[0-9a-f]{64}',launch['supervisor_source_sha256']) is not None and
++         launch['supervisor_source_sha256'] == wait['supervisor_source_sha256'], 'supervisor source identity differs')
++    need(wait['launch_sha256'] == references['root_launch']['sha256'] and
++         wait['run_result_sha256'] == references['run_result']['sha256'], 'wait is detached from exact launch/run-result bytes')
++    # The completion is the original tool-session attestation. Its receipt SHA
++    # links that session to this wait and, transitively, to this exact launch.
++    need(completion['driver_Popen_wait_receipt_sha256'] == references['root_wait']['sha256'],
++         'original tool completion is detached from exact child wait')
++    need(type(completion['original_unified_exec_session']) is int and completion['original_unified_exec_session'] > 0 and
++         isinstance(completion['completion_tool_chunk'],str) and completion['completion_tool_chunk'],
++         'original tool session/chunk missing')
++    driver_exits = [run['driver_return_code'],wait['driver_wait_exit'],
++                    completion['driver_Popen_wait_from_own_parent'],handoff['actual_driver_wait_exit']]
++    need(all(type(value) is int for value in driver_exits) and len(set(driver_exits)) == 1,
++         'driver completion disagrees with original Popen wait')
++    root_exit = completion['actual_unified_exec_exit']
++    need(type(root_exit) is int and type(handoff['actual_root_wait_exit']) is int and root_exit == handoff['actual_root_wait_exit'],
++         'Root exit disagrees with original tool-session completion')
++    if 'outer_wait_exit' in wait:
++        need(type(wait['outer_wait_exit']) is int and wait['outer_wait_exit'] == root_exit, 'Root wait/completion exit differs')
++    need(type(run['xtask_wait_exit']) is int and type(handoff['actual_xtask_wait_exit']) is int and run['xtask_wait_exit'] == handoff['actual_xtask_wait_exit'],
++         'xtask exit disagrees with final same-run binding')
++    return dict(case_id=case,driver=driver,supervisor=supervisor,
++                supervisor_source_sha256=launch['supervisor_source_sha256'],
++                root_completion_session=completion['original_unified_exec_session'],
++                root_completion_chunk=completion['completion_tool_chunk'],root_wait_exit=root_exit,
++                xtask_wait_exit=run['xtask_wait_exit'],driver_wait_exit=driver_exits[0],
++                scope='same-run identity only; numerical success and release remain separate gates')
++
++
+ def validate_exit(documents, handoff):
++    identity = validate_run_identity(documents,handoff)
+     run, wait = documents['run_result'], documents['root_wait']
+     need(run.get('xtask_wait_exit') == 0 and run.get('driver_return_code') == 0 and wait.get('driver_wait_exit') == 0, 'actual xtask/driver Popen wait not all zero')
+-    need(wait.get('outer_wait_exit', handoff.get('actual_root_wait_exit')) == 0, 'Root outer actual wait missing/nonzero')
++    need(identity['root_wait_exit'] == 0, 'original Root tool-session completion missing/nonzero')
+     need('Popen.wait' in wait.get('wait_method',''), 'Root wait is not bound to original Popen child')
+     need(handoff.get('forced_stop') is False and handoff.get('forced_signals') == [] and not run.get('outer_timeout') and run.get('cleanup',{}).get('signals') == [] and run.get('cleanup',{}).get('owned_group_empty') is True, 'forced stop/timeout/unknown owned group')
+     need(run.get('tool_errors') == [] and run.get('release') == 'explicit-finalize-success', 'actual explicit release is unverified: '+str(run.get('release')))
+@@ -730,7 +813,7 @@
+     session = read_bound(refs['ostool_session']).decode()
+     need('finalize_session' in mod and 'session.release().await' in mod and 'pub async fn release' in session, 'fixed ostool explicit release contract not found')
+     need(wait.get('run_result_sha256') == handoff['files']['run_result']['sha256'], 'actual wait/run-result identity differs')
+-    return dict(xtask_wait_exit=0, driver_wait_exit=0, root_wait_exit=0, release='explicit-finalize-success', independent_board_tool_wait=run.get('independent_board_tool_wait'), scope='release inferred only from actual unforced zero exits and exact frozen ostool explicit finalize/release propagation')
++    return dict(xtask_wait_exit=0, driver_wait_exit=0, root_wait_exit=0, root_completion_session=identity['root_completion_session'], release='explicit-finalize-success', independent_board_tool_wait=run.get('independent_board_tool_wait'), scope='release inferred only from same-run actual unforced zero exits and exact frozen ostool explicit finalize/release propagation')
+ 
+ 
+ def audit(handoff_path, handoff_sha256, output):
+@@ -752,7 +835,7 @@
+         except (OSError, ValueError, KeyError, AssertionError, TypeError, OverflowError, struct.error, IndexError, StopIteration) as error:
+             report['gates'].append(dict(name=name, passed=False, reason=type(error).__name__+': '+str(error)))
+             return None
+-    for label in ('capture','run_result','root_wait','actual_command','freeze_manifest','frozen_inputs'):
++    for label in ('capture','run_result','root_wait','actual_command','freeze_manifest','frozen_inputs','approval','root_launch','root_tool_completion'):
+         document = gate('bound-document-'+label, lambda label=label: json.loads(read_bound(handoff['files'][label])))
+         if document is not None:
+             documents[label] = document
+@@ -760,6 +843,7 @@
+             report['gates'][-1]['evidence'] = handoff['files'][label]
+     documents['_raw_reference'] = handoff['files']['raw']
+     gate('source-tool-case-binding', lambda: validate_source(documents, handoff))
++    gate('same-run-launch-wait-completion-binding', lambda: validate_run_identity(documents,handoff))
+     log = gate('final-raw-bytes', lambda: Log(handoff['files']['raw'], output))
+     if log is not None:
+         report['gates'][-1]['evidence'] = handoff['files']['raw']
+@@ -786,7 +870,8 @@
+         report['unverified'].append('all raw protocol, counter, timing, trace, pressure, lifecycle and suite gates')
+     run = documents.get('run_result', {})
+     wait = documents.get('root_wait', {})
+-    report['exit_release'] = dict(xtask_wait_exit=run.get('xtask_wait_exit'), driver_return_code=run.get('driver_return_code'), driver_wait_exit=wait.get('driver_wait_exit'), root_wait_exit=wait.get('outer_wait_exit',handoff.get('actual_root_wait_exit')), release=run.get('release','unknown'), independent_board_tool_wait=run.get('independent_board_tool_wait'), forced_signals=handoff.get('forced_signals'), cleanup=run.get('cleanup'))
++    completion = documents.get('root_tool_completion',{})
++    report['exit_release'] = dict(xtask_wait_exit=run.get('xtask_wait_exit'), driver_return_code=run.get('driver_return_code'), driver_wait_exit=wait.get('driver_wait_exit'), root_wait_exit=completion.get('actual_unified_exec_exit'), root_completion_session=completion.get('original_unified_exec_session'), root_completion_chunk=completion.get('completion_tool_chunk'), release=run.get('release','unknown'), independent_board_tool_wait=run.get('independent_board_tool_wait'), forced_signals=handoff.get('forced_signals'), cleanup=run.get('cleanup'))
+     gate('actual-exits-and-frozen-explicit-release', lambda: validate_exit(documents, handoff))
+     report['full_function_passed'] = bool(report['gates']) and all(g['passed'] for g in report['gates']) and not report['unverified']
+     report['unverified'].extend(g['name']+': '+g['reason'] for g in report['gates'] if not g['passed'])
