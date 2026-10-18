@@ -68,7 +68,7 @@ def analyze(log, require_throttle=False):
     ]:
         raise ValueError('missing old/new real-time worker generations')
     linux = [r for r in records if r['vm'] == 1]
-    expected_linux = physical['load_and_ready']['scenario'] == 'linux_cpu'
+    expected_linux = physical['load_and_ready']['scenario'] in ('linux_cpu', 'linux_memory')
     if (any(r['vm'] not in (1, 2) for r in records)
             or len(linux) != (2 if expected_linux else 0)
             or any((r['target'], r['run']) != ('fair', 1) for r in linux)):

@@ -25,7 +25,9 @@ macro_rules! write_reg {
 
 mod access;
 mod counter;
+mod cycle_scope;
 mod overflow;
+pub use cycle_scope::{CycleCounter, CycleScopeError};
 
 fn isb() {
     // SAFETY: instruction synchronization does not access memory.
@@ -82,6 +84,14 @@ pub struct EventConfig {
     pub exclude_kernel: bool,
     /// Includes execution at EL2.
     pub include_hypervisor: bool,
+}
+
+impl EventConfig {
+    fn filter_bits(self) -> u64 {
+        ((self.exclude_kernel as u64) << 31)
+            | ((self.exclude_user as u64) << 30)
+            | ((self.include_hypervisor as u64) << 27)
+    }
 }
 
 /// Exclusive access to the current CPU's PMU for one non-migrating scope.

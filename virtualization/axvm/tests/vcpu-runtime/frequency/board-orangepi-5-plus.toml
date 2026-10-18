@@ -1,0 +1,8 @@
+# Controlled virtual Guests are fully packaged in Host initramfs.
+board_type = "OrangePi-5-Plus"
+cmdline = "console=ttyS2,1500000 earlycon=uart8250,mmio32,0xfeb50000"
+timeout = 900
+fail_regex = ["AXVM_TEST_FAILED", "LINUX_LOAD_FAILED", "SOFTWARE VIRQ FAIL", "panicked at", "Kernel panic", "AXTEST_SUITE_FAIL"]
+
+[[shell_check_steps]]
+success_regex = ['(?m)^AXTEST_SUITE_OK\s*$']

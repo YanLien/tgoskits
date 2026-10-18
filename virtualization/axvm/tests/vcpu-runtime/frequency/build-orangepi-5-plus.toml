@@ -1,0 +1,5 @@
+# Observe delivered cycles and temperature without CPU OPP control.
+features = ["axtest-frequency", "axtest-thermal"]
+log = "Info"
+max_cpu_num = 4
+target = "aarch64-unknown-none-softfloat"

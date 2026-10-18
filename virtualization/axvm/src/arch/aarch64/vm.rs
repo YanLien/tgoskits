@@ -35,6 +35,23 @@ impl Aarch64Arch {
         let vm_id = vm.id();
         let ports = vm.device_access_ports();
         vm.prepare_resources_with(|resources, config| {
+            // Cold entry disables guest caching. Publish all allocator-owned
+            // RAM, including stacks/BSS outside the loaded image, before a
+            // new owner can write it uncached and then enable its caches.
+            // The lifecycle has retired prior vCPUs, devices and access ports;
+            // reserved RAM and separately leased shared mappings retain their
+            // own publication contracts and are not covered by this ownership.
+            for region in resources
+                .memory_regions
+                .iter()
+                .filter(|region| region.needs_dealloc)
+            {
+                aarch64_cpu_ext::cache::dcache_range(
+                    aarch64_cpu_ext::cache::CacheOp::CleanAndInvalidate,
+                    region.hva.as_usize(),
+                    region.size(),
+                );
+            }
             let vcpu_mappings = config.phys_cpu_ls.get_vcpu_affinities_pcpu_ids();
             let placements = resources.vcpu_placements(config);
             let timer_profile = config.timer_profile().cloned().ok_or_else(|| {

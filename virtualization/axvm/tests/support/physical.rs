@@ -1,4 +1,4 @@
-//! Exclusive QEMU virt CNTP/PPI source, controlled from CPU0.
+//! Exclusive, firmware-admitted CNTP/PPI source, controlled from CPU0.
 
 use core::marker::PhantomData;
 use std::sync::{
@@ -10,6 +10,8 @@ use anyhow::{Context, Result, ensure};
 use ax_cpu::timer::{Timer, TimerControl, TimerKind};
 use ax_std::os::arceos::{guard::IrqSaveGuard, modules::ax_hal};
 use axvm::{VcpuInterruptPort, diagnostics::HostIrqCapture};
+
+use super::platform::TimerPlatform;
 
 #[derive(Default)]
 struct Counters {
@@ -28,10 +30,7 @@ pub struct PhysicalTimer {
 
 impl PhysicalTimer {
     pub fn start(port: VcpuInterruptPort, cpu: usize) -> Result<Self> {
-        ensure!(
-            ax_hal::platform_name() == "linux,dummy-virt",
-            "CNTP fixture requires QEMU virt"
-        );
+        TimerPlatform::detect()?.validate_cpu(cpu)?;
         ensure!(
             ax_cpu::registers::current_exception_level() == 2,
             "physical source needs EL2"
@@ -48,7 +47,7 @@ impl PhysicalTimer {
         let host_irq = ax_hal::time::irq_num();
         ensure!(
             host_irq.domain == irq.domain && host_irq.hwirq.0 == 26,
-            "QEMU EL2 CNTHP scheduler PPI26 is required"
+            "EL2 CNTHP scheduler PPI26 is required"
         );
         ensure!(irq != host_irq, "CNTP is the host scheduler timer");
         let counters = Arc::new(Counters::default());
@@ -73,7 +72,7 @@ impl PhysicalTimer {
             })
             .auto_enable(ax_hal::irq::AutoEnable::No),
         )
-        .context("request exclusive QEMU CNTP PPI")?;
+        .context("request exclusive CNTP PPI")?;
         let mut source = Self {
             cpu,
             irq: Some(handle),

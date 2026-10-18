@@ -20,9 +20,7 @@ impl Pmu {
             return Err(PmuError::UnsupportedEvent);
         }
         self.disable(id)?;
-        let filter = ((config.exclude_kernel as u64) << 31)
-            | ((config.exclude_user as u64) << 30)
-            | ((config.include_hypervisor as u64) << 27);
+        let filter = config.filter_bits();
         if id == CounterId::CYCLE {
             write_reg!("PMCCFILTR_EL0", filter);
         } else if id == CounterId::INSTRUCTIONS {

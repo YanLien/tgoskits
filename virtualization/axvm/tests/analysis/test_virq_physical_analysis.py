@@ -71,6 +71,28 @@ def running_fixture():
     return "\n".join(lines)+"\n"
 
 
+def cross_core_mixed_fixture(owner_events):
+    lines, events = [
+        "VIRQ_TASK_CONFIG protocol=1 rounds=4096 relative_deadline_ns=100 wait_mode=blocked"
+    ], list(owner_events)
+    for line in fixture().splitlines():
+        match = EVENT.fullmatch(line)
+        if match:
+            cpu, _, ticks, kind, thread, a, b = match.groups()
+            cpu, ticks, thread, a, b = map(int, (cpu, ticks, thread, a, b))
+            if kind == "HostIrqEntry" and ticks == 10101:
+                b = 2
+            events.append((ticks, 2, cpu, kind, thread, a, b))
+        elif not SUMMARY.fullmatch(line):
+            lines.append(line)
+    counts = Counter()
+    for ticks, _, cpu, kind, thread, a, b in sorted(events):
+        lines.append(f"VIRQ_RUNTIME cpu={cpu} sequence={counts[cpu]} ticks={ticks} kind={kind} thread={thread} value0={a} value1={b}")
+        counts[cpu] += 1
+    lines.append(f"VIRQ_RUNTIME_SUMMARY records={len(events)} dropped=0 incomplete=0")
+    return "\n".join(lines)+"\n"
+
+
 class PhysicalAnalysis(unittest.TestCase):
     def test_declared_scale_controls_all_completeness_gates(self):
         lines, events = ["VIRQ_MEASUREMENT samples_per_policy=299"], []
@@ -153,12 +175,55 @@ class PhysicalAnalysis(unittest.TestCase):
                     valid.replace("mode=cpu2", "mode=unrestricted")):
             with self.assertRaises(ValueError):
                 analyze(bad)
+        # CPU0 can be in the non-target Guest while CPU1 remains the target.
+        binding = (9900, 0, 0, "Binding", 200, 2, 0)
+        running = (10000, 0, 0, "Running", 200, 0, 0)
+        entry = (10100, 0, 0, "GuestEntryBoundary", 200, 0, 0)
+        stopped = (10102, 0, 0, "Stopped", 200, 0, 0)
+        owners = [binding, running, entry, stopped]
+        mixed = cross_core_mixed_fixture(owners)
+        rows, report = analyze(mixed)
+        self.assertEqual(report["execution_context"], "mixed")
+        self.assertEqual(report["policies"]["fair"]["irq_entry_context_counts"],
+                         {"lower_el_pre_iar": 1, "current_el_callback": 299})
+        self.assertEqual(rows[0]["irq_source_thread"], 200)
+        self.assertEqual((rows[0]["irq_source_vm"], rows[0]["irq_source_vcpu"]), (2, 0))
+        self.assertTrue(all(row["irq_source_thread"] is None for row in rows[1:]))
+        # Same-tick source order is established by the one CPU's sequence.
+        boundary = (10101, 1, *entry[2:])
+        self.assertEqual(len(analyze(cross_core_mixed_fixture(
+            [binding, running, boundary, stopped]))[0]), 600)
+        self.assertEqual(len(analyze(cross_core_mixed_fixture(
+            [(10001, 0, *binding[2:]), running, entry, stopped]))[0]), 600)
+        invalid_owners = (
+            [running, entry, stopped], [binding, entry, stopped],
+            [binding, running, stopped],
+            [(10102, 0, *binding[2:]), running, entry, stopped],
+            [(9900, 0, 1, *binding[3:]), running, entry, stopped],
+            [(*binding[:5], 1, 0), running, entry, stopped],
+            [binding, running, (9999, 0, *entry[2:]), stopped],
+            [binding, running, (10101, 3, *entry[2:]), stopped],
+            [binding, running, entry, (10101, 1, *stopped[2:])],
+            [binding, running, (10040, 0, *entry[2:]),
+             (10050, 0, *stopped[2:]), (10090, 0, *running[2:]), stopped],
+            owners+[(9901, 0, 0, "Binding", 201, 2, 0),
+                    (10001, 0, 0, "Running", 201, 0, 0)],
+        )
+        for source_events in invalid_owners:
+            with self.assertRaises(ValueError):
+                analyze(cross_core_mixed_fixture(source_events))
+        for invalid in (mixed.replace("wait_mode=blocked", "wait_mode=spin"),
+                        mixed.replace(" wait_mode=blocked", ""),
+                        mixed+mixed.splitlines()[0]+"\n"):
+            with self.assertRaises(ValueError):
+                analyze(invalid)
 
     def test_timer_arm_and_irq_entry_are_distinct_calibrated_observation_points(self):
         rows, report = analyze(fixture())
         self.assertEqual(len(rows), 600)
         self.assertTrue(all((r["entry_to_c_isr_lower_ns"], r["entry_to_c_isr_upper_ns"]) == (47, 51)
                             and r["entry_to_kick_ns"] == 1 for r in rows))
+        self.assertTrue(all(r["deadline_ns"] == 1 and r["deadline_miss"] == "true" for r in rows))
         clock = report["policies"]["fair"]["clock"]
         self.assertIn("timer_arm_to_c_isr_ns", clock)
         self.assertNotIn("injection_to_c_isr_ns", clock)
@@ -166,7 +231,8 @@ class PhysicalAnalysis(unittest.TestCase):
     def test_missing_wrong_source_deadline_or_retirement_is_rejected(self):
         valid = fixture()
         first_entry = next(line for line in valid.splitlines() if "kind=HostIrqEntry" in line)
-        for invalid in (valid.replace("VIRQ_SOURCE kind=physical_timer_ppi", "VIRQ_SOURCE kind=software"),
+        for invalid in (valid+"VIRQ_STAGE_CONFIG version=1 key=cpu_intid_entry_ticks dispatch=host_route timer_sync=lower_el_only\n",
+                        valid.replace("VIRQ_SOURCE kind=physical_timer_ppi", "VIRQ_SOURCE kind=software"),
                         valid.replace("due_ticks=10101", "due_ticks=10102", 1),
                         valid.replace("handled=300 errors=0", "handled=299 errors=0", 1),
                         valid.replace("retired=1", "retired=0", 1),

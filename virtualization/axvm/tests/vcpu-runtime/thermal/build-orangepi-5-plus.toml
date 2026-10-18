@@ -1,0 +1,5 @@
+# Enable only independent thermal observation; no CPU OPP driver.
+features = ["axtest-thermal"]
+log = "Info"
+max_cpu_num = 4
+target = "aarch64-unknown-none-softfloat"

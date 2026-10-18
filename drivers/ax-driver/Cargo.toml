@@ -143,9 +143,12 @@ rockchip-soc = [
     "dep:rdif-reset",
     "dep:rockchip-soc",
 ]
+# RK3588 protected thermal conversion, independent of OPP control.
+rk3588-thermal = ["rockchip-soc"]
+
 # RK3588 CPU DVFS hardware driver and shared RDIF registration.
 rk3588-cpufreq = [
-    "rockchip-soc",
+    "rk3588-thermal",
     "dep:arm-scmi-rs",
     "dep:ax-lazyinit",
     "dep:rdif-cpufreq",

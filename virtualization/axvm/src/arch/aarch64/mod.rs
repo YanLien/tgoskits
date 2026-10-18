@@ -491,6 +491,12 @@ impl ax_cpu::virtualization::GuestHostTrap for HostGuestTrap {
         if let Some(token) = gic::acknowledge_host_irq() {
             #[cfg(feature = "axtest")]
             crate::diagnostics::current_irq_acknowledged(observed, gic::host_irq_intid(token));
+            #[cfg(feature = "axtest")]
+            let _dispatch = observed
+                .and_then(|ticks| {
+                    crate::diagnostics::observe_irq(ticks, gic::host_irq_intid(token))
+                })
+                .map(|irq| irq.dispatch());
             if let Err(error) = gic::route_acknowledged_host_irq(token) {
                 warn!("{error}");
             }
@@ -721,17 +727,31 @@ impl VmArchVcpuOps for AxvmArmVcpu {
             0,
         );
         let run_result = arm_result(self.inner.run(&host_irq_guard));
-        let timer_result = self.synchronize_timer();
+        #[cfg(feature = "axtest")]
+        let observed_irq = match &run_result {
+            Ok(ArmRunExit::HostInterrupt {
+                token: Some(token),
+                irq_entry_ticks,
+            }) => crate::diagnostics::observe_irq(*irq_entry_ticks, gic::host_irq_intid(*token)),
+            _ => None,
+        };
+        let timer_result = {
+            #[cfg(feature = "axtest")]
+            let _timer_sync = observed_irq.map(|irq| irq.timer_sync());
+            self.synchronize_timer()
+        };
         let save_result = VcpuLocalInterrupts::save_exit(self);
         // IRQ tokens are CPU-local resources, not durable guest exits. Resolve
         // them even when timer/VGIC saving fails, while the original IRQ mask
         // and CPU binding are still held.
         let run_result = run_result.and_then(|exit| match exit {
             ArmRunExit::Guest(exit) => Ok(exit),
-            ArmRunExit::HostInterrupt(token) => {
+            ArmRunExit::HostInterrupt { token, .. } => {
                 if let Some(token) = token
                     && !self.accept_host_timer_irq(token)
                 {
+                    #[cfg(feature = "axtest")]
+                    let _dispatch = observed_irq.map(|irq| irq.dispatch());
                     gic::route_acknowledged_host_irq(token).map_err(|error| {
                         error!("failed to route acknowledged host IRQ: {error:?}");
                         BackendError::InvalidState

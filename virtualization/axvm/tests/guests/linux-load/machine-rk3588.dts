@@ -1,0 +1,5 @@
+/include/ "machine.dts"
+
+&gic {
+    reg = <0 0xfe600000 0 0x10000>, <0 0xfe680000 0 0x100000>;
+};

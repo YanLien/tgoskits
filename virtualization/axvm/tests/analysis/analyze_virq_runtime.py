@@ -9,11 +9,12 @@ import re
 from pathlib import Path
 
 from analyze_virq_isr import analyze as analyze_isr, stats
+from virq_irq_stages import STAGE_KINDS, validate_stages
 
 
 EVENT = re.compile(
     r"VIRQ_RUNTIME cpu=(\d+) sequence=(\d+) ticks=(\d+) "
-    r"kind=(Binding|IrqKick|WakeBegin|WakeEnd|Running|Stopped|GuestEntryBoundary|Marker|ReadyEnqueue|HostIrqEntry) "
+    r"kind=(Binding|IrqKick|WakeBegin|WakeEnd|Running|Stopped|GuestEntryBoundary|Marker|ReadyEnqueue|HostIrqEntry|IrqDispatchBegin|IrqDispatchEnd|TimerSyncBegin|TimerSyncEnd) "
     r"thread=(\d+) value0=(\d+) value1=(\d+)"
 )
 SUMMARY = re.compile(r"VIRQ_RUNTIME_SUMMARY records=(\d+) dropped=(\d+) incomplete=(\d+)")
@@ -59,8 +60,9 @@ def analyze(log):
             bindings[thread] = (value0, value1)
     if any(e["kind"] == "HostIrqEntry" and (e["thread"] != 0 or e["value1"] not in (1, 2)) for e in events):
         raise ValueError("invalid physical IRQ entry observation")
-    if not events or any(e["kind"] not in ("Marker", "HostIrqEntry") and e["thread"] not in bindings for e in events):
+    if not events or any(e["kind"] not in ({"Marker", "HostIrqEntry"} | STAGE_KINDS) and e["thread"] not in bindings for e in events):
         raise ValueError("runtime events have no vCPU owner binding")
+    irq_stages = validate_stages(log, events)
     envelopes = [dict(sample=int(n), ticks=int(t), frequency_hz=int(f))
                  for n, t, f in parse(log, "VIRQ_TRACE_ENVELOPE", ENVELOPE)]
     if [e["sample"] for e in envelopes] != list(range(1, 129)):
@@ -142,12 +144,12 @@ def analyze(log):
                                      for field in segments} if complete else {},
         )
     hz = next(iter(frequencies))
-    report = dict(records=len(events), dropped=dropped, incomplete=incomplete,
+    report = dict(irq_stages=irq_stages, records=len(events), dropped=dropped, incomplete=incomplete,
                   event_kinds=dict(Counter(e["kind"] for e in events)), policies=policies,
                   probe_envelope_ns=stats([e["ticks"]*1e9/hz for e in envelopes]),
                   limitations=[
                       "QEMU observations; no hardware bottleneck or optimization claim.",
-                      "Ready/enqueue is not captured. WakeBegin/End are a wake transaction bracket.",
+                      "WakeBegin/End bracket the wake transaction; explicit Ready/enqueue observations are analyzed separately by analyze_virq_ready.",
                       "Segment statistics are conditional on full-chain association; all declared sample statuses are retained.",
                       "First Running and last certain Entry bracket inclusive work and possible intervening preemption.",
                       "Probe envelope includes timestamp reads and may include preemption; not pure probe overhead.",

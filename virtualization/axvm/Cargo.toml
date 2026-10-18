@@ -49,6 +49,8 @@ host-test = [
     "axdevice/host-test",
 ]
 axtest = ["ax-std/std-compat", "ax-cpu/virtualization-trace"]
+axtest-thermal = ["axtest", "ax-driver/rk3588-thermal"]
+axtest-frequency = ["axtest", "ax-cpu/pmu"]
 sstc = ["ax-cpu/riscv-sstc"]
 tls = ["ax-std/tls", "cpu-local/tls"]
 

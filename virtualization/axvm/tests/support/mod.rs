@@ -1,6 +1,10 @@
 //! Real VM assembly and bounded console observation shared by the kernel tests.
 
+#[cfg(all(target_arch = "aarch64", feature = "axtest"))]
+mod failure;
+
 use std::{
+    collections::VecDeque,
     fs,
     sync::{Arc, Mutex},
     thread,
@@ -19,6 +23,7 @@ use axvmconfig::{GuestConfig, GuestType, HostDeviceAssignment};
 const POLL: Duration = Duration::from_millis(1);
 const MAX_CONSOLE_BYTES: usize = 2 * 1024 * 1024;
 const CONSOLE_QUEUE_BYTES: usize = 64 * 1024;
+const CONSOLE_INPUT_BYTES: usize = 64;
 
 pub fn case(result: Result<()>) -> axtest::AxTestResult {
     match result {
@@ -99,6 +104,10 @@ pub fn with_vms<const N: usize>(
         "VM registry retained a destroyed instance"
     );
     println!("VIRQ_VM_GROUP_RETIRED count={N} empty=1");
+    #[cfg(all(target_arch = "aarch64", feature = "axtest"))]
+    if result.is_err() {
+        failure::report_after_shutdown();
+    }
     result
 }
 
@@ -180,6 +189,7 @@ fn prepare_plan(
 #[derive(Debug)]
 struct ConsoleQueue {
     bytes: Vec<u8>,
+    input: VecDeque<u8>,
     overflowed: bool,
 }
 
@@ -190,6 +200,7 @@ impl Default for ConsoleBuffer {
     fn default() -> Self {
         Self(ax_sync::RawSpinLock::new(ConsoleQueue {
             bytes: Vec::with_capacity(CONSOLE_QUEUE_BYTES),
+            input: VecDeque::with_capacity(CONSOLE_INPUT_BYTES),
             overflowed: false,
         }))
     }
@@ -207,8 +218,13 @@ impl SerialBackend for ConsoleBuffer {
         }
     }
 
-    fn read(&self, _buffer: &mut [u8]) -> usize {
-        0
+    fn read(&self, buffer: &mut [u8]) -> usize {
+        let mut queue = self.0.lock_irqsave();
+        let count = buffer.len().min(queue.input.len());
+        for byte in &mut buffer[..count] {
+            *byte = queue.input.pop_front().unwrap();
+        }
+        count
     }
 }
 
@@ -233,6 +249,35 @@ pub struct Fixture {
 }
 
 impl Fixture {
+    /// Enqueue one control byte for this UART generation, then wake its owner.
+    /// A failed notification is not retried: the caller must fail the workload.
+    pub fn send_input(&mut self, byte: u8) -> Result<()> {
+        self.flush_console()?;
+        ensure!(
+            self.vm.snapshot().state == VmStatus::Running,
+            "input for inactive VM"
+        );
+        let current = self
+            .console_generation
+            .as_ref()
+            .context("no active console")?;
+        {
+            let mut queue = current.0.lock_irqsave();
+            ensure!(
+                queue.input.is_empty(),
+                "previous console input remains pending"
+            );
+            ensure!(
+                queue.input.len() < CONSOLE_INPUT_BYTES,
+                "console input full"
+            );
+            queue.input.push_back(byte);
+        }
+        // Do not notify under the IRQ-safe queue lock: device polling reads it.
+        self.vm.notify_devices()?;
+        Ok(())
+    }
+
     pub fn flush_console(&mut self) -> Result<()> {
         let current = self.serial.0.lock().unwrap().clone();
         if let Some(current) = current {

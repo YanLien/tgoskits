@@ -40,7 +40,11 @@ pub enum ArmRunExit {
     Guest(ArmVmExit),
     /// Acknowledged on this CPU; the adapter must complete or transfer ownership
     /// to its physical IRQ route before restoring IRQs or unloading the backend.
-    HostInterrupt(Option<usize>),
+    HostInterrupt {
+        token: Option<usize>,
+        #[cfg(feature = "axtest")]
+        irq_entry_ticks: u64,
+    },
 }
 
 /// Configuration for creating a new [`ArmVcpu`].
@@ -165,7 +169,11 @@ impl ArmVcpu {
             let token = (exit.irq_ack != u32::MAX)
                 .then(|| crate::arch::aarch64::gic::finish_pending_host_irq(exit.irq_ack))
                 .flatten();
-            Ok(ArmRunExit::HostInterrupt(token))
+            Ok(ArmRunExit::HostInterrupt {
+                token,
+                #[cfg(feature = "axtest")]
+                irq_entry_ticks: exit.irq_entry_ticks,
+            })
         } else {
             self.vmexit_handler(exit).map(ArmRunExit::Guest)
         }

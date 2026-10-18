@@ -35,6 +35,31 @@ class ClockAnalysis(unittest.TestCase):
         rounded, _, _ = analyze(fixture(3_000_000_000))
         self.assertTrue(all((r["isr_lower_ns"], r["isr_upper_ns"]) == (16, 18) for r in rounded))
 
+    def test_guest_isr_end_and_trace_status_are_reported(self):
+        log = fixture().replace(
+            "guest_ticks=9150 observed_ticks=10200 frequency_hz=1000000000",
+            "guest_ticks=9150 guest_end_ticks=9175 observed_ticks=10200 "
+            "frequency_hz=1000000000",
+        )
+        rows, _, summary = analyze(log)
+        # The fixture changes one sample per policy; old-format rows remain
+        # explicitly unavailable instead of receiving a guessed duration.
+        ended = [row for row in rows if row["guest_end_ticks"] is not None]
+        self.assertEqual(len(ended), 2)
+        self.assertTrue(all(row["isr_duration_lower_ns"] == 25 for row in ended))
+        self.assertTrue(all(row["isr_duration_upper_ns"] == 25 for row in ended))
+        self.assertTrue(all(row["trace_loss"] is None for row in rows))
+        self.assertEqual(summary["fair"]["isr_duration_ns"]["samples"], 1)
+
+    def test_runtime_trace_summary_is_joined_without_using_ack_window(self):
+        log = fixture().replace(
+            "AXTEST_SUITE_OK",
+            "VIRQ_RUNTIME_SUMMARY records=100 dropped=0 incomplete=0\nAXTEST_SUITE_OK",
+        )
+        rows, _, summary = analyze(log)
+        self.assertTrue(all(row["trace_loss"] is False for row in rows))
+        self.assertEqual(summary["fifo80"]["trace_loss"], False)
+
     def test_invalid_measurements_do_not_produce_latency_results(self):
         valid = fixture()
         lines = valid.splitlines()
@@ -47,6 +72,8 @@ class ClockAnalysis(unittest.TestCase):
             "frequency mismatch": valid.replace("frequency_hz=1000000000", "frequency_hz=0", 1),
             "causally impossible ISR": valid.replace("guest_ticks=9150 observed_ticks=10200",
                                                      "guest_ticks=20000 observed_ticks=10200", 1),
+            "ISR end after observation": valid.replace("guest_ticks=9150 observed_ticks=10200",
+                                                       "guest_ticks=9150 guest_end_ticks=20000 observed_ticks=10200", 1),
             "reversed host counter": valid.replace("submit_ticks=10100", "submit_ticks=10300", 1),
             "malformed ISR": valid.replace("submit_ticks=10100", "submit_ticks=invalid", 1),
         }

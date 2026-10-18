@@ -1,0 +1,9 @@
+args = [
+  "-nographic", "-cpu", "cortex-a72",
+  "-machine", "virt,virtualization=on,gic-version=3,its=on",
+  "-smp", "4", "-m", "8g",
+]
+to_bin = true
+uefi = false
+timeout = 900
+fail_regex = ["AXVM_TEST_FAILED", "LINUX_LOAD_FAILED", "SOFTWARE VIRQ FAIL", "panicked at", "Kernel panic"]

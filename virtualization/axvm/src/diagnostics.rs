@@ -16,6 +16,8 @@ use ax_std::os::arceos::guard::IrqSaveGuard;
 
 use crate::{AxVmError, AxVmResult};
 
+mod irq_stages;
+pub(crate) use irq_stages::observe_irq;
 pub mod irq_service;
 pub mod service_placement;
 
@@ -40,6 +42,10 @@ pub enum EventKind {
     Marker             = 8,
     ReadyEnqueue       = 9,
     HostIrqEntry       = 10,
+    IrqDispatchBegin   = 11,
+    IrqDispatchEnd     = 12,
+    TimerSyncBegin     = 13,
+    TimerSyncEnd       = 14,
 }
 
 impl EventKind {
@@ -55,6 +61,10 @@ impl EventKind {
             8 => Self::Marker,
             9 => Self::ReadyEnqueue,
             10 => Self::HostIrqEntry,
+            11 => Self::IrqDispatchBegin,
+            12 => Self::IrqDispatchEnd,
+            13 => Self::TimerSyncBegin,
+            14 => Self::TimerSyncEnd,
             _ => return None,
         })
     }
@@ -69,11 +79,11 @@ pub struct Event {
     pub kind: EventKind,
     pub thread: u64,
     /// Binding: VM ID. Marker: index. ReadyEnqueue: destination CPU.
-    /// HostIrqEntry: acknowledged INTID. Otherwise zero.
+    /// HostIrqEntry and IRQ stages: acknowledged INTID. Otherwise zero.
     pub value0: u64,
     /// Binding: vCPU ID. ReadyEnqueue: path and on_cpu flag.
     /// HostIrqEntry: 1 for the current-EL callback, 2 for low-EL pre-IAR assembly.
-    /// Otherwise zero.
+    /// IRQ stages: the matching HostIrqEntry timestamp. Otherwise zero.
     pub value1: u64,
 }
 

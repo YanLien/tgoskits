@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#[cfg(feature = "rk3588-thermal")]
+pub(crate) mod thermal;
+
 #[cfg(feature = "rk3588-cpufreq")]
 pub(crate) mod cpufreq;
 

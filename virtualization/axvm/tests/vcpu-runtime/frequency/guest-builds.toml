@@ -1,0 +1,2 @@
+arceos_build_configs = []
+host_prepare = ["python3", "virtualization/axvm/tests/guests/virq/prepare.py", "--linux-peer"]

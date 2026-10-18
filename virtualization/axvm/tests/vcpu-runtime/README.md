@@ -70,7 +70,7 @@
 
 ## 5. Guest ISR 时间戳与时钟校准
 
-每策略额外导出 300 条 `VIRQ_ISR_SAMPLE` 与 64 条 `VIRQ_CLOCK_SAMPLE`。ISR 在 C 函数开头以 ISB + CNTVCT + ISB 记录虚拟计数；宿主通过已有物理计数接口并追加 ISB 记录投递前与确认后的计数。CNTPCT 在当前 Guest 中被模拟，故不将它用作低开销探针。宿主还验证 Guest 与宿主频率相等且非零。
+每策略额外导出 300 条 `VIRQ_ISR_SAMPLE` 与 64 条 `VIRQ_CLOCK_SAMPLE`。ISR 在 C 函数开头和发布 `received` 前各以 ISB + CNTVCT + ISB 记录虚拟计数；宿主通过已有物理计数接口并追加 ISB 记录投递前与确认后的计数。`guest_end_ticks - guest_ticks` 是 ISR 执行区间，1ms mailbox 轮询不参与该差值。CNTPCT 在当前 Guest 中被模拟，故不将它用作低开销探针。宿主还验证 Guest 与宿主频率相等且非零。
 
 采样前后各 32 次独立请求—应答：宿主 H0 写请求，Guest 记录 G 后 release 发布确认，宿主观察后用 DMB 读取稳定载荷并记录 H1。恒定偏移 O 必须位于每个 [H0-G,H1-G] 区间的交集；空交集、超时、频率不符或 ISR 不在投递与确认的因果窗口内均失败。所有原始计数和频率在采样后输出，允许离线重新计算，不假定往返对称。
 
@@ -183,7 +183,7 @@ PMU归属与板卡性能需要独立测量。
 
 设置 VIRQ_IRQ_CONTEXT=guest_running、VIRQ_SERVICE_PLACEMENT=cpu2、VIRQ_HOST_LOAD=baseline 和 VIRQ_SOURCE=physical_timer_ppi，使用第10节的三宿主核build/QEMU配置。保留Guest映射[0,1]：控制器CPU0使用默认策略，目标Guest vCPU1在CPU1持续执行，control/signal服务固定CPU2。该组合接受baseline或memory_cross_core；后者使用CPU3内存worker，必须使用四宿主核配置。
 
-复用mailbox offset28的保留word为running_mode，host在CLOCK_START前写入并用DMB发布，Guest acquire读取并以arch_nop代替采样期的PSCI suspend；大小仍2448字节，原时钟/ISR偏移不变。CPU1的CNTP/PPI30由CPU0控制者通过既有同步hard-call入口操作；请求存于调用者栈，回调有界、IRQ关闭、无分配且不保留指针。先独占disabled PPI，再确认bank未启用；结束先mask、disable/synchronize/free，再恢复原inactive bank和释放观察器，远程恢复失败时保留原状态供清理重试。
+复用mailbox offset28的保留word为running_mode，host在CLOCK_START前写入并用DMB发布，Guest acquire读取并以arch_nop代替采样期的PSCI suspend；mailbox 总大小为 `48 + 16N`，其中 N 个 u64 保存 ISR 起点、N 个 u64 保存 ISR 终点，原时钟偏移不变。CPU1的CNTP/PPI30由CPU0控制者通过既有同步hard-call入口操作；请求存于调用者栈，回调有界、IRQ关闭、无分配且不保留指针。先独占disabled PPI，再确认bank未启用；结束先mask、disable/synchronize/free，再恢复原inactive bank和释放观察器，远程恢复失败时保留原状态供清理重试。
 
 ax-cpu的可选virtualization-trace特性在低EL IRQ保存GPR后、读取IAR前采样CNTPCT，经Exit交还已恢复的宿主上下文。AxVM axtest启用该特性；生产默认不含该字段或读写指令。HostIrqEntry.value1=2表示低EL汇编点，1仍表示current-EL回调（保存GPR及Rust上下文包装后、IAR前）。事件原点逐样本保留；current-EL事件不会被删除以伪造全部Guest执行期间中断。
 
@@ -222,9 +222,42 @@ VIRQ_SAMPLES=500 VIRQ_SOURCE=pl031_spi VIRQ_SERVICE_PLACEMENT=cpu0 \
 
 ## 16. 普通Linux VM计算场景
 
-`VIRQ_HOST_LOAD=linux_cpu`使用同一VmManager同时拥有Linux VM1与实时VM2，控制/源/服务CPU0、实时目标CPU1、Linux单vCPU固定CPU3；Linux使用virtualized、分配RAM和空passthrough，用户程序有连续批次/checksum协议。使用`vcpu-runtime/linux/`下的四核8GiB build/QEMU/资源配置，并显式提供已校验的VIRQ_LINUX_KERNEL和VIRQ_LINUX_INITRAMFS_BASE路径。默认单VM资源配置不捆绑Linux。
+`VIRQ_HOST_LOAD=linux_cpu`使用同一VmManager同时拥有Linux VM1与实时VM2，控制/源/服务CPU0、实时目标CPU1、Linux单vCPU默认位于CPU3；Linux使用virtualized、分配RAM和空passthrough，用户程序有连续批次/checksum协议。使用`vcpu-runtime/linux/`下的四核8GiB build/QEMU/资源配置，并显式提供已校验的VIRQ_LINUX_KERNEL和VIRQ_LINUX_INITRAMFS_BASE路径。默认单VM资源配置不捆绑Linux。
+
+设置 `VIRQ_LINUX_HOST_CPU=1` 可准备 Linux 与关键 vCPU 共享 CPU1 的对照，须同时满足显式 Guest DTB、blocked 任务、当前 EL 物理源和 CPU0 服务；默认值 3 保留独立核配置。Host 资源 `linux_host_cpu`、VM 掩码、启动与完成声明必须一致，`Progress::start()` 和 `analyze_virq_load.validate_linux()` 分别核对配置及真实运行代际/驻留；缺少旧资源字段仅兼容旧默认 CPU3。共享配置不放宽任务答案、围栏、追踪丢失或 VM 退休检查，严格阶段关联歧义仍保留分母。
+
+共享 CPU1 时，末任务结束后关键 Guest 会忙等以回答后校时；FIFO 下此时 Linux 无法回复 End 围栏。夹具在全部 T6 已观察且关键物理源同步退休后暂停关键 VM，取得 Linux End 回复并 stop/join Linux，再恢复同一代际完成原后校时与自然退出；SGI 压力持续到 End 回复之后。`VIRQ_LINUX_HANDOFF` 记录末任务观察及暂停、退休、恢复时刻，调度策略不变。Linux 围栏吞吐窗口包含暂停交接和无竞争结束尾段，不能解释为纯任务并发吞吐或协同优化收益；CPU3 保留原结束顺序。
+
+`VIRQ_IRQ_CONTEXT=current_el` 选择 CPU0 作为跨核物理源，并不保证每次 IRQ 都打断 Host：blocked 任务的正常 SMP 活动也可让 VM2/vCPU0 在 CPU0 进入 Guest。实际入口按 `HostIrqEntry` 的 current/lower-EL 类别分别报告；跨核 lower-EL 需要唯一 blocked 声明及同 CPU 的唯一活跃 VM2/vCPU0 owner、Binding 和当前 Running 段内的先行 Entry，不能复用已 Stopped 段的旧边界。同 tick 用该 CPU 的 sequence 排序，Binding 与 Running 均须先于 Entry，但首 Running 可早于 Binding。`analyze_virq_physical` 保存源 owner 身份及请求配置/实际 mixed 分类；TimerSync 只在实际 lower-EL 路径有值，其他路径保持 null。旧测量与新分析版本分别保存，不改写既有拒绝或原始日志。
+
+逐策略代际以 Host ticks 关联围栏或完整任务观察窗口，并检查同 CPU 的 Running→Binding→GuestEntryBoundary→最终 Stopped 关系；首 Running 可以早于 `run_owner()` 内的 Binding。集中导出的 runtime 行不决定其所属策略，窗口外或交叉的代际不能作为干扰已在预期 CPU 施加的证据。
 
 Guest逻辑CPU0不是Host CPU0。Linux串口进度在实时计时窗外排空，按8192次/批、256批/报告核验，不能作精确DRAM流量或单条ISR内的工作计数。采样与后校准后以Host stop停止Linux，再导出实时数据；全部服务销毁/join后才freeze。保留有界追踪和溢出失败，不把QEMU通过当作实板瓶颈或吞吐收益。
 
 
 A0仅在AArch64 axtest启用：VIRQ_IRQ_SERVICE=off/inherit/bounded。后两态对FIFO目标继承其等级，bounded限制每run的worker派发轮数；VIRQ_IRQ_SERVICE_ROUNDS范围1..256、VIRQ_IRQ_SERVICE_WINDOW_US范围100..100000，默认8轮/1ms。该限额不是IRQ数量、CPU执行预算、滑动窗口保证或Deadline感知算法。VIRQ_IRQ_SERVICE与VIRQ_IRQ_SERVICE_JOIN记录实际base策略和join结果。VIRQ_INVERSION_WITNESS=1仅用于baseline/current-EL/PPI/CPU0服务的有限FIFO60阻挡判定，禁止混入普通性能分布。50ms限额压力配置也单列分析。
+
+## 17. Guest 任务完成测量
+
+VIRQ_TASK=1 让原 Guest consumer 线程在每次 ISR 后执行已知答案计算任务，并通过新 mailbox 尾部发布完成。默认关闭；详细布局与同步说明见 ../guests/virq/README.md 第 4 节。
+
+### 17.1 采集入口
+
+沿用本用例构建与运行入口，只增加 VIRQ_TASK 和独立任务预算。VIRQ_TASK_SAMPLE 保留线程起止和 Host 确认观察时间，Host 确认值不充当 T6。
+
+```sh
+VIRQ_TASK=1 VIRQ_TASK_WAIT=blocked VIRQ_TASK_DEADLINE_US=10000 VIRQ_SAMPLES=32 \
+VIRQ_SOURCE=physical_timer_ppi VIRQ_HOST_LOAD=baseline \
+VIRQ_SERVICE_PLACEMENT=cpu0 VIRQ_IRQ_SERVICE=off \
+cargo xtask ktest qemu -p axvm --test vcpu_runtime --arch aarch64 \
+  --config virtualization/axvm/tests/vcpu-runtime/build-aarch64-unknown-none-softfloat.toml \
+  --qemu-config virtualization/axvm/tests/vcpu-runtime/qemu-aarch64.toml
+```
+
+Config::from_resource() 验证预算，task_completion::observe() 等待 release 发布后读取稳定数组，validate() 检查 ISR end ≤ task start ≤ task end 和 Host 观察因果窗口。超时、错误校验和、Guest 提前停止均使原套件失败并执行原资源清理。
+
+### 17.2 离线口径
+
+运行 python3 virtualization/axvm/tests/analysis/analyze_virq_task.py run.log --output-dir task-results，输出逐任务 CSV 和汇总 JSON。物理源复用 analyze_virq_physical.py 验证入口归因，再报告 IRQ entry 至 T6；任务 Deadline 原点明确为 Host submit，不把触发定时器 due 当作任务截止期。
+
+单在途模式尚未覆盖周期积压或普通 VM 内存压力。默认 spin 模式自旋等待；blocked 模式经 Zephyr 信号量进入 idle WFI，可形成新的 Ready/Running 路径，但须报告非目标 Guest 核恢复次数。两者与关闭模式都有负载差异，开关对比不能代替追踪开销实验。时延均值、P50/P99/P99.9 和违约率边界只描述本次数据，不代表真板性能、统计置信区间或 WCET/WCRT。

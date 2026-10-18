@@ -23,6 +23,8 @@ mod starfive;
 
 #[cfg(feature = "rk3588-cpufreq-thermal-test")]
 pub use rockchip::cpufreq::set_test_cpu_temperature_mc;
+#[cfg(feature = "rk3588-thermal")]
+pub use rockchip::thermal::{TemperatureError, TemperatureSensor, temperature_millidegrees};
 #[cfg(feature = "rockchip-soc")]
 pub use rockchip::{RockchipFdtPinctrlParser, RockchipPinCtrl};
 

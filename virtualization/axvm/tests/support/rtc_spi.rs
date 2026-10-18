@@ -19,6 +19,9 @@ static BORROWED: AtomicBool = AtomicBool::new(false);
 struct Counters {
     handled: AtomicU32,
     errors: AtomicU32,
+    wrong_cpu: AtomicU32,
+    invalid_alarm: AtomicU32,
+    pulse_failed: AtomicU32,
 }
 
 pub struct RtcSpi {
@@ -92,7 +95,17 @@ impl RtcSpi {
                 };
                 // The callback itself is owned by the IRQ framework, not locked
                 // or shared with task code. Only the register bank is serialized.
-                if context.cpu != ax_hal::irq::CpuId(0) || !valid || port.pulse().is_err() {
+                let failure = if context.cpu != ax_hal::irq::CpuId(0) {
+                    Some(&counters.wrong_cpu)
+                } else if !valid {
+                    Some(&counters.invalid_alarm)
+                } else if port.pulse().is_err() {
+                    Some(&counters.pulse_failed)
+                } else {
+                    None
+                };
+                if let Some(counter) = failure {
+                    counter.fetch_add(1, Ordering::Relaxed);
                     counters.errors.fetch_add(1, Ordering::Relaxed);
                 }
                 counters.handled.fetch_add(1, Ordering::Release);
@@ -196,6 +209,62 @@ impl RtcSpi {
             "RTC handler pending/clear/CPU/delivery error"
         );
         Ok(())
+    }
+
+    /// Observe the existing owner after a failed wait; never acknowledge,
+    /// mask, rearm or retry a delivery from this diagnostic path.
+    pub fn report_failure(&self) {
+        let (handled, errors, wrong_cpu, invalid_alarm, pulse_failed, device) = {
+            // Controller and callback are both admitted on CPU0. Copy while
+            // locally excluding the callback; print only after releasing it.
+            let _irq = ax_std::os::arceos::guard::IrqSaveGuard::new();
+            let bank = self.bank.lock_irqsave();
+            let device = bank.as_ref().map(|rtc| {
+                (
+                    rtc.get_unix_timestamp(),
+                    rtc.match_timestamp(),
+                    rtc.interrupt_enabled(),
+                    rtc.matched(),
+                    rtc.interrupt_pending(),
+                )
+            });
+            (
+                self.counters.handled.load(Ordering::Acquire),
+                self.counters.errors.load(Ordering::Relaxed),
+                self.counters.wrong_cpu.load(Ordering::Relaxed),
+                self.counters.invalid_alarm.load(Ordering::Relaxed),
+                self.counters.pulse_failed.load(Ordering::Relaxed),
+                device,
+            )
+        };
+        println!(
+            "VIRQ_RTC_FAILURE_COUNTS handled={handled} errors={errors} wrong_cpu={wrong_cpu} \
+             invalid_alarm={invalid_alarm} pulse_failed={pulse_failed}"
+        );
+        if let Some((dr, mr, imsc, ris, mis)) = device {
+            println!(
+                "VIRQ_RTC_FAILURE_DEVICE present=1 dr={dr} mr={mr} imsc={} ris={} mis={}",
+                u8::from(imsc),
+                u8::from(ris),
+                u8::from(mis)
+            );
+        } else {
+            println!("VIRQ_RTC_FAILURE_DEVICE present=0");
+        }
+        if let Some(handle) = self.irq {
+            match ax_hal::irq::irq_status(handle) {
+                Ok(status) => println!(
+                    "VIRQ_RTC_FAILURE_FRAMEWORK action_enabled={} framework_line_enabled={} \
+                     in_flight={} action_running={} hardware_pending=unknown \
+                     hardware_active=unknown",
+                    u8::from(status.action_enabled),
+                    u8::from(status.line_enabled),
+                    status.in_flight,
+                    u8::from(status.action_running)
+                ),
+                Err(error) => println!("VIRQ_RTC_FAILURE_FRAMEWORK error={error:?}"),
+            }
+        }
     }
 
     pub fn finish(mut self, policy: &str, samples: u32) -> Result<()> {

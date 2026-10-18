@@ -15,6 +15,7 @@
 | `clock_request` | 宿主侧测试 | 前后各 32 次时钟校准的请求序号，33 表示开始中断采样 |
 | `clock_ack`、`clock_ticks`、`frequency` | CPU1 | 校准确认、CNTVCT 读数与计数频率 |
 | `isr_ticks[300]` | CPU1 ISR | 每次 ISR 开头的 CNTVCT 读数，各槽仅写一次 |
+| `isr_end_ticks[300]` | CPU1 ISR | 每次 ISR 发布 `received` 前的 CNTVCT 读数，各槽仅写一次；与 `isr_ticks` 差值是 ISR 执行区间 |
 | `complete` | 宿主侧测试 | 宿主确认全部投递与隔离检查结束后允许客户机完成 |
 
 CPU1 在 `consumer_entry()` 中调用 `irq_enable(SOFTWARE_VIRQ)` 后才具备 GICv3 的 SPI 路由亲和性，`software_virq_isr()` 校验中断确实落在 CPU1 且计数未越界，`suspend_cpu()` 通过 `arm_smccc_hvc(PSCI_CPU_SUSPEND_64, ...)` 让两个 CPU 停在自己维度的等待中。CPU0 只在 `main()` 里递增 `parks0` 后挂起，不参与投递计数，因此任何“广播唤醒”都会立刻破坏 `parks0` 与 `received` 的对应关系。
@@ -53,13 +54,13 @@ flowchart TD
 | `TOOLCHAIN_ARCHIVE_URL` | ARM GNU-A `10.3-2021.07` 交叉工具链 | 与旧流程一致的编译器；`CROSS_COMPILE` 必须是绝对前缀 |
 | `PINNED_PYTHON_PACKAGES` | `cmake==4.4.3`、`ninja==1.13.2`、`pyelftools==0.33`、`PyYAML==6.0.3`、`packaging==26.3`、`pykwalify==1.8.0` | CMake/Ninja、ELF 解析与 Zephyr 板级 YAML 校验依赖 |
 | `BOARD` | `qemu_cortex_a53/qemu_cortex_a53/smp` | Zephyr 双核板级定义 |
-| `MAILBOX_SYMBOL`、`MAILBOX_SIZE` | `virq_mailbox`、2448 字节 | ELF 符号校验对象；大小不符即中止 |
+| `MAILBOX_SYMBOL`、`MAILBOX_SIZE` | `virq_mailbox`、`48 + 16 * N` 字节（默认 N=300 时为 4848 字节） | ELF 符号校验对象；大小不符即中止 |
 
 `VIRQ_CACHE_DIR` 可把缓存移到共享位置，缓存内部分为 `zephyr`、`toolchain`、`venv` 三项，`VIRQ_TOOLCHAIN_SHA256` 可在需要时校验工具链压缩包摘要。源码校验要求检出提交等于 `ZEPHYR_REVISION` 且工作树无改动，避免“用了别人的分支”这种无法复现的输入。
 
 ### 2.2 产物与校验
 
-`inspect_guest()` 从 `.symtab` 读取 `virq_mailbox` 的地址与大小，要求大小等于 2448 字节且地址与 ELF 入口都落在客户机 RAM `[0x40000000, 0x48000000)` 内；地址或大小不符时脚本直接失败，不写出半成品资源。`write_vm_config()` 用历史布局写 `vm.toml`：`id = 2`、`cpu_num = 2`、`phys_cpu_ids = [0, 1]`、`kernel_load_addr = 0x40000000`、`dtb_load_addr = 0x47e00000`、`memory_regions = [[0x40000000, 0x08000000, 0x7, 0]]`，`kernel_path` 保持相对路径以便整个输出目录整体搬移。
+`inspect_guest()` 从 `.symtab` 读取 `virq_mailbox` 的地址与大小，要求大小等于 `48 + 16 * N` 且地址与 ELF 入口都落在客户机 RAM `[0x40000000, 0x48000000)` 内；地址或大小不符时脚本直接失败，不写出半成品资源。`write_vm_config()` 用历史布局写 `vm.toml`：`id = 2`、`cpu_num = 2`、`phys_cpu_ids = [0, 1]`、`kernel_load_addr = 0x40000000`、`dtb_load_addr = 0x47e00000`、`memory_regions = [[0x40000000, 0x08000000, 0x7, 0]]`，`kernel_path` 保持相对路径以便整个输出目录整体搬移。
 
 | 产物 | 相对输出目录的路径 | 消费者 |
 | --- | --- | --- |
@@ -83,19 +84,43 @@ flowchart TD
 
 本目录的文档与脚本不构成运行证据：固定版本客户机、双 vCPU 挂起语义、资源装入后的路径解析都需要实际执行 `cargo xtask ktest qemu -p axvm --test vcpu_runtime` 才能确认；在真实板卡上的延迟与吞吐同样不在本场景的证明范围内。
 
-校准字段的固定偏移为 request=20、ack=24、ticks=32、frequency=40、ISR 数组=48，整体 8 字节对齐。C 静态断言和 ELF 符号大小校验共同检查布局。CPU1 写时间戳后 release 发布确认；宿主观察确认后执行 DMB 再读取稳定载荷，不把普通字节复制视作原子结构体快照。
+校准字段的固定偏移为 request=20、ack=24、ticks=32、frequency=40、ISR 起点数组=48、ISR 终点数组=`48 + 8 * SAMPLE_COUNT`，整体 8 字节对齐。C 静态断言和 ELF 符号大小校验共同检查布局。CPU1 写入 ISR 起止时间戳后才 release 发布确认；宿主观察确认后执行 DMB 再读取稳定载荷，不把普通字节复制视作原子结构体快照。
 
 
 ### Guest-running测量模式
 
-mailbox offset28使用原保留u32作为running_mode，host单写、CPU1 acquire读取，大小仍2448字节。CLOCK_START前保持原校准握手；启用running_mode后，CPU1在采样期用arch_nop循环等待虚拟中断，原模式仍用PSCI suspend。ISR时间戳/received发布和非目标CPU0挂起协议不变。
+mailbox offset28使用原保留u32作为running_mode，host单写、CPU1 acquire读取。头部仍为48字节，尾部同时保存 ISR 起点和终点数组，因此总大小为 `48 + 16 * N`。CLOCK_START前保持原校准握手；启用running_mode后，CPU1在采样期用arch_nop循环等待虚拟中断，原模式仍用PSCI suspend。ISR时间戳/received发布和非目标CPU0挂起协议不变。
 
 VIRQ_IRQ_CONTEXT=guest_running要求物理PPI源、三宿主核、CPU2服务和baseline负载，Guest物理映射仍[0,1]。VM资源生成脚本拒绝不满足模式、源、负载和服务配置条件的组合；服务CPU2是否存在由内核诊断初始化校验。具体源所有权与入口定义见vcpu-runtime/README.md第12节。该模式用于低EL IRQ观测链功能验证，不提供真实DRAM/缓存性能结论。
 
 PL031夹具以 VIRQ_SOURCE=pl031_spi 选择，prepare读取实际guest/zephyr/.config并仅在RTC/counter均禁用时写入guest_rtc_unused=true；它不修改Guest IRQ向量或ISR时间戳布局。详细Host设备所有权与测量边界见 ../../vcpu-runtime/README.md 的PL031章节。
 
 
-采样规模由 `VIRQ_SAMPLES`（默认300，范围1..1000）统一传给Guest编译与Host资源。mailbox头48字节不变，尾部数组为N个u64，prepare核验实际ELF符号大小为48+8N；READY/COMPLETE打印实际N。Host拒绝规模不匹配。大规模采集的追踪容量与独立boot分批限制见[运行夹具说明](../../vcpu-runtime/README.md)。
+采样规模由 `VIRQ_SAMPLES`（默认300，范围1..1000）统一传给Guest编译与Host资源。mailbox头48字节不变，尾部为 N 个 ISR 起点 u64 和 N 个 ISR 终点 u64，prepare核验实际ELF符号大小为 `48 + 16N`；READY/COMPLETE打印实际N。Host拒绝规模不匹配。大规模采集的追踪容量与独立boot分批限制见[运行夹具说明](../../vcpu-runtime/README.md)。
 
 
 `linux_cpu`场景另外调用相邻`linux-load/prepare.py`，验证固定Linux kernel与BusyBox基底SHA，用CROSS_COMPILE静态构建CPU工作程序，经原生`cargo xtask image pack-initramfs`打包。单独Linux资源位于生成输出的linux/目录，仅linux运行配置捆绑它；Zephyr的计数、mailbox与ISR协议保持不变。
+
+Linux 对照的 Host CPU 由共同入口 `guest_firmware.linux_host_cpu()` 读取 `VIRQ_LINUX_HOST_CPU`，默认 3，也可在显式 Guest DTB、blocked 双 VM 任务、当前 EL 物理源和 CPU0 服务条件下选择 1。`write_test_resources()` 将相同选择写入 `linux_host_cpu`，Linux 准备脚本将其写入 VM 掩码与 `build.json`；不支持的选择在工具链准备前拒绝。关键 Guest 的两个 vCPU 掩码保持 `[1,2]`，不改变 IRQ 或设备协议。
+
+## 4. 线程任务完成测量
+
+VIRQ_TASK=1 在原 consumer_entry 中启用可校验线程任务，以 task_start_ticks/task_end_ticks 记录 ISR 之后的 T6。默认 VIRQ_TASK=0 保留原 Guest 行为和 48+16N 字节布局。
+
+### 4.1 可关闭的协议扩展
+
+开启后 mailbox 尾部增加 task_completed、task_protocol=1 和三个 N 项 u64 数组，总大小为 56+40N。prepare.py 的 mailbox_size() 校验实际 ELF 符号大小；Host 的 task_completion::verify_protocol() 校验 ready 后的协议与完成初值，拒绝混配镜像。CPU1 ISR release 发布 received，原 CPU1 consumer acquire 观察后执行 4096 步 uint32 LCG，预期结果 1853662840；记录起止并 release 发布 task_completed。
+
+Host 在读到当前完成计数低字节后沿原屏障读取不可变数组，每个样本只写一次，且只允许一个未完成任务。N=260 的运行用于覆盖低字节回绕。失败复用原 VM stop/join 生命周期，不改设备中断、内存映射或生产接口。
+
+### 4.2 测量含义
+
+默认 VIRQ_TASK_WAIT=spin 在等待事件时自旋，避免新增 suspend/check 竞态；VIRQ_TASK_WAIT=blocked 则复用 Zephyr 信号量和 idle WFI，让 vCPU 真正等待并由 ISR 唤醒。两种模式与关闭模式的工作负载不同，不能把时延差解释为纯追踪开销。任务是单在途、事件驱动的计算负载，尚未实现周期释放、积压队列或设备输出。VIRQ_TASK_DEADLINE_US（默认 10000，范围 1～1000000）定义从 Host submit 到任务完成的独立预算；比较器 due_ticks 仍是中断触发时间，旧 deadline_miss 不表示任务违约。
+
+离线 analyze_virq_task.py 基于同一事件的 ISR 校准生成任务时延区间、同域任务执行时间和三态 task_deadline_miss；校准区间跨越截止期时计为 unknown，并保留违约率下界/上界。这些界表示时间校准歧义，不是重复实验的置信区间。
+
+### 4.3 阻塞模式与后台活动
+
+blocked 模式先在 ISR 发布 received，再 k_sem_give；consumer 使用 k_sem_take(K_FOREVER) 取得 token 后执行任务，没有应用层检查后再入睡的间隙。资源中的 task_wait 和 VIRQ_TASK_CONFIG 显式标识等待模式。旧日志缺失该字段时，离线报告为 spin_legacy。
+
+Guest 调度可能伴随后台 vCPU 恢复。blocked 模式输出 VIRQ_TASK_BACKGROUND 的 non_target_vcpu_returns，不宣称其原因已归因为 IPI，也不宣称 CPU0 静止；spin/关闭模式继续强制零恢复。关键 vector48 仍必须只在 CPU1 ISR 执行，每条计数、任务 checksum、时间顺序与 Host 观察窗口均须通过。新日志缺少后台活动记录，或 spin 模式报告非零后台活动时，分析器拒绝出报告。

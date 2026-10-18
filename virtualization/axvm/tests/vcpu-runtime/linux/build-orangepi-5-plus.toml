@@ -1,0 +1,5 @@
+# Request no extra frequency feature; inspect the runner's resolved features.
+features = []
+log = "Info"
+max_cpu_num = 4
+target = "aarch64-unknown-none-softfloat"

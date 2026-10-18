@@ -21,6 +21,34 @@ RTC_SUMMARY = re.compile(r"VIRQ_RTC_SUMMARY policy=(fair|fifo80) intid=(\d+) cpu
 RTC_CONFIG = re.compile(r"VIRQ_RTC_CONFIG base=0x9010000 intid=34 cpu=0 target_cpu=1 initial_mr=0 imsc=0 ris=0 mis=0")
 
 
+def cross_core_source_owner(events, entry):
+    """Prove the non-target Guest owned the interrupted CPU's current run segment."""
+    position = lambda event: (event["ticks"], event["sequence"])
+    latest = {}
+    for event in events:
+        if (event["cpu"] == entry["cpu"] and position(event) < position(entry)
+                and event["kind"] in ("Running", "Stopped")):
+            latest[event["thread"]] = event
+    active = [event for event in latest.values() if event["kind"] == "Running"]
+    if len(active) != 1:
+        raise ValueError("cross-core low-EL entry needs exactly one active source owner")
+    running = active[0]
+    binding = next(event for event in events
+                   if event["kind"] == "Binding" and event["thread"] == running["thread"])
+    if (binding["cpu"] != entry["cpu"]
+            or (binding["value0"], binding["value1"]) != (2, 0)):
+        raise ValueError("cross-core low-EL entry has the wrong source VM/vCPU/CPU")
+    # The first Running can precede run_owner's Binding. Both must precede
+    # an Entry in the current segment, rather than an earlier parked segment.
+    boundary = [event for event in events
+                if event["cpu"] == entry["cpu"] and event["thread"] == running["thread"]
+                and event["kind"] == "GuestEntryBoundary"
+                and max(position(binding), position(running)) < position(event) < position(entry)]
+    if not boundary:
+        raise ValueError("cross-core low-EL entry has no Entry in its current Running segment")
+    return running["thread"], binding["value0"], binding["value1"]
+
+
 def analyze(log):
     source_kind = measurement_source(log)
     sample_count = measurement_count(log)
@@ -69,10 +97,17 @@ def analyze(log):
     if any(tuple(map(int, s[1:])) != (intid, source_cpu, sample_count, 0, 1) for s in summaries):
         raise ValueError("physical source count, errors or retirement mismatch")
     entries = [e for e in events if e["kind"] == "HostIrqEntry"]
-    allowed = (1, 2) if guest_running else (1,)
     if len(entries) != sample_count * 2 or any((e["cpu"], e["thread"], e["value0"]) != (source_cpu, 0, intid)
-                                 or e["value1"] not in allowed for e in entries):
+                                 or e["value1"] not in (1, 2) for e in entries):
         raise ValueError("expected the declared number of complete, correctly classified physical IRQ entries")
+    cross_core_lower = not guest_running and any(e["value1"] == 2 for e in entries)
+    if cross_core_lower:
+        # Reuse the task grammar after module initialization, as the Linux
+        # window validator does; this declaration never replaces owner proof.
+        from analyze_virq_task import CONFIG as TASK_CONFIG, marked_records
+        tasks = marked_records(log, "VIRQ_TASK_CONFIG", TASK_CONFIG)
+        if len(tasks) != 1 or tasks[0][1] != "blocked":
+            raise ValueError("cross-core low-EL entry requires one explicit blocked-task declaration")
     bindings = {e["thread"]: (e["value0"], e["value1"]) for e in events if e["kind"] == "Binding"}
     if any(e["kind"] in ("Running", "GuestEntryBoundary") and bindings.get(e["thread"]) == (2, 1)
            and e["cpu"] != target_cpu for e in events):
@@ -103,12 +138,16 @@ def analyze(log):
                  and bindings[e["thread"]] == (2, 1) and entry["ticks"] <= e["ticks"] <= high]
         if len(kicks) != 1 or kicks[0]["ticks"] > low or kicks[0]["cpu"] != source_cpu:
             raise ValueError("no unique certainly post-entry, pre-ISR interrupt publication")
-        if entry["value1"] == 2:
+        source_owner = (None, None, None)
+        if entry["value1"] == 2 and not guest_running:
+            source_owner = cross_core_source_owner(events, entry)
+        elif entry["value1"] == 2:
             history = [e for e in events if e["thread"] == kicks[0]["thread"]
                        and e["kind"] in ("Running", "Stopped") and e["ticks"] <= entry["ticks"]]
             previous = max(history, key=lambda e: e["ticks"], default=None)
             if previous is None or previous["kind"] != "Running" or previous["cpu"] != source_cpu:
                 raise ValueError("low-EL entry has no running target vCPU provenance")
+            source_owner = kicks[0]["thread"], 2, 1
         hz = clock["frequency_hz"]
         row = dict(load_by_sample[(policy, index)])
         row.update(sample)
@@ -116,15 +155,32 @@ def analyze(log):
         row["arm_to_c_isr_upper_ns"] = row.pop("isr_upper_ns")
         row.update(irq_entry_ticks=entry["ticks"],
                    irq_entry_context="lower_el_pre_iar" if entry["value1"] == 2 else "current_el_callback",
-                   irq_entry_sequence=entry["sequence"], intid=intid, irq_cpu=source_cpu,
+                   irq_entry_sequence=entry["sequence"], irq_kick_ticks=kicks[0]["ticks"],
+                   irq_source_thread=source_owner[0], irq_source_vm=source_owner[1],
+                   irq_source_vcpu=source_owner[2],
+                   intid=intid, irq_cpu=source_cpu,
                    arm_to_entry_ns=(entry["ticks"]-start)*1e9/hz,
                    entry_to_kick_ns=(kicks[0]["ticks"]-entry["ticks"])*1e9/hz,
                    entry_to_c_isr_lower_ns=(low-entry["ticks"])*1_000_000_000//hz,
                    entry_to_c_isr_upper_ns=((high-entry["ticks"])*1_000_000_000+hz-1)//hz)
         if rtc:
             row["rtc_match_seconds"] = due
+            row["deadline_ns"] = None
+            row["deadline_miss"] = "na"
         else:
-            row.update(due_ticks=due, deadline_to_entry_ns=(entry["ticks"]-due)*1e9/hz)
+            row.update(
+                due_ticks=due,
+                deadline_to_entry_ns=(entry["ticks"]-due)*1e9/hz,
+                # `deadline_ns` is the source-relative budget from the Host
+                # submission to the programmed comparator deadline. The
+                # three-valued result preserves calibration uncertainty.
+                deadline_ns=(due-start)*1_000_000_000//hz,
+                deadline_miss=(
+                    "true" if guest + clock["offset_low_ticks"] > due
+                    else "false" if guest + clock["offset_high_ticks"] <= due
+                    else "unknown"
+                ),
+            )
         rows.append(row)
     if len(used) != len(entries):
         raise ValueError("unassociated physical IRQ entries")
@@ -143,7 +199,10 @@ def analyze(log):
             intervals_ns={field: stats([r[field] for r in group]) for field in (
                 "arm_to_entry_ns", "deadline_to_entry_ns", "entry_to_kick_ns",
                 "entry_to_c_isr_lower_ns", "entry_to_c_isr_upper_ns") if field in group[0]})
-    return rows, dict(source=source_kind, execution_context="guest_running" if guest_running else "current_el",
+    return rows, dict(source=source_kind,
+                      requested_irq_context="guest_running" if guest_running else "current_el",
+                      execution_context="guest_running" if guest_running else "mixed" if cross_core_lower else "current_el",
+                      entry_origin_contract_version=2,
                       target_cpu=target_cpu, source_cpu=source_cpu, policies=policies,
                       runtime=runtime, load_and_ready=loaded,
                       limitations=[
@@ -151,6 +210,7 @@ def analyze(log):
                           ("This is a host-owned QEMU peripheral SPI forwarded to vector48, not pin-arrival latency or device passthrough. RTC seconds are not host comparator deadlines." if rtc else
                            "This is an internal physical timer PPI, not external device SPI or pin-arrival latency."),
                           "Entry origins remain classified per sample and in stratified summaries; neither point is vector-first-instruction or pin arrival.",
+                          "The current_el profile selects CPU0 as source; blocked SMP activity can produce low-EL entries with a verified VM2/vCPU0 owner.",
                           "Guest-running uses CPU1 PPI, busy target Guest and CPU2 services; its source/controller topology differs from the cross-core suspend case.",
                           ("One outstanding immediate RTC alarm at a time is not a periodic interrupt-rate experiment." if rtc else
                            "One outstanding 1ms comparator deadline at a time is not a periodic 1kHz throughput experiment."),

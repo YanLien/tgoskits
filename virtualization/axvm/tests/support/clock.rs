@@ -24,6 +24,7 @@ pub struct Probe {
 pub struct Delivery {
     pub submitted: u64,
     pub guest: u64,
+    pub guest_end: u64,
     pub observed: u64,
 }
 
@@ -102,9 +103,17 @@ pub fn validate_delivery(sample: &Delivery, low: i128, high: i128) -> Result<()>
         "host counter moved backwards"
     );
     ensure!(
+        sample.guest <= sample.guest_end,
+        "ISR end precedes ISR start"
+    );
+    ensure!(
         i128::from(sample.guest) + high >= i128::from(sample.submitted)
             && i128::from(sample.guest) + low <= i128::from(sample.observed),
         "ISR timestamp is outside its causal host window"
+    );
+    ensure!(
+        i128::from(sample.guest_end) + low <= i128::from(sample.observed),
+        "ISR end timestamp is outside its host observation window"
     );
     Ok(())
 }

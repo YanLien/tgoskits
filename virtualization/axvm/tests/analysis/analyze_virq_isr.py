@@ -18,7 +18,13 @@ CLOCK = re.compile(
 )
 ISR = re.compile(
     r"VIRQ_ISR_SAMPLE policy=(fair|fifo80) sample=(\d+) submit_ticks=(\d+) "
-    r"guest_ticks=(\d+) observed_ticks=(\d+) frequency_hz=(\d+)"
+    r"guest_ticks=(\d+)(?: guest_end_ticks=(\d+))? observed_ticks=(\d+) "
+    r"frequency_hz=(\d+)"
+    r"(?: deadline_ns=(\d+) deadline_miss=(true|false|unknown|na)"
+    r" trace_loss=(0|1|unknown))?"
+)
+RUNTIME_SUMMARY = re.compile(
+    r"VIRQ_RUNTIME_SUMMARY records=(\d+) dropped=(\d+) incomplete=(\d+)"
 )
 
 
@@ -37,6 +43,41 @@ def records(log, marker, pattern, columns):
     return result
 
 
+def isr_records(log):
+    result = []
+    for line in log.splitlines():
+        if "VIRQ_ISR_SAMPLE" not in line:
+            continue
+        match = ISR.search(line)
+        if match is None or line[match.end():].strip():
+            raise ValueError("malformed VIRQ_ISR_SAMPLE")
+        policy, sample, submit, guest, guest_end, observed, frequency, deadline, miss, loss = match.groups()
+        result.append({
+            "policy": policy,
+            "sample": int(sample),
+            "submit_ticks": int(submit),
+            "guest_ticks": int(guest),
+            "guest_end_ticks": int(guest_end) if guest_end is not None else None,
+            "observed_ticks": int(observed),
+            "frequency_hz": int(frequency),
+            "deadline_ns": int(deadline) if deadline is not None else None,
+            "deadline_miss": miss or "na",
+            "trace_loss": (None if loss in (None, "unknown") else loss == "1"),
+        })
+    return result
+
+
+def trace_loss_state(log):
+    matches = [RUNTIME_SUMMARY.fullmatch(line.strip()) for line in log.splitlines()]
+    matches = [match for match in matches if match is not None]
+    if not matches:
+        return None
+    if len(matches) != 1:
+        raise ValueError("duplicated runtime trace summary")
+    _, dropped, incomplete = (int(value) for value in matches[0].groups())
+    return bool(dropped or incomplete)
+
+
 def stats(values):
     ordered = sorted(values)
     return {
@@ -53,8 +94,8 @@ def analyze(log):
     sample_count = measurement_count(log)
     probes = records(log, "VIRQ_CLOCK_SAMPLE", CLOCK,
                      ("policy", "phase", "sequence", "host_before", "guest_ticks", "host_after", "frequency_hz"))
-    samples = records(log, "VIRQ_ISR_SAMPLE", ISR,
-                      ("policy", "sample", "submit_ticks", "guest_ticks", "observed_ticks", "frequency_hz"))
+    samples = isr_records(log)
+    runtime_trace_loss = trace_loss_state(log)
     result = {}
     output = []
     for policy in ("fair", "fifo80"):
@@ -85,6 +126,20 @@ def analyze(log):
                 raise ValueError("ISR sample is outside the causal host window")
             row = dict(sample)
             row["source"] = source
+            row["trace_loss"] = runtime_trace_loss if runtime_trace_loss is not None else sample["trace_loss"]
+            if row["guest_end_ticks"] is not None:
+                if row["guest_end_ticks"] < guest:
+                    raise ValueError("ISR end timestamp precedes ISR start")
+                if row["guest_end_ticks"] + low > end:
+                    raise ValueError("ISR end timestamp is outside the Host observation window")
+                duration_ticks = row["guest_end_ticks"] - guest
+                row["isr_duration_lower_ns"] = duration_ticks * 1_000_000_000 // frequency
+                row["isr_duration_upper_ns"] = (
+                    duration_ticks * 1_000_000_000 + frequency - 1
+                ) // frequency
+            else:
+                row["isr_duration_lower_ns"] = None
+                row["isr_duration_upper_ns"] = None
             # Round outward to retain interval coverage under tick conversion.
             row["isr_lower_ns"] = (lower - start) * 1_000_000_000 // frequency
             row["isr_upper_ns"] = ((upper - start) * 1_000_000_000 + frequency - 1) // frequency
@@ -92,11 +147,13 @@ def analyze(log):
             row["observation_upper_ns"] = ((end - lower) * 1_000_000_000 + frequency - 1) // frequency
             output.append(row)
         group = [s for s in output if s["policy"] == policy]
+        duration_group = [s for s in group if s["isr_duration_lower_ns"] is not None]
         result[policy] = {
             "samples": len(group), "calibration_probes": len(selected),
             "frequency_hz": frequency, "offset_low_ticks": low, "offset_high_ticks": high,
             "offset_width_ns": (high - low) * 1_000_000_000 / frequency,
             "source": source,
+            "trace_loss": runtime_trace_loss,
             ({"physical_timer_ppi": "timer_arm_to_c_isr_ns", "pl031_spi": "rtc_arm_to_c_isr_ns"}.get(source, "injection_to_c_isr_ns")): {
                 "lower": stats([s["isr_lower_ns"] for s in group]),
                 "upper": stats([s["isr_upper_ns"] for s in group]),
@@ -104,6 +161,13 @@ def analyze(log):
             "c_isr_to_host_observation_ns": {
                 "lower": stats([s["observation_lower_ns"] for s in group]),
                 "upper": stats([s["observation_upper_ns"] for s in group]),
+            },
+            "isr_duration_ns": {
+                "samples": len(duration_group),
+                "lower": stats([s["isr_duration_lower_ns"] for s in duration_group])
+                if duration_group else None,
+                "upper": stats([s["isr_duration_upper_ns"] for s in duration_group])
+                if duration_group else None,
             },
         }
     return output, probes, result
@@ -130,6 +194,8 @@ def main():
             "QEMU instrumented observation; not a physical hardware performance result.",
             "Intervals assume a shared rate and constant host-minus-guest offset across the run.",
             "ISR means the first counter read in the Zephyr C ISR, after guest vector dispatch.",
+            "ISR duration is available only when the Guest publishes its end counter; old logs retain null duration fields.",
+            "trace_loss is authoritative when VIRQ_RUNTIME_SUMMARY is present; otherwise it remains unknown.",
             "Finite calibration cannot prove permanent synchronization or hard real-time bounds.",
             "Finite sample tails require a sufficiency audit; no performance comparison is established.",
         ],

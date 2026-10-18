@@ -1,0 +1,5 @@
+source = "target/axbuild/axvm/vcpu-runtime/resources"
+vm_configs = [
+  "target/axbuild/axvm/vcpu-runtime/linux/vm.toml",
+  "target/axbuild/axvm/vcpu-runtime/vm.toml",
+]
