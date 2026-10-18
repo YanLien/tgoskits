@@ -1,0 +1,369 @@
+{
+  "Joint": false,
+  "M2": false,
+  "acceptance_boundary": "PASS permits Root independent copy verification only. It is not hardware approval, a fresh host/service witness, or proof of runtime zero loss.",
+  "blockers": [],
+  "candidate": {
+    "capture": {
+      "bytes": 30745,
+      "mode": 436,
+      "sha256": "e1e573ed9ecd8a1dd77c80d6a06fff3739e4fa8114815cc2b6b5c826206a14b2"
+    },
+    "cargo_cache": {
+      "bytes": 24119362,
+      "mode": 436,
+      "sha256": "75ba73a00cbf7150fa1b0bb1319091e329c470316f9d1eeda63f84d5a18e0d9f"
+    },
+    "control": {
+      "bytes": 535,
+      "mode": 436,
+      "sha256": "779a2fc8d95c9e06848b0b44a2188870b250baeb3cadfe8f32c858acccee12b9"
+    },
+    "controller": {
+      "bytes": 21727,
+      "mode": 436,
+      "sha256": "88608867d42ce9adbf4aa900dd8da71667b8e1090e3c52c82174c9949f3d21f4"
+    },
+    "freeze_manifest": {
+      "bytes": 12230,
+      "mode": 436,
+      "sha256": "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9"
+    },
+    "frozen_tool_members": 69,
+    "inputs": {
+      "bytes": 5571,
+      "mode": 436,
+      "sha256": "a785de09f1017498360677338ef0f0c4af40a9ed7bc81a9c824c52b58841abbd"
+    },
+    "new_candidate_frozen": true,
+    "normal702": {
+      "bytes": 85467,
+      "mode": 436,
+      "sha256": "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb"
+    },
+    "normal702_tar": {
+      "bytes": 1337626,
+      "mode": 436,
+      "sha256": "072c67c53641c3428ddfaa031692a506443105b0a023376dff90e307e1f8f29d"
+    },
+    "ordinary": {
+      "bytes": 1727818,
+      "mode": 436,
+      "sha256": "f4bd9bb6dadd056e35faa2b3243a1be410a588f531f6bceb7d71c89e520e3c86"
+    },
+    "parent_changed_members": [
+      "virtualization/axvm/src/diagnostics.rs"
+    ],
+    "paths": {
+      "hardware_started": 0,
+      "source": "/tmp/crosspath-native-capacity-v2-src-z2au9vz8",
+      "target": "/tmp/crosspath-native-capacity-v2-target-j4ca0hcp",
+      "target_initial_members": [],
+      "tools": "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x"
+    },
+    "source_ordinary_files": 9642,
+    "tools_archive_without_cache": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/frozen-tools",
+    "virq_cache": {
+      "bytes": 10233724,
+      "mode": 436,
+      "sha256": "bca20fa858c47ad366fe02531b24f469c5ec963940798127c8c273437014590d"
+    }
+  },
+  "capacity": {
+    "four_cpu_slot_bytes_after": 10485760,
+    "four_cpu_slot_bytes_before": 2621440,
+    "interpretation": "measurement capacity change, not an optimization or a zero-loss guarantee; requires new same-version matched recording-on/off overhead measurements",
+    "per_cpu_after": 65536,
+    "per_cpu_before": 16384
+  },
+  "decision": "PASS",
+  "design_sha256": "5dbf286e5275dde7f8553de3785835b246f8df6ef7ad2b2e010bbe9357bb3ccd",
+  "evidence_sha256": {
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/design/phase2-native-trace-capacity-v2-design.md": "5dbf286e5275dde7f8553de3785835b246f8df6ef7ad2b2e010bbe9357bb3ccd",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/design/phase2-native-trace-capacity-v2-plan-v2.md": "54a43488604d56ea9bf02b5cdf06d1ab9b6d8bceb4248f91504c00e491534e27",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/repaired/capture_native.py": "e1e573ed9ecd8a1dd77c80d6a06fff3739e4fa8114815cc2b6b5c826206a14b2",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/base-input-restoration-v1.json": "a0d90cb91d8ad68a16af12b92598f7eadd758b1965811cc504f764ef1af1142f",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/cache-cmake-direct.receipt.json": "0fe0a16ddd7d4e798fe086f5f7945120f6dc7199c78f58e6ef24fdf5115f4f2e",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/cache-cmake-direct.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/cache-cmake-direct.stdout": "f46066af33a13476fb604a1a1a24bb8d4dbddb6eb5855e0c24f9f7132784c9f0",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/cache-post-validation.json": "8f4444352753240b42954733a365952d87f0e73f6f520240c27d34bf3beed346",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/cache-production-entry-link.json": "ef8af32615e4114ba59e775917d9a6ab47fa970a0214cf8b3e90a267aaab9779",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/cache-python-probe.receipt.json": "ce2e4ed2bd2260a2e5ee4d1456af57cd1d5dc8ff20b12f44ed9f7c6de8c9b60d",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/cache-python-probe.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/cache-python-probe.stdout": "efce174f58f4a171bc8ea21931a2d242a51cf1dda172785bb9acd3696f77d0ab",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/cache-relocation.json": "1c11fe7b7df3a873d30392e4bbd7f14968758a0247a55ee3fe6f9c1d7b67f7fc",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/cargo-fmt.receipt.json": "fd7c0f142cd3bb7cce30cc58d51b39bbe733d5efdcd296b766a0c8257be99013",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/cargo-fmt.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/cargo-fmt.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/cargo-xtask-clippy.receipt.json": "852c7fbfafb5f0f04b756a4c9176d8a7b723e0b885c6faa3f22cf9d1b0715bc0",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/cargo-xtask-clippy.stderr": "6ba73af8b4a7dafd501d2c20c5ed1933e3c0061cc7ccc3b6655f8096891019e8",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/cargo-xtask-clippy.stdout": "4ee12b4cdcb25e8e6cb6d61b72109805507ff1cc9d7d0ca076eefe3a5cf058d4",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/finalization-after-fix-v1/protection-comparison.json": "388f2e88b7d1cdac69ac96a52d41640ca248c4a0f681e0ac0f0c1822c46a9765",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/finalize-after-fix-v1.receipt.json": "69e790988dc3fafa8b5aeb0fea27a6e6a5091456474595917adcf9df2a05ee0e",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/finalize-after-fix-v1.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/finalize-after-fix-v1.stdout": "77bebee894832ed81b127f91d28f9bf60911bbeee5dff11f0a77cff70d917ea4",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/finalize-slow-host-witness-v1.json": "69997b98313e38f7b110b11a41df7084db39f6598c45cb3848d47b7e8f6e9946",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/finalize-slow-signal-v1.json": "bc01283615507fa22ee7446f02dc5be76cb0f8e769627cda0f84d0aa6b9674a5",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/finalize-slow-toolcompletion-v1.json": "15c72dec92656ea8757e6430514ebe1df4ef6b72cb7ec6ced9da3b7206337e48",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/frozen-tools/capture_native.py": "e1e573ed9ecd8a1dd77c80d6a06fff3739e4fa8114815cc2b6b5c826206a14b2",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/frozen-tools/evidence/authorities/strict-native-fit-capture-repair-quality-review-v1.json": "745cef5a7bfd243a0686abd1e27d11594d60554cef7ef867ac808f530c0084af",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/frozen-tools/evidence/authorities/strict-native-fit-capture-repair-root-acceptance-v1.json": "5245d7a61f00710a6e11bb7adf0fc3e9c64a0432aa4ccecfd71931207707a1dc",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/frozen-tools/evidence/authorities/strict-native-fit-capture-repair-spec-review-v1.json": "9eb529c4ed59975c59a282d3e76c6279f2eaf255dee0246f1431cddf6ff3d9e6",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/frozen-tools/evidence/capacity-v2-authority-provenance.json": "e7f91cbe302c3584e014adc77fdb9994698ff18b5d3b95220efc7c01aaf39e64",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/frozen-tools/evidence/capacity-v2-parent-inputs.json": "78249f99440bf7b37a31d44f31b6ba1754e3bfca70142d8aa94aa355883e135b",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/frozen-tools/evidence/capacity-v2-parent-sources-702.json": "9e2fe24f40d95cf54390ad476d89c8162e2bfba9e257966a4a2cb3b9c31b918f",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/frozen-tools/evidence/control-identities.json": "779a2fc8d95c9e06848b0b44a2188870b250baeb3cadfe8f32c858acccee12b9",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/frozen-tools/evidence/ordinary-identities.json": "f4bd9bb6dadd056e35faa2b3243a1be410a588f531f6bceb7d71c89e520e3c86",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/frozen-tools/evidence/sources-702.json": "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/frozen-tools/inputs.json": "a785de09f1017498360677338ef0f0c4af40a9ed7bc81a9c824c52b58841abbd",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/frozen-tools/native_once.py": "88608867d42ce9adbf4aa900dd8da71667b8e1090e3c52c82174c9949f3d21f4",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/quality-review-v1/check.py": "a48acf186d1fcf7f961ee33805dceade7220a342c2931c7a0cdd1f4ede689841",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/quality-review-v1/checks.json": "61cbd59874b4e915736df35020e83020f946d8b6a1c74f066bac570dc5cd7701",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/quality-review-v1/receipt.json": "37aaf9bc0e8022ab1fee7098a30656f0fccf6f656b2a321b677c399464775efd",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/quality-review-v1/run.py": "af4f83dc67622ee0733b70c7cca67bedcf534073939063903e1478ec343ebe1d",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/quality-review-v1/stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/readiness-after-assets-v1/readiness.json": "31cd27e0e98a8dad8c170dc148e888c5ea551e0e406a13b598460d32816717f9",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/readiness-after-assets-v1/ready.receipt.json": "081407bb77a4dd0678e7837ac40166e620b8b67e2c4e95324476745b232f0d78",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/readiness-after-assets-v1/ready.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/readiness-after-assets-v1/ready.stdout": "829b295e217d18bca29023f069541553c66625b6281cbd898221dcbc2206ad70",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/readiness-after-assets-v1/reject-approval.receipt.json": "dbcdd0ebde5a24f6be815b0851003e6e8fe8bdc913c41bd7ccb6da1dfc7e951e",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/readiness-after-assets-v1/reject-approval.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/readiness-after-assets-v1/reject-approval.stdout": "97c42ffc3791bff627c12254737eed151642067d85245ca01f28336c36dcdaf5",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/readiness-after-assets-v1/reject-source.receipt.json": "e6fe8ffc1a44c6e056a1303b38cb6989b94b84aa5767387f465ab625f44d8d55",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/readiness-after-assets-v1/reject-source.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/readiness-after-assets-v1/reject-source.stdout": "badbdc1f9bfe971540297e44b654fdc6456cb64377fbd82f420639aae7ac7a57",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/ready.receipt.json": "33ea2fbbe5840a030eb2b1972207535bd1a2ff478fcf3af1f58eaefaac1b66fc",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/ready.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/ready.stdout": "b5a509391ba1a57e7574069be7a40a91a1cc574d032471fa29caf3104ede91c1",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/source-post-validation.json": "37259f43c5001262ee2717234342f475876688aaf772ff6dc90d2c29b8f4acbe",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/spec-review-v1/receipt-after-gcc-link-v1.json": "e82a2546f4f0eab9a62ddc250068d89df93b0fb8f03813065ce3f1e5516d8d47",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/spec-review-v1/receipt.json": "e46776efe84a49163b9153aea3f1307df7850c02cb085881e3c34df90586135a",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-trace-capacity-v2-task1-spec-review-v1.json": "4b3c61913884343e5207fc62b7533d7a38ebe00d9076d1c998f586018785d0d0",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-trace-capacity-v2-task1.json": "74eace0f3fd2a8611fcb49fe981a754bb722104dc89efd737acddf81a5087429",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-trace-capacity-v2-task1.md": "6629813889ce01c09c3aab7b5e1aa3461931d2efac8dfed16c795e95189595f3",
+    "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/Cargo.lock": "a0be52dac049ec52fe3bea67243cca4fd3bbbd992212b0eb8b078a054e4292fe",
+    "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/research-inputs/strict-native-v1/board.toml": "c470be5974956ed52db09b8dfceae70f815e2fbc84e4df7805c88882a83984f4",
+    "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/research-inputs/strict-native-v1/guest-builds.toml": "5c010cdfa7053666b7d2eb2a326d68c45b6905295c919d1277b782ad885050a2",
+    "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/research-inputs/strict-native-v1/host-initramfs.toml": "f162eaf16c3283735a113f165a40b969cd5caba0bb999e75a40df3739bd49a58",
+    "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/virtualization/axvm/src/diagnostics.rs": "d06a5fcc5797d09c1f5bbeb29bade2a09f3232979edc2d6ce231034a7bb162de",
+    "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/virtualization/axvm/tests/guests/virq/prepare.py": "5f0be0c95dfd7e20001a99a0f12a4f2ca338d764e25a0c8c6f3d08088fdbe490",
+    "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/virtualization/axvm/tests/vcpu_runtime.rs": "ce3c367d9041df79f0a4443bfc08ec6a854973a75c7815390af1f7c66fe292e5",
+    "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/venv/bin/activate": "c4cdeebd90180ede26e2a323166dcf4d685c324c61fcc4663add8d35979a9c5d",
+    "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/venv/bin/activate.csh": "32af5fa16402f1d6165b63efc66dbbf6bb99a0d4d9af98cb50b555ed97370cf1",
+    "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/venv/bin/activate.fish": "939b4f6733c22eabcde8b10907cd3f694669b0d7bbcc03cd520ea5048fc0a9cb",
+    "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/venv/bin/ccmake": "c6479732160ae0c8cb8d191cd880418912c7009758e351650348077cab0a6c87",
+    "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/venv/bin/cmake": "b02b9bc5dc55fe4c9f98b1f36febafbf273d34cc5e7b0fc5e977bbf0a00e0d90",
+    "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/venv/bin/cpack": "6e4bd8174dfce2090d428abe2ed6bddad12a8cf871f55396e4e61ff37c9ea1eb",
+    "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/venv/bin/ctest": "bc96fad91c416e330a7303a579b0fabee8c1310bbb30635c8457f5b2af79d047",
+    "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/venv/bin/pip": "720b1b4c91687f25b9f54ae9548c5c919e4b3237667356b17b21d7cded910d33",
+    "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/venv/bin/pip3": "720b1b4c91687f25b9f54ae9548c5c919e4b3237667356b17b21d7cded910d33",
+    "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/venv/bin/pip3.12": "720b1b4c91687f25b9f54ae9548c5c919e4b3237667356b17b21d7cded910d33",
+    "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/venv/bin/pykwalify": "02ce98e8ff21dcef7de1df5a163096819629afb4e4ffc08b255154780e559c5b",
+    "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/venv/bin/readelf.py": "b7032c3cac57ba842e286188150e4ca793dfbf4ae96d58fbef8dd1a518f028c9",
+    "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/venv/lib/python3.12/site-packages/cmake/__init__.py": "d8ea7563f5f6c99804344a4305a12057e59b353791a0c76fe916df5c36a4de4e",
+    "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/venv/pyvenv.cfg": "983cf781a492e72c3d25afbfebad37d27e84f27ccb971572b4e387f9c0e6c23d",
+    "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/capture_native.py": "e1e573ed9ecd8a1dd77c80d6a06fff3739e4fa8114815cc2b6b5c826206a14b2",
+    "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/evidence/authorities/strict-native-fit-capture-repair-quality-review-v1.json": "745cef5a7bfd243a0686abd1e27d11594d60554cef7ef867ac808f530c0084af",
+    "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/evidence/authorities/strict-native-fit-capture-repair-root-acceptance-v1.json": "5245d7a61f00710a6e11bb7adf0fc3e9c64a0432aa4ccecfd71931207707a1dc",
+    "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/evidence/authorities/strict-native-fit-capture-repair-spec-review-v1.json": "9eb529c4ed59975c59a282d3e76c6279f2eaf255dee0246f1431cddf6ff3d9e6",
+    "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/evidence/capacity-v2-authority-provenance.json": "e7f91cbe302c3584e014adc77fdb9994698ff18b5d3b95220efc7c01aaf39e64",
+    "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/evidence/capacity-v2-parent-inputs.json": "78249f99440bf7b37a31d44f31b6ba1754e3bfca70142d8aa94aa355883e135b",
+    "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/evidence/capacity-v2-parent-sources-702.json": "9e2fe24f40d95cf54390ad476d89c8162e2bfba9e257966a4a2cb3b9c31b918f",
+    "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/evidence/control-identities.json": "779a2fc8d95c9e06848b0b44a2188870b250baeb3cadfe8f32c858acccee12b9",
+    "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/evidence/ordinary-identities.json": "f4bd9bb6dadd056e35faa2b3243a1be410a588f531f6bceb7d71c89e520e3c86",
+    "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/evidence/sources-702.json": "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb",
+    "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/freeze-manifest.json": "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9",
+    "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/inputs.json": "a785de09f1017498360677338ef0f0c4af40a9ed7bc81a9c824c52b58841abbd",
+    "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/native_once.py": "88608867d42ce9adbf4aa900dd8da71667b8e1090e3c52c82174c9949f3d21f4",
+    "/tmp/crosspath-strict-native-src-ii_h4jde/Cargo.lock": "a0be52dac049ec52fe3bea67243cca4fd3bbbd992212b0eb8b078a054e4292fe",
+    "/tmp/crosspath-strict-native-src-ii_h4jde/research-inputs/strict-native-v1/board.toml": "c470be5974956ed52db09b8dfceae70f815e2fbc84e4df7805c88882a83984f4",
+    "/tmp/crosspath-strict-native-src-ii_h4jde/research-inputs/strict-native-v1/guest-builds.toml": "5c010cdfa7053666b7d2eb2a326d68c45b6905295c919d1277b782ad885050a2",
+    "/tmp/crosspath-strict-native-src-ii_h4jde/research-inputs/strict-native-v1/host-initramfs.toml": "f162eaf16c3283735a113f165a40b969cd5caba0bb999e75a40df3739bd49a58",
+    "/tmp/crosspath-strict-native-src-ii_h4jde/virtualization/axvm/src/diagnostics.rs": "4096e9827422196bfc740b6988fb7aa897b493d70c0d806cb123f814b99bb7a5",
+    "/tmp/crosspath-strict-native-src-ii_h4jde/virtualization/axvm/tests/guests/virq/prepare.py": "5f0be0c95dfd7e20001a99a0f12a4f2ca338d764e25a0c8c6f3d08088fdbe490",
+    "/tmp/crosspath-strict-native-src-ii_h4jde/virtualization/axvm/tests/vcpu_runtime.rs": "ce3c367d9041df79f0a4443bfc08ec6a854973a75c7815390af1f7c66fe292e5",
+    "/tmp/strict-native-phase-tools-kevemo32/cache/vcpu-runtime-cache/venv/bin/activate": "834718ca769965d9f4452217b2322e97ba49822c38a6002defaa7f6c48ba064c",
+    "/tmp/strict-native-phase-tools-kevemo32/cache/vcpu-runtime-cache/venv/bin/activate.csh": "0ff339179e457fcfbb6a5891ee9a6da833e7936f3494f98055436893d2fe5e7a",
+    "/tmp/strict-native-phase-tools-kevemo32/cache/vcpu-runtime-cache/venv/bin/activate.fish": "ecfe7227280047cffcf8c09cddb571b23ee2f3098078e19016d0b55681f6ee45",
+    "/tmp/strict-native-phase-tools-kevemo32/cache/vcpu-runtime-cache/venv/bin/ccmake": "3e6f12e96baf55b4e6307d6de84b349e97259382fa9d87863b98e8c33ad5c16c",
+    "/tmp/strict-native-phase-tools-kevemo32/cache/vcpu-runtime-cache/venv/bin/cmake": "e0f92421d238e5ea699438e025b8bd32d69f0ba5ea9f63ed685110bd754bf24b",
+    "/tmp/strict-native-phase-tools-kevemo32/cache/vcpu-runtime-cache/venv/bin/cpack": "da683228d85f90f779943bdb3fdf2fe3ceca1b29ba053aa0d25de1b1708d63bc",
+    "/tmp/strict-native-phase-tools-kevemo32/cache/vcpu-runtime-cache/venv/bin/ctest": "f33e4ef7374fa235aa66eb4733d6f6100f845f1b3d86abbfb3b81b3b4f6db6d0",
+    "/tmp/strict-native-phase-tools-kevemo32/cache/vcpu-runtime-cache/venv/bin/pip": "54d1fa0e6d0be4dc9d486bf0026c2bd2fba11171ca523eed143e78d06d44142c",
+    "/tmp/strict-native-phase-tools-kevemo32/cache/vcpu-runtime-cache/venv/bin/pip3": "54d1fa0e6d0be4dc9d486bf0026c2bd2fba11171ca523eed143e78d06d44142c",
+    "/tmp/strict-native-phase-tools-kevemo32/cache/vcpu-runtime-cache/venv/bin/pip3.12": "54d1fa0e6d0be4dc9d486bf0026c2bd2fba11171ca523eed143e78d06d44142c",
+    "/tmp/strict-native-phase-tools-kevemo32/cache/vcpu-runtime-cache/venv/bin/pykwalify": "be4f0ebddd7087e9d025b37624cff3bf527366f2d748dc697a4f648b62985bb1",
+    "/tmp/strict-native-phase-tools-kevemo32/cache/vcpu-runtime-cache/venv/bin/readelf.py": "d27d333ad955e442af4fda181911106773ea61b0142a05adaadaf5c487f43817",
+    "/tmp/strict-native-phase-tools-kevemo32/cache/vcpu-runtime-cache/venv/pyvenv.cfg": "9d9cb530b5e33f1041ae35cde1010e3859b62baf364ad2b0fb3c7d61f3981e51"
+  },
+  "execution_limits": {
+    "all155_archive_rescan": false,
+    "board_run": 0,
+    "builds_run": 0,
+    "existing_candidate_or_evidence_modified": false,
+    "full702_current_rescan": false,
+    "full96_rescan": false,
+    "full_cache_traversal": false,
+    "full_ordinary_current_rescan": false,
+    "git_writes": 0,
+    "new_self_owned_checker_children": 1,
+    "proc_read": 0,
+    "production_tests_repeated": 0,
+    "qemu_run": 0,
+    "ready_repeated": 0,
+    "signals_sent": 0
+  },
+  "findings": [
+    {
+      "evidence": "现时父/新 diagnostics.rs 全字节替换核对，仅16,384→65,536及两行英文说明；新702清单与父清单成员相同，仅该成员SHA变化。抽核现时loss/export调用源、Guest prepare、Cargo.lock与3份控制TOML均保持父身份。其余701现时文件不再复扫，沿用本次准确Spec所绑全核。",
+      "id": "Q1-MINIMAL-RECORDER-DELTA",
+      "references": [
+        "quality-review-v1/checks.json",
+        "diagnostics.rs.patch",
+        "source-post-validation.json"
+      ],
+      "result": "PASS"
+    },
+    {
+      "evidence": "人工审阅完整recorder及调用点：initialize在Guest前分配；record_at先注册WRITERS再检查ENABLED，IRQ守卫与每槽唯一预留不变；payload Relaxed写由kind Release发布、finish Acquire观察，关闭后在途写者拒绝链和永久槽生命周期不变。finish仍限CAPACITY复制，loss/incomplete先打印occupancy后ensure拒绝，未放宽为局部成功。",
+      "id": "Q2-PUBLICATION-AND-LOSS-SEMANTICS",
+      "references": [
+        "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/virtualization/axvm/src/diagnostics.rs",
+        "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/virtualization/axvm/tests/vcpu_runtime.rs"
+      ],
+      "result": "PASS"
+    },
+    {
+      "evidence": "现时controller全文及AST核对只把输出根v1改为v2；capture与已批准修复同SHA。选定的12项冻结执行/归档引用现时匹配；Spec、Quality和Root接纳以各自真实schema核验，修订没有借旧批准覆盖新capture字节。源码、工具、target和输入参数准确绑定新身份。",
+      "id": "Q3-TOOL-INHERITANCE",
+      "references": [
+        "quality-review-v1/checks.json",
+        "native_once.py.patch",
+        "frozen-tools/freeze-manifest.json"
+      ],
+      "result": "PASS"
+    },
+    {
+      "evidence": "现时读取13份新旧入口/metadata，逐项与记录身份、模式及准确两类prefix替换吻合；没有全目录改写。3个系统Python链接保留。新cmake入口与模块现时字节匹配保存证明；模块按distribution定位私有CMAKE_BIN_DIR，os.execl执行该binary。既有真实Python -B探针与直接cmake --version均wait0，且无PYTHONPATH/PYTHONHOME；sys.prefix/module/binary归新cache，系统解释器仍为/usr/bin/python3.12。",
+      "id": "Q4-CACHE-PRODUCTION-ENTRY",
+      "references": [
+        "cache-relocation.json",
+        "cache-production-entry-link.json",
+        "cache-python-probe.receipt.json",
+        "cache-cmake-direct.receipt.json"
+      ],
+      "result": "PASS"
+    },
+    {
+      "evidence": "保存的cargo fmt -p axvm、cargo xtask clippy --package axvm真实wait0及stdout/stderr SHA已现时核对；xtask输出29/29通过且failed/skipped均0，两个target变量指向独占target。审阅prepare.command实际Popen.wait链。容量参数没有新算法，不新增常量镜像或录制器模型测试；现有完整功能门仍须后续真板运行，离线Clippy不替代该义务。",
+      "id": "Q5-VALIDATION-SUFFICIENCY",
+      "references": [
+        "cargo-fmt.receipt.json",
+        "cargo-xtask-clippy.receipt.json",
+        "cargo-xtask-clippy.stdout",
+        "prepare.py:82"
+      ],
+      "result": "PASS"
+    },
+    {
+      "evidence": "仅核保存真实正式入口收据，不复跑ready。首ready2与外层1保留；同SHA固定资产恢复后同freeze的ready0、wrongsource2、invalidapproval2均带限制写/网/子进程/signal的原AUDITED_ENTRY。前后target相同、无新once或单项输出；target是已运行Clippy约10GB的专用目录，初始空状态不是当前空状态。",
+      "id": "Q6-READY-AND-FAILURE-PRESERVATION",
+      "references": [
+        "ready.receipt.json",
+        "orchestration-sessions.json",
+        "readiness-after-assets-v1/readiness.json",
+        "../base-input-restoration-v1.json"
+      ],
+      "result": "PASS"
+    },
+    {
+      "evidence": "Spec首checker系统GCC链接误判的wait1与修正后170checks/wait0分开保留，生产门未改。慢helper由Root读proc核验后仅对精确自持helper发pidfd SIGTERM，原统一exec实际143；没有虚构旧Popen.wait。原loaded脚本标明reconstructed，后修正load once、新输出目录与真实Popen.wait0保留。不能把整轮写成无proc/signal；本Quality自身无此操作。",
+      "id": "Q7-AUDIT-INCIDENT-TRUTHFULNESS",
+      "references": [
+        "spec-review-v1/receipt.json",
+        "spec-review-v1/receipt-after-gcc-link-v1.json",
+        "finalize-slow-host-witness-v1.json",
+        "finalize-slow-signal-v1.json",
+        "finalize-slow-toolcompletion-v1.json",
+        "finalize-after-fix-v1.receipt.json"
+      ],
+      "result": "PASS"
+    },
+    {
+      "evidence": "四CPU槽存储估算2.5→10MiB，只覆盖40B Slot，不含Vec、冻结snapshot等；扩大存储及导出可能影响内存/串口/时间，65,536不保证零丢样。新测量版本必须重新匹配追踪开/关开销。旧AB1 dropped19839/releaseunknown保持失败，新AB1/AB0/0及legacy未执行；普通宿主/M2/Joint/goal均false，不能称优化、容量已修复或联合效果成立。",
+      "id": "Q8-RESEARCH-BOUNDARY",
+      "references": [
+        "results/strict-native-trace-capacity-v2-task1.json",
+        "design/phase2-native-trace-capacity-v2-design.md"
+      ],
+      "result": "PASS"
+    }
+  ],
+  "goal": false,
+  "hardware_authorized": false,
+  "hardware_started": 0,
+  "historical_incidents": {
+    "Spec_checker_corrected_actual_Popen_wait": 0,
+    "Spec_checker_first_actual_Popen_wait": 1,
+    "corrected_finalizer_actual_Popen_wait": 0,
+    "historical_false_review_fields_in_implementation_left_unchanged": true,
+    "old_helper_actual_unified_exec_exit": 143,
+    "old_helper_custom_Popen_wait_available": false,
+    "whole_Task1_Root_proc_read_and_exact_helper_signal": true
+  },
+  "normal_host_validation": false,
+  "observed_utc": "2026-10-18T11:13:36.414796+00:00",
+  "plan_sha256": "54a43488604d56ea9bf02b5cdf06d1ab9b6d8bceb4248f91504c00e491534e27",
+  "qemu_started": 0,
+  "remaining_obligations": [
+    "Root对本报告准确身份进行独立复制检查与接纳。",
+    "后续另核当前宿主所有权/服务及准确单项批准，AB1→AB0→0每项至多一次；失败、未完成或release不明即停止余项。",
+    "真板完整全功能及双审后再补legacy生命周期，再开展完整相位分析和本版本匹配开销/随机重复。"
+  ],
+  "review_checks": {
+    "actual_Popen_wait": 0,
+    "check_count": 83,
+    "checker": {
+      "bytes": 14843,
+      "mode": 436,
+      "sha256": "a48acf186d1fcf7f961ee33805dceade7220a342c2931c7a0cdd1f4ede689841"
+    },
+    "details": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/quality-review-v1/checks.json",
+    "passed": true,
+    "receipt": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/quality-review-v1/receipt.json",
+    "runner": {
+      "bytes": 1614,
+      "mode": 436,
+      "sha256": "af4f83dc67622ee0733b70c7cca67bedcf534073939063903e1478ec343ebe1d"
+    },
+    "stderr": {
+      "bytes": 0,
+      "mode": 436,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stdout": {
+      "bytes": 36829,
+      "mode": 436,
+      "sha256": "61cbd59874b4e915736df35020e83020f946d8b6a1c74f066bac570dc5cd7701"
+    }
+  },
+  "review_method": {
+    "checker_is_behavior_test": false,
+    "checker_purpose": "new read-only source/evidence integrity assertions; never imports or executes candidate tools; not zero-loss/runtime proof",
+    "fresh_current_scope": "exact design/plan/implementation/Spec/freeze/source-manifest SHAs; selected12 frozen execution+archive entries; full parent/new recorder and controller bytes/AST; 4 semantic source anchors, 3 TOMLs; 13 relocated entries and 3 interpreter links; selected real receipts and output identities",
+    "inherited_scope": "完整155归档、全部69冻结工具、全部702现时源、9642普通树及完整cache检查由准确Spec和已保存ready/finalizer证据支撑；本Quality不声称再次全核。",
+    "skills": [
+      "orthome-verification",
+      "superpowers:verification-before-completion",
+      ".agents/skills/rust-code-quality/SKILL.md",
+      ".agents/skills/test-quality/SKILL.md",
+      ".agents/skills/rust-concurrency-safety/SKILL.md"
+    ]
+  },
+  "reviewed_Spec_sha256": "4b3c61913884343e5207fc62b7533d7a38ebe00d9076d1c998f586018785d0d0",
+  "reviewed_implementation_sha256": "74eace0f3fd2a8611fcb49fe981a754bb722104dc89efd737acddf81a5087429",
+  "schema_version": 1,
+  "scope": "strict native trace capacity v2 Task1 fresh independent Quality review; offline candidate only",
+  "trace_capacity_fix_real_board_proven": false,
+  "verdict": "Approved"
+}

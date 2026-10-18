@@ -1,0 +1,240 @@
+{
+  "Joint": false,
+  "M2": false,
+  "blockers": [],
+  "candidate": {
+    "capture": {
+      "bytes": 30745,
+      "mode": 436,
+      "sha256": "e1e573ed9ecd8a1dd77c80d6a06fff3739e4fa8114815cc2b6b5c826206a14b2"
+    },
+    "cargo_cache": {
+      "bytes": 24119362,
+      "mode": 436,
+      "sha256": "75ba73a00cbf7150fa1b0bb1319091e329c470316f9d1eeda63f84d5a18e0d9f"
+    },
+    "control": {
+      "bytes": 535,
+      "mode": 436,
+      "sha256": "779a2fc8d95c9e06848b0b44a2188870b250baeb3cadfe8f32c858acccee12b9"
+    },
+    "controller": {
+      "bytes": 21727,
+      "mode": 436,
+      "sha256": "88608867d42ce9adbf4aa900dd8da71667b8e1090e3c52c82174c9949f3d21f4"
+    },
+    "freeze_manifest": {
+      "bytes": 12230,
+      "mode": 436,
+      "sha256": "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9"
+    },
+    "frozen_tool_members": 69,
+    "inputs": {
+      "bytes": 5571,
+      "mode": 436,
+      "sha256": "a785de09f1017498360677338ef0f0c4af40a9ed7bc81a9c824c52b58841abbd"
+    },
+    "new_candidate_frozen": true,
+    "normal702": {
+      "bytes": 85467,
+      "mode": 436,
+      "sha256": "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb"
+    },
+    "normal702_tar": {
+      "bytes": 1337626,
+      "mode": 436,
+      "sha256": "072c67c53641c3428ddfaa031692a506443105b0a023376dff90e307e1f8f29d"
+    },
+    "ordinary": {
+      "bytes": 1727818,
+      "mode": 436,
+      "sha256": "f4bd9bb6dadd056e35faa2b3243a1be410a588f531f6bceb7d71c89e520e3c86"
+    },
+    "parent_changed_members": [
+      "virtualization/axvm/src/diagnostics.rs"
+    ],
+    "paths": {
+      "hardware_started": 0,
+      "source": "/tmp/crosspath-native-capacity-v2-src-z2au9vz8",
+      "target": "/tmp/crosspath-native-capacity-v2-target-j4ca0hcp",
+      "target_initial_members": [],
+      "tools": "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x"
+    },
+    "source_ordinary_files": 9642,
+    "tools_archive_without_cache": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/frozen-tools",
+    "virq_cache": {
+      "bytes": 10233724,
+      "mode": 436,
+      "sha256": "bca20fa858c47ad366fe02531b24f469c5ec963940798127c8c273437014590d"
+    }
+  },
+  "decision": "PASS",
+  "design_sha256": "5dbf286e5275dde7f8553de3785835b246f8df6ef7ad2b2e010bbe9357bb3ccd",
+  "evidence_sha256": {
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/design/phase2-native-trace-capacity-v2-design.md": "5dbf286e5275dde7f8553de3785835b246f8df6ef7ad2b2e010bbe9357bb3ccd",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/design/phase2-native-trace-capacity-v2-plan-v2.md": "54a43488604d56ea9bf02b5cdf06d1ab9b6d8bceb4248f91504c00e491534e27",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/base-input-restoration-v1.json": "a0d90cb91d8ad68a16af12b92598f7eadd758b1965811cc504f764ef1af1142f",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/archive-manifest.json": "a96095c74d41355d2e4b79c4d4ee6118aabd6428be539f2475bd2f0abb6041d3",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/cache-post-validation.json": "8f4444352753240b42954733a365952d87f0e73f6f520240c27d34bf3beed346",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/cache-production-entry-link.json": "ef8af32615e4114ba59e775917d9a6ab47fa970a0214cf8b3e90a267aaab9779",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/cache-relocation.json": "1c11fe7b7df3a873d30392e4bbd7f14968758a0247a55ee3fe6f9c1d7b67f7fc",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/candidate-identities.json": "8a3173bc5f8cab055a5dd69b3aacb34873aa62d59c44607af0747e54cebe8f42",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/cargo-fmt.receipt.json": "fd7c0f142cd3bb7cce30cc58d51b39bbe733d5efdcd296b766a0c8257be99013",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/cargo-xtask-clippy.receipt.json": "852c7fbfafb5f0f04b756a4c9176d8a7b723e0b885c6faa3f22cf9d1b0715bc0",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/cargo-xtask-clippy.stdout": "4ee12b4cdcb25e8e6cb6d61b72109805507ff1cc9d7d0ca076eefe3a5cf058d4",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/finalization-after-fix-v1/protection-comparison.json": "388f2e88b7d1cdac69ac96a52d41640ca248c4a0f681e0ac0f0c1822c46a9765",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/finalize-after-fix-v1.receipt.json": "69e790988dc3fafa8b5aeb0fea27a6e6a5091456474595917adcf9df2a05ee0e",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/finalize-slow-host-witness-v1.json": "69997b98313e38f7b110b11a41df7084db39f6598c45cb3848d47b7e8f6e9946",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/finalize-slow-signal-v1.json": "bc01283615507fa22ee7446f02dc5be76cb0f8e769627cda0f84d0aa6b9674a5",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/finalize-slow-toolcompletion-v1.json": "15c72dec92656ea8757e6430514ebe1df4ef6b72cb7ec6ced9da3b7206337e48",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/input-equivalence.json": "cbed7bf7b90384a717669f05a3a73ed9ebc2b65ea42b392786320e024157747a",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/old-cache-verification.before.json": "07f0c9ff88a4d2982e5432dc0ad28ff8bf473174281423302a481d3aaa96cf5d",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/paths.json": "c459d686ac05d2ba1685a5603d6afd0d2ab95f25641844231f43fbdfe22ba607",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/readiness-after-assets-v1/readiness.json": "31cd27e0e98a8dad8c170dc148e888c5ea551e0e406a13b598460d32816717f9",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/readiness-after-assets-v1/ready.receipt.json": "081407bb77a4dd0678e7837ac40166e620b8b67e2c4e95324476745b232f0d78",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/readiness-after-assets-v1/reject-approval.receipt.json": "dbcdd0ebde5a24f6be815b0851003e6e8fe8bdc913c41bd7ccb6da1dfc7e951e",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/readiness-after-assets-v1/reject-source.receipt.json": "e6fe8ffc1a44c6e056a1303b38cb6989b94b84aa5767387f465ab625f44d8d55",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/source-post-validation.json": "37259f43c5001262ee2717234342f475876688aaf772ff6dc90d2c29b8f4acbe",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/spec-review-v1/check-first-gcc-link-v1.py.txt": "b75592c0dab2801e5f657fae6f454e9764d4b94e08913da4d2c74e316ac53923",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/spec-review-v1/check.py": "e852390aa6c5c2f8109c4390ed7de7985d8cb8d10b49386678d06d5ca67986e3",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/spec-review-v1/checks-after-gcc-link-v1.json": "6d3b21da1f0d64432ad992695077235d03ec927e9c4af047b01f15f943f6fadc",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/spec-review-v1/receipt-after-gcc-link-v1.json": "e82a2546f4f0eab9a62ddc250068d89df93b0fb8f03813065ce3f1e5516d8d47",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/spec-review-v1/receipt.json": "e46776efe84a49163b9153aea3f1307df7850c02cb085881e3c34df90586135a",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-fit-capture-repair-quality-review-v1.json": "745cef5a7bfd243a0686abd1e27d11594d60554cef7ef867ac808f530c0084af",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-fit-capture-repair-root-acceptance-v1.json": "5245d7a61f00710a6e11bb7adf0fc3e9c64a0432aa4ccecfd71931207707a1dc",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-fit-capture-repair-spec-review-v1.json": "9eb529c4ed59975c59a282d3e76c6279f2eaf255dee0246f1431cddf6ff3d9e6",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-trace-capacity-v2-design-plan-review-v2.json": "df19eac41e66bbb608ec7ee944bd55aac404ab6629de778ce997529848fae4fd",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-trace-capacity-v2-task1.json": "74eace0f3fd2a8611fcb49fe981a754bb722104dc89efd737acddf81a5087429",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-trace-capacity-v2-task1.md": "6629813889ce01c09c3aab7b5e1aa3461931d2efac8dfed16c795e95189595f3"
+  },
+  "execution_limits": {
+    "board_run": 0,
+    "builds_run": 0,
+    "cache_basis": "frozen manifest comparison, selected actual paths, saved actual full static/protection checks",
+    "existing_candidate_or_evidence_modified": false,
+    "full96_rescan": false,
+    "full_cache_traversal": false,
+    "full_ordinary_basis": "frozen manifest comparison plus original ready/finalizer saved full checks",
+    "full_ordinary_current_rescan": false,
+    "git_writes": 0,
+    "proc_read": 0,
+    "qemu_run": 0,
+    "ready_repeated": 0,
+    "signals_sent": 0
+  },
+  "findings": [
+    {
+      "contract": "唯一容量改动",
+      "evidence": "新旧全部702项均读取现时字节与模式；清单、tar与普通树记录一致，仅 diagnostics.rs 变化。精确替换为16384→65536和2行英文说明；701项、Cargo.lock、3份控制TOML不变。完整9642成员集合/身份清单仅此变化；其余现时完整树采用已保存真实ready/finalizer全核证据，未重复遍历。",
+      "pointer": "frozen-tools/evidence/sources-702.json；diagnostics.rs.patch；source-post-validation.json",
+      "result": "PASS"
+    },
+    {
+      "contract": "追踪及并发语义",
+      "evidence": "精确替换以外整个diagnostics.rs逐字节相同：initialize预分配、STORE/ENABLED/WRITERS、IRQ守卫、record_at预留、kind Release/Acquire、finish冻结和导出均未改；loss ensure所在701项也未改。只保留容量上界变化，不视为真实零丢样证明。",
+      "pointer": "新源 virtualization/axvm/src/diagnostics.rs:24；父702不变项",
+      "result": "PASS"
+    },
+    {
+      "contract": "工具与批准来源",
+      "evidence": "controller逐字节仅输出根v1→v2，AST相同替换核验。capture SHA e1e573ed9ecd8a1dd77c80d6a06fff3739e4fa8114815cc2b6b5c826206a14b2与已双审及Root接纳副本相同；设计/计划复审PASS且无blockers，批准来源按准确SHA重冻。",
+      "pointer": "native_once.py.patch；frozen-tools/evidence/capacity-v2-authority-provenance.json",
+      "result": "PASS"
+    },
+    {
+      "contract": "新候选身份",
+      "evidence": "准确新source/tools/target相互独立；现时执行工具和归档工具全部69冻结成员均吻合。新702、tar、ordinary、control、cache与inputs均绑定candidate-identities和报告；155项旧归档索引逐项现时核验，共104178056B含索引，低于1GiB，审阅新增文件另列。",
+      "pointer": "archive-manifest.json；frozen-tools/freeze-manifest.json；spec-review-v1/checks-after-gcc-link-v1.json",
+      "result": "PASS"
+    },
+    {
+      "contract": "输入与预算不变",
+      "evidence": "父/新inputs仅改变5个顶层路径/身份字段；环境只替换新target与3类cache路径。900/920/10/30秒、512MiB、32任务/策略、20ms周期、10ms截止、A 2ms/burst2保持；250us/4ms生产源及其余worker/VM/压力源属701不变项。固定外部输入SHA/bytes/mode现时匹配。",
+      "pointer": "input-equivalence.json；frozen-tools/inputs.json",
+      "result": "PASS"
+    },
+    {
+      "contract": "cache隔离与重定位",
+      "evidence": "仅13项venv入口/activation/pyvenv.cfg执行准确旧prefix替换且模式不变；全部缓存清单比较仅此差异，未遍历整cache。选核cmake模块及binary、ninja ELF、系统Python链接保持批准身份，旧prefix两类有记录；Python sys.prefix/module/CMAKE_BIN_DIR/binary归新cache，解释器realpath=/usr/bin/python3.12，不能称独立venv binary。",
+      "pointer": "cache-relocation.json；cache-production-entry-link.json",
+      "result": "PASS"
+    },
+    {
+      "contract": "验证真实性与充分性",
+      "evidence": "核原始收据与完整stdout/stderr身份：cargo fmt -p axvm、cargo xtask clippy --package axvm实际wait=0，xtask 29/29、0failed/0skipped；新Python -B及直接cmake --version实际wait=0且无PYTHONPATH/PYTHONHOME。完整cache前后检查与Cargo bookkeeping单列证据已核。未新增常量测试或录制器模型。",
+      "pointer": "cargo-fmt.receipt.json；cargo-xtask-clippy.receipt.json；cache-*.receipt.json",
+      "result": "PASS"
+    },
+    {
+      "contract": "原正式ready及拒绝门",
+      "evidence": "复验真实ready0、错误source2、带准确freeze的错误approval2均使用原AUDITED_ENTRY；原完整主96与静态门未改。前后target21797文件状态相同，无新once/单项输出。仅核保存的实际执行与delivery/seal身份，没有重扫全96或复跑ready。",
+      "pointer": "readiness-after-assets-v1/；native_once.py::check_ready/verify_approval",
+      "result": "PASS"
+    },
+    {
+      "contract": "准备事件与旧证据保全",
+      "evidence": "初始guard误排合法fs/.../cache源码在candidate路径生成前退出1的记录保留。首轮ready因原kernel/base资产缺失退出2、外层1保留；Root仅用configs/reproduction-base-inputs同SHA/bytes/mode恢复原路径，丢失原因unknown、无下载/重建或历史回填，freeze未变。旧源/工具/cache前后完整保护记录一致，精选旧AB1/once/freeze现时一致。",
+      "pointer": "orchestration-sessions.json；base-input-restoration-v1.json；finalization-after-fix-v1/protection-comparison.json",
+      "result": "PASS"
+    },
+    {
+      "contract": "慢helper停止事件",
+      "evidence": "Root对新离线helper PID2243671/start50352998作精确host/proc见证和pidfd SIGTERM；实际统一exec87330退出143，旧轮没有自定义Popen.wait，不虚构-15。原加载脚本标为reconstructed，partial保留；修正版load once、新输出目录及实际父Popen.wait0有独立收据。冻结候选未变；没有board/runtime/旧进程/parent/group信号。不能笼统称整轮无proc/signal。",
+      "pointer": "finalize-slow-*.json；finalize-after-fix-v1.receipt.json",
+      "result": "PASS"
+    },
+    {
+      "contract": "结论边界",
+      "evidence": "报告明确仅离线准备PASS，Spec/Quality/Root复制仍待办；hardware0、QEMU0、normal_host=false、真板容量修复=false、M2/Joint/goal=false。新AB1/AB0/0均未执行，旧AB1失败及release=unknown不变。新增容量是测量版本，后续必须重新同版本matched recording-on/off开销，不能算联合优化收益。",
+      "pointer": "results/strict-native-trace-capacity-v2-task1.json/md",
+      "result": "PASS"
+    }
+  ],
+  "goal": false,
+  "hardware_authorized": false,
+  "hardware_started": 0,
+  "next_required": [
+    "对本报告所绑准确身份进行独立Quality审阅",
+    "Root独立复制核验并接纳；Task1报告及本Spec均不是硬件批准",
+    "随后按当前宿主所有权/服务、准确批准、AB1→AB0→0单项门推进；失败或release不明即停"
+  ],
+  "normal_host_validation": false,
+  "observed_utc": "2026-10-18T11:02:51.259387+00:00",
+  "plan_sha256": "54a43488604d56ea9bf02b5cdf06d1ab9b6d8bceb4248f91504c00e491534e27",
+  "qemu_started": 0,
+  "review_checks": {
+    "actual_Popen_wait": 0,
+    "check_count": 170,
+    "details": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/spec-review-v1/checks-after-gcc-link-v1.json",
+    "passed": true,
+    "receipt": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/spec-review-v1/receipt-after-gcc-link-v1.json"
+  },
+  "review_method": {
+    "all155_original_archive_entries": true,
+    "all69_freeze_current_and_archive": true,
+    "all702_current_files": true,
+    "cache_current_scope": "13迁移项、3个Python链接、cmake模块/binary、ninja ELF；完整cache以既有真实static/finalizer保存证据为依据",
+    "full96_current_scope": "仅delivery/seal准确SHA及原真实ready保存证据",
+    "full_ordinary_manifest_members": 9642,
+    "skills": [
+      ".agents/skills/rust-code-quality/SKILL.md",
+      ".agents/skills/test-quality/SKILL.md",
+      ".agents/skills/rust-concurrency-safety/SKILL.md"
+    ]
+  },
+  "reviewed_implementation_sha256": "74eace0f3fd2a8611fcb49fe981a754bb722104dc89efd737acddf81a5087429",
+  "reviewer_checker_correction": {
+    "candidate_failure": false,
+    "cause": "首轮审阅器把/usr/bin/aarch64-linux-gnu-gcc系统alias按cache/source链接规则比较；原external_inputs合同采用stat解析后binary身份。实际链接目标gcc-13的SHA/bytes/mode已匹配。",
+    "change": "只对外部固定输入按原identity合同解析系统alias；source/cache链接规则不变；记录alias target和resolved binary身份。",
+    "corrected_receipt": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/spec-review-v1/receipt-after-gcc-link-v1.json",
+    "first_actual_Popen_wait": 1,
+    "first_receipt": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/spec-review-v1/receipt.json",
+    "original_checker_snapshot": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/spec-review-v1/check-first-gcc-link-v1.py.txt",
+    "production_gate_changed": false
+  },
+  "schema_version": 1,
+  "scope": "严格相位追踪容量 v2 Task1 独立 Spec 审阅；先 Spec，后 Quality，再由 Root 独立复制核验",
+  "trace_capacity_fix_real_board_proven": false,
+  "verdict": "Approved"
+}

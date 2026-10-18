@@ -1,0 +1,100 @@
+{
+  "Joint": false,
+  "M2": false,
+  "Root_independent_copy_complete": true,
+  "actual_copy_formal_refusal_wait": 2,
+  "actual_copy_ready_wait": 0,
+  "candidate_manifest_sha256": "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9",
+  "copied_tool_execution_root_approved": false,
+  "decision": "OFFLINE_TASK1_ACCEPTED",
+  "evidence": {
+    "Quality": {
+      "bytes": 34343,
+      "path": "results/strict-native-trace-capacity-v2-task1-quality-review-v1.json",
+      "sha256": "6309db23595f07550ecb1b8ebf36bd022f09d31e9cdbf94d49c7a9c6d29a20e4"
+    },
+    "Root_copy": {
+      "bytes": 1846,
+      "path": "raw/strict-native-phase-v2/task1/root-copy-v1/result.json",
+      "sha256": "fd7b17949239c026bf113119e7c8381fca82d6a537784caf30b81d95886c608f"
+    },
+    "Root_copy_entry": {
+      "bytes": 1056,
+      "path": "raw/strict-native-phase-v2/task1/root-copy-v1/entry-identities.json",
+      "sha256": "4780ddd4aa9e0dace2994c1a017ec23de108687cb6857fe59f103c86349ee8ab"
+    },
+    "Root_copy_metadata": {
+      "bytes": 112,
+      "path": "raw/strict-native-phase-v2/task1/root-copy-v1/target-metadata.after.json",
+      "sha256": "4c3d3aa7150f2f601b79a0f7479bd03be8f04db2ac87272360eff0072b41339f"
+    },
+    "Root_copy_parent": {
+      "bytes": 620,
+      "path": "raw/strict-native-phase-v2/task1/root-copy-parent-v1.receipt.json",
+      "sha256": "bffdfbab4d1dbe8b51f7139c0579cbc30f74769141c37ca53d5cdb79f854123c"
+    },
+    "Root_copy_ready_receipt": {
+      "bytes": 1386,
+      "path": "raw/strict-native-phase-v2/task1/root-copy-v1/ready.receipt.json",
+      "sha256": "850e4673688482efee7d05647f6175a121bd2d0f11dda320d1e6ea0d025974d1"
+    },
+    "Root_copy_refusal_receipt": {
+      "bytes": 1589,
+      "path": "raw/strict-native-phase-v2/task1/root-copy-v1/copied-formal-refusal.receipt.json",
+      "sha256": "b6f004af2a01ffe9dcfcfca556c3c66ad958dd73893f0407732a94a616396cb4"
+    },
+    "Root_quality_refs": {
+      "bytes": 207,
+      "path": "raw/strict-native-phase-v2/task1/quality-root-reference-check-v1.json",
+      "sha256": "251f7efab802f6c24643ea4d5aab144314a941244882384cca84e831749fdb65"
+    },
+    "Spec": {
+      "bytes": 19095,
+      "path": "results/strict-native-trace-capacity-v2-task1-spec-review-v1.json",
+      "sha256": "4b3c61913884343e5207fc62b7533d7a38ebe00d9076d1c998f586018785d0d0"
+    },
+    "freeze": {
+      "bytes": 12230,
+      "path": "raw/strict-native-phase-v2/task1/frozen-tools/freeze-manifest.json",
+      "sha256": "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9"
+    },
+    "implementation": {
+      "bytes": 10285,
+      "path": "results/strict-native-trace-capacity-v2-task1.json",
+      "sha256": "74eace0f3fd2a8611fcb49fe981a754bb722104dc89efd737acddf81a5087429"
+    },
+    "patch_reconstruction": {
+      "bytes": 1210,
+      "path": "notes/code-commit-20261018-v1/capacity-v2-patch-check-v1.json",
+      "sha256": "1c46fa7371046b31b2cf39b952f8737e6d876a4c60ead040687cca7fa00541b5"
+    },
+    "source_702": {
+      "bytes": 85467,
+      "path": "raw/strict-native-phase-v2/task1/frozen-tools/evidence/sources-702.json",
+      "sha256": "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb"
+    }
+  },
+  "goal_complete": false,
+  "hardware_authorized": false,
+  "hardware_started": 0,
+  "historical_evidence_unchanged": true,
+  "independent_Quality_complete": true,
+  "independent_Spec_complete": true,
+  "new_cases": {
+    "0": "NOT_EXECUTED",
+    "AB0": "NOT_EXECUTED",
+    "AB1": "NOT_EXECUTED"
+  },
+  "next": "Separate Root exact new AB1 approval after fresh actual-host ownership/service witness. Single quota only. Any failure/incomplete/release unknown stops AB0/0.",
+  "normal_host_validation": false,
+  "observed_utc": "2026-10-18T11:16:41.845692+00:00",
+  "offline_task1_passed": true,
+  "old_AB1": "FAILED_DROPPED_19839",
+  "old_release": "unknown",
+  "qemu_started": 0,
+  "root_copy_actual_parent_Popen_wait": 0,
+  "schema_version": 1,
+  "scope": "Root final acceptance of capacity v2 Task1 offline candidate only",
+  "source_702_sha256": "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb",
+  "trace_capacity_fix_real_board_proven": false
+}

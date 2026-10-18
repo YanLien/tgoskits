@@ -1,0 +1,11 @@
+--- native_once.py.parent
++++ native_once.py.capacity-v2
+@@ -276,7 +276,7 @@
+     target = Path(INPUTS['target'])
+     if target.is_symlink():
+         raise ValueError('native target is a symlink')
+-    output = ARCHIVE/'raw/strict-native-phase-v1'/args.run
++    output = ARCHIVE/'raw/strict-native-phase-v2'/args.run
+     if output.exists():
+         raise ValueError('native output exists; never restart')
+     # Only completed readiness plus exact Root approval may cross this marker/Popen boundary.

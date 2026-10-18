@@ -1,0 +1,15 @@
+{
+  "actual_Popen_wait": 0,
+  "actual_child_pid": 3,
+  "argv": [
+    "/usr/bin/python3",
+    "-B",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/root-copy-check-v1.py"
+  ],
+  "cwd": "/home/yanlien/Program/hypervisor/tgoskits",
+  "end_ns": 1792322162322954231,
+  "script_sha256": "8ab1aee04aa9fd514421cdf88048eeb92016a3d717687a6f3f16cb1eb2e420c9",
+  "start_ns": 1792322062469962009,
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout_sha256": "5d40922a88dfa97ad692534470dc9f082c27727d1416b26d7aa2cfb9b391d93b"
+}

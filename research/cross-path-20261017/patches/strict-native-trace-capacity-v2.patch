@@ -1,0 +1,13 @@
+--- a/virtualization/axvm/src/diagnostics.rs
++++ b/virtualization/axvm/src/diagnostics.rs
+@@ -21,7 +21,9 @@
+ pub mod irq_service;
+ pub mod service_placement;
+ 
+-const CAPACITY: usize = 16_384;
++// Measurement capacity uses 10 MiB of slots across four CPUs.
++// Its memory cost requires new matched recording-on/off measurements.
++const CAPACITY: usize = 65_536;
+ static STORE: OnceLock<Vec<CpuBuffer>> = OnceLock::new();
+ static ENABLED: AtomicBool = AtomicBool::new(false);
+ static WRITERS: AtomicUsize = AtomicUsize::new(0);

@@ -1,0 +1,277 @@
+{
+  "Joint": false,
+  "M2": false,
+  "Root_independent_copy_check_complete": false,
+  "audit_finalizer_incident": {
+    "Root_host_proc_verification_and_exact_helper_SIGTERM": true,
+    "Root_stop_action": {
+      "bytes": 847,
+      "mode": 436,
+      "sha256": "bc01283615507fa22ee7446f02dc5be76cb0f8e769627cda0f84d0aa6b9674a5"
+    },
+    "Root_stop_witness": {
+      "bytes": 1216,
+      "mode": 436,
+      "sha256": "69997b98313e38f7b110b11a41df7084db39f6598c45cb3848d47b7e8f6e9946"
+    },
+    "actual_toolcompletion": {
+      "bytes": 501,
+      "mode": 436,
+      "sha256": "15c72dec92656ea8757e6430514ebe1df4ef6b72cb7ec6ced9da3b7206337e48"
+    },
+    "actual_unified_exec_exit": 143,
+    "cause": "repeated JSON manifest parsing inside runtime-file filter",
+    "corrected_real_Popen_wait": 0,
+    "corrected_wait_receipt": {
+      "bytes": 963,
+      "mode": 436,
+      "sha256": "69e790988dc3fafa8b5aeb0fea27a6e6a5091456474595917adcf9df2a05ee0e"
+    },
+    "correction": "load each immutable manifest once; retain initial partial output, use fresh finalization directory and real Popen wait parent",
+    "custom_Popen_wait_not_available_for_old_session": true,
+    "implementation_worker_proc_or_signal": false,
+    "old_loaded_source_reconstructed_from_exact_edit": {
+      "bytes": 12889,
+      "mode": 436,
+      "sha256": "57a8c3a3c739d5c9fdfcf901f902da6827e97fd1234fb105cd222c7f46c21cad"
+    },
+    "old_session": 87330,
+    "runtime_board_old_process_parent_group_signals": 0,
+    "scope": "unfrozen offline report helper only; candidate unchanged",
+    "scope_note": "Root verified and signaled only the newly owned slow offline report helper; this was not a board/runtime failure. Original 143 is the unified-exec result, not a fabricated custom Popen.wait=-15."
+  },
+  "cache_path_proof": {
+    "bytes": 4276,
+    "mode": 436,
+    "sha256": "ef8af32615e4114ba59e775917d9a6ab47fa970a0214cf8b3e90a267aaab9779"
+  },
+  "cache_relocation": {
+    "bytes": 17097,
+    "mode": 436,
+    "sha256": "1c11fe7b7df3a873d30392e4bbd7f14968758a0247a55ee3fe6f9c1d7b67f7fc"
+  },
+  "candidate": {
+    "capture": {
+      "bytes": 30745,
+      "mode": 436,
+      "sha256": "e1e573ed9ecd8a1dd77c80d6a06fff3739e4fa8114815cc2b6b5c826206a14b2"
+    },
+    "cargo_cache": {
+      "bytes": 24119362,
+      "mode": 436,
+      "sha256": "75ba73a00cbf7150fa1b0bb1319091e329c470316f9d1eeda63f84d5a18e0d9f"
+    },
+    "control": {
+      "bytes": 535,
+      "mode": 436,
+      "sha256": "779a2fc8d95c9e06848b0b44a2188870b250baeb3cadfe8f32c858acccee12b9"
+    },
+    "controller": {
+      "bytes": 21727,
+      "mode": 436,
+      "sha256": "88608867d42ce9adbf4aa900dd8da71667b8e1090e3c52c82174c9949f3d21f4"
+    },
+    "freeze_manifest": {
+      "bytes": 12230,
+      "mode": 436,
+      "sha256": "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9"
+    },
+    "frozen_tool_members": 69,
+    "inputs": {
+      "bytes": 5571,
+      "mode": 436,
+      "sha256": "a785de09f1017498360677338ef0f0c4af40a9ed7bc81a9c824c52b58841abbd"
+    },
+    "new_candidate_frozen": true,
+    "normal702": {
+      "bytes": 85467,
+      "mode": 436,
+      "sha256": "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb"
+    },
+    "normal702_tar": {
+      "bytes": 1337626,
+      "mode": 436,
+      "sha256": "072c67c53641c3428ddfaa031692a506443105b0a023376dff90e307e1f8f29d"
+    },
+    "ordinary": {
+      "bytes": 1727818,
+      "mode": 436,
+      "sha256": "f4bd9bb6dadd056e35faa2b3243a1be410a588f531f6bceb7d71c89e520e3c86"
+    },
+    "parent_changed_members": [
+      "virtualization/axvm/src/diagnostics.rs"
+    ],
+    "paths": {
+      "hardware_started": 0,
+      "source": "/tmp/crosspath-native-capacity-v2-src-z2au9vz8",
+      "target": "/tmp/crosspath-native-capacity-v2-target-j4ca0hcp",
+      "target_initial_members": [],
+      "tools": "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x"
+    },
+    "source_ordinary_files": 9642,
+    "tools_archive_without_cache": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/frozen-tools",
+    "virq_cache": {
+      "bytes": 10233724,
+      "mode": 436,
+      "sha256": "bca20fa858c47ad366fe02531b24f469c5ec963940798127c8c273437014590d"
+    }
+  },
+  "capacity": {
+    "four_cpu_slot_bytes_after": 10485760,
+    "four_cpu_slot_bytes_before": 2621440,
+    "interpretation": "measurement capacity change, not an optimization or a zero-loss guarantee; requires new same-version matched recording-on/off overhead measurements",
+    "per_cpu_after": 65536,
+    "per_cpu_before": 16384
+  },
+  "capture_equal_approved": true,
+  "cases": {
+    "0": "NOT_EXECUTED",
+    "AB0": "NOT_EXECUTED",
+    "AB1": "NOT_EXECUTED"
+  },
+  "completed_unix_ns": 1792320771812288193,
+  "controller_patch": {
+    "bytes": 504,
+    "mode": 436,
+    "sha256": "854fe4e6a2911bb29e07164859ec5273162c21363de09c6af2784918bda822a3"
+  },
+  "decision": "OFFLINE_PREPARATION_PASS_PENDING_INDEPENDENT_REVIEWS",
+  "external_input_restoration": {
+    "candidate_changed": false,
+    "download_or_rebuild": false,
+    "historical_normal_function_or_release_backfilled": false,
+    "identity": {
+      "bytes": 1895,
+      "mode": 436,
+      "sha256": "a0d90cb91d8ad68a16af12b92598f7eadd758b1965811cc504f764ef1af1142f"
+    },
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/base-input-restoration-v1.json",
+    "performed_by": "Root",
+    "same_approved_paths_and_SHA_size_mode": true
+  },
+  "goal": false,
+  "hardware_authorized": false,
+  "hardware_started": 0,
+  "independent_Quality_complete": false,
+  "independent_Spec_complete": false,
+  "initial_ready_refusal": {
+    "actual_wait": 2,
+    "reason": "Both fixed kernel/base-initramfs assets absent at original approved paths; disappearance cause unknown.",
+    "receipt": {
+      "bytes": 1588,
+      "mode": 436,
+      "sha256": "33ea2fbbe5840a030eb2b1972207535bd1a2ff478fcf3af1f58eaefaac1b66fc"
+    },
+    "stage_wait": 1,
+    "stdout": {
+      "bytes": 204,
+      "mode": 436,
+      "sha256": "b5a509391ba1a57e7574069be7a40a91a1cc574d032471fa29caf3104ede91c1"
+    }
+  },
+  "input_equivalence": {
+    "bytes": 1431,
+    "mode": 436,
+    "sha256": "cbed7bf7b90384a717669f05a3a73ed9ebc2b65ea42b392786320e024157747a"
+  },
+  "limitations": [
+    "Offline readiness is not target authorization or a fresh host ownership/service witness.",
+    "New candidate still requires Spec then Quality and Root independent copy verification.",
+    "Only a later separately approved real-board AB1 then AB0 then 0, each once with complete functional/loss/artifact/exit/release evidence, can establish this measurement-version functional result.",
+    "Old AB1 remains failed; old later cases remain not executed.",
+    "No phase analysis, statistics, QEMU or board work performed."
+  ],
+  "materials": {
+    "archive": {
+      "allocated_bytes": 104534016,
+      "logical_bytes": 104142297,
+      "ordinary_files": 148,
+      "symlinks": 0
+    },
+    "archive_budget_bytes": 1073741824,
+    "archive_size_snapshot": "before final report/size receipt and archive inventory generation; complete final inventory is archive-manifest.json",
+    "cargo_cache_temporary": {
+      "allocated_bytes": 2406195200,
+      "logical_bytes": 2140427249,
+      "ordinary_files": 108003,
+      "symlinks": 2
+    },
+    "ccache_temporary": {
+      "allocated_bytes": 0,
+      "logical_bytes": 0,
+      "ordinary_files": 0,
+      "symlinks": 0
+    },
+    "exclusive_target_temporary": {
+      "allocated_bytes": 10869731328,
+      "logical_bytes": 10811995244,
+      "ordinary_files": 21797,
+      "symlinks": 0
+    },
+    "old_evidence_deleted": false,
+    "source_temporary": {
+      "allocated_bytes": 162676736,
+      "logical_bytes": 137851050,
+      "ordinary_files": 9642,
+      "symlinks": 0
+    },
+    "target_or_full_cache_archived": false,
+    "virq_cache_temporary": {
+      "allocated_bytes": 1227673600,
+      "logical_bytes": 1064629058,
+      "ordinary_files": 54013,
+      "symlinks": 6
+    }
+  },
+  "normal_host_validation": false,
+  "offline_status": "PASS",
+  "parent_wait_recorded_unix_ns": 1792320808691368334,
+  "preparation_issue": {
+    "correction": "guard excludes root cache and actual generated/cache metadata components; approved ordinary source directories named cache remain ordinary input",
+    "initial_guard": "first prepare invocation rejected valid fs/ax-fs-ng/src/block/cache/address_space.rs as a cache directory before creating candidate paths; no source/cache/tool changes occurred",
+    "production_or_check_gate_weakened": false
+  },
+  "protection": {
+    "bytes": 799,
+    "mode": 436,
+    "sha256": "388f2e88b7d1cdac69ac96a52d41640ca248c4a0f681e0ac0f0c1822c46a9765"
+  },
+  "protection_evidence_directory": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/finalization-after-fix-v1",
+  "qemu_started": 0,
+  "readiness_evidence_directory": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/task1/readiness-after-assets-v1",
+  "schema_version": 1,
+  "scope": "strict native trace measurement capacity v2 Task1 only",
+  "source_patch": {
+    "bytes": 542,
+    "mode": 436,
+    "sha256": "fed8434eb5f1a7c45064b656d54fb5a1f4170c74b8a987977d81fa6dd17faf45"
+  },
+  "trace_capacity_fix_real_board_proven": false,
+  "unchanged": {
+    "Cargo.lock": true,
+    "IRQ_guard": true,
+    "atomic_ordering": true,
+    "control_TOMLs": 3,
+    "event_semantics": true,
+    "export_and_loss_ensure": true,
+    "ordinary_member_count": 9642,
+    "parent_702_members": 701,
+    "record_at_and_finish": true,
+    "worker_stress_VM_time_bounds": true
+  },
+  "validation": {
+    "cargo_fmt_actual_wait": 0,
+    "cargo_xtask_clippy_actual_wait": 0,
+    "cmake_production_entry_actual_wait": 0,
+    "formal_ready_wait": 0,
+    "inherited_validation_authority": "frozen-tools/evidence/capacity-v2-authority-provenance.json",
+    "mechanical_constant_test_added": false,
+    "primary96_gate_passed": true,
+    "python_probe_actual_wait": 0,
+    "read_only_audit_boundary_passed": true,
+    "recording_algorithm_test_added": false,
+    "static_gate_passed": true,
+    "wrong_approval_wait": 2,
+    "wrong_source_wait": 2
+  }
+}

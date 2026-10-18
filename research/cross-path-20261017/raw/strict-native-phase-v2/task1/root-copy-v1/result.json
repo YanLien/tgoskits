@@ -1,0 +1,52 @@
+{
+  "Joint": false,
+  "M2": false,
+  "actual_copied_formal_refusal_wait": 2,
+  "actual_ready": {
+    "primary": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/intensity-v3-final-delivery.json",
+      "seal_sha256": "433495638e3affc408a80be94de3d8b39035ec32adfee87b9cef05dcc8b29f46",
+      "sha256": "fe7b8cd40aa21855eaaaedfb0ed92022eac37eed329dc51b06352710d4525bb7"
+    },
+    "static": {
+      "all_match": true,
+      "cache_runtime_state": {
+        "cargo": {
+          ".global-cache": {
+            "bytes": 139264,
+            "mode": 420,
+            "sha256": "53b82f93f3fa7874d37098bbb65b7bf4c4d80188033a60921768acf1f0a09e97"
+          },
+          ".package-cache": {
+            "bytes": 0,
+            "mode": 436,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          ".package-cache-mutate": {
+            "bytes": 0,
+            "mode": 436,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      "normal702_count": 702,
+      "ordinary_count": 9642
+    }
+  },
+  "actual_ready_wait": 0,
+  "completed_utc": "2026-10-18T11:16:02.312998+00:00",
+  "copied_formal_execution_approved": false,
+  "copy": "/tmp/crosspath-native-capacity-v2-root-copy-_p1uoqqw",
+  "entry_network_children_writes_signals_forbidden": true,
+  "freeze_sha256": "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9",
+  "frozen_members": 69,
+  "goal_complete": false,
+  "hardware_started": 0,
+  "host_service_or_ownership_witness_obtained": false,
+  "markers_created": 0,
+  "normal_host_passed": false,
+  "passed": true,
+  "qemu_started": 0,
+  "source_702_sha256": "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb",
+  "target_metadata_unchanged": true
+}

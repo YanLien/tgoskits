@@ -1,0 +1,36 @@
+{
+  "completed_ns": 1792321997914883452,
+  "new_sha256": "d06a5fcc5797d09c1f5bbeb29bade2a09f3232979edc2d6ce231034a7bb162de",
+  "parent_sha256": "4096e9827422196bfc740b6988fb7aa897b493d70c0d806cb123f814b99bb7a5",
+  "passed": true,
+  "patch_sha256": "5ffc51f9742283c69dc7ee2251ed34960f78dc52de05406ed527b5e24be0be62",
+  "reconstructed_sha256": "d06a5fcc5797d09c1f5bbeb29bade2a09f3232979edc2d6ce231034a7bb162de",
+  "scope": "new ordinary subset; no main source mutation or hardware",
+  "steps": [
+    {
+      "actual_Popen_wait": 0,
+      "argv": [
+        "git",
+        "apply",
+        "--check",
+        "-p1",
+        "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/patches/strict-native-trace-capacity-v2.patch"
+      ],
+      "cwd": "/tmp/crosspath-native-capacity-v2-patch-kjjxa3z7",
+      "stderr": "",
+      "stdout": ""
+    },
+    {
+      "actual_Popen_wait": 0,
+      "argv": [
+        "git",
+        "apply",
+        "-p1",
+        "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/patches/strict-native-trace-capacity-v2.patch"
+      ],
+      "cwd": "/tmp/crosspath-native-capacity-v2-patch-kjjxa3z7",
+      "stderr": "",
+      "stdout": ""
+    }
+  ]
+}
