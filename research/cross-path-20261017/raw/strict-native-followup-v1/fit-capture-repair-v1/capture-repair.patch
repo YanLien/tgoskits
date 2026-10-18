@@ -1,0 +1,84 @@
+--- original/capture_native.py
++++ repaired/capture_native.py
+@@ -261,9 +261,20 @@
+     return {'ordinary_count':len(expected),'normal702_count':len(normal),'all_match':True,'cache_runtime_state':cache_runtime_state}
+ 
+ 
+-def newc_members(data):
+-    """Read the existing host append-newc format, preserving later symbol sidecars."""
+-    merged = {}
++def _newc_entries(data):
++    """Retain checked metadata through recursive Host append-newc archives."""
++    members, merged = {}, {}
++
++    def merge(child_members, payloads, error):
++        for name in set(members)&set(child_members):
++            before, after = members[name], child_members[name]
++            # Empty files are payloads too; only matching empty directories may repeat.
++            if (before['type'] != 'directory' or after['type'] != 'directory'
++                    or before['bytes'] or after['bytes'] or before['mode'] != after['mode']):
++                raise ValueError(error)
++        members.update(child_members)
++        merged.update(payloads)
++
+     offset = 0
+     while offset < len(data):
+         while offset < len(data) and data[offset] == 0:
+@@ -275,10 +286,8 @@
+             raw = inflater.decompress(data[offset:])
+             if not inflater.eof:
+                 raise ValueError('truncated appended gzip member')
+-            child = newc_members(raw)
+-            if set(merged)&set(child):
+-                raise ValueError('duplicate appended gzip payload')
+-            merged.update(child)
++            child_members, payloads = _newc_entries(raw)
++            merge(child_members,payloads,'duplicate appended gzip payload')
+             offset = len(data)-len(inflater.unused_data)
+             continue
+         start = offset
+@@ -294,11 +303,14 @@
+                 raise ValueError('truncated host newc')
+             if name == b'TRAILER!!!\0':
+                 break
+-        _,payloads,_ = parse_newc(data[start:offset])
+-        if set(merged)&set(payloads):
+-            raise ValueError('duplicate host archive payload')
+-        merged.update(payloads)
+-    return merged
++        child_members,payloads,_ = parse_newc(data[start:offset])
++        merge(child_members,payloads,'duplicate host archive payload')
++    return members,merged
++
++
++def newc_members(data):
++    """Read Host payloads, preserving symbol sidecars and checked directory reuse."""
++    return _newc_entries(data)[1]
+ 
+ 
+ def fdt_property(path,node,prop,kind='s'):
+@@ -312,7 +324,7 @@
+ 
+ 
+ def fit_components(path,output):
+-    """Resolve components through the actual FIT default configuration and verify SHA256."""
++    """Resolve the actual FIT default and verify every supplied integrity hash."""
+     config = '/configurations/'+fdt_property(path,'/configurations','default')
+     result = {}
+     for key in ('kernel','ramdisk','fdt'):
+@@ -336,11 +348,12 @@
+                 if observed != expected:
+                     raise ValueError('FIT component hash differs')
+                 checks.append({'algorithm':algorithm,'value':expected.hex()})
+-        if not checks:
+-            raise ValueError('FIT component has no integrity hash')
++        # An absent built-in hash is not a verified hash. Complete external kernel/
++        # initramfs binding and the exact FDT transform remain mandatory in capture_native.
+         saved = output/('fit-'+key)
+         saved.write_bytes(payload)
+-        result[key] = {'node':node,'sha256':digest(saved),'bytes':len(payload),'saved':str(saved),'hashes':checks}
++        result[key] = {'node':node,'sha256':digest(saved),'bytes':len(payload),'saved':str(saved),
++                       'hashes':checks,'integrity_hash_present':bool(checks)}
+     return result
+ 
+ 

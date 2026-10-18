@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-10-18T09:56:04.260206+00:00",
+  "verdict": "Approved",
+  "issues": [],
+  "scope": "已批准原生FIT捕获修订的追加档案格式局部设计审阅；不实施修复，不改变原整体设计/计划或研究scope",
+  "addendum": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/design/phase2-native-fit-capture-repair-append-format-addendum-v1.md",
+    "bytes": 2927,
+    "sha256": "eb388336e4fbc73ebb1caaaaa4a0360a77f3c58cd9757e67232a56fd5d471502"
+  },
+  "necessity": [
+    "原RED实际wait1；hash-only完整合同已核3组件、外部kernel/ramdisk及准确FDT转换后在duplicate appended gzip payload停止，实际wait1且链false，不能当完整GREEN。",
+    "真实保存成员定位的唯一跨档案重复是空目录`.`，两份均mode0755；初始raw newc为1364B，后接gzip解出54086784B。原newc_members丢弃parse_newc类型元数据并一概拒绝重复，足以解释该拒绝。",
+    "选定生产者源append_guest_bundle在未压缩累计载荷超过48MiB时追加top-level gzip；Host unpack_stream顺序消费档案，apply_entry复用已存在目录。两份源SHA/bytes与原ordinary-identities中选定条目一致。"
+  ],
+  "semantic_assessment": [
+    "递归保留已由parse_newc检查的成员类型、权限、大小与payload，跨档案仅在两者均为空目录且mode一致时合并，恢复真实格式需要的目录复用。",
+    "重复普通文件即使为空或相同字节、类型冲突及mode冲突仍拒绝；不能使用payload为空代替目录类型判定。同一档案重复、路径/link/截断/padding原规则保持，由原parse_newc继续负责。",
+    "公开newc_members仍返回payload字典，后续Host内嵌Guest/资源与rootfs、init、worker/compiler/case身份门不变；只有完整真实capture尾门通过才可交付补充post-exit链。"
+  ],
+  "verification_plan_assessment": [
+    "同权限空目录跨raw/gzip合并并保留不同普通文件，配合空普通文件重复与目录类型/mode冲突拒绝，针对元数据丢失风险给出低成本且充分的真实函数合同。",
+    "原hash-only候选、原RED与hash-only失败、已完成FIT单字节准确绑定拒绝及内置hash拒绝证明全部保留；小合同不替代原完整capture的再次执行与后续全部身份门。",
+    "原512MiB不足以保留新增完整执行，明确调至768MiB而不删证据合理；按已有493432013B加一次完整捕获及3组件估算626714200B，低于805306368B。默认命令启动恢复已有实际exit0记录，早前ENOSPC根因仍未知，不将空间记录称为根因修复。"
+  ],
+  "actual_evidence": {
+    "recorded_waits": {
+      "host_newc_diagnosis.execution.json": 0,
+      "green.execution.json": 1,
+      "red.execution.json": 1,
+      "payload_negative_v2.execution.json": 1,
+      "builtin_hash.execution.json": 0,
+      "append_newc_red.execution.json": 1
+    },
+    "host_initramfs_sha256": "4683cb2cefc30679221e09d4f65cc0a2c533a7bc93d2e765acc0cef8517bbf92",
+    "full_capture_green_observed": false,
+    "newc_diagnosis_actual_wait_exit": 0,
+    "unique_cross_archive_duplicate": {
+      "name": ".",
+      "prior_type": "directory",
+      "current_type": "directory",
+      "mode": 493,
+      "prior_bytes": 0,
+      "current_bytes": 0
+    }
+  },
+  "producer_consumer_sources": [
+    {
+      "path": "/tmp/crosspath-strict-native-src-ii_h4jde/scripts/axbuild/src/axvisor/bundle.rs",
+      "bytes": 17886,
+      "sha256": "4a4b4e30c80c5b3deac3af32a126202342df518dc42f10c480643b1e2a813f5d"
+    },
+    {
+      "path": "/tmp/crosspath-strict-native-src-ii_h4jde/fs/ax-fs-ng/src/initramfs.rs",
+      "bytes": 24072,
+      "sha256": "95deabb7596200eea8d0db53260487fd0244a7915c15c0f47435c178dc7b2bf5"
+    }
+  ],
+  "source_read_ranges": {
+    "bundle.rs": "1–52、175–230：压缩阈值、raw前缀对齐、追加gzip、最终SHA与boot输入赋值",
+    "initramfs.rs": "1–325：unpack_stream、parse_newc、archive_path与apply_entry目录复用/文件处理",
+    "fit-only.capture_native.py": "260–305：原递归gzip与raw档案合并，以及丢弃parse_newc元数据的位置",
+    "diagnose_host_newc.py": "完整只读：调用真实parse_newc作成员定位，不把定位器当作修改后接受证明"
+  },
+  "read_sources_and_evidence": [
+    {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/design/phase2-native-fit-capture-repair-append-format-addendum-v1.md",
+      "bytes": 2927,
+      "sha256": "eb388336e4fbc73ebb1caaaaa4a0360a77f3c58cd9757e67232a56fd5d471502"
+    },
+    {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/design/phase2-native-fit-capture-repair-design.md",
+      "bytes": 3117,
+      "sha256": "32725712e6d5f90620091236b887d1c8e539f31297ec0e649cc6fdd4e60c0337"
+    },
+    {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/design/phase2-native-fit-capture-repair-plan.md",
+      "bytes": 3287,
+      "sha256": "7076274263d4076b7cefe1cce9c0e8de469c0f07d62f6233f1fbac3399637bba"
+    },
+    {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/host-newc-rejection-diagnosis.json",
+      "bytes": 1440,
+      "sha256": "e579f09f94da37280810ae067576a1854bfcfb048b48bb1ed4f356b357ea07ec"
+    },
+    {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/fit-only.capture_native.py",
+      "bytes": 30145,
+      "sha256": "eb5235fca28ae1e63b3032e7bee3396382cc4f2762efe6294a99b465ebfa220c"
+    },
+    {
+      "path": "/tmp/strict-native-phase-tools-kevemo32/capture_native.py",
+      "bytes": 30008,
+      "sha256": "388d83afc7ed92459e6fbae38601e8481a9e80f077fc7a2099d76219f6bde19b"
+    },
+    {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/host_newc_diagnosis.execution.json",
+      "bytes": 637,
+      "sha256": "6b419827bef210bb950fe1ab925f0f001b233a623c1c192f9441c798f4822b3c"
+    },
+    {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/diagnose_host_newc.py",
+      "bytes": 3638,
+      "sha256": "cb1941c487b6ef33020e2ccf087fbe1a60a1a3b4c33129b5d4272821493067e7"
+    },
+    {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/fit-only-checkpoint.json",
+      "bytes": 697,
+      "sha256": "673cc27ef45199e8d150fd32d1c5ad0acedaf3d1821e734ea9a16c506e710f34"
+    },
+    {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/green/capture.json",
+      "bytes": 16804,
+      "sha256": "62b9383a2e9fe2614ef109c5b88f083f6ea87f7280d899a421cdf25934dfd706"
+    },
+    {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/green.execution.json",
+      "bytes": 841,
+      "sha256": "3f2bf7089344c3d54cb7675105a17c9682467bea3f321d8e4463ee5246b018a8"
+    },
+    {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/red.execution.json",
+      "bytes": 835,
+      "sha256": "1ab5f115751271304957dbaac70a04d27be3b589f67463930c72a34b6e90fb50"
+    },
+    {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/payload_negative_v2.execution.json",
+      "bytes": 1013,
+      "sha256": "21671c496dbb4aeaaa530125705c56ebc527be5b967be1e6c8ed0c85f93ffc93"
+    },
+    {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/builtin_hash.execution.json",
+      "bytes": 623,
+      "sha256": "b356565f9815481f334f9f83d35f0d2a49b6d26c19d8df0b70205d66baa45432"
+    },
+    {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/disk-startup-recovery-v1.json",
+      "bytes": 754,
+      "sha256": "77114a9f5947043496c8526c923c2658dc641dadc36b8364966d6ab17cc238ed"
+    },
+    {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/append-newc-red/result.json",
+      "bytes": 851,
+      "sha256": "f697947c8e560013b9b4bfbc3d1f5bfabb45ddb2f17d7a62f4771de43b8e52c3"
+    },
+    {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/append_newc_red.execution.json",
+      "bytes": 875,
+      "sha256": "d92cb50047b2ed55010be584db4451878e6fa8dee66c42599e3dc6ffa6b9d94a"
+    }
+  ],
+  "local_verification": {
+    "execution": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-append-review-v1/execution.json",
+      "bytes": 693,
+      "sha256": "b9bbc8a70508a64bac371fe65541ca07ec266634f623467c7437efe2c473ba9a"
+    },
+    "stdout": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-append-review-v1/check.stdout",
+      "bytes": 6138,
+      "sha256": "e8db5f13f5f81fe4d83060a816b410c8b3f22f2dee25b66aed482a4bfeadc56e"
+    },
+    "stderr": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-append-review-v1/check.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "checker": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-append-review-v1/check.py",
+      "bytes": 6135,
+      "sha256": "7657b3b9dab04bd4b935c9b084a13963dea74f756d49dd874ca7039f6d4efcba"
+    },
+    "actual_Popen_wait_exit": 0,
+    "references": [
+      {
+        "target": "phase2-native-fit-capture-repair-design.md",
+        "exists": true
+      },
+      {
+        "target": "phase2-native-fit-capture-repair-plan.md",
+        "exists": true
+      },
+      {
+        "target": "../raw/strict-native-followup-v1/fit-capture-repair-v1/host-newc-rejection-diagnosis.json",
+        "exists": true
+      }
+    ],
+    "selected_source_manifest_match": true,
+    "scope": "仅局部stdlib文档/引用/身份检查；无产品capture、newc函数、构建、分析器、QEMU、board、proc或Git执行；无83引用或大seal复核",
+    "exploratory_read_failure": "一次只读定位将green结果误写为green/result.json，实际文件为green/capture.json，cat返回1；随后准确读取，未作为成功证据。"
+  },
+  "boundaries": {
+    "original_design_and_plan_changed": false,
+    "existing_evidence_modified": false,
+    "live_target_read": false,
+    "hardware_tasks_started": 0,
+    "board_seconds": 900,
+    "outer_seconds": 920,
+    "cleanup_seconds": 10,
+    "capture_seconds": 30,
+    "original_trace_dropped": 19839,
+    "release": "unknown",
+    "host_function_passed": false,
+    "supplementary_chain_validation_passed": false,
+    "M2": false,
+    "Joint": false,
+    "goal_complete": false
+  }
+}

@@ -1,0 +1,3 @@
+# Raw experiments stay in the local evidence archive. Reviewed source files
+# inside historical packages are added explicitly when they must be preserved.
+/raw/

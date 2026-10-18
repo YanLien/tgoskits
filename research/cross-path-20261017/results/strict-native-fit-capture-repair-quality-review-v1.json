@@ -1,0 +1,392 @@
+{
+  "blockers": [],
+  "decision": "PASS",
+  "fresh_independent_execution": {
+    "actual_Popen_wait_exit": 0,
+    "actual_wait_source": "run-inspection.py process.wait(); not inferred from stdout or tool wrapper status",
+    "argv": [
+      "python3",
+      "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/quality-review-v1/inspect.py"
+    ],
+    "checker": {
+      "bytes": 11269,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/quality-review-v1/inspect.py",
+      "sha256": "472a0176cf8123d8c2d074ea501d643752ab3da4ae0875112acdbd5fd777b4ae"
+    },
+    "checker_sha256": "472a0176cf8123d8c2d074ea501d643752ab3da4ae0875112acdbd5fd777b4ae",
+    "cwd": "/home/yanlien/Program/hypervisor",
+    "end_time_ns": 1792318424819636540,
+    "launcher": {
+      "bytes": 1319,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/quality-review-v1/run-inspection.py",
+      "sha256": "85c6e95bcffcf4ea95a40a0a18ebe9a5aed68ee91e1a3389ca5dea27a1f3b3ca"
+    },
+    "read_identity_count": 50,
+    "receipt": {
+      "bytes": 872,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/quality-review-v1/inspection.execution.json",
+      "sha256": "fe05902f176bbf07c526203532ef9d4aaa0c3f0591a3c57ea648c62856d1f105"
+    },
+    "result": {
+      "bytes": 29544,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/quality-review-v1/inspection-result.json",
+      "sha256": "07a7dd59f81e4beea249308f1f1e57512c46ecb307d7a8f8c8d9af285b4c69d7"
+    },
+    "saved_receipt_count": 8,
+    "scope": "independent Quality identity/AST/saved-receipt audit; no product execution",
+    "start_time_ns": 1792318424690354482,
+    "stderr": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/quality-review-v1/inspection.stderr",
+    "stderr_identity": {
+      "bytes": 0,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/quality-review-v1/inspection.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stdout": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/quality-review-v1/inspection.stdout",
+    "stdout_identity": {
+      "bytes": 178,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/quality-review-v1/inspection.stdout",
+      "sha256": "cc12710cf7946beae2518aad36167f1b90e7005fe1911252cd43f4192d9142bc"
+    }
+  },
+  "historical_tool_mapping_caveat": "历史argv的repaired路径曾被后续修订；FIT-only快照/checkpoint和函数AST一致性是范围绑定依据，不是最终整份工具该时刻的重新运行证明。",
+  "independence": "先核独立Spec当前JSON/MD身份及PASS/blockers=[]；本审阅没有参与实施或Spec结论，没有改既有文件或Git写入。",
+  "key_inputs": [
+    {
+      "bytes": 2927,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/design/phase2-native-fit-capture-repair-append-format-addendum-v1.md",
+      "sha256": "eb388336e4fbc73ebb1caaaaa4a0360a77f3c58cd9757e67232a56fd5d471502"
+    },
+    {
+      "bytes": 3117,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/design/phase2-native-fit-capture-repair-design.md",
+      "sha256": "32725712e6d5f90620091236b887d1c8e539f31297ec0e649cc6fdd4e60c0337"
+    },
+    {
+      "bytes": 3287,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/design/phase2-native-fit-capture-repair-plan.md",
+      "sha256": "7076274263d4076b7cefe1cce9c0e8de469c0f07d62f6233f1fbac3399637bba"
+    },
+    {
+      "bytes": 3703,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/capture-repair.patch",
+      "sha256": "27e636d38a3fd259d396516cffb34e5e0ab925190c812db6d58cb22d9d6a3532"
+    },
+    {
+      "bytes": 30145,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/fit-only.capture_native.py",
+      "sha256": "eb5235fca28ae1e63b3032e7bee3396382cc4f2762efe6294a99b465ebfa220c"
+    },
+    {
+      "bytes": 30008,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/original/capture_native.py",
+      "sha256": "388d83afc7ed92459e6fbae38601e8481a9e80f077fc7a2099d76219f6bde19b"
+    },
+    {
+      "bytes": 75682,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/output-index.json",
+      "sha256": "8f3fca9e8a7e1563b85f3d1038ee814400cbb775d11686c4e8854fb2b489f2e5"
+    },
+    {
+      "bytes": 30745,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/repaired/capture_native.py",
+      "sha256": "e1e573ed9ecd8a1dd77c80d6a06fff3739e4fa8114815cc2b6b5c826206a14b2"
+    },
+    {
+      "bytes": 14246,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-fit-capture-repair-v1.json",
+      "sha256": "594fa0f582a43bff9e5485f1478c84d89d4cd83fc726d5c8da5c2c657332efde"
+    }
+  ],
+  "limitations": [
+    "本轮不运行capture或既有测试；产品合同结果来自核身份的保存真实Popen.wait收据，fresh执行仅为新身份/AST/收据检查。",
+    "未重新遍历全部索引/source/cache/target或seal；没有访问另行清理的三个临时目录。",
+    "没有改既有文件，没有Git写入、构建、QEMU、board、proc、signal或正式分析。",
+    "没有证明签名、可信启动、boot前认证、正常Host功能、PID1/drain、释放或Trace修复。",
+    "Root仍须接纳当前交付身份；代码提交由Root按用户最新授权独立处理。"
+  ],
+  "nonblocking_findings": [],
+  "preserved_state": {
+    "ENOSPC_cause_resolved": false,
+    "Joint": false,
+    "M2": false,
+    "goal_complete": false,
+    "hardware_tasks_started_this_repair_and_review": 0,
+    "normal_function_passed": false,
+    "normal_runtime_exported_rows": 0,
+    "original_capture_artifact_chain_complete": false,
+    "original_trace_dropped": 19839,
+    "phase0_to2_complete": false,
+    "release": "unknown",
+    "supplementary_post_exit_artifact_chain_complete": true
+  },
+  "quality_assessment": [
+    {
+      "area": "最小修改与可维护性",
+      "evidence": "完整最终模块已读；diff与原/最终代码生成结果逐字相同。只改fit_components/newc_members并新增_newc_entries，其余模块AST不变。helper集中递归与冲突规则，避免两个解析分支维护不同合并逻辑。",
+      "id": "Q1",
+      "status": "PASS"
+    },
+    {
+      "area": "递归成员元数据与公开返回",
+      "evidence": "_newc_entries在每层保留members和payloads，raw及gzip均经同一merge；先检查全部交集再update，只有双方directory、bytes均0、mode相同可以重复。已验证元数据的空目录后写不会丢失有效payload，空普通文件、类型或权限冲突仍拒绝。public newc_members只返回第二项flatdict，与原消费方兼容。",
+      "id": "Q2",
+      "status": "PASS"
+    },
+    {
+      "area": "hash缺席和验证语义",
+      "evidence": "按原FIT default选择三组件，内置hash缺席用hashes=[]/integrity_hash_present=false明确表示。原全部hash算法和值校验循环AST相同；计算payload SHA只记录字节身份，不能解释为存在内置验证或签名。独立hash合同保存正确值接受与损坏值准确拒绝。",
+      "id": "Q3",
+      "status": "PASS"
+    },
+    {
+      "area": "严格边界和失败传播",
+      "evidence": "parse_newc、capture_native、verify_rootfs、verify_fdt_transform及其余原函数AST相同。路径/link/同档案重复/截断/padding规则未放宽。完整capture仍在外部BIN/initramfs、准确FDT、Host嵌入/资源、rootfs/init、worker/compiler/build/case全部完成后才置chain=true；失败保留false和errors，再由真实合同assert使调用进程wait1。",
+      "id": "Q4",
+      "status": "PASS"
+    },
+    {
+      "area": "合同质量和独特信号",
+      "evidence": "完整保存工件合同、真实FIT hash合同和公开newc_members合同均调用生产接口，无mock绑定规则。完整合同原RED准确nohash、FIT-only准确duplicate、最终GREEN；追加合同1→0同时保留三类拒绝边界。真实运行覆盖与software-only组件规则分工合理，不需扩大矩阵或重复产品执行。",
+      "id": "Q5",
+      "status": "PASS"
+    },
+    {
+      "area": "历史身份和报告准确性",
+      "evidence": "核8份保存receipt的wait、argv、stdout/stderr与capture/result相符。早期repaired路径对应FIT-only快照，checkpoint绑定其SHA；其fit_components/capture_native与最终AST相同，newc_members则与原AST相同。只复用相同逻辑的历史证据，不声称最终整份工具重新执行过hash或payload负例。首次路径拒绝明确排除，ENOSPC仍未知。",
+      "id": "Q6",
+      "status": "PASS"
+    }
+  ],
+  "recorded_product_execution_receipts": {
+    "append_newc_green": {
+      "actual_Popen_wait_exit": 0,
+      "argv": [
+        "python3",
+        "tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/check_append_newc.py",
+        "--tools",
+        "tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/repaired",
+        "--out",
+        "tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/append-newc-green"
+      ],
+      "historical_tool": "final",
+      "historical_tool_sha256": "e1e573ed9ecd8a1dd77c80d6a06fff3739e4fa8114815cc2b6b5c826206a14b2",
+      "receipt": {
+        "bytes": 881,
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/append_newc_green.execution.json",
+        "sha256": "fdcf7340e0b0f18b964b0a657c7b8c7f9d5358cfe06a293414304cae4cc88a0c"
+      }
+    },
+    "append_newc_red": {
+      "actual_Popen_wait_exit": 1,
+      "argv": [
+        "python3",
+        "tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/check_append_newc.py",
+        "--tools",
+        "tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/repaired",
+        "--out",
+        "tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/append-newc-red"
+      ],
+      "historical_tool": "fit_only",
+      "historical_tool_sha256": "eb5235fca28ae1e63b3032e7bee3396382cc4f2762efe6294a99b465ebfa220c",
+      "receipt": {
+        "bytes": 875,
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/append_newc_red.execution.json",
+        "sha256": "d92cb50047b2ed55010be584db4451878e6fa8dee66c42599e3dc6ffa6b9d94a"
+      }
+    },
+    "builtin_hash": {
+      "actual_Popen_wait_exit": 0,
+      "argv": [
+        "python3",
+        "tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/check_builtin_hash.py"
+      ],
+      "historical_tool": "fit_only",
+      "historical_tool_sha256": "eb5235fca28ae1e63b3032e7bee3396382cc4f2762efe6294a99b465ebfa220c",
+      "receipt": {
+        "bytes": 623,
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/builtin_hash.execution.json",
+        "sha256": "b356565f9815481f334f9f83d35f0d2a49b6d26c19d8df0b70205d66baa45432"
+      }
+    },
+    "full_green": {
+      "actual_Popen_wait_exit": 0,
+      "argv": [
+        "python3",
+        "tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/check_capture.py",
+        "--tools",
+        "tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/repaired",
+        "--out",
+        "tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/full-green"
+      ],
+      "exact_error": null,
+      "historical_tool": "final",
+      "historical_tool_sha256": "e1e573ed9ecd8a1dd77c80d6a06fff3739e4fa8114815cc2b6b5c826206a14b2",
+      "receipt": {
+        "bytes": 856,
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/full_green.execution.json",
+        "sha256": "8667e5514e3956932a1eb487fdd44e9cb5aeea5a2b5497a097eecb7ac1258efc"
+      }
+    },
+    "green": {
+      "actual_Popen_wait_exit": 1,
+      "argv": [
+        "python3",
+        "tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/check_capture.py",
+        "--tools",
+        "tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/repaired",
+        "--out",
+        "tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/green"
+      ],
+      "exact_error": "duplicate appended gzip payload",
+      "historical_tool": "fit_only",
+      "historical_tool_sha256": "eb5235fca28ae1e63b3032e7bee3396382cc4f2762efe6294a99b465ebfa220c",
+      "receipt": {
+        "bytes": 841,
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/green.execution.json",
+        "sha256": "3f2bf7089344c3d54cb7675105a17c9682467bea3f321d8e4463ee5246b018a8"
+      }
+    },
+    "payload_negative": {
+      "actual_Popen_wait_exit": 1,
+      "argv": [
+        "python3",
+        "tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/check_capture.py",
+        "--tools",
+        "tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/repaired",
+        "--out",
+        "tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/payload-negative",
+        "--fixture",
+        "tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/payload-fixture"
+      ],
+      "exact_error": "actual kernel is outside independent target",
+      "historical_tool": "fit_only",
+      "historical_tool_sha256": "eb5235fca28ae1e63b3032e7bee3396382cc4f2762efe6294a99b465ebfa220c",
+      "receipt": {
+        "bytes": 1004,
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/payload_negative.execution.json",
+        "sha256": "f48dff054e017002caad7d0abe84e284bb4d351be318a6ca8f71561a691e3d46"
+      }
+    },
+    "payload_negative_v2": {
+      "actual_Popen_wait_exit": 1,
+      "argv": [
+        "python3",
+        "tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/check_capture.py",
+        "--tools",
+        "tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/repaired",
+        "--out",
+        "tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/payload-negative-v2",
+        "--fixture",
+        "tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/payload-fixture"
+      ],
+      "exact_error": "FIT bytes differ from actual kernel/initramfs",
+      "historical_tool": "fit_only",
+      "historical_tool_sha256": "eb5235fca28ae1e63b3032e7bee3396382cc4f2762efe6294a99b465ebfa220c",
+      "receipt": {
+        "bytes": 1013,
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/payload_negative_v2.execution.json",
+        "sha256": "21671c496dbb4aeaaa530125705c56ebc527be5b967be1e6c8ed0c85f93ffc93"
+      }
+    },
+    "red": {
+      "actual_Popen_wait_exit": 1,
+      "argv": [
+        "python3",
+        "tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/check_capture.py",
+        "--tools",
+        "tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/original",
+        "--out",
+        "tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/red"
+      ],
+      "exact_error": "FIT component has no integrity hash",
+      "historical_tool": "original",
+      "historical_tool_sha256": "388d83afc7ed92459e6fbae38601e8481a9e80f077fc7a2099d76219f6bde19b",
+      "receipt": {
+        "bytes": 835,
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/red.execution.json",
+        "sha256": "1ab5f115751271304957dbaac70a04d27be3b589f67463930c72a34b6e90fb50"
+      }
+    }
+  },
+  "review_basis": {
+    "all_50_read_identities": {
+      "bytes": 29544,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/quality-review-v1/inspection-result.json",
+      "sha256": "07a7dd59f81e4beea249308f1f1e57512c46ecb307d7a8f8c8d9af285b4c69d7"
+    },
+    "existing_index": {
+      "bytes": 75682,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/output-index.json",
+      "sha256": "8f3fca9e8a7e1563b85f3d1038ee814400cbb775d11686c4e8854fb2b489f2e5"
+    },
+    "full_204_index_89_seal_17_live_saved_recheck_repeated": false,
+    "full_final_tool_read": true,
+    "implementation_report": {
+      "bytes": 14246,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-fit-capture-repair-v1.json",
+      "sha256": "594fa0f582a43bff9e5485f1478c84d89d4cd83fc726d5c8da5c2c657332efde"
+    },
+    "minimal_diff": {
+      "bytes": 3703,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/capture-repair.patch",
+      "sha256": "27e636d38a3fd259d396516cffb34e5e0ab925190c812db6d58cb22d9d6a3532"
+    },
+    "reason_not_repeated": "Spec已核204索引、原89seal和17 live/original-saved/final-saved；Root已fresh核206refs及AST边界。本轮只核Quality必要的50个相关文件。",
+    "reviewed_final_tool": {
+      "bytes": 30745,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v1/fit-capture-repair-v1/repaired/capture_native.py",
+      "sha256": "e1e573ed9ecd8a1dd77c80d6a06fff3739e4fa8114815cc2b6b5c826206a14b2"
+    }
+  },
+  "schema_version": 1,
+  "scope": "独立Quality审阅已完成的离线FIT/newc消费方修订；结论绑定最终工具及保存合同证据，不批准硬件接续或整体阶段完成。",
+  "skill_routing": {
+    "markdown-doc-writer": "适用：新增中文审阅Markdown，锚定函数和证据。",
+    "orthome-verification": "适用：区分能力、真实接口与执行证据，保留原未证能力。",
+    "requesting-code-review": "本任务就是指定独立Quality审阅，不再分派额外审阅者。",
+    "review-single-pr": "不适用：没有GitHub PR或线上审查，不运行CI流程。",
+    "test-quality": "适用：审真实合同层级、缺陷敏感度、独特信号、边界与失败传播；各合同保留。",
+    "using-superpowers": "子代理SUBAGENT-STOP。",
+    "verification-before-completion": "适用：新增独立核查实际wait0；不把历史结果写成新运行。"
+  },
+  "spec_prerequisite": {
+    "blockers": [],
+    "decision": "PASS",
+    "json": {
+      "bytes": 31462,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-fit-capture-repair-spec-review-v1.json",
+      "sha256": "9eb529c4ed59975c59a282d3e76c6279f2eaf255dee0246f1431cddf6ff3d9e6"
+    },
+    "markdown": {
+      "bytes": 4615,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-fit-capture-repair-spec-review-v1.md",
+      "sha256": "1e5e3ead72276e03564316489ec0afaaa31fafccfcf331c40f42a148e035d9be"
+    }
+  },
+  "test_quality_disposition": {
+    "append_newc_contract": {
+      "decision": "保留",
+      "defect_signal": "旧逻辑1→新逻辑0，保留跨gzip嵌套元数据拒绝",
+      "level_environment": "software-only公开接口合同，最小raw/gzip档案",
+      "risk": "合法重复目录误拒绝或空普通文件/类型/权限冲突误接受"
+    },
+    "builtin_hash_contract": {
+      "decision": "保留",
+      "defect_signal": "正确值接受、损坏值准确FIT component hash differs",
+      "level_environment": "software-only真实FIT读取器，正确值与单个损坏hash",
+      "risk": "放行无hash时误停用存在hash校验"
+    },
+    "complete_capture_contract": {
+      "decision": "保留",
+      "defect_signal": "原准确RED，FIT-only仍RED，最终完整GREEN；损坏payload准确绑定拒绝",
+      "level_environment": "离线组件集成合同，真实保存/live工件与真实fdtget/dtc，无板卡",
+      "risk": "真实保存格式、17输入和所有尾门装配被误拒绝或绕过"
+    },
+    "first_fixture_path_failure": {
+      "counted_as_negative_pass": false,
+      "decision": "仅保留诊断"
+    },
+    "new_product_tests_added_or_existing_tests_rerun_in_review": false,
+    "relation_to_old_mock_package_proof": "已有package证明替换FIT/FDT oracle，不能覆盖本次真实FIT/newc格式及其拒绝层；本次合同提供独特信号。"
+  }
+}
