@@ -1,0 +1,84 @@
+{
+  "actual_argv_changed": true,
+  "actual_parent_wait_exit": 23,
+  "after_exec": {
+    "argv": [
+      "/usr/bin/python3",
+      "-B",
+      "/tmp/strict-native-controller-cause-v1-108vgkrs/stage2.py",
+      "/tmp/strict-native-controller-cause-v1-108vgkrs"
+    ],
+    "pgid": 15,
+    "pid": 15,
+    "starttime": "51240492",
+    "state": "S"
+  },
+  "all_test_child_Popen_waits_real": true,
+  "audit": {
+    "blocked_signals": [],
+    "owner_signals": [],
+    "proc_reads": [
+      "/proc/15/stat",
+      "/proc/15/cmdline",
+      "/proc/15/stat",
+      "/proc/15/environ",
+      "/proc/15/stat",
+      "/proc/15/cmdline",
+      "/proc/15/stat",
+      "/proc/15/environ",
+      "/proc/15/stat",
+      "/proc/15/cmdline",
+      "/proc/15/stat"
+    ],
+    "root_proc_enumeration": 0
+  },
+  "before_exec": {
+    "argv": [
+      "/usr/bin/python3",
+      "-B",
+      "/tmp/strict-native-controller-cause-v1-108vgkrs/stage1.py",
+      "/tmp/strict-native-controller-cause-v1-108vgkrs"
+    ],
+    "pgid": 15,
+    "pid": 15,
+    "starttime": "51240492",
+    "state": "S"
+  },
+  "child_argv": [
+    "/usr/bin/python3",
+    "-B",
+    "/tmp/strict-native-controller-cause-v1-108vgkrs/stage1.py",
+    "/tmp/strict-native-controller-cause-v1-108vgkrs"
+  ],
+  "cleanup_exception": {
+    "message": "owned group leader argv changed",
+    "type": "ValueError"
+  },
+  "frozen_source": {
+    "bytes": 21727,
+    "mode": 436,
+    "mtime_ns": 1792324630414457568,
+    "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/native_once.py",
+    "sha256": "8b871b1ea3cfb8a8ad8272bc7fa5ca37dc648b3efed45fe4af9ae0f374a24902"
+  },
+  "function_AST_unmodified": true,
+  "functions": {
+    "cleanup_owned": {
+      "end_line": 233,
+      "source_sha256": "99cf6b1b5e3ae802d8e23a3cd7f2b9f728f515b06716b414fa4d3702a9394e90",
+      "start_line": 165
+    },
+    "process_record": {
+      "end_line": 162,
+      "source_sha256": "7016de36c0c8f905a524cf3b40ce787889d532b716e61e5c93a6420faabcb2da",
+      "start_line": 155
+    }
+  },
+  "not_hardware_exit_evidence": true,
+  "post_cleanup_poll": null,
+  "pre_cleanup_poll": null,
+  "same_pid_starttime_pgid": true,
+  "same_token_present_before_and_after": true,
+  "scratch": "/tmp/strict-native-controller-cause-v1-108vgkrs",
+  "test_Path_scope": "Only /proc enumeration replaced with the exact new owned test PID; process stat/cmdline/environ read from the real kernel."
+}

@@ -1,0 +1,396 @@
+{
+  "case_id": "AB1",
+  "case_quota_consumed": true,
+  "created_utc": "2026-10-18T13:16:49.864494+00:00",
+  "evidence": {
+    "AB1-actual-audit-original-tool-completion-v1.json": {
+      "bytes": 570,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-actual-audit-original-tool-completion-v1.json",
+      "sha256": "6f89b428d40ac26172a81ed12aaf360070ae6c0970f8b4d893e75e4fae257753"
+    },
+    "AB1-actual-audit-v1.receipt.json": {
+      "bytes": 1186,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-actual-audit-v1.receipt.json",
+      "sha256": "cc3d3e6a3eba6348a759671847ee4d7f5a4c4fd58817612fe9fb448c358b2ced"
+    },
+    "AB1-actual-audit-v1.stderr": {
+      "bytes": 0,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-actual-audit-v1.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "AB1-actual-audit-v1.stdout": {
+      "bytes": 389,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-actual-audit-v1.stdout",
+      "sha256": "b5bc6ff2cf74687b5e59852391396839b1c0f02572e45995e1029ab846b5b145"
+    },
+    "AB1-board-service-post-exit-v1.raw": {
+      "bytes": 182,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-board-service-post-exit-v1.raw",
+      "sha256": "91ea18a7d54546fddb118f9da6b8393ba9818c27d090a2637a980b3316eee319"
+    },
+    "AB1-finalize-root-handoff.py": {
+      "bytes": 5452,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-finalize-root-handoff.py",
+      "sha256": "a6c896e3d4185dee7e1b8a7494c0705262007c3c0523afc503adc5a5e387daa4"
+    },
+    "AB1-host-terminal-observation-v1.json": {
+      "bytes": 919,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-host-terminal-observation-v1.json",
+      "sha256": "f79172f496e4953fc791243705d317d94047a948d447151cfab458ef612022f6"
+    },
+    "AB1-original-tool-session-v1.json": {
+      "bytes": 552,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-original-tool-session-v1.json",
+      "sha256": "6b9c3e28e413845d97b4ad97cd2feb54e79301cb8528291c9af37ff10591701c"
+    },
+    "AB1-root-final-handoff-v1.json": {
+      "bytes": 5377,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-root-final-handoff-v1.json",
+      "sha256": "cf25d62d4ff106f0e6d3315ce4e0b58ce5f4d78ac2e90b7b79fe814116e9b72f"
+    },
+    "actual_audit/data.raw": {
+      "bytes": 4995,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/AB1-actual-audit-v1/data.raw",
+      "sha256": "8fc30e59935148e93f8ecadc423c25e1cc015a8b90e368d751860c6f92736156"
+    },
+    "actual_audit/diagnostics-errors.raw": {
+      "bytes": 456,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/AB1-actual-audit-v1/diagnostics-errors.raw",
+      "sha256": "739235cf51ddce5add9143da1a401041341cef49ab4cc5c18f473f6069afcd26"
+    },
+    "actual_audit/handoff.json": {
+      "bytes": 5377,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/AB1-actual-audit-v1/handoff.json",
+      "sha256": "cf25d62d4ff106f0e6d3315ce4e0b58ce5f4d78ac2e90b7b79fe814116e9b72f"
+    },
+    "actual_audit/observations.jsonl": {
+      "bytes": 15205431,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/AB1-actual-audit-v1/observations.jsonl",
+      "sha256": "58d821e93ac37548340e350a32b23c9ce96685660da9c422a115f86bbee90d70"
+    },
+    "actual_audit/report.json": {
+      "bytes": 59088,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/AB1-actual-audit-v1/report.json",
+      "sha256": "1a9257ef78caf570267dcb89c60d3143cf97dd033f9460b56176347f594d0b25"
+    },
+    "actual_command": {
+      "bytes": 2685,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/actual-command.json",
+      "sha256": "8e02c6165744f78da9ec661429b3c9b2ea236df94a450a81361937de90a9c0a9"
+    },
+    "approval": {
+      "bytes": 3979,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-root-approval-v1.json",
+      "sha256": "0d47e114d70d71b61f913ccdc26538437e48c0bce67b0eaa3bbd962053288e08"
+    },
+    "capture": {
+      "bytes": 17035,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/capture.json",
+      "sha256": "9b7004231459f32e1078b86505cbb3c73104d4c5d05862ed21fd6084c0ca7dd6"
+    },
+    "freeze_manifest": {
+      "bytes": 19347,
+      "mode": 436,
+      "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/freeze-manifest.json",
+      "sha256": "0bf9ff1cbc154583c60c6dd34688c9b498b6f63b0ef8014d1dbcec04f7ed28e8"
+    },
+    "frozen_inputs": {
+      "bytes": 5547,
+      "mode": 436,
+      "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/inputs.json",
+      "sha256": "8fac8a1fb86d79a1e74bf9591bf68fa2dd88f6d261edcf0ea576dfbd6ace0060"
+    },
+    "host_preflight": {
+      "bytes": 1045,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-host-preflight-v1.json",
+      "sha256": "3b9557467f3689f46564179cdf611b0e519e3fd3d6821752ef7008c3c76276c1"
+    },
+    "normal_auditor_Quality": {
+      "bytes": 32856,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-function-audit-v3-quality-review-v1.json",
+      "sha256": "04c99a4182148523e862acb6d20af07fdd74df7be42b95ecb1a04179e7f87b28"
+    },
+    "primary_delivery": {
+      "bytes": 4824,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/intensity-v3-final-delivery.json",
+      "sha256": "fe7b8cd40aa21855eaaaedfb0ed92022eac37eed329dc51b06352710d4525bb7"
+    },
+    "raw": {
+      "bytes": 6496391,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/xtask.log",
+      "sha256": "c74a5a24106e3e59a4c03316b428f9591e5e481bce5f65a874f4231b7d10814b"
+    },
+    "root_launch": {
+      "bytes": 4190,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-root-launch.json",
+      "sha256": "61a74e6fc1e09023e548d41b41e704a813383d59d9d15ca2e830907a91fd1ee0"
+    },
+    "root_tool_completion": {
+      "bytes": 396,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-root-supervisor-completion-v1.json",
+      "sha256": "0373b3bbfb2f9b26b00c954e7b877d2ceaf816f2b0d7490b15683769c8a2a23d"
+    },
+    "root_wait": {
+      "bytes": 2168,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-root-wait.json",
+      "sha256": "462277c74e6fa2f2f3a16c9084f04d7565174131a78a730816960b03aeddaec5"
+    },
+    "run_result": {
+      "bytes": 1874,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/run-result.json",
+      "sha256": "f6f72eb0690fab040cab7d44202c79ac2d7009f7a725f43badc2c0f954417ba6"
+    },
+    "task1_Quality": {
+      "bytes": 30075,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-task1-quality-review-v1.json",
+      "sha256": "5a2151b3784d58e914c7a3a205cea50950e1f84a0a1bf74ed66aebb53fbd0e47"
+    },
+    "task1_Spec": {
+      "bytes": 28775,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-task1-spec-review-v1.json",
+      "sha256": "996b32e95319ea5a3a94096b141153cf0b11b2bdaec39a8aea7de30e3cbd90f7"
+    },
+    "task1_acceptance": {
+      "bytes": 6069,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-task1-root-acceptance-v1.json",
+      "sha256": "79d2b66a2f6291b2f6cf25dbb3749c1636c7967482030a1b65139ceac8d53f83"
+    },
+    "wrapper_review": {
+      "bytes": 9575,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-AB1-wrapper-inheritance-review-v1.json",
+      "sha256": "264004d79d9fd9915d1eb5f719ae9eb98cdc49d88f3ca6c9ec162ce0d20d8e50"
+    }
+  },
+  "facts": {
+    "actual_driver_Popen_wait": 1,
+    "actual_root_tool_wait": 1,
+    "actual_tasks": 64,
+    "actual_xtask_Popen_wait": null,
+    "capture_label_boundary": "capture does not require actual xtask exit; final log mtime only records later filesystem writes, not strict Guest event time",
+    "exported_trace_records": 42768,
+    "final_log_mtime_ns_observed": 1792328347814214986,
+    "forced_signals": null,
+    "original_cleanup": {
+      "owned_group_empty": null,
+      "release": "unknown"
+    },
+    "original_root_completion_chunk": "36f9ce",
+    "original_root_session": 77494,
+    "outer_seconds": 920,
+    "outer_timeout": true,
+    "policies": [
+      "fair",
+      "fifo80"
+    ],
+    "producer_artifact_chain_complete": true,
+    "producer_capture_phase_label": "post-exit",
+    "producer_capture_phase_label_is_not_exit_proof": true,
+    "producer_capture_time_ns": 1792328342040272962,
+    "raw_bytes": 6496391,
+    "raw_marker_counts": {
+      "AXTEST_SUITE_OK": 1,
+      "AXTEST_SUMMARY pass=1 fail=0 skip=0 total=1": 1,
+      "VIRQ_LINUX_PHASE_ACCEPT ": 2,
+      "VIRQ_RUNTIME ": 42768
+    },
+    "release": "unknown",
+    "tool_errors": [
+      "outer920 elapsed; stop remaining cases; release unknown",
+      "owned cleanup refused: owned group leader argv changed"
+    ],
+    "trace_dropped": 0,
+    "trace_incomplete": 0
+  },
+  "formal_audit": {
+    "complete_normal_function_passed": false,
+    "failed_gates": [
+      {
+        "name": "same-run-launch-wait-completion-binding",
+        "passed": false,
+        "reason": "AuditError: xtask exit disagrees with final same-run binding"
+      },
+      {
+        "name": "full-suite-no-additional-failure-or-tail",
+        "passed": false,
+        "reason": "AuditError: failure/diagnostic/unclassified error candidate or unframed final bytes observed"
+      },
+      {
+        "name": "actual-artifact-use-chain",
+        "passed": false,
+        "reason": "AuditError: newc trailer/tail"
+      },
+      {
+        "name": "actual-exits-and-frozen-explicit-release",
+        "passed": false,
+        "reason": "AuditError: xtask exit disagrees with final same-run binding"
+      }
+    ],
+    "gate_count": 24,
+    "original_auditor_child_wait": 1,
+    "original_tool_completion_chunk": "9be3c5",
+    "original_tool_session": 42886,
+    "original_tool_wait": 1,
+    "passed_gate_count": 20,
+    "producer_success_does_not_override_independent_newc_rejection": true
+  },
+  "pending_cause_reports": [
+    "results/strict-native-cache-v3-AB1-exit-cause-v1.json",
+    "results/strict-native-cache-v3-AB1-auditor-cause-v1.json"
+  ],
+  "saved_artifacts": {
+    "guest_dtb": {
+      "bytes": 1287,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/3e7bce66056190d990705f723b72a9774c37e36629cf34f707ec480c69c87552",
+      "sha256": "3e7bce66056190d990705f723b72a9774c37e36629cf34f707ec480c69c87552"
+    },
+    "guest_rootfs": {
+      "bytes": 1475198,
+      "mode": 384,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/ca47218b5b9cccb5e9e46c9eba5dcf52b6e04bec8778eaafa8b08e9b4b934f25",
+      "sha256": "ca47218b5b9cccb5e9e46c9eba5dcf52b6e04bec8778eaafa8b08e9b4b934f25"
+    },
+    "host_bin": {
+      "bytes": 5169216,
+      "mode": 509,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/ea476689ebd75b36f2d0aa8daa5b46a542d0ae801734d21fd0f8f4240e5c0805",
+      "sha256": "ea476689ebd75b36f2d0aa8daa5b46a542d0ae801734d21fd0f8f4240e5c0805"
+    },
+    "host_elf": {
+      "bytes": 7941312,
+      "mode": 509,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/69e75054b4fec8d41965c8a0c52d078c1a026c48295e58426375f2e4a5000366",
+      "sha256": "69e75054b4fec8d41965c8a0c52d078c1a026c48295e58426375f2e4a5000366"
+    },
+    "host_fit": {
+      "bytes": 23250920,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/a258f321a9909851ece3a643e23b15124c66be48f7c3c8cf1078454ace87d85f",
+      "sha256": "a258f321a9909851ece3a643e23b15124c66be48f7c3c8cf1078454ace87d85f"
+    },
+    "host_initramfs": {
+      "bytes": 17797682,
+      "mode": 384,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/4683cb2cefc30679221e09d4f65cc0a2c533a7bc93d2e765acc0cef8517bbf92",
+      "sha256": "4683cb2cefc30679221e09d4f65cc0a2c533a7bc93d2e765acc0cef8517bbf92"
+    },
+    "host_preset_dtb": {
+      "bytes": 283054,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/66939117c227f224ee644ed4543b68178ceeb8c18655ff01a10db9da28fc9ad5",
+      "sha256": "66939117c227f224ee644ed4543b68178ceeb8c18655ff01a10db9da28fc9ad5"
+    },
+    "linux_build_json": {
+      "bytes": 1922,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/f25053cc3f1b21424cb1169039f34d7bfa98881ea7ae0ef90754709c3637e11a",
+      "sha256": "f25053cc3f1b21424cb1169039f34d7bfa98881ea7ae0ef90754709c3637e11a"
+    },
+    "linux_kernel": {
+      "bytes": 52558336,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/c5403e99b9ae7a8c60c393fb2a97e637ded3e049179bb1b2f63cf6b94dd2a61a",
+      "sha256": "c5403e99b9ae7a8c60c393fb2a97e637ded3e049179bb1b2f63cf6b94dd2a61a"
+    },
+    "linux_vm_config": {
+      "bytes": 502,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/58b7866531b3cfa7bda1c03cf5c3a71fa00b18fe459b52115ddfb0e7f7c1ec99",
+      "sha256": "58b7866531b3cfa7bda1c03cf5c3a71fa00b18fe459b52115ddfb0e7f7c1ec99"
+    },
+    "resources": {
+      "bytes": 874,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/44ed9b70a060a4e7b5fe9e305e4e5a1e85304451ba85f41db06fc592e73a582b",
+      "sha256": "44ed9b70a060a4e7b5fe9e305e4e5a1e85304451ba85f41db06fc592e73a582b"
+    },
+    "rt_bin": {
+      "bytes": 45320,
+      "mode": 509,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/8e047c995362183b8cf755c4e8f5344a2e88982b9de78747fec8891f106a70c6",
+      "sha256": "8e047c995362183b8cf755c4e8f5344a2e88982b9de78747fec8891f106a70c6"
+    },
+    "rt_dtb": {
+      "bytes": 3202,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/63a5d5a043670b162f91804ccb1219efc1d9b4b3bd46aa4ae32dc3a49ec20c30",
+      "sha256": "63a5d5a043670b162f91804ccb1219efc1d9b4b3bd46aa4ae32dc3a49ec20c30"
+    },
+    "rt_elf": {
+      "bytes": 778880,
+      "mode": 509,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/f40c7c378cf80de6ac2cc64d6b1d1a4fbb64f7d4335141ad5d213aabaef62f93",
+      "sha256": "f40c7c378cf80de6ac2cc64d6b1d1a4fbb64f7d4335141ad5d213aabaef62f93"
+    },
+    "rt_vm_config": {
+      "bytes": 388,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/392f378ccedaff970bbbb29a6a14bb90738914760c397cdf852365aafb72fa4f",
+      "sha256": "392f378ccedaff970bbbb29a6a14bb90738914760c397cdf852365aafb72fa4f"
+    },
+    "worker": {
+      "bytes": 701752,
+      "mode": 509,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/b9db9b8fc7925bf2c18e2d9edfbd3c0ee10a5a0f57985151e2f7b0073122ffc2",
+      "sha256": "b9db9b8fc7925bf2c18e2d9edfbd3c0ee10a5a0f57985151e2f7b0073122ffc2"
+    },
+    "zephyr_config": {
+      "bytes": 24645,
+      "mode": 436,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/bcff0cfdd171f6887f549eeea39a9c20b2e18f1e5a3eac448eb59f06afb06632",
+      "sha256": "bcff0cfdd171f6887f549eeea39a9c20b2e18f1e5a3eac448eb59f06afb06632"
+    }
+  },
+  "schema_version": 1,
+  "scope": "actual v3 AB1 failure delivery; preserves unknowns; no corrected audit or new board run",
+  "source_702_sha256": "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb",
+  "status": {
+    "0": "unexecuted; stopped after AB1 failure",
+    "AB0": "unexecuted; stopped after AB1 failure",
+    "Joint": false,
+    "M2": false,
+    "goal_complete": false,
+    "legacy": "unexecuted",
+    "matched_new_version_overhead_complete": false,
+    "normal_function_passed": false,
+    "randomized_repeated_phase_four_groups_complete": false
+  },
+  "supplemental_current_observation": {
+    "board_type_available_now": 1,
+    "historical_release_proved": false,
+    "observed_utc": "2026-10-18T13:05:13.869986+00:00",
+    "original_group_observed_empty_now": true,
+    "original_wait_recovered": false,
+    "signals_sent_by_this_check": []
+  },
+  "tools_freeze_sha256": "0bf9ff1cbc154583c60c6dd34688c9b498b6f63b0ef8014d1dbcec04f7ed28e8"
+}

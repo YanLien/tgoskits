@@ -1,0 +1,176 @@
+{
+  "artifact_chain_complete": true,
+  "artifacts": {
+    "guest_dtb": {
+      "bytes": 1287,
+      "mode": 436,
+      "path": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/linux/machine.dtb",
+      "saved": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/3e7bce66056190d990705f723b72a9774c37e36629cf34f707ec480c69c87552",
+      "sha256": "3e7bce66056190d990705f723b72a9774c37e36629cf34f707ec480c69c87552"
+    },
+    "guest_rootfs": {
+      "bytes": 1475198,
+      "mode": 384,
+      "path": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/linux/initramfs.cpio.gz",
+      "saved": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/ca47218b5b9cccb5e9e46c9eba5dcf52b6e04bec8778eaafa8b08e9b4b934f25",
+      "sha256": "ca47218b5b9cccb5e9e46c9eba5dcf52b6e04bec8778eaafa8b08e9b4b934f25"
+    },
+    "host_bin": {
+      "bytes": 5169216,
+      "mode": 509,
+      "path": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru/aarch64-unknown-linux-musl/release/build/axvm/0089757dc644ed83/out/vcpu_runtime-0089757dc644ed83.bin",
+      "saved": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/ea476689ebd75b36f2d0aa8daa5b46a542d0ae801734d21fd0f8f4240e5c0805",
+      "sha256": "ea476689ebd75b36f2d0aa8daa5b46a542d0ae801734d21fd0f8f4240e5c0805"
+    },
+    "host_elf": {
+      "bytes": 7941312,
+      "mode": 509,
+      "path": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru/aarch64-unknown-linux-musl/release/build/axvm/0089757dc644ed83/out/vcpu_runtime-0089757dc644ed83",
+      "saved": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/69e75054b4fec8d41965c8a0c52d078c1a026c48295e58426375f2e4a5000366",
+      "sha256": "69e75054b4fec8d41965c8a0c52d078c1a026c48295e58426375f2e4a5000366"
+    },
+    "host_fit": {
+      "bytes": 23250920,
+      "mode": 436,
+      "path": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru/aarch64-unknown-linux-musl/release/build/axvm/0089757dc644ed83/out/image.fit",
+      "saved": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/a258f321a9909851ece3a643e23b15124c66be48f7c3c8cf1078454ace87d85f",
+      "sha256": "a258f321a9909851ece3a643e23b15124c66be48f7c3c8cf1078454ace87d85f"
+    },
+    "host_initramfs": {
+      "bytes": 17797682,
+      "mode": 384,
+      "path": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvisor/host-initramfs/aarch64.cpio",
+      "saved": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/4683cb2cefc30679221e09d4f65cc0a2c533a7bc93d2e765acc0cef8517bbf92",
+      "sha256": "4683cb2cefc30679221e09d4f65cc0a2c533a7bc93d2e765acc0cef8517bbf92"
+    },
+    "host_preset_dtb": {
+      "bytes": 283054,
+      "mode": 436,
+      "path": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru/aarch64-unknown-linux-musl/release/build/axvm/0089757dc644ed83/out/ostool-2c3898a7-de5a-40b0-be00-7783ce4d1bd5-orangepi-5-plus-194.dtb",
+      "saved": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/66939117c227f224ee644ed4543b68178ceeb8c18655ff01a10db9da28fc9ad5",
+      "sha256": "66939117c227f224ee644ed4543b68178ceeb8c18655ff01a10db9da28fc9ad5"
+    },
+    "linux_build_json": {
+      "bytes": 1922,
+      "mode": 436,
+      "path": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/linux/build.json",
+      "saved": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/f25053cc3f1b21424cb1169039f34d7bfa98881ea7ae0ef90754709c3637e11a",
+      "sha256": "f25053cc3f1b21424cb1169039f34d7bfa98881ea7ae0ef90754709c3637e11a"
+    },
+    "linux_kernel": {
+      "bytes": 52558336,
+      "mode": 436,
+      "path": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/linux/linux.kernel",
+      "saved": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/c5403e99b9ae7a8c60c393fb2a97e637ded3e049179bb1b2f63cf6b94dd2a61a",
+      "sha256": "c5403e99b9ae7a8c60c393fb2a97e637ded3e049179bb1b2f63cf6b94dd2a61a"
+    },
+    "linux_vm_config": {
+      "bytes": 502,
+      "mode": 436,
+      "path": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/linux/vm.toml",
+      "saved": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/58b7866531b3cfa7bda1c03cf5c3a71fa00b18fe459b52115ddfb0e7f7c1ec99",
+      "sha256": "58b7866531b3cfa7bda1c03cf5c3a71fa00b18fe459b52115ddfb0e7f7c1ec99"
+    },
+    "resources": {
+      "bytes": 874,
+      "mode": 436,
+      "path": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/resources/tests/vcpu-runtime.toml",
+      "saved": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/44ed9b70a060a4e7b5fe9e305e4e5a1e85304451ba85f41db06fc592e73a582b",
+      "sha256": "44ed9b70a060a4e7b5fe9e305e4e5a1e85304451ba85f41db06fc592e73a582b"
+    },
+    "rt_bin": {
+      "bytes": 45320,
+      "mode": 509,
+      "path": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/guest/zephyr/zephyr.bin",
+      "saved": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/8e047c995362183b8cf755c4e8f5344a2e88982b9de78747fec8891f106a70c6",
+      "sha256": "8e047c995362183b8cf755c4e8f5344a2e88982b9de78747fec8891f106a70c6"
+    },
+    "rt_dtb": {
+      "bytes": 3202,
+      "mode": 436,
+      "path": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/guest/zephyr/zephyr.dtb",
+      "saved": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/63a5d5a043670b162f91804ccb1219efc1d9b4b3bd46aa4ae32dc3a49ec20c30",
+      "sha256": "63a5d5a043670b162f91804ccb1219efc1d9b4b3bd46aa4ae32dc3a49ec20c30"
+    },
+    "rt_elf": {
+      "bytes": 778880,
+      "mode": 509,
+      "path": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/guest/zephyr/zephyr.elf",
+      "saved": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/f40c7c378cf80de6ac2cc64d6b1d1a4fbb64f7d4335141ad5d213aabaef62f93",
+      "sha256": "f40c7c378cf80de6ac2cc64d6b1d1a4fbb64f7d4335141ad5d213aabaef62f93"
+    },
+    "rt_vm_config": {
+      "bytes": 388,
+      "mode": 436,
+      "path": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/vm.toml",
+      "saved": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/392f378ccedaff970bbbb29a6a14bb90738914760c397cdf852365aafb72fa4f",
+      "sha256": "392f378ccedaff970bbbb29a6a14bb90738914760c397cdf852365aafb72fa4f"
+    },
+    "worker": {
+      "bytes": 701752,
+      "mode": 509,
+      "path": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/linux/ordinary-load",
+      "saved": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/b9db9b8fc7925bf2c18e2d9edfbd3c0ee10a5a0f57985151e2f7b0073122ffc2",
+      "sha256": "b9db9b8fc7925bf2c18e2d9edfbd3c0ee10a5a0f57985151e2f7b0073122ffc2"
+    },
+    "zephyr_config": {
+      "bytes": 24645,
+      "mode": 436,
+      "path": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/guest/zephyr/.config",
+      "saved": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/bcff0cfdd171f6887f549eeea39a9c20b2e18f1e5a3eac448eb59f06afb06632",
+      "sha256": "bcff0cfdd171f6887f549eeea39a9c20b2e18f1e5a3eac448eb59f06afb06632"
+    }
+  },
+  "boot_before_identity_verified": false,
+  "capture_phase": "post-exit",
+  "capture_time_ns": 1792328342040272962,
+  "errors": [],
+  "fit_components": {
+    "fdt": {
+      "bytes": 283054,
+      "hashes": [],
+      "integrity_hash_present": false,
+      "node": "/images/fdt",
+      "saved": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/fit-fdt",
+      "sha256": "66939117c227f224ee644ed4543b68178ceeb8c18655ff01a10db9da28fc9ad5"
+    },
+    "kernel": {
+      "bytes": 5169216,
+      "hashes": [],
+      "integrity_hash_present": false,
+      "node": "/images/kernel",
+      "saved": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/fit-kernel",
+      "sha256": "ea476689ebd75b36f2d0aa8daa5b46a542d0ae801734d21fd0f8f4240e5c0805"
+    },
+    "ramdisk": {
+      "bytes": 17797682,
+      "hashes": [],
+      "integrity_hash_present": false,
+      "node": "/images/ramdisk",
+      "saved": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/fit-ramdisk",
+      "sha256": "4683cb2cefc30679221e09d4f65cc0a2c533a7bc93d2e765acc0cef8517bbf92"
+    }
+  },
+  "host_function_passed": false,
+  "host_initramfs_boot_input": {
+    "logged_sha256": "4683cb2cefc30679221e09d4f65cc0a2c533a7bc93d2e765acc0cef8517bbf92",
+    "path": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvisor/host-initramfs/aarch64.cpio",
+    "producer": "axvisor::bundle::attach_with_external_assets final output; boot.initramfs is assigned this path",
+    "scope": "post-exit source/log/FIT binding; not a pre-boot observation"
+  },
+  "host_markers": [
+    "LINUX_PHASE_DATA version=2 encoding=table36 cookie=1 rows=35 payload_bytes=2387 crc32=777874790 payload=H,2,1,z;S,0,1783rr,1784d2,gc7,nhywc1dk311d,0,0,0,0,0;S,1,1gdbmf,1gddav,ky9,334jmynsb4bup,74,s27uakg0,9zlds,9zlds,0;T,0,17d8yf,17d9j0,17e0ho,8,gez,t54y04whscn5,8,zikq9s,b8jk,b8jk,0;T,1,17njbr,17nk93,17ob6s,8,gk6,2hx9fqe589bsx,g,3y29iio,mh34,mh34,0;T,2,17xtp3,17xuw2,17yluq,8,gpd,3ggzcrhngmuip,o,8vn2cqo,xpmo,xpmo,0;T,3,18842f,1885k7,188wi3,8,guk,13ktxwdleafpd,w,fs8z8xs,18y68,18y68,0;T,4,18iefr,18iel1,18j5hr,8,gzq,2ujqdg7bei7ep,14,onw0740,1k6ps,1k6ps,0;T,5,18sot3,18spco,18tg9l,8,h4x,2h6y0ldwztx4x,1c,zik579c,1vf9c,1vf9c,0;T,6,192z6f,193017,193qxx,8,ha4,12ze3dg6nutj5,1k,1cc9e9ds,26nsw,26nsw,0;T,7,19d9jr,19dat1,19e1pr,8,hfb,e6u3lye1e9dt,1s,1r4zrdhc,2hwcg,2hwcg,0;T,8,19njx3,19nleg,19ocbd,8,hki,3jg89da9l42rl,20,27wr8jk0,2t4w0,2t4w0,0;T,9,19xuaf,19xue4,19ylb1,8,hpo,4q6o3szaio01,28,2qnjtrls,34dfk,34dfk,0;T,a,1a84nr,1a84zq,1a8vwn,8,huv,1kwwkyja3fnk1,2g,3bddj1mo,3flz4,3flz4,0;T,b,1aif13,1aifh9,1aj6ed,8,i01,dm41pvkky4n5,2o,3y28cdmo,3quio,3quio,0;T,c,1aspef,1asq39,1ath06,8,i58,h0ikvyqa2cxt,2w,4mq49rls,42328,42328,0;T,d,1b2zrr,1b30oo,1b3rle,8,iaf,s1j1318cnwh,34,5dd1b7k0,4dbls,4dbls,0;T,e,1bda53,1bdbc1,1be28r,8,ifm,7gy3p34u2n7l,3c,65yzgphc,4ok5c,4ok5c,0;T,f,1bnkif,1bnlwo,1boctl,8,ikt,3m0o8on5bcdtt,3k,70jyq9ds,4zsow,4zsow,0;T,g,1bxuvr,1bxv2r,1bylza,8,ipz,1u4xvn6kkq51d,3s,7x3z3v9c,5b18g,5b18g,0;T,h,1c8593,1c85ok,1c8wlo,8,iv6,bnzebcwhmk1t,40,8vn0lj40,5m9s0,5m9s0,0;T,i,1cifmf,1cigak,1cj773,8,j0d,1eiwq2dr1whz5,48,9w5378xs,5xibk,5xibk,0;T,j,1cspzr,1csqw6,1cthsw,8,j5k,ao7ymctiqha9,4g,aym6x0qo,68qv4,68qv4,0;T,k,1d30d3,1d31hz,1d3sep,8,jar,1eqe00bm8qfb5,4o,c32bquio,6jzeo,6jzeo,0;T,l,1ddaqf,1ddcas,1de37w,8,jfy,2reaeg0s4rt35,4w,d9hhoq9s,6v7y8,6v7y8,0;T,m,1dnl3r,1dnl9a,1doc6l,8,jl4,380l6qe9hbh1d,54,ehvoqo00,76ghs,76ghs,0;T,n,1dxvh3,1dxvva,1dyms7,8,jqb,1l4ckcwq7yi9t,5c,fs8wwnpc,7hp1c,7hp1c,0;T,o,1e85uf,1e86j1,1e8xg5,8,jvi,jc921ppfnv29,5k,h4l66pds,7sxkw,7sxkw,0;T,p,1eig7r,1eih5m,1ej825,8,k0p,2eueh15xgqubl,5s,iiwgkt1c,8464g,8464g,0;T,q,1esql3,1esrym,1etivj,8,k5w,35vbaqb97sao1,60,jz6s2yo0,8feo0,8feo0,0;T,r,1f30yf,1f32ll,1f3tip,8,kb3,50oqt10f7k01,68,lhg4p69s,8qn7k,8qn7k,0;T,s,1fdbbr,1fdbhd,1fe2dw,8,kg9,81xly4v22tj5,6g,n1oiffuo,91vr4,91vr4,0;T,t,1fnlp3,1fnm2s,1foczp,8,klg,3fxovzx4td6p,6o,onvx9reo,9d4ao,9d4ao,0;T,u,1fxw2f,1fxwri,1fynof,8,kqn,1enjoib9my6m9,6w,qc2d84xs,9ocu8,9ocu8,0;T,v,1g86fr,1g87la,1g8yie,8,kvu,1xmb0gi5ljytd,74,s27uakg0,9zlds,9zlds,0;R,w,1,1,0,4m2,957uo,958xt,0,135",
+    "VIRQ_LINUX_PHASE_ACCEPT version=2 policy=fair vm_id=1 vm_generation=2 run_generation=1 cookie=1 phase=1 b_enabled=1 slots=32 memory_chunks=256 logical_read_bytes=16777216 logical_write_bytes=16777216 planned_window_ticks=15360000 actual_snapshot_ticks=15361409 window_delta_ticks=1409 cpu_batch_delta=5978 logical_byte_delta=33554432 whole_fence_ticks=111701541 whole_cpu_batch_delta=30720 begin_request_ticks=1184377151 begin_guest_ticks=22858129 begin_observed_ticks=1186133129 end_request_ticks=1277970273 end_guest_ticks=134559670 end_observed_ticks=1298296012 first_t6_host_ticks=1234599848 last_t6_host_ticks=1249480231 production_ok=1 software_ok=1 test_clock=0 stopped=1 scope=protocol_resources trace_pending=1 M2=false Joint=false",
+    "LINUX_PHASE_DATA version=2 encoding=table36 cookie=1 rows=35 payload_bytes=2396 crc32=584276684 payload=H,2,1,z;S,0,16bguq,16bhu5,g3k,3szkrlputf2m9,0,0,0,0,0;S,1,1fgope,1fgpuw,kpg,a8d1n1i7kq2p,74,s27uakg0,9zlds,9zlds,0;T,0,16gm1e,16goji,16hfrp,8,g6d,p9zxpc756o01,8,zikq9s,b8jk,b8jk,0;T,1,16qweq,16qyw6,16rq3e,8,gbj,3hqs6286gikg1,g,3y29iio,mh34,mh34,0;T,2,1716s2,1719tu,172119,8,ggq,2fyx5w9hvnlkx,o,8vn2cqo,xpmo,xpmo,0;T,3,17bh5e,17bkum,17cc19,8,glx,1eh1pog1qvfup,w,fs8z8xs,18y68,18y68,0;T,4,17lriq,17lu4z,17mlau,8,gr3,1phjkz3v532f5,14,onw0740,1k6ps,1k6ps,0;T,5,17w1w2,17w4yd,17ww48,8,gwa,2glemwe8dx43l,1c,zik579c,1vf9c,1vf9c,0;T,6,186c9e,186fti,1876zd,8,h1h,2lgbhj4funqip,1k,1cc9e9ds,26nsw,26nsw,0;T,7,18gmmq,18gp3a,18hg9c,8,h6n,2xpzl5molz01t,1s,1r4zrdhc,2hwcg,2hwcg,0;T,8,18qx02,18r05m,18rrbo,8,hbu,1gb3tuc0ehtz5,20,27wr8jk0,2t4w0,2t4w0,0;T,9,1917de,191b1j,19227e,8,hh1,2m9q50tybjh1d,28,2qnjtrls,34dfk,34dfk,0;T,a,19bhqq,19bkfz,19cblu,8,hm7,1mcn1c71ldtkx,2g,3bddj1mo,3flz4,3flz4,0;T,b,19ls42,19lv9y,19mmg0,8,hre,1nbbnilkx651d,2o,3y28cdmo,3quio,3quio,0;T,c,19w2he,19w65o,19wxbj,8,hwl,3p4kky3c5b18h,2w,4mq49rls,42328,42328,0;T,d,1a6cuq,1a6fgf,1a76mo,8,i1r,3vq6vcdv7wdmp,34,5dd1b7k0,4dbls,4dbls,0;T,e,1agn82,1agpyj,1ahh4l,8,i6x,228ypbgvvrrpd,3c,65yzgphc,4ok5c,4ok5c,0;T,f,1aqxle,1ar0vt,1ars22,8,ic4,269789ajaxxxd,3k,70jyq9ds,4zsow,4zsow,0;T,g,1b17yq,1b1bpz,1b22w1,8,ihb,9lrwvje2xnnl,3s,7x3z3v9c,5b18g,5b18g,0;T,h,1bbic2,1bbkw2,1bcc1x,8,imh,2ggkzcfahqgox,40,8vn0lj40,5m9s0,5m9s0,0;T,i,1blspe,1blvub,1bmn06,8,iro,1z0zcl8jv9y4h,48,9w5378xs,5xibk,5xibk,0;T,j,1bw32q,1bw56m,1bwwch,8,iwu,dtl0uisj6nlt,4g,aym6x0qo,68qv4,68qv4,0;T,k,1c6dg2,1c6g07,1c7762,8,j21,1q2zz2xqm86bl,4o,c32bquio,6jzeo,6jzeo,0;T,l,1cgnte,1cgqy9,1chi44,8,j78,hyhcbyosx7gh,4w,d9hhoq9s,6v7y8,6v7y8,0;T,m,1cqy6q,1cr1uk,1crt08,8,jcf,3sf7eu4e5o8w1,54,ehvoqo00,76ghs,76ghs,0;T,n,1d18k2,1d1b0u,1d226w,8,jhl,23bilbiz91af5,5c,fs8wwnpc,7hp1c,7hp1c,0;T,o,1dbixe,1dbm6v,1dcdd4,8,jms,3vee5b1v8gkjl,5k,h4l66pds,7sxkw,7sxkw,0;T,p,1dltaq,1dlx2e,1dmo82,8,jrz,3pbhlreuykxdt,5s,iiwgkt1c,8464g,8464g,0;T,q,1dw3o2,1dw6at,1dwxgh,8,jx5,1w81ptnl95q0x,60,jz6s2yo0,8feo0,8feo0,0;T,r,1e6e1e,1e6h5k,1e78bf,8,k2c,2n3ul7ubrb0u9,68,lhg4p69s,8qn7k,8qn7k,0;T,s,1egoeq,1egs0w,1ehj6r,8,k7j,2rdmmcouudedd,6g,n1oiffuo,91vr4,91vr4,0;T,t,1eqys2,1er1h3,1ersnc,8,kcp,3czw9dubmduyp,6o,onvx9reo,9d4ao,9d4ao,0;T,u,1f195e,1f1cd0,1f23j2,8,khw,2xfjlvwzi1eyp,6w,qc2d84xs,9ocu8,9ocu8,0;T,v,1fbjiq,1fbn8c,1fcefy,8,kn3,36sxdeh4su1oh,74,s27uakg0,9zlds,9zlds,0;R,w,1,1,0,4lw,957uo,9580r,0,63",
+    "VIRQ_LINUX_PHASE_ACCEPT version=2 policy=fifo80 vm_id=1 vm_generation=4 run_generation=1 cookie=1 phase=1 b_enabled=1 slots=32 memory_chunks=256 logical_read_bytes=16777216 logical_write_bytes=16777216 planned_window_ticks=15360000 actual_snapshot_ticks=15360219 window_delta_ticks=219 cpu_batch_delta=5972 logical_byte_delta=33554432 whole_fence_ticks=112590023 whole_cpu_batch_delta=30720 begin_request_ticks=1417076765 begin_guest_ticks=21477092 begin_observed_ticks=1418607203 end_request_ticks=1510484548 end_guest_ticks=134067115 end_observed_ticks=1531626060 first_t6_host_ticks=1466919908 last_t6_host_ticks=1481800263 production_ok=1 software_ok=1 test_clock=0 stopped=1 scope=protocol_resources trace_pending=1 M2=false Joint=false",
+    "VIRQ_TRACE_FROZEN records=42768 dropped=0 incomplete=0 vm_groups_retired=2"
+  ],
+  "normal_function_audit_required": true,
+  "normal_function_audit_scope": "two policies/32 tasks/32 slots/2 snapshots, raw DATA/R/ACCEPT, known answer/counter generation, strict timing, retirement, pressure off-or-cover/skip0, B zero accesses when off, global zero drops and complete suite; no offset/overlap/IAB analysis",
+  "preset_vs_fit_fdt": {
+    "canonical_tree_matches_fixed_ostool_transform": true,
+    "embedded_sha256": "66939117c227f224ee644ed4543b68178ceeb8c18655ff01a10db9da28fc9ad5",
+    "preset_sha256": "66939117c227f224ee644ed4543b68178ceeb8c18655ff01a10db9da28fc9ad5",
+    "scope": "post-exit saved bytes; distinct original/FIT identities retained"
+  }
+}

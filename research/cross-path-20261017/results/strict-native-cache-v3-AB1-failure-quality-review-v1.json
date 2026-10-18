@@ -1,0 +1,518 @@
+{
+  "schema_version": 1,
+  "review_type": "Quality",
+  "case_id": "AB1",
+  "created_utc": "2026-10-18T13:30:07.719376+00:00",
+  "scope": "仅审查 strict native cache v3 AB1 如实失败交付的证据边界、原始失败保留、必要引用与文档清晰度；独立 Spec 已通过，本次不重新验收通用合同、修复或运行。",
+  "verdict": "PASS_TRUTHFUL_FAILURE_EVIDENCE_ONLY",
+  "blockers": [],
+  "acceptance_boundary": {
+    "truthful_failure_delivery": true,
+    "normal_function_accepted": false,
+    "guest_whole_run_success_accepted": false,
+    "historical_release_accepted": false,
+    "repair_accepted": false,
+    "hardware_rerun_accepted": false,
+    "performance_accepted": false,
+    "M2": false,
+    "Joint": false,
+    "goal_complete": false
+  },
+  "independent_spec": {
+    "ref": "results/strict-native-cache-v3-AB1-failure-spec-review-v1.json",
+    "sha256": "28d3b9caa0f8b73850bfbf46cec1a4e86839e83734c51d07045414a6fb8d6b85",
+    "sha256_verified_this_review": true,
+    "verdict": "PASS_TRUTHFUL_FAILURE_EVIDENCE_ONLY",
+    "blockers": [],
+    "full_reference_validation_not_repeated": true
+  },
+  "refs": {
+    "results/strict-native-cache-v3-AB1-failure-v1.json": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-AB1-failure-v1.json",
+      "bytes": 19063,
+      "sha256": "133badac82f4ba3c620ea61104b5a56af3fa85d385a4bbd95066afd484e91531"
+    },
+    "results/strict-native-cache-v3-AB1-failure-v1.md": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-AB1-failure-v1.md",
+      "bytes": 4746,
+      "sha256": "5b457379b22901a9d41ff2bc91c72b3e2728b0b810c0c60f4dd4413cd62805e1"
+    },
+    "results/strict-native-cache-v3-AB1-failure-spec-review-v1.json": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-AB1-failure-spec-review-v1.json",
+      "bytes": 55721,
+      "sha256": "28d3b9caa0f8b73850bfbf46cec1a4e86839e83734c51d07045414a6fb8d6b85"
+    },
+    "results/strict-native-cache-v3-AB1-exit-cause-v1.json": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-AB1-exit-cause-v1.json",
+      "bytes": 21598,
+      "sha256": "66212f18d135e70e198b978717f160fe9161e6354e6421539f66dc10fc23df0f"
+    },
+    "results/strict-native-cache-v3-AB1-exit-cause-v1.md": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-AB1-exit-cause-v1.md",
+      "bytes": 5566,
+      "sha256": "838fe924a162128a38517b1410b472effd5f76a7580b563e540338ebc96f6b62"
+    },
+    "results/strict-native-cache-v3-AB1-exit-cause-structured-v1.md": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-AB1-exit-cause-structured-v1.md",
+      "bytes": 6160,
+      "sha256": "8afcfd8b6bbcdcb14dca61a2b447f468e86c41b9424a55941d4e939b9e9ccd2d"
+    },
+    "results/strict-native-cache-v3-AB1-auditor-cause-v1.json": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-AB1-auditor-cause-v1.json",
+      "bytes": 56084,
+      "sha256": "ed4c51ed436cf7cf1673a74cbbcc02ec7c94bc16833f50187d3c297dce8b3ab8"
+    },
+    "results/strict-native-cache-v3-AB1-auditor-cause-v1.md": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-AB1-auditor-cause-v1.md",
+      "bytes": 4879,
+      "sha256": "98d1cf3bfaa8207c290eabe1021d87398ca3a6759fc375f58a41ae1045ec263a"
+    },
+    "results/strict-native-cache-v3-AB1-auditor-cause-structured-v1.md": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-AB1-auditor-cause-structured-v1.md",
+      "bytes": 5472,
+      "sha256": "f11b6ff6ea7cc720b5289c1f528a8e318f0b0faa516743a662371465d28a8f20"
+    },
+    "raw/strict-native-phase-v3/AB1-root-final-handoff-v1.json": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-root-final-handoff-v1.json",
+      "bytes": 5377,
+      "sha256": "cf25d62d4ff106f0e6d3315ce4e0b58ce5f4d78ac2e90b7b79fe814116e9b72f"
+    },
+    "raw/strict-native-phase-v3/AB1-root-wait.json": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-root-wait.json",
+      "bytes": 2168,
+      "sha256": "462277c74e6fa2f2f3a16c9084f04d7565174131a78a730816960b03aeddaec5"
+    },
+    "raw/strict-native-phase-v3/AB1-root-supervisor-completion-v1.json": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-root-supervisor-completion-v1.json",
+      "bytes": 396,
+      "sha256": "0373b3bbfb2f9b26b00c954e7b877d2ceaf816f2b0d7490b15683769c8a2a23d"
+    },
+    "raw/strict-native-phase-v3/AB1-actual-audit-v1.receipt.json": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-actual-audit-v1.receipt.json",
+      "bytes": 1186,
+      "sha256": "cc3d3e6a3eba6348a759671847ee4d7f5a4c4fd58817612fe9fb448c358b2ced"
+    },
+    "raw/strict-native-phase-v3/AB1-actual-audit-original-tool-completion-v1.json": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-actual-audit-original-tool-completion-v1.json",
+      "bytes": 570,
+      "sha256": "6f89b428d40ac26172a81ed12aaf360070ae6c0970f8b4d893e75e4fae257753"
+    },
+    "raw/strict-native-phase-v3/AB1-host-terminal-observation-v1.json": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-host-terminal-observation-v1.json",
+      "bytes": 919,
+      "sha256": "f79172f496e4953fc791243705d317d94047a948d447151cfab458ef612022f6"
+    },
+    "raw/strict-native-phase-v3/AB1/run-result.json": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/run-result.json",
+      "bytes": 1874,
+      "sha256": "f6f72eb0690fab040cab7d44202c79ac2d7009f7a725f43badc2c0f954417ba6"
+    },
+    "raw/strict-native-phase-v3/AB1/capture.json": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/capture.json",
+      "bytes": 17035,
+      "sha256": "9b7004231459f32e1078b86505cbb3c73104d4c5d05862ed21fd6084c0ca7dd6"
+    },
+    "raw/strict-native-phase-v3/function-audit-v1/AB1-actual-audit-v1/report.json": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/AB1-actual-audit-v1/report.json",
+      "bytes": 59088,
+      "sha256": "1a9257ef78caf570267dcb89c60d3143cf97dd033f9460b56176347f594d0b25"
+    }
+  },
+  "checks": [
+    {
+      "id": "Q01",
+      "topic": "范围与独立 Spec",
+      "passed": true,
+      "finding": "独立 Spec SHA 与给定值一致且无 blockers；只审如实失败交付，不重做完整 Spec/hash。",
+      "refs": [
+        "results/strict-native-cache-v3-AB1-failure-spec-review-v1.json"
+      ]
+    },
+    {
+      "id": "Q02",
+      "topic": "局部通过与整轮失败",
+      "passed": true,
+      "finding": "完整 Trace、two DATA/ACCEPT、pressure 和 raw suite 成功标记仅限定数据范围；没有扩大为 Guest 整轮成功。",
+      "refs": [
+        "results/strict-native-cache-v3-AB1-failure-v1.json",
+        "results/strict-native-cache-v3-AB1-failure-v1.md",
+        "raw/strict-native-phase-v3/function-audit-v1/AB1-actual-audit-v1/report.json"
+      ]
+    },
+    {
+      "id": "Q03",
+      "topic": "真实终止与未知项",
+      "passed": true,
+      "finding": "driver 原父进程 wait1、原 tool session77494/chunk36f9ce 实际1独立保留；outer920/timeout、xtask null、cleanup/release unknown、forced_signals null 均未改写。",
+      "refs": [
+        "raw/strict-native-phase-v3/AB1/run-result.json",
+        "raw/strict-native-phase-v3/AB1-root-wait.json",
+        "raw/strict-native-phase-v3/AB1-root-supervisor-completion-v1.json",
+        "raw/strict-native-phase-v3/AB1-root-final-handoff-v1.json"
+      ]
+    },
+    {
+      "id": "Q04",
+      "topic": "原审计拒绝",
+      "passed": true,
+      "finding": "原审计 child1/tool42886/chunk9be3c5 实际1、24门20过4拒完整保留；格式/日志原因定位没有追认为原门通过。",
+      "refs": [
+        "raw/strict-native-phase-v3/function-audit-v1/AB1-actual-audit-v1/report.json",
+        "raw/strict-native-phase-v3/AB1-actual-audit-v1.receipt.json",
+        "raw/strict-native-phase-v3/AB1-actual-audit-original-tool-completion-v1.json",
+        "results/strict-native-cache-v3-AB1-auditor-cause-v1.json"
+      ]
+    },
+    {
+      "id": "Q05",
+      "topic": "标签与后续观察",
+      "passed": true,
+      "finding": "post-exit 标签缺少真实退出门禁，mtime 不作为 Guest/退出时刻；后来 groupempty/serviceavailable1 不补历史 wait/release 或 forced_signals。",
+      "refs": [
+        "results/strict-native-cache-v3-AB1-exit-cause-v1.json",
+        "raw/strict-native-phase-v3/AB1/capture.json",
+        "raw/strict-native-phase-v3/AB1-host-terminal-observation-v1.json"
+      ]
+    },
+    {
+      "id": "Q06",
+      "topic": "机制与历史事件",
+      "passed": true,
+      "finding": "本地 exec 机制和终止收集缺口有明确限定；历史实际 exec/argv、token、终止时刻仍未知，局部 wait0/wait23 不是 AB1 退出码。",
+      "refs": [
+        "results/strict-native-cache-v3-AB1-exit-cause-v1.json",
+        "results/strict-native-cache-v3-AB1-exit-cause-structured-v1.md"
+      ]
+    },
+    {
+      "id": "Q07",
+      "topic": "审计解释的剩余限制",
+      "passed": true,
+      "finding": "Host 容器格式和 regex 调查不证明完整 use-chain/suite；DTS 地址差异未验证无害，实际 USER_CACHE 与离线 witness 不同且原因/mutation 范围未知。",
+      "refs": [
+        "results/strict-native-cache-v3-AB1-auditor-cause-v1.json",
+        "results/strict-native-cache-v3-AB1-auditor-cause-structured-v1.md"
+      ]
+    },
+    {
+      "id": "Q08",
+      "topic": "封存与结构整理",
+      "passed": true,
+      "finding": "两份原原因 Markdown 的技术文字和引用在结构版全部保留，无技术删除/替换，各仅加连接段；原字节与独立 Spec 引用一致，历史 pending_cause_reports 保持创建时快照语义。",
+      "refs": [
+        "results/strict-native-cache-v3-AB1-failure-v1.json",
+        "results/strict-native-cache-v3-AB1-exit-cause-v1.md",
+        "results/strict-native-cache-v3-AB1-exit-cause-structured-v1.md",
+        "results/strict-native-cache-v3-AB1-auditor-cause-v1.md",
+        "results/strict-native-cache-v3-AB1-auditor-cause-structured-v1.md"
+      ]
+    },
+    {
+      "id": "Q09",
+      "topic": "必要引用",
+      "passed": true,
+      "finding": "18 个选定文件 SHA/bytes 核对、30 个 Markdown 链接可达、6 个关键原日志跨度匹配；未重复全量封存审计。",
+      "refs": [
+        "results/strict-native-cache-v3-AB1-failure-spec-review-v1.json",
+        "results/strict-native-cache-v3-AB1-auditor-cause-v1.json"
+      ]
+    },
+    {
+      "id": "Q10",
+      "topic": "后项停止与验收边界",
+      "passed": true,
+      "finding": "AB1 额度已耗；AB0/0 未执行；没有正式性能、M2、Joint、修复或整体目标完成结论。",
+      "refs": [
+        "results/strict-native-cache-v3-AB1-failure-v1.json",
+        "raw/strict-native-phase-v3/AB1-root-final-handoff-v1.json"
+      ]
+    }
+  ],
+  "original_failed_gates": [
+    {
+      "name": "same-run-launch-wait-completion-binding",
+      "passed": false,
+      "reason": "AuditError: xtask exit disagrees with final same-run binding"
+    },
+    {
+      "name": "full-suite-no-additional-failure-or-tail",
+      "passed": false,
+      "reason": "AuditError: failure/diagnostic/unclassified error candidate or unframed final bytes observed"
+    },
+    {
+      "name": "actual-artifact-use-chain",
+      "passed": false,
+      "reason": "AuditError: newc trailer/tail"
+    },
+    {
+      "name": "actual-exits-and-frozen-explicit-release",
+      "passed": false,
+      "reason": "AuditError: xtask exit disagrees with final same-run binding"
+    }
+  ],
+  "structured_body_checks": [
+    {
+      "kind": "exit",
+      "all_original_technical_body_preserved": true,
+      "substantive_deletions_or_replacements": 0,
+      "added_explanatory_paragraph": "。启动快照、`cleanup_owned()`的比较条件和局部复现分别说明身份判断的输入、拒绝原因及其可发生机制；局部进程的真实退出结果只用于验证控制器行为",
+      "comparison": "忽略标题、结构版说明段、空白和原项目符号；其余差异仅为一段连接说明。"
+    },
+    {
+      "kind": "auditor",
+      "all_original_technical_body_preserved": true,
+      "substantive_deletions_or_replacements": 0,
+      "added_explanatory_paragraph": "。工件拒绝需要结合实际拼包格式与解析合同判断，套件拒绝需要结合原始候选跨度与分类规则判断",
+      "comparison": "忽略标题、结构版说明段、空白和原项目符号；其余差异仅为一段连接说明。"
+    }
+  ],
+  "reference_validation": {
+    "selected_full_file_SHA_bytes_count": 18,
+    "mismatches": 0,
+    "markdown_link_count": 30,
+    "missing_links": 0,
+    "markdown_links": [
+      {
+        "document": "results/strict-native-cache-v3-AB1-failure-v1.md",
+        "target": "strict-native-cache-v3-AB1-failure-v1.json",
+        "exists": true
+      },
+      {
+        "document": "results/strict-native-cache-v3-AB1-failure-v1.md",
+        "target": "../raw/strict-native-phase-v3/AB1-root-final-handoff-v1.json",
+        "exists": true
+      },
+      {
+        "document": "results/strict-native-cache-v3-AB1-failure-v1.md",
+        "target": "../raw/strict-native-phase-v3/AB1/xtask.log",
+        "exists": true
+      },
+      {
+        "document": "results/strict-native-cache-v3-AB1-failure-v1.md",
+        "target": "../raw/strict-native-phase-v3/AB1-root-wait.json",
+        "exists": true
+      },
+      {
+        "document": "results/strict-native-cache-v3-AB1-failure-v1.md",
+        "target": "../raw/strict-native-phase-v3/AB1-host-terminal-observation-v1.json",
+        "exists": true
+      },
+      {
+        "document": "results/strict-native-cache-v3-AB1-failure-v1.md",
+        "target": "../raw/strict-native-phase-v3/function-audit-v1/AB1-actual-audit-v1/report.json",
+        "exists": true
+      },
+      {
+        "document": "results/strict-native-cache-v3-AB1-failure-v1.md",
+        "target": "strict-native-cache-v3-AB1-exit-cause-v1.md",
+        "exists": true
+      },
+      {
+        "document": "results/strict-native-cache-v3-AB1-exit-cause-v1.md",
+        "target": "../raw/strict-native-followup-v3/controller-cause-v1/",
+        "exists": true
+      },
+      {
+        "document": "results/strict-native-cache-v3-AB1-exit-cause-v1.md",
+        "target": "strict-native-cache-v3-AB1-exit-cause-v1.json",
+        "exists": true
+      },
+      {
+        "document": "results/strict-native-cache-v3-AB1-exit-cause-structured-v1.md",
+        "target": "strict-native-cache-v3-AB1-exit-cause-v1.md",
+        "exists": true
+      },
+      {
+        "document": "results/strict-native-cache-v3-AB1-exit-cause-structured-v1.md",
+        "target": "../raw/strict-native-followup-v3/controller-cause-v1/",
+        "exists": true
+      },
+      {
+        "document": "results/strict-native-cache-v3-AB1-exit-cause-structured-v1.md",
+        "target": "strict-native-cache-v3-AB1-exit-cause-v1.json",
+        "exists": true
+      },
+      {
+        "document": "results/strict-native-cache-v3-AB1-auditor-cause-v1.md",
+        "target": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/audit.py:668",
+        "exists": true
+      },
+      {
+        "document": "results/strict-native-cache-v3-AB1-auditor-cause-v1.md",
+        "target": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/audit.py:557",
+        "exists": true
+      },
+      {
+        "document": "results/strict-native-cache-v3-AB1-auditor-cause-v1.md",
+        "target": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/capture_native.py:296",
+        "exists": true
+      },
+      {
+        "document": "results/strict-native-cache-v3-AB1-auditor-cause-v1.md",
+        "target": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/capture_native.py:343",
+        "exists": true
+      },
+      {
+        "document": "results/strict-native-cache-v3-AB1-auditor-cause-v1.md",
+        "target": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/audit.py:24",
+        "exists": true
+      },
+      {
+        "document": "results/strict-native-cache-v3-AB1-auditor-cause-v1.md",
+        "target": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/audit.py:135",
+        "exists": true
+      },
+      {
+        "document": "results/strict-native-cache-v3-AB1-auditor-cause-v1.md",
+        "target": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/audit.py:525",
+        "exists": true
+      },
+      {
+        "document": "results/strict-native-cache-v3-AB1-auditor-cause-v1.md",
+        "target": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/xtask.log:11",
+        "exists": true
+      },
+      {
+        "document": "results/strict-native-cache-v3-AB1-auditor-cause-v1.md",
+        "target": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-AB1-auditor-cause-v1.json",
+        "exists": true
+      },
+      {
+        "document": "results/strict-native-cache-v3-AB1-auditor-cause-structured-v1.md",
+        "target": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/audit.py:668",
+        "exists": true
+      },
+      {
+        "document": "results/strict-native-cache-v3-AB1-auditor-cause-structured-v1.md",
+        "target": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/audit.py:557",
+        "exists": true
+      },
+      {
+        "document": "results/strict-native-cache-v3-AB1-auditor-cause-structured-v1.md",
+        "target": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/capture_native.py:296",
+        "exists": true
+      },
+      {
+        "document": "results/strict-native-cache-v3-AB1-auditor-cause-structured-v1.md",
+        "target": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/capture_native.py:343",
+        "exists": true
+      },
+      {
+        "document": "results/strict-native-cache-v3-AB1-auditor-cause-structured-v1.md",
+        "target": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/audit.py:24",
+        "exists": true
+      },
+      {
+        "document": "results/strict-native-cache-v3-AB1-auditor-cause-structured-v1.md",
+        "target": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/audit.py:135",
+        "exists": true
+      },
+      {
+        "document": "results/strict-native-cache-v3-AB1-auditor-cause-structured-v1.md",
+        "target": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/audit.py:525",
+        "exists": true
+      },
+      {
+        "document": "results/strict-native-cache-v3-AB1-auditor-cause-structured-v1.md",
+        "target": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/xtask.log:11",
+        "exists": true
+      },
+      {
+        "document": "results/strict-native-cache-v3-AB1-auditor-cause-structured-v1.md",
+        "target": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-AB1-auditor-cause-v1.json",
+        "exists": true
+      }
+    ],
+    "selected_raw_spans": [
+      {
+        "line": 24,
+        "offset": 2695,
+        "bytes": 228,
+        "sha256": "c83438e2c6ba62743446b3445873b1486bb7309f41bb7c3cfef9cff3477e0283",
+        "matches": true
+      },
+      {
+        "line": 52,
+        "offset": 5173,
+        "bytes": 228,
+        "sha256": "c83438e2c6ba62743446b3445873b1486bb7309f41bb7c3cfef9cff3477e0283",
+        "matches": true
+      },
+      {
+        "line": 11,
+        "offset": 1138,
+        "bytes": 63,
+        "sha256": "a213fe1b38cdb90f43d77e485c347185b6a36081534f7dd25da046a7500ba2bd",
+        "matches": true
+      },
+      {
+        "line": 50101,
+        "offset": 6496165,
+        "bytes": 107,
+        "sha256": "25893cd89642b1db1b14c5420fbfbb4629604f6f44600d2c57c76b973e2ba130",
+        "matches": true
+      },
+      {
+        "line": 50102,
+        "offset": 6496272,
+        "bytes": 45,
+        "sha256": "79509f6a5dc58a54b5951dba33b97297b05f22dfde43422ca74a7b04b8f353d1",
+        "matches": true
+      },
+      {
+        "line": 50103,
+        "offset": 6496317,
+        "bytes": 17,
+        "sha256": "b2e8d53f85c18e14ab41e44f9b7cf989a23ef1631dac2177ef2b502b9e77a17e",
+        "matches": true
+      }
+    ],
+    "full_trace_scan_performed": false,
+    "full_raw_log_SHA_repeated": false,
+    "main_96_seal_scan_performed": false,
+    "spec_full_hash_list_repeated": false
+  },
+  "non_blocking_notes": [
+    {
+      "id": "N01",
+      "finding": "原 auditor-cause 的 unframed_nonempty_final_rows 列出 20 条无宿主框架串口记录，该数组非空不代表 EOF 未换行残尾。",
+      "evidence": {
+        "listed_rows": 20,
+        "all_listed_exact_spans_CR_terminated_and_followed_by_CRLF": true,
+        "raw_last_byte_is_newline": true,
+        "meaning": "最终保存日志中的无宿主框架记录；该数组非空不能推断存在 EOF 未换行残尾。"
+      },
+      "scope": "文档解释；不更改原机器字段或原审计结果。"
+    },
+    {
+      "id": "N02",
+      "finding": "原原因 Markdown 已封存，旧结构保留；新结构版满足编号层级并保留技术正文与引用。",
+      "scope": "不以文档格式要求回写历史字节。"
+    },
+    {
+      "id": "N03",
+      "finding": "DTS 地址差异是否可接受、USER_CACHE 选择原因及 mutation 范围、历史实际 exec/xtask wait/release 未知。",
+      "scope": "允许交付明确标注未知的失败材料；不构成未来正常功能验收证据。"
+    }
+  ],
+  "operations": {
+    "read_only_SHA_JSON_text_checks": true,
+    "original_selected_files_unchanged": true,
+    "selected_original_files_rechecked_before_output": 18,
+    "new_files_only": [
+      "results/strict-native-cache-v3-AB1-failure-quality-review-v1.json",
+      "results/strict-native-cache-v3-AB1-failure-quality-review-v1.md"
+    ],
+    "board_or_QEMU_starts": 0,
+    "network_calls": 0,
+    "proc_observations": 0,
+    "signal_commands": 0,
+    "build_commands": 0,
+    "Git_commands": 0,
+    "full_audit_runs": 0,
+    "format_probe_reruns": 0,
+    "test_reruns": 0,
+    "validation_command": "python3 /tmp/native-v3-failure-quality-check.py",
+    "validation_exit": 0
+  }
+}

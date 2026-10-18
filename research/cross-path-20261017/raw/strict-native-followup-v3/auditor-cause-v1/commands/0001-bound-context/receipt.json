@@ -1,0 +1,31 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "-c",
+    "from pathlib import Path\nimport json,hashlib,ast\nR=Path('research/cross-path-20261017');base=R/'raw/strict-native-followup-v3/auditor-cause-v1'\np=Path('/home/yanlien/.agents/skills/superpowers/systematic-debugging/SKILL.md');print(p.read_text())\nrefs=[(R/'raw/strict-native-phase-v3/AB1-root-final-handoff-v1.json','cf25d62d4ff106f0e6d3315ce4e0b58ce5f4d78ac2e90b7b79fe814116e9b72f'),(R/'raw/strict-native-phase-v3/function-audit-v1/AB1-actual-audit-v1/report.json','1a9257ef78caf570267dcb89c60d3143cf97dd033f9460b56176347f594d0b25')]\ndocs=[]\nfor p,expected in refs:\n raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()==expected;docs.append(json.loads(raw));print('BOUND '+str(p)+' '+expected)\nh,r=docs;print('HANDOFF');print(json.dumps(h,indent=2));print('FAILED GATES');print(json.dumps([g for g in r['gates'] if not g['passed']],indent=2));print('ERROR CANDIDATES');print(json.dumps(r['error_candidates'],indent=2));print('EXPLICIT');print(json.dumps(r['explicit_failures'],indent=2));print('PARTIAL');print(json.dumps(r['protocol_partial_tails'],indent=2));print('CAPTURE');ref=h['files']['capture'];raw=Path(ref['path']).read_bytes();assert len(raw)==ref['bytes'] and hashlib.sha256(raw).hexdigest()==ref['sha256'];capture=json.loads(raw);print(json.dumps({k:v for k,v in capture.items() if k!='host_markers'},indent=2))\nold=R/'raw/strict-native-phase-v3/function-audit-v1/run_command.py';raw=old.read_bytes()\nwith (base/'run_command.py').open('xb') as out:out.write(raw)\n"
+  ],
+  "env": {
+    "PATH": "/usr/bin:/bin",
+    "LANG": "C.UTF-8",
+    "TZ": "UTC",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "cwd": "/home/yanlien/Program/hypervisor/tgoskits",
+  "pid": 3,
+  "wait_returncode": 0,
+  "returncode": 0,
+  "started_ns": 1792328976233403881,
+  "ended_ns": 1792328976286537018,
+  "forced_stop": false,
+  "stdout": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0001-bound-context/stdout",
+    "bytes": 27718,
+    "sha256": "8de938d263f2cb1ae7c9e6f5bf63fe10084d22ff4e430dc15e3c4758ccdf616d"
+  },
+  "stderr": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0001-bound-context/stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

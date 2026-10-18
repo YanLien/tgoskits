@@ -1,0 +1,1610 @@
+{
+  "schema_version": 1,
+  "case_id": "AB1",
+  "scope": "complete native normal-function audit only; no performance/phase-overlap/I_AB claim",
+  "handoff_sha256": "cf25d62d4ff106f0e6d3315ce4e0b58ce5f4d78ac2e90b7b79fe814116e9b72f",
+  "auditor_sha256": "6fa57d1bb99a9fbdb49613ffc90cb4b648aa9511465957aec25b9e58e34e76aa",
+  "full_function_passed": false,
+  "source_contract_sha256": "8ff5e4a14fc159d0b0ec81bd26c00fe1860c62611d9e6a0f38c15989e6518d0e",
+  "input_references": {
+    "actual_command": {
+      "bytes": 2685,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/actual-command.json",
+      "sha256": "8e02c6165744f78da9ec661429b3c9b2ea236df94a450a81361937de90a9c0a9"
+    },
+    "approval": {
+      "bytes": 3979,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-root-approval-v1.json",
+      "sha256": "0d47e114d70d71b61f913ccdc26538437e48c0bce67b0eaa3bbd962053288e08"
+    },
+    "capture": {
+      "bytes": 17035,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/capture.json",
+      "sha256": "9b7004231459f32e1078b86505cbb3c73104d4c5d05862ed21fd6084c0ca7dd6"
+    },
+    "freeze_manifest": {
+      "bytes": 19347,
+      "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/freeze-manifest.json",
+      "sha256": "0bf9ff1cbc154583c60c6dd34688c9b498b6f63b0ef8014d1dbcec04f7ed28e8"
+    },
+    "frozen_inputs": {
+      "bytes": 5547,
+      "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/inputs.json",
+      "sha256": "8fac8a1fb86d79a1e74bf9591bf68fa2dd88f6d261edcf0ea576dfbd6ace0060"
+    },
+    "host_preflight": {
+      "bytes": 1045,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-host-preflight-v1.json",
+      "sha256": "3b9557467f3689f46564179cdf611b0e519e3fd3d6821752ef7008c3c76276c1"
+    },
+    "normal_auditor_Quality": {
+      "bytes": 32856,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-function-audit-v3-quality-review-v1.json",
+      "sha256": "04c99a4182148523e862acb6d20af07fdd74df7be42b95ecb1a04179e7f87b28"
+    },
+    "primary_delivery": {
+      "bytes": 4824,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/intensity-v3-final-delivery.json",
+      "sha256": "fe7b8cd40aa21855eaaaedfb0ed92022eac37eed329dc51b06352710d4525bb7"
+    },
+    "raw": {
+      "bytes": 6496391,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/xtask.log",
+      "sha256": "c74a5a24106e3e59a4c03316b428f9591e5e481bce5f65a874f4231b7d10814b"
+    },
+    "root_launch": {
+      "bytes": 4190,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-root-launch.json",
+      "sha256": "61a74e6fc1e09023e548d41b41e704a813383d59d9d15ca2e830907a91fd1ee0"
+    },
+    "root_tool_completion": {
+      "bytes": 396,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-root-supervisor-completion-v1.json",
+      "sha256": "0373b3bbfb2f9b26b00c954e7b877d2ceaf816f2b0d7490b15683769c8a2a23d"
+    },
+    "root_wait": {
+      "bytes": 2168,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-root-wait.json",
+      "sha256": "462277c74e6fa2f2f3a16c9084f04d7565174131a78a730816960b03aeddaec5"
+    },
+    "run_result": {
+      "bytes": 1874,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/run-result.json",
+      "sha256": "f6f72eb0690fab040cab7d44202c79ac2d7009f7a725f43badc2c0f954417ba6"
+    },
+    "task1_Quality": {
+      "bytes": 30075,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-task1-quality-review-v1.json",
+      "sha256": "5a2151b3784d58e914c7a3a205cea50950e1f84a0a1bf74ed66aebb53fbd0e47"
+    },
+    "task1_Spec": {
+      "bytes": 28775,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-task1-spec-review-v1.json",
+      "sha256": "996b32e95319ea5a3a94096b141153cf0b11b2bdaec39a8aea7de30e3cbd90f7"
+    },
+    "task1_acceptance": {
+      "bytes": 6069,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-task1-root-acceptance-v1.json",
+      "sha256": "79d2b66a2f6291b2f6cf25dbb3749c1636c7967482030a1b65139ceac8d53f83"
+    },
+    "wrapper_review": {
+      "bytes": 9575,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-AB1-wrapper-inheritance-review-v1.json",
+      "sha256": "264004d79d9fd9915d1eb5f719ae9eb98cdc49d88f3ca6c9ec162ce0d20d8e50"
+    }
+  },
+  "gates": [
+    {
+      "name": "bound-document-capture",
+      "passed": true,
+      "evidence": {
+        "bytes": 17035,
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/capture.json",
+        "sha256": "9b7004231459f32e1078b86505cbb3c73104d4c5d05862ed21fd6084c0ca7dd6"
+      }
+    },
+    {
+      "name": "bound-document-run_result",
+      "passed": true,
+      "evidence": {
+        "bytes": 1874,
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/run-result.json",
+        "sha256": "f6f72eb0690fab040cab7d44202c79ac2d7009f7a725f43badc2c0f954417ba6"
+      }
+    },
+    {
+      "name": "bound-document-root_wait",
+      "passed": true,
+      "evidence": {
+        "bytes": 2168,
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-root-wait.json",
+        "sha256": "462277c74e6fa2f2f3a16c9084f04d7565174131a78a730816960b03aeddaec5"
+      }
+    },
+    {
+      "name": "bound-document-actual_command",
+      "passed": true,
+      "evidence": {
+        "bytes": 2685,
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/actual-command.json",
+        "sha256": "8e02c6165744f78da9ec661429b3c9b2ea236df94a450a81361937de90a9c0a9"
+      }
+    },
+    {
+      "name": "bound-document-freeze_manifest",
+      "passed": true,
+      "evidence": {
+        "bytes": 19347,
+        "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/freeze-manifest.json",
+        "sha256": "0bf9ff1cbc154583c60c6dd34688c9b498b6f63b0ef8014d1dbcec04f7ed28e8"
+      }
+    },
+    {
+      "name": "bound-document-frozen_inputs",
+      "passed": true,
+      "evidence": {
+        "bytes": 5547,
+        "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/inputs.json",
+        "sha256": "8fac8a1fb86d79a1e74bf9591bf68fa2dd88f6d261edcf0ea576dfbd6ace0060"
+      }
+    },
+    {
+      "name": "bound-document-approval",
+      "passed": true,
+      "evidence": {
+        "bytes": 3979,
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-root-approval-v1.json",
+        "sha256": "0d47e114d70d71b61f913ccdc26538437e48c0bce67b0eaa3bbd962053288e08"
+      }
+    },
+    {
+      "name": "bound-document-root_launch",
+      "passed": true,
+      "evidence": {
+        "bytes": 4190,
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-root-launch.json",
+        "sha256": "61a74e6fc1e09023e548d41b41e704a813383d59d9d15ca2e830907a91fd1ee0"
+      }
+    },
+    {
+      "name": "bound-document-root_tool_completion",
+      "passed": true,
+      "evidence": {
+        "bytes": 396,
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-root-supervisor-completion-v1.json",
+        "sha256": "0373b3bbfb2f9b26b00c954e7b877d2ceaf816f2b0d7490b15683769c8a2a23d"
+      }
+    },
+    {
+      "name": "source-tool-case-binding",
+      "passed": true,
+      "evidence": {
+        "source_702_sha256": "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb",
+        "tools_freeze_sha256": "0bf9ff1cbc154583c60c6dd34688c9b498b6f63b0ef8014d1dbcec04f7ed28e8",
+        "specific_source_files": 17,
+        "exact_case_environment": true
+      }
+    },
+    {
+      "name": "same-run-launch-wait-completion-binding",
+      "passed": false,
+      "reason": "AuditError: xtask exit disagrees with final same-run binding"
+    },
+    {
+      "name": "final-raw-bytes",
+      "passed": true,
+      "evidence": {
+        "bytes": 6496391,
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/xtask.log",
+        "sha256": "c74a5a24106e3e59a4c03316b428f9591e5e481bce5f65a874f4231b7d10814b"
+      }
+    },
+    {
+      "name": "complete-exact-fixture-and-policy-records",
+      "passed": true,
+      "evidence": {
+        "policies": [
+          "fair",
+          "fifo80"
+        ],
+        "actual_tasks": 64,
+        "actual_DATA": 2,
+        "recording": "on",
+        "platform": "orangepi5plus_rk3588"
+      }
+    },
+    {
+      "name": "pure-wire-source",
+      "passed": true,
+      "evidence": {
+        "reference": {
+          "path": "/tmp/crosspath-native-cache-v3-src-hr23qnrs/virtualization/axvm/tests/guests/linux-load/verify-native-phase.py",
+          "bytes": 35913,
+          "sha256": "c29cce43852ec2016f735af82b55410d63acebf866766275bffd36d98af7317b"
+        },
+        "extracted_functions": [
+          "checksum",
+          "memory_sum",
+          "verify_work",
+          "decode_data"
+        ],
+        "excluded": "all imports, Worker, CLI and target execution"
+      }
+    },
+    {
+      "name": "two-complete-raw-DATA",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "policy-protocol-fair",
+      "passed": true,
+      "evidence": {
+        "frequency_hz": 24000000,
+        "linux_vm_key": [
+          1,
+          2
+        ],
+        "linux_run": 1,
+        "rt_vm_key": [
+          2,
+          1
+        ],
+        "rt_run": 2,
+        "t6_count": 32,
+        "workload": {
+          "progress_reports": 28,
+          "last_cpu_batches": 32512,
+          "actual_zero_access_reports": 7,
+          "b_enabled": true,
+          "scope": "all actual readiness/progress rows, CPU known answers and pre/post-DATA memory totals; no throughput estimate"
+        },
+        "bounds": {
+          "snapshot_late_ticks": 6000,
+          "slot_late_ticks": 6000,
+          "slot_duration_ticks": 96000
+        },
+        "coverage": [
+          1234560767,
+          1249922176
+        ],
+        "host_epoch": 1234560000,
+        "rt_offset": 1179870278
+      }
+    },
+    {
+      "name": "pressure-fair",
+      "passed": true,
+      "evidence": {
+        "mode": "sgi",
+        "actual_events": 2758,
+        "skipped_periods": 0,
+        "coverage": [
+          1234560767,
+          1249922176
+        ]
+      }
+    },
+    {
+      "name": "policy-protocol-fifo80",
+      "passed": true,
+      "evidence": {
+        "frequency_hz": 24000000,
+        "linux_vm_key": [
+          1,
+          4
+        ],
+        "linux_run": 1,
+        "rt_vm_key": [
+          2,
+          3
+        ],
+        "rt_run": 2,
+        "t6_count": 32,
+        "workload": {
+          "progress_reports": 28,
+          "last_cpu_batches": 32256,
+          "actual_zero_access_reports": 6,
+          "b_enabled": true,
+          "scope": "all actual readiness/progress rows, CPU known answers and pre/post-DATA memory totals; no throughput estimate"
+        },
+        "bounds": {
+          "snapshot_late_ticks": 6000,
+          "slot_late_ticks": 6000,
+          "slot_duration_ticks": 96000
+        },
+        "coverage": [
+          1466881275,
+          1482241494
+        ],
+        "host_epoch": 1466880000,
+        "rt_offset": 1413365155
+      }
+    },
+    {
+      "name": "pressure-fifo80",
+      "passed": true,
+      "evidence": {
+        "mode": "sgi",
+        "actual_events": 2800,
+        "skipped_periods": 0,
+        "coverage": [
+          1466881275,
+          1482241494
+        ]
+      }
+    },
+    {
+      "name": "single-global-zero-loss-complete-export",
+      "passed": true,
+      "evidence": {
+        "exported": 42768,
+        "physical_irqs": 64,
+        "ready_events": 168,
+        "admitted_event_kinds": [
+          "Binding",
+          "GuestEntryBoundary",
+          "HostIrqEntry",
+          "IrqDispatchBegin",
+          "IrqDispatchEnd",
+          "IrqKick",
+          "Marker",
+          "ReadyEnqueue",
+          "Running",
+          "Stopped",
+          "TimerSyncBegin",
+          "TimerSyncEnd",
+          "WakeBegin",
+          "WakeEnd"
+        ],
+        "physical_route": {
+          "cpu": 0,
+          "intid": 30,
+          "context": "current_el",
+          "value1": 1
+        },
+        "per_cpu": {
+          "0": 3800,
+          "1": 2199,
+          "3": 36769
+        }
+      }
+    },
+    {
+      "name": "two-complete-retirement-groups",
+      "passed": true,
+      "evidence": {
+        "groups": 2,
+        "VMs_per_group": 2,
+        "source_contract": "Progress.finish -> Fixture.stop -> verify_retired(Inactive) -> after calibration; manager.shutdown before group marker"
+      }
+    },
+    {
+      "name": "full-suite-no-additional-failure-or-tail",
+      "passed": false,
+      "reason": "AuditError: failure/diagnostic/unclassified error candidate or unframed final bytes observed"
+    },
+    {
+      "name": "actual-artifact-use-chain",
+      "passed": false,
+      "reason": "AuditError: newc trailer/tail"
+    },
+    {
+      "name": "actual-exits-and-frozen-explicit-release",
+      "passed": false,
+      "reason": "AuditError: xtask exit disagrees with final same-run binding"
+    }
+  ],
+  "data": [
+    {
+      "line": 1106,
+      "offset": 99731,
+      "bytes": 2493,
+      "sha256": "06563a4000ecb6e961f564439ec998cebe653a716d810a6d14239737c0feaef7",
+      "marker": "LINUX_PHASE_DATA",
+      "text": "LINUX_PHASE_DATA version=2 encoding=table36 cookie=1 rows=35 payload_bytes=2387 crc32=777874790 payload=H,2,1,z;S,0,1783rr,1784d2,gc7,nhywc1dk311d,0,0,0,0,0;S,1,1gdbmf,1gddav,ky9,334jmynsb4bup,74,s27uakg0,9zlds,9zlds,0;T,0,17d8yf,17d9j0,17e0ho,8,gez,t54y04whscn5,8,zikq9s,b8jk,b8jk,0;T,1,17njbr,17nk93,17ob6s,8,gk6,2hx9fqe589bsx,g,3y29iio,mh34,mh34,0;T,2,17xtp3,17xuw2,17yluq,8,gpd,3ggzcrhngmuip,o,8vn2cqo,xpmo,xpmo,0;T,3,18842f,1885k7,188wi3,8,guk,13ktxwdleafpd,w,fs8z8xs,18y68,18y68,0;T,4,18iefr,18iel1,18j5hr,8,gzq,2ujqdg7bei7ep,14,onw0740,1k6ps,1k6ps,0;T,5,18sot3,18spco,18tg9l,8,h4x,2h6y0ldwztx4x,1c,zik579c,1vf9c,1vf9c,0;T,6,192z6f,193017,193qxx,8,ha4,12ze3dg6nutj5,1k,1cc9e9ds,26nsw,26nsw,0;T,7,19d9jr,19dat1,19e1pr,8,hfb,e6u3lye1e9dt,1s,1r4zrdhc,2hwcg,2hwcg,0;T,8,19njx3,19nleg,19ocbd,8,hki,3jg89da9l42rl,20,27wr8jk0,2t4w0,2t4w0,0;T,9,19xuaf,19xue4,19ylb1,8,hpo,4q6o3szaio01,28,2qnjtrls,34dfk,34dfk,0;T,a,1a84nr,1a84zq,1a8vwn,8,huv,1kwwkyja3fnk1,2g,3bddj1mo,3flz4,3flz4,0;T,b,1aif13,1aifh9,1aj6ed,8,i01,dm41pvkky4n5,2o,3y28cdmo,3quio,3quio,0;T,c,1aspef,1asq39,1ath06,8,i58,h0ikvyqa2cxt,2w,4mq49rls,42328,42328,0;T,d,1b2zrr,1b30oo,1b3rle,8,iaf,s1j1318cnwh,34,5dd1b7k0,4dbls,4dbls,0;T,e,1bda53,1bdbc1,1be28r,8,ifm,7gy3p34u2n7l,3c,65yzgphc,4ok5c,4ok5c,0;T,f,1bnkif,1bnlwo,1boctl,8,ikt,3m0o8on5bcdtt,3k,70jyq9ds,4zsow,4zsow,0;T,g,1bxuvr,1bxv2r,1bylza,8,ipz,1u4xvn6kkq51d,3s,7x3z3v9c,5b18g,5b18g,0;T,h,1c8593,1c85ok,1c8wlo,8,iv6,bnzebcwhmk1t,40,8vn0lj40,5m9s0,5m9s0,0;T,i,1cifmf,1cigak,1cj773,8,j0d,1eiwq2dr1whz5,48,9w5378xs,5xibk,5xibk,0;T,j,1cspzr,1csqw6,1cthsw,8,j5k,ao7ymctiqha9,4g,aym6x0qo,68qv4,68qv4,0;T,k,1d30d3,1d31hz,1d3sep,8,jar,1eqe00bm8qfb5,4o,c32bquio,6jzeo,6jzeo,0;T,l,1ddaqf,1ddcas,1de37w,8,jfy,2reaeg0s4rt35,4w,d9hhoq9s,6v7y8,6v7y8,0;T,m,1dnl3r,1dnl9a,1doc6l,8,jl4,380l6qe9hbh1d,54,ehvoqo00,76ghs,76ghs,0;T,n,1dxvh3,1dxvva,1dyms7,8,jqb,1l4ckcwq7yi9t,5c,fs8wwnpc,7hp1c,7hp1c,0;T,o,1e85uf,1e86j1,1e8xg5,8,jvi,jc921ppfnv29,5k,h4l66pds,7sxkw,7sxkw,0;T,p,1eig7r,1eih5m,1ej825,8,k0p,2eueh15xgqubl,5s,iiwgkt1c,8464g,8464g,0;T,q,1esql3,1esrym,1etivj,8,k5w,35vbaqb97sao1,60,jz6s2yo0,8feo0,8feo0,0;T,r,1f30yf,1f32ll,1f3tip,8,kb3,50oqt10f7k01,68,lhg4p69s,8qn7k,8qn7k,0;T,s,1fdbbr,1fdbhd,1fe2dw,8,kg9,81xly4v22tj5,6g,n1oiffuo,91vr4,91vr4,0;T,t,1fnlp3,1fnm2s,1foczp,8,klg,3fxovzx4td6p,6o,onvx9reo,9d4ao,9d4ao,0;T,u,1fxw2f,1fxwri,1fynof,8,kqn,1enjoib9my6m9,6w,qc2d84xs,9ocu8,9ocu8,0;T,v,1g86fr,1g87la,1g8yie,8,kvu,1xmb0gi5ljytd,74,s27uakg0,9zlds,9zlds,0;R,w,1,1,0,4m2,957uo,958xt,0,135",
+      "prefix": "",
+      "known_answer_errors": [],
+      "decoded": {
+        "snapshots": [
+          {
+            "boundary": "start",
+            "planned": "72601623",
+            "actual": "72602390",
+            "cpu_batches": "21175",
+            "cpu_checksum": "3092998139263524865",
+            "memory_chunks": "0",
+            "memory_checksum": "0",
+            "logical_read_bytes": "0",
+            "logical_write_bytes": "0",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "boundary": "end",
+            "planned": "87961623",
+            "actual": "87963799",
+            "cpu_batches": "27153",
+            "cpu_checksum": "14626628180005871617",
+            "memory_chunks": "256",
+            "memory_checksum": "2199024304128",
+            "logical_read_bytes": "16777216",
+            "logical_write_bytes": "16777216",
+            "guest_cpu": "0",
+            "cookie": "1"
+          }
+        ],
+        "slots": [
+          {
+            "cycle": "0",
+            "planned": "72841623",
+            "start": "72842364",
+            "end": "72877308",
+            "chunks": "8",
+            "cpu_batches": "21275",
+            "cpu_checksum": "3835812371861512193",
+            "memory_chunks": "8",
+            "memory_checksum": "2147516416",
+            "logical_read_bytes": "524288",
+            "logical_write_bytes": "524288",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "1",
+            "planned": "73321623",
+            "start": "73322823",
+            "end": "73357732",
+            "chunks": "8",
+            "cpu_batches": "21462",
+            "cpu_checksum": "11835943295001903105",
+            "memory_chunks": "16",
+            "memory_checksum": "8590000128",
+            "logical_read_bytes": "1048576",
+            "logical_write_bytes": "1048576",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "2",
+            "planned": "73801623",
+            "start": "73803170",
+            "end": "73838114",
+            "chunks": "8",
+            "cpu_batches": "21649",
+            "cpu_checksum": "16383180417540808705",
+            "memory_chunks": "24",
+            "memory_checksum": "19327451136",
+            "logical_read_bytes": "1572864",
+            "logical_write_bytes": "1572864",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "3",
+            "planned": "74281623",
+            "start": "74283559",
+            "end": "74318475",
+            "chunks": "8",
+            "cpu_batches": "21836",
+            "cpu_checksum": "5209410491265220609",
+            "memory_chunks": "32",
+            "memory_checksum": "34359869440",
+            "logical_read_bytes": "2097152",
+            "logical_write_bytes": "2097152",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "4",
+            "planned": "74761623",
+            "start": "74761813",
+            "end": "74796687",
+            "chunks": "8",
+            "cpu_batches": "22022",
+            "cpu_checksum": "13497559305328214017",
+            "memory_chunks": "40",
+            "memory_checksum": "53687255040",
+            "logical_read_bytes": "2621440",
+            "logical_write_bytes": "2621440",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "5",
+            "planned": "75241623",
+            "start": "75242328",
+            "end": "75277209",
+            "chunks": "8",
+            "cpu_batches": "22209",
+            "cpu_checksum": "11739723307069595649",
+            "memory_chunks": "48",
+            "memory_checksum": "77309607936",
+            "logical_read_bytes": "3145728",
+            "logical_write_bytes": "3145728",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "6",
+            "planned": "75721623",
+            "start": "75722731",
+            "end": "75757605",
+            "chunks": "8",
+            "cpu_batches": "22396",
+            "cpu_checksum": "5131021648096952321",
+            "memory_chunks": "56",
+            "memory_checksum": "105226928128",
+            "logical_read_bytes": "3670016",
+            "logical_write_bytes": "3670016",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "7",
+            "planned": "76201623",
+            "start": "76203253",
+            "end": "76238127",
+            "chunks": "8",
+            "cpu_batches": "22583",
+            "cpu_checksum": "1867697786968809473",
+            "memory_chunks": "64",
+            "memory_checksum": "137439215616",
+            "logical_read_bytes": "4194304",
+            "logical_write_bytes": "4194304",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "8",
+            "planned": "76681623",
+            "start": "76683544",
+            "end": "76718425",
+            "chunks": "8",
+            "cpu_batches": "22770",
+            "cpu_checksum": "16775293833733062657",
+            "memory_chunks": "72",
+            "memory_checksum": "173946470400",
+            "logical_read_bytes": "4718592",
+            "logical_write_bytes": "4718592",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "9",
+            "planned": "77161623",
+            "start": "77161756",
+            "end": "77196637",
+            "chunks": "8",
+            "cpu_batches": "22956",
+            "cpu_checksum": "622224299364876289",
+            "memory_chunks": "80",
+            "memory_checksum": "214748692480",
+            "logical_read_bytes": "5242880",
+            "logical_write_bytes": "5242880",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "10",
+            "planned": "77641623",
+            "start": "77642054",
+            "end": "77676935",
+            "chunks": "8",
+            "cpu_batches": "23143",
+            "cpu_checksum": "7491121532411387905",
+            "memory_chunks": "88",
+            "memory_checksum": "259845881856",
+            "logical_read_bytes": "5767168",
+            "logical_write_bytes": "5767168",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "11",
+            "planned": "78121623",
+            "start": "78122205",
+            "end": "78157093",
+            "chunks": "8",
+            "cpu_batches": "23329",
+            "cpu_checksum": "1791928724396302337",
+            "memory_chunks": "96",
+            "memory_checksum": "309238038528",
+            "logical_read_bytes": "6291456",
+            "logical_write_bytes": "6291456",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "12",
+            "planned": "78601623",
+            "start": "78602517",
+            "end": "78637398",
+            "chunks": "8",
+            "cpu_batches": "23516",
+            "cpu_checksum": "2239455971625435137",
+            "memory_chunks": "104",
+            "memory_checksum": "362925162496",
+            "logical_read_bytes": "6815744",
+            "logical_write_bytes": "6815744",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "13",
+            "planned": "79081623",
+            "start": "79082808",
+            "end": "79117682",
+            "chunks": "8",
+            "cpu_batches": "23703",
+            "cpu_checksum": "102527682335678465",
+            "memory_chunks": "112",
+            "memory_checksum": "420907253760",
+            "logical_read_bytes": "7340032",
+            "logical_write_bytes": "7340032",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "14",
+            "planned": "79561623",
+            "start": "79563169",
+            "end": "79598043",
+            "chunks": "8",
+            "cpu_batches": "23890",
+            "cpu_checksum": "983313929720152065",
+            "memory_chunks": "120",
+            "memory_checksum": "483184312320",
+            "logical_read_bytes": "7864320",
+            "logical_write_bytes": "7864320",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "15",
+            "planned": "80041623",
+            "start": "80043432",
+            "end": "80078313",
+            "chunks": "8",
+            "cpu_batches": "24077",
+            "cpu_checksum": "17113283438461345793",
+            "memory_chunks": "128",
+            "memory_checksum": "549756338176",
+            "logical_read_bytes": "8388608",
+            "logical_write_bytes": "8388608",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "16",
+            "planned": "80521623",
+            "start": "80521875",
+            "end": "80556742",
+            "chunks": "8",
+            "cpu_batches": "24263",
+            "cpu_checksum": "8705097837007675393",
+            "memory_chunks": "136",
+            "memory_checksum": "620623331328",
+            "logical_read_bytes": "8912896",
+            "logical_write_bytes": "8912896",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "17",
+            "planned": "81001623",
+            "start": "81002180",
+            "end": "81037068",
+            "chunks": "8",
+            "cpu_batches": "24450",
+            "cpu_checksum": "1535525370500202497",
+            "memory_chunks": "144",
+            "memory_checksum": "695785291776",
+            "logical_read_bytes": "9437184",
+            "logical_write_bytes": "9437184",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "18",
+            "planned": "81481623",
+            "start": "81482492",
+            "end": "81517359",
+            "chunks": "8",
+            "cpu_batches": "24637",
+            "cpu_checksum": "6650219498167754753",
+            "memory_chunks": "152",
+            "memory_checksum": "775242219520",
+            "logical_read_bytes": "9961472",
+            "logical_write_bytes": "9961472",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "19",
+            "planned": "81961623",
+            "start": "81962790",
+            "end": "81997664",
+            "chunks": "8",
+            "cpu_batches": "24824",
+            "cpu_checksum": "1404773430335700993",
+            "memory_chunks": "160",
+            "memory_checksum": "858994114560",
+            "logical_read_bytes": "10485760",
+            "logical_write_bytes": "10485760",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "20",
+            "planned": "82441623",
+            "start": "82443095",
+            "end": "82477969",
+            "chunks": "8",
+            "cpu_batches": "25011",
+            "cpu_checksum": "6677567176237883393",
+            "memory_chunks": "168",
+            "memory_checksum": "947040976896",
+            "logical_read_bytes": "11010048",
+            "logical_write_bytes": "11010048",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "21",
+            "planned": "82921623",
+            "start": "82923652",
+            "end": "82958540",
+            "chunks": "8",
+            "cpu_batches": "25198",
+            "cpu_checksum": "13082791249178411009",
+            "memory_chunks": "176",
+            "memory_checksum": "1039382806528",
+            "logical_read_bytes": "11534336",
+            "logical_write_bytes": "11534336",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "22",
+            "planned": "83401623",
+            "start": "83401822",
+            "end": "83436717",
+            "chunks": "8",
+            "cpu_batches": "25384",
+            "cpu_checksum": "15270269399968972801",
+            "memory_chunks": "184",
+            "memory_checksum": "1136019603456",
+            "logical_read_bytes": "12058624",
+            "logical_write_bytes": "12058624",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "23",
+            "planned": "83881623",
+            "start": "83882134",
+            "end": "83917015",
+            "chunks": "8",
+            "cpu_batches": "25571",
+            "cpu_checksum": "7518337906060140545",
+            "memory_chunks": "192",
+            "memory_checksum": "1236951367680",
+            "logical_read_bytes": "12582912",
+            "logical_write_bytes": "12582912",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "24",
+            "planned": "84361623",
+            "start": "84362509",
+            "end": "84397397",
+            "chunks": "8",
+            "cpu_batches": "25758",
+            "cpu_checksum": "2545606090435346433",
+            "memory_chunks": "200",
+            "memory_checksum": "1342178099200",
+            "logical_read_bytes": "13107200",
+            "logical_write_bytes": "13107200",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "25",
+            "planned": "84841623",
+            "start": "84842842",
+            "end": "84877709",
+            "chunks": "8",
+            "cpu_batches": "25945",
+            "cpu_checksum": "11430621173170233345",
+            "memory_chunks": "208",
+            "memory_checksum": "1451699798016",
+            "logical_read_bytes": "13631488",
+            "logical_write_bytes": "13631488",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "26",
+            "planned": "85321623",
+            "start": "85323406",
+            "end": "85358287",
+            "chunks": "8",
+            "cpu_batches": "26132",
+            "cpu_checksum": "14987740878410711041",
+            "memory_chunks": "216",
+            "memory_checksum": "1565516464128",
+            "logical_read_bytes": "14155776",
+            "logical_write_bytes": "14155776",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "27",
+            "planned": "85801623",
+            "start": "85803753",
+            "end": "85838641",
+            "chunks": "8",
+            "cpu_batches": "26319",
+            "cpu_checksum": "660621581792059393",
+            "memory_chunks": "224",
+            "memory_checksum": "1683628097536",
+            "logical_read_bytes": "14680064",
+            "logical_write_bytes": "14680064",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "28",
+            "planned": "86281623",
+            "start": "86281825",
+            "end": "86316692",
+            "chunks": "8",
+            "cpu_batches": "26505",
+            "cpu_checksum": "1060043186022965249",
+            "memory_chunks": "232",
+            "memory_checksum": "1806034698240",
+            "logical_read_bytes": "15204352",
+            "logical_write_bytes": "15204352",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "29",
+            "planned": "86761623",
+            "start": "86762116",
+            "end": "86796997",
+            "chunks": "8",
+            "cpu_batches": "26692",
+            "cpu_checksum": "453129180815523841",
+            "memory_chunks": "240",
+            "memory_checksum": "1932736266240",
+            "logical_read_bytes": "15728640",
+            "logical_write_bytes": "15728640",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "30",
+            "planned": "87241623",
+            "start": "87242526",
+            "end": "87277407",
+            "chunks": "8",
+            "cpu_batches": "26879",
+            "cpu_checksum": "6667175617131585537",
+            "memory_chunks": "248",
+            "memory_checksum": "2063732801536",
+            "logical_read_bytes": "16252928",
+            "logical_write_bytes": "16252928",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "31",
+            "planned": "87721623",
+            "start": "87723118",
+            "end": "87758006",
+            "chunks": "8",
+            "cpu_batches": "27066",
+            "cpu_checksum": "9163451503668412417",
+            "memory_chunks": "256",
+            "memory_checksum": "2199024304128",
+            "logical_read_bytes": "16777216",
+            "logical_write_bytes": "16777216",
+            "guest_cpu": "0",
+            "cookie": "1"
+          }
+        ],
+        "result": {
+          "slots": "32",
+          "production_ok": "1",
+          "software_ok": "1",
+          "test_clock": "0",
+          "fixed_cpu_batches": "5978",
+          "planned_window_ticks": "15360000",
+          "actual_window_ticks": "15361409",
+          "window_delta_negative": "0",
+          "window_delta_magnitude": "1409",
+          "window_delta_ticks": "1409",
+          "cookie": "1"
+        }
+      },
+      "raw_r_segment": "R,w,1,1,0,4m2,957uo,958xt,0,135"
+    },
+    {
+      "line": 1491,
+      "offset": 151209,
+      "bytes": 2502,
+      "sha256": "3305dfe5b98d17fc7b6042599aa77d8b58583f5eda3bffbbe5655160b3d19e2d",
+      "marker": "LINUX_PHASE_DATA",
+      "text": "LINUX_PHASE_DATA version=2 encoding=table36 cookie=1 rows=35 payload_bytes=2396 crc32=584276684 payload=H,2,1,z;S,0,16bguq,16bhu5,g3k,3szkrlputf2m9,0,0,0,0,0;S,1,1fgope,1fgpuw,kpg,a8d1n1i7kq2p,74,s27uakg0,9zlds,9zlds,0;T,0,16gm1e,16goji,16hfrp,8,g6d,p9zxpc756o01,8,zikq9s,b8jk,b8jk,0;T,1,16qweq,16qyw6,16rq3e,8,gbj,3hqs6286gikg1,g,3y29iio,mh34,mh34,0;T,2,1716s2,1719tu,172119,8,ggq,2fyx5w9hvnlkx,o,8vn2cqo,xpmo,xpmo,0;T,3,17bh5e,17bkum,17cc19,8,glx,1eh1pog1qvfup,w,fs8z8xs,18y68,18y68,0;T,4,17lriq,17lu4z,17mlau,8,gr3,1phjkz3v532f5,14,onw0740,1k6ps,1k6ps,0;T,5,17w1w2,17w4yd,17ww48,8,gwa,2glemwe8dx43l,1c,zik579c,1vf9c,1vf9c,0;T,6,186c9e,186fti,1876zd,8,h1h,2lgbhj4funqip,1k,1cc9e9ds,26nsw,26nsw,0;T,7,18gmmq,18gp3a,18hg9c,8,h6n,2xpzl5molz01t,1s,1r4zrdhc,2hwcg,2hwcg,0;T,8,18qx02,18r05m,18rrbo,8,hbu,1gb3tuc0ehtz5,20,27wr8jk0,2t4w0,2t4w0,0;T,9,1917de,191b1j,19227e,8,hh1,2m9q50tybjh1d,28,2qnjtrls,34dfk,34dfk,0;T,a,19bhqq,19bkfz,19cblu,8,hm7,1mcn1c71ldtkx,2g,3bddj1mo,3flz4,3flz4,0;T,b,19ls42,19lv9y,19mmg0,8,hre,1nbbnilkx651d,2o,3y28cdmo,3quio,3quio,0;T,c,19w2he,19w65o,19wxbj,8,hwl,3p4kky3c5b18h,2w,4mq49rls,42328,42328,0;T,d,1a6cuq,1a6fgf,1a76mo,8,i1r,3vq6vcdv7wdmp,34,5dd1b7k0,4dbls,4dbls,0;T,e,1agn82,1agpyj,1ahh4l,8,i6x,228ypbgvvrrpd,3c,65yzgphc,4ok5c,4ok5c,0;T,f,1aqxle,1ar0vt,1ars22,8,ic4,269789ajaxxxd,3k,70jyq9ds,4zsow,4zsow,0;T,g,1b17yq,1b1bpz,1b22w1,8,ihb,9lrwvje2xnnl,3s,7x3z3v9c,5b18g,5b18g,0;T,h,1bbic2,1bbkw2,1bcc1x,8,imh,2ggkzcfahqgox,40,8vn0lj40,5m9s0,5m9s0,0;T,i,1blspe,1blvub,1bmn06,8,iro,1z0zcl8jv9y4h,48,9w5378xs,5xibk,5xibk,0;T,j,1bw32q,1bw56m,1bwwch,8,iwu,dtl0uisj6nlt,4g,aym6x0qo,68qv4,68qv4,0;T,k,1c6dg2,1c6g07,1c7762,8,j21,1q2zz2xqm86bl,4o,c32bquio,6jzeo,6jzeo,0;T,l,1cgnte,1cgqy9,1chi44,8,j78,hyhcbyosx7gh,4w,d9hhoq9s,6v7y8,6v7y8,0;T,m,1cqy6q,1cr1uk,1crt08,8,jcf,3sf7eu4e5o8w1,54,ehvoqo00,76ghs,76ghs,0;T,n,1d18k2,1d1b0u,1d226w,8,jhl,23bilbiz91af5,5c,fs8wwnpc,7hp1c,7hp1c,0;T,o,1dbixe,1dbm6v,1dcdd4,8,jms,3vee5b1v8gkjl,5k,h4l66pds,7sxkw,7sxkw,0;T,p,1dltaq,1dlx2e,1dmo82,8,jrz,3pbhlreuykxdt,5s,iiwgkt1c,8464g,8464g,0;T,q,1dw3o2,1dw6at,1dwxgh,8,jx5,1w81ptnl95q0x,60,jz6s2yo0,8feo0,8feo0,0;T,r,1e6e1e,1e6h5k,1e78bf,8,k2c,2n3ul7ubrb0u9,68,lhg4p69s,8qn7k,8qn7k,0;T,s,1egoeq,1egs0w,1ehj6r,8,k7j,2rdmmcouudedd,6g,n1oiffuo,91vr4,91vr4,0;T,t,1eqys2,1er1h3,1ersnc,8,kcp,3czw9dubmduyp,6o,onvx9reo,9d4ao,9d4ao,0;T,u,1f195e,1f1cd0,1f23j2,8,khw,2xfjlvwzi1eyp,6w,qc2d84xs,9ocu8,9ocu8,0;T,v,1fbjiq,1fbn8c,1fcefy,8,kn3,36sxdeh4su1oh,74,s27uakg0,9zlds,9zlds,0;R,w,1,1,0,4lw,957uo,9580r,0,63",
+      "prefix": "",
+      "known_answer_errors": [],
+      "decoded": {
+        "snapshots": [
+          {
+            "boundary": "start",
+            "planned": "71078930",
+            "actual": "71080205",
+            "cpu_batches": "20864",
+            "cpu_checksum": "18030626338981806081",
+            "memory_chunks": "0",
+            "memory_checksum": "0",
+            "logical_read_bytes": "0",
+            "logical_write_bytes": "0",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "boundary": "end",
+            "planned": "86438930",
+            "actual": "86440424",
+            "cpu_batches": "26836",
+            "cpu_checksum": "1346791212143443969",
+            "memory_chunks": "256",
+            "memory_checksum": "2199024304128",
+            "logical_read_bytes": "16777216",
+            "logical_write_bytes": "16777216",
+            "guest_cpu": "0",
+            "cookie": "1"
+          }
+        ],
+        "slots": [
+          {
+            "cycle": "0",
+            "planned": "71318930",
+            "start": "71322174",
+            "end": "71357461",
+            "chunks": "8",
+            "cpu_batches": "20965",
+            "cpu_checksum": "3327097702785048577",
+            "memory_chunks": "8",
+            "memory_checksum": "2147516416",
+            "logical_read_bytes": "524288",
+            "logical_write_bytes": "524288",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "1",
+            "planned": "71798930",
+            "start": "71802150",
+            "end": "71837402",
+            "chunks": "8",
+            "cpu_batches": "21151",
+            "cpu_checksum": "16550633879704313857",
+            "memory_chunks": "16",
+            "memory_checksum": "8590000128",
+            "logical_read_bytes": "1048576",
+            "logical_write_bytes": "1048576",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "2",
+            "planned": "72278930",
+            "start": "72282882",
+            "end": "72318141",
+            "chunks": "8",
+            "cpu_batches": "21338",
+            "cpu_checksum": "11578765733684363265",
+            "memory_chunks": "24",
+            "memory_checksum": "19327451136",
+            "logical_read_bytes": "1572864",
+            "logical_write_bytes": "1572864",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "3",
+            "planned": "72758930",
+            "start": "72763726",
+            "end": "72798957",
+            "chunks": "8",
+            "cpu_batches": "21525",
+            "cpu_checksum": "6643413888972840961",
+            "memory_chunks": "32",
+            "memory_checksum": "34359869440",
+            "logical_read_bytes": "2097152",
+            "logical_write_bytes": "2097152",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "4",
+            "planned": "73238930",
+            "start": "73242323",
+            "end": "73277526",
+            "chunks": "8",
+            "cpu_batches": "21711",
+            "cpu_checksum": "8093067440393297921",
+            "memory_chunks": "40",
+            "memory_checksum": "53687255040",
+            "logical_read_bytes": "2621440",
+            "logical_write_bytes": "2621440",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "5",
+            "planned": "73718930",
+            "start": "73722901",
+            "end": "73758104",
+            "chunks": "8",
+            "cpu_batches": "21898",
+            "cpu_checksum": "11660975707807465473",
+            "memory_chunks": "48",
+            "memory_checksum": "77309607936",
+            "logical_read_bytes": "3145728",
+            "logical_write_bytes": "3145728",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "6",
+            "planned": "74198930",
+            "start": "74203542",
+            "end": "74238745",
+            "chunks": "8",
+            "cpu_batches": "22085",
+            "cpu_checksum": "12300483609348366337",
+            "memory_chunks": "56",
+            "memory_checksum": "105226928128",
+            "logical_read_bytes": "3670016",
+            "logical_write_bytes": "3670016",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "7",
+            "planned": "74678930",
+            "start": "74682118",
+            "end": "74717328",
+            "chunks": "8",
+            "cpu_batches": "22271",
+            "cpu_checksum": "13915297147429199873",
+            "memory_chunks": "64",
+            "memory_checksum": "137439215616",
+            "logical_read_bytes": "4194304",
+            "logical_write_bytes": "4194304",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "8",
+            "planned": "75158930",
+            "start": "75163018",
+            "end": "75198228",
+            "chunks": "8",
+            "cpu_batches": "22458",
+            "cpu_checksum": "6884935211766562817",
+            "memory_chunks": "72",
+            "memory_checksum": "173946470400",
+            "logical_read_bytes": "4718592",
+            "logical_write_bytes": "4718592",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "9",
+            "planned": "75638930",
+            "start": "75643687",
+            "end": "75678890",
+            "chunks": "8",
+            "cpu_batches": "22645",
+            "cpu_checksum": "12408000316758515713",
+            "memory_chunks": "80",
+            "memory_checksum": "214748692480",
+            "logical_read_bytes": "5242880",
+            "logical_write_bytes": "5242880",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "10",
+            "planned": "76118930",
+            "start": "76122431",
+            "end": "76157634",
+            "chunks": "8",
+            "cpu_batches": "22831",
+            "cpu_checksum": "7680272379949359105",
+            "memory_chunks": "88",
+            "memory_checksum": "259845881856",
+            "logical_read_bytes": "5767168",
+            "logical_write_bytes": "5767168",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "11",
+            "planned": "76598930",
+            "start": "76603030",
+            "end": "76638240",
+            "chunks": "8",
+            "cpu_batches": "23018",
+            "cpu_checksum": "7807081772118097921",
+            "memory_chunks": "96",
+            "memory_checksum": "309238038528",
+            "logical_read_bytes": "6291456",
+            "logical_write_bytes": "6291456",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "12",
+            "planned": "77078930",
+            "start": "77083692",
+            "end": "77118895",
+            "chunks": "8",
+            "cpu_batches": "23205",
+            "cpu_checksum": "17522401537759731713",
+            "memory_chunks": "104",
+            "memory_checksum": "362925162496",
+            "logical_read_bytes": "6815744",
+            "logical_write_bytes": "6815744",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "13",
+            "planned": "77558930",
+            "start": "77562303",
+            "end": "77597520",
+            "chunks": "8",
+            "cpu_batches": "23391",
+            "cpu_checksum": "18391174738219769857",
+            "memory_chunks": "112",
+            "memory_checksum": "420907253760",
+            "logical_read_bytes": "7340032",
+            "logical_write_bytes": "7340032",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "14",
+            "planned": "78038930",
+            "start": "78042475",
+            "end": "78077685",
+            "chunks": "8",
+            "cpu_batches": "23577",
+            "cpu_checksum": "9772779816884822017",
+            "memory_chunks": "120",
+            "memory_checksum": "483184312320",
+            "logical_read_bytes": "7864320",
+            "logical_write_bytes": "7864320",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "15",
+            "planned": "78518930",
+            "start": "78523193",
+            "end": "78558410",
+            "chunks": "8",
+            "cpu_batches": "23764",
+            "cpu_checksum": "10300132542445879297",
+            "memory_chunks": "128",
+            "memory_checksum": "549756338176",
+            "logical_read_bytes": "8388608",
+            "logical_write_bytes": "8388608",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "16",
+            "planned": "78998930",
+            "start": "79003799",
+            "end": "79039009",
+            "chunks": "8",
+            "cpu_batches": "23951",
+            "cpu_checksum": "1264209527668219905",
+            "memory_chunks": "136",
+            "memory_checksum": "620623331328",
+            "logical_read_bytes": "8912896",
+            "logical_write_bytes": "8912896",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "17",
+            "planned": "79478930",
+            "start": "79482242",
+            "end": "79517445",
+            "chunks": "8",
+            "cpu_batches": "24137",
+            "cpu_checksum": "11643339384796798977",
+            "memory_chunks": "144",
+            "memory_checksum": "695785291776",
+            "logical_read_bytes": "9437184",
+            "logical_write_bytes": "9437184",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "18",
+            "planned": "79958930",
+            "start": "79962995",
+            "end": "79998198",
+            "chunks": "8",
+            "cpu_batches": "24324",
+            "cpu_checksum": "9348731088866344961",
+            "memory_chunks": "152",
+            "memory_checksum": "775242219520",
+            "logical_read_bytes": "9961472",
+            "logical_write_bytes": "9961472",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "19",
+            "planned": "80438930",
+            "start": "80441662",
+            "end": "80476865",
+            "chunks": "8",
+            "cpu_batches": "24510",
+            "cpu_checksum": "1819245895633616897",
+            "memory_chunks": "160",
+            "memory_checksum": "858994114560",
+            "logical_read_bytes": "10485760",
+            "logical_write_bytes": "10485760",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "20",
+            "planned": "80918930",
+            "start": "80922247",
+            "end": "80957450",
+            "chunks": "8",
+            "cpu_batches": "24697",
+            "cpu_checksum": "8171511522602442753",
+            "memory_chunks": "168",
+            "memory_checksum": "947040976896",
+            "logical_read_bytes": "11010048",
+            "logical_write_bytes": "11010048",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "21",
+            "planned": "81398930",
+            "start": "81402993",
+            "end": "81438196",
+            "chunks": "8",
+            "cpu_batches": "24884",
+            "cpu_checksum": "2363639662379106305",
+            "memory_chunks": "176",
+            "memory_checksum": "1039382806528",
+            "logical_read_bytes": "11534336",
+            "logical_write_bytes": "11534336",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "22",
+            "planned": "81878930",
+            "start": "81883676",
+            "end": "81918872",
+            "chunks": "8",
+            "cpu_batches": "25071",
+            "cpu_checksum": "17956146874872766465",
+            "memory_chunks": "184",
+            "memory_checksum": "1136019603456",
+            "logical_read_bytes": "12058624",
+            "logical_write_bytes": "12058624",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "23",
+            "planned": "82358930",
+            "start": "82362126",
+            "end": "82397336",
+            "chunks": "8",
+            "cpu_batches": "25257",
+            "cpu_checksum": "9913733756858195969",
+            "memory_chunks": "192",
+            "memory_checksum": "1236951367680",
+            "logical_read_bytes": "12582912",
+            "logical_write_bytes": "12582912",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "24",
+            "planned": "82838930",
+            "start": "82843159",
+            "end": "82878376",
+            "chunks": "8",
+            "cpu_batches": "25444",
+            "cpu_checksum": "18348039863250157569",
+            "memory_chunks": "200",
+            "memory_checksum": "1342178099200",
+            "logical_read_bytes": "13107200",
+            "logical_write_bytes": "13107200",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "25",
+            "planned": "83318930",
+            "start": "83323814",
+            "end": "83359010",
+            "chunks": "8",
+            "cpu_batches": "25631",
+            "cpu_checksum": "17547692264613093377",
+            "memory_chunks": "208",
+            "memory_checksum": "1451699798016",
+            "logical_read_bytes": "13631488",
+            "logical_write_bytes": "13631488",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "26",
+            "planned": "83798930",
+            "start": "83802341",
+            "end": "83837537",
+            "chunks": "8",
+            "cpu_batches": "25817",
+            "cpu_checksum": "8979699540410949633",
+            "memory_chunks": "216",
+            "memory_checksum": "1565516464128",
+            "logical_read_bytes": "14155776",
+            "logical_write_bytes": "14155776",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "27",
+            "planned": "84278930",
+            "start": "84282968",
+            "end": "84318171",
+            "chunks": "8",
+            "cpu_batches": "26004",
+            "cpu_checksum": "12518136996907286529",
+            "memory_chunks": "224",
+            "memory_checksum": "1683628097536",
+            "logical_read_bytes": "14680064",
+            "logical_write_bytes": "14680064",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "28",
+            "planned": "84758930",
+            "start": "84763616",
+            "end": "84798819",
+            "chunks": "8",
+            "cpu_batches": "26191",
+            "cpu_checksum": "13080376118047678465",
+            "memory_chunks": "232",
+            "memory_checksum": "1806034698240",
+            "logical_read_bytes": "15204352",
+            "logical_write_bytes": "15204352",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "29",
+            "planned": "85238930",
+            "start": "85242423",
+            "end": "85277640",
+            "chunks": "8",
+            "cpu_batches": "26377",
+            "cpu_checksum": "15925846399817146369",
+            "memory_chunks": "240",
+            "memory_checksum": "1932736266240",
+            "logical_read_bytes": "15728640",
+            "logical_write_bytes": "15728640",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "30",
+            "planned": "85718930",
+            "start": "85723092",
+            "end": "85758302",
+            "chunks": "8",
+            "cpu_batches": "26564",
+            "cpu_checksum": "13877112663616487425",
+            "memory_chunks": "248",
+            "memory_checksum": "2063732801536",
+            "logical_read_bytes": "16252928",
+            "logical_write_bytes": "16252928",
+            "guest_cpu": "0",
+            "cookie": "1"
+          },
+          {
+            "cycle": "31",
+            "planned": "86198930",
+            "start": "86203740",
+            "end": "86239006",
+            "chunks": "8",
+            "cpu_batches": "26751",
+            "cpu_checksum": "15110635961732964353",
+            "memory_chunks": "256",
+            "memory_checksum": "2199024304128",
+            "logical_read_bytes": "16777216",
+            "logical_write_bytes": "16777216",
+            "guest_cpu": "0",
+            "cookie": "1"
+          }
+        ],
+        "result": {
+          "slots": "32",
+          "production_ok": "1",
+          "software_ok": "1",
+          "test_clock": "0",
+          "fixed_cpu_batches": "5972",
+          "planned_window_ticks": "15360000",
+          "actual_window_ticks": "15360219",
+          "window_delta_negative": "0",
+          "window_delta_magnitude": "219",
+          "window_delta_ticks": "219",
+          "cookie": "1"
+        }
+      },
+      "raw_r_segment": "R,w,1,1,0,4lw,957uo,9580r,0,63"
+    }
+  ],
+  "unverified": [
+    "same-run-launch-wait-completion-binding: AuditError: xtask exit disagrees with final same-run binding",
+    "full-suite-no-additional-failure-or-tail: AuditError: failure/diagnostic/unclassified error candidate or unframed final bytes observed",
+    "actual-artifact-use-chain: AuditError: newc trailer/tail",
+    "actual-exits-and-frozen-explicit-release: AuditError: xtask exit disagrees with final same-run binding"
+  ],
+  "M2": false,
+  "Joint": false,
+  "goal_complete": false,
+  "first_explicit_failure": null,
+  "first_error_candidate": {
+    "line": 24,
+    "offset": 2695,
+    "bytes": 228,
+    "sha256": "c83438e2c6ba62743446b3445873b1486bb7309f41bb7c3cfef9cff3477e0283",
+    "marker": null,
+    "text": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/guest/zephyr/zephyr.dts:23.37-38.5: Warning (simple_bus_reg): /soc/interrupt-controller@8000000: simple-bus unit address format error, expected \"fe600000\"",
+    "error_classification": "unclassified-reject",
+    "requires_rejection": true
+  },
+  "explicit_failures": [],
+  "diagnostics": [],
+  "error_candidates": [
+    {
+      "line": 24,
+      "offset": 2695,
+      "bytes": 228,
+      "sha256": "c83438e2c6ba62743446b3445873b1486bb7309f41bb7c3cfef9cff3477e0283",
+      "marker": null,
+      "text": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/guest/zephyr/zephyr.dts:23.37-38.5: Warning (simple_bus_reg): /soc/interrupt-controller@8000000: simple-bus unit address format error, expected \"fe600000\"",
+      "error_classification": "unclassified-reject",
+      "requires_rejection": true
+    },
+    {
+      "line": 52,
+      "offset": 5173,
+      "bytes": 228,
+      "sha256": "c83438e2c6ba62743446b3445873b1486bb7309f41bb7c3cfef9cff3477e0283",
+      "marker": null,
+      "text": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/guest/zephyr/zephyr.dts:23.37-38.5: Warning (simple_bus_reg): /soc/interrupt-controller@8000000: simple-bus unit address format error, expected \"fe600000\"",
+      "error_classification": "unclassified-reject",
+      "requires_rejection": true
+    }
+  ],
+  "error_candidate_policy": "all candidates classified; unknown error prose rejects pending a source-bound normal contract",
+  "protocol_partial_tails": [],
+  "allowed_tool_tails": [],
+  "marker_counts": {
+    "AXTEST_BEGIN": 1,
+    "VIRQ_PHASE_WIRE_PROOF": 1,
+    "VIRQ_MEASUREMENT": 1,
+    "VIRQ_TASK_CONFIG": 1,
+    "VIRQ_PERIODIC_CONFIG": 1,
+    "VIRQ_CONTROLLER": 1,
+    "VIRQ_RECORDING": 1,
+    "VIRQ_STAGE_CONFIG": 1,
+    "VIRQ_IRQ_SERVICE_CONFIG": 1,
+    "VIRQ_SCENARIO": 1,
+    "VIRQ_SOURCE": 1,
+    "VIRQ_GUEST_FIRMWARE": 1,
+    "VIRQ_PLATFORM": 1,
+    "VIRQ_SERVICE_PLACEMENT": 1,
+    "VIRQ_IRQ_PRESSURE_CONFIG": 1,
+    "VIRQ_LINUX_MEMORY_CONFIG": 1,
+    "VIRQ_LINUX_PHASE_FENCE_CONFIG": 1,
+    "VIRQ_LINUX_CONFIG": 1,
+    "VIRQ_FREQUENCY_CONFIG": 1,
+    "VIRQ_THERMAL_CONFIG": 1,
+    "VIRQ_COUNTER_CONFIG": 1,
+    "VIRQ_LINUX_PHASE_CONFIG": 2,
+    "LINUX_LOAD_READY": 2,
+    "LINUX_MEMORY_READY": 2,
+    "LINUX_PHASE_READY": 2,
+    "LINUX_FENCE_READY": 2,
+    "LINUX_LOAD_PROGRESS": 56,
+    "VIRQ_LINUX_BOOT": 2,
+    "VIRQ_LIFECYCLE": 8,
+    "VIRQ_SERVICE_THREAD": 10,
+    "VIRQ_IRQ_SERVICE": 6,
+    "VIRQ_IRQ_SERVICE_JOIN": 6,
+    "VIRQ_LOAD_STAGE": 4,
+    "VIRQ_LINUX_PHASE_PLAN": 2,
+    "VIRQ_LINUX_PHASE_ACK": 2,
+    "VIRQ_PHASE_SESSION_REJECT": 8,
+    "VIRQ_PHYSICAL_SUMMARY": 2,
+    "VIRQ_LINUX_SAMPLE": 64,
+    "VIRQ_CLOCK_SAMPLE": 128,
+    "VIRQ_COUNTER_MAPPING": 2,
+    "VIRQ_HOST_SAMPLE": 64,
+    "VIRQ_ISR_SAMPLE": 64,
+    "VIRQ_TASK_SAMPLE": 64,
+    "VIRQ_PERIODIC_RELEASE": 64,
+    "VIRQ_PHYSICAL_ARM": 64,
+    "VIRQ_INJECT_COMPLETE": 2,
+    "VIRQ_TASK_BACKGROUND": 2,
+    "SOFTWARE VIRQ COMPLETE": 2,
+    "LINUX_FENCE_REPLY": 4,
+    "LINUX_PHASE_ARMED": 2,
+    "LINUX_PHASE_DATA": 2,
+    "VIRQ_PERIODIC_BACKLOG": 64,
+    "VIRQ_PERIODIC_DRAIN": 2,
+    "VIRQ_LINUX_PHASE_ACCEPT": 2,
+    "VIRQ_VM_GROUP_RETIRED": 2,
+    "VIRQ_SERVICE_SUMMARY": 2,
+    "VIRQ_FREQUENCY_SAMPLE": 16,
+    "VIRQ_COUNTER_SERIES": 48,
+    "VIRQ_THERMAL_SAMPLE": 4,
+    "VIRQ_TRACE_FROZEN": 1,
+    "VIRQ_IRQ_PRESSURE_EVENT": 5558,
+    "VIRQ_IRQ_PRESSURE_SUMMARY": 2,
+    "VIRQ_TRACE_ENVELOPE": 128,
+    "VIRQ_READY_SUMMARY": 1,
+    "VIRQ_RUNTIME": 42768,
+    "VIRQ_RUNTIME_SUMMARY": 1,
+    "VIRQ_RECORDING_SUMMARY": 1,
+    "AXTEST_CASE": 1,
+    "AXTEST_SUMMARY": 1,
+    "AXTEST_SUITE_OK": 1
+  },
+  "exit_release": {
+    "xtask_wait_exit": null,
+    "driver_return_code": 1,
+    "driver_wait_exit": 1,
+    "root_wait_exit": 1,
+    "root_completion_session": 77494,
+    "root_completion_chunk": "36f9ce",
+    "release": "unknown",
+    "independent_board_tool_wait": null,
+    "forced_signals": null,
+    "cleanup": {
+      "owned_group_empty": null,
+      "release": "unknown"
+    }
+  },
+  "other_case_status": {
+    "AB0": "not audited by this report",
+    "0": "not audited by this report"
+  }
+}

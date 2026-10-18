@@ -1,0 +1,60 @@
+{
+  "actual_parent_wait_exit": 0,
+  "argv": [
+    "/usr/bin/strace",
+    "-f",
+    "-e",
+    "trace=execve,execveat",
+    "-s",
+    "4096",
+    "-o",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/controller-cause-v1/cargo-version.execve.log",
+    "/home/yanlien/.cargo/bin/cargo",
+    "--version"
+  ],
+  "binaries": [
+    {
+      "bytes": 2087432,
+      "mode": 493,
+      "mtime_ns": 1713432762000000000,
+      "path": "/usr/bin/strace",
+      "sha256": "28f957c227012de0b18d1bd7fff2d396cb693ea60ed8013be68de071e84b5001"
+    },
+    {
+      "bytes": 21113232,
+      "mode": 493,
+      "mtime_ns": 1788828898702758611,
+      "path": "/home/yanlien/.cargo/bin/rustup",
+      "sha256": "dda7234360b7f578ca8b0ddcb80145646fa61a67c1720a5abc7051b35c9fcb71"
+    },
+    {
+      "bytes": 36176456,
+      "mode": 493,
+      "mtime_ns": 1788750316715488948,
+      "path": "/home/yanlien/.rustup/toolchains/nightly-2026-09-04-x86_64-unknown-linux-gnu/bin/cargo",
+      "sha256": "eb962dff292c778cc2fa7247f8371a6c360c7f3606252d7790db4b12d20ccafb"
+    }
+  ],
+  "cargo_symlink": {
+    "link_target": "rustup",
+    "path": "/home/yanlien/.cargo/bin/cargo",
+    "resolved": "/home/yanlien/.cargo/bin/rustup"
+  },
+  "cwd": "/tmp/strict-native-controller-cause-v1-108vgkrs/cwd",
+  "environment": {
+    "CARGO_HOME": "/tmp/strict-native-controller-cause-v1-108vgkrs/cargo-home",
+    "CARGO_NET_OFFLINE": "true",
+    "CARGO_TARGET_DIR": "/tmp/strict-native-controller-cause-v1-108vgkrs/target",
+    "HOME": "/home/yanlien",
+    "LANG": "en_US.UTF-8",
+    "LOGNAME": "yanlien",
+    "PATH": "/home/yanlien/.cargo/bin:/usr/bin:/bin",
+    "RUSTUP_AUTO_INSTALL": "0",
+    "RUSTUP_HOME": "/home/yanlien/.rustup",
+    "RUSTUP_TOOLCHAIN": "nightly-2026-09-04-x86_64-unknown-linux-gnu",
+    "USER": "yanlien"
+  },
+  "not_historical_AB1_argv": true,
+  "scope": "One installed cargo --version, isolated Cargo home/target/cwd; no project build/test or network request requested.",
+  "strace_original_Popen_pid": 3
+}

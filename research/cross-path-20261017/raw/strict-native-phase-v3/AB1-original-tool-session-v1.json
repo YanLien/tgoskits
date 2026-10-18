@@ -1,0 +1,12 @@
+{
+  "Root_acceptance_sha256": "79d2b66a2f6291b2f6cf25dbb3749c1636c7967482030a1b65139ceac8d53f83",
+  "actual_unified_exec_exit": null,
+  "case_id": "AB1",
+  "initial_tool_chunk": "cc4cc3",
+  "observed_utc": "2026-10-18T12:43:15.721216+00:00",
+  "original_unified_exec_session": 77494,
+  "schema_version": 1,
+  "scope": "actual controller tool launch; board/Guest evidence separately required",
+  "state": "running until original tool session completes",
+  "supervisor_source_sha256": "d7ebb6948ac065c3fddfd1e618bfb381e9355029d7261cd0a4a9808e704d90f2"
+}

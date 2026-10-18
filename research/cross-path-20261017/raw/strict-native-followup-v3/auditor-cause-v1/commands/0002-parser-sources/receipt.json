@@ -1,0 +1,31 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "-c",
+    "from pathlib import Path;import hashlib,ast,json;ps=[(Path(\"research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/audit.py\"),\"6fa57d1bb99a9fbdb49613ffc90cb4b648aa9511465957aec25b9e58e34e76aa\",{\"newc\",\"validate_artifacts\",\"validate_suite\"}),(Path(\"/tmp/crosspath-native-cache-v3-tools-jrhcn15t/capture_native.py\"),\"61717a37b528e2e93d8cbcae1c1dafbc6249ac3417fbf0b8011b984a03a4c683\",{\"parse_newc\",\"_newc_entries\",\"newc_members\",\"verify_rootfs\",\"capture_native\"})];\nfor p,expected,names in ps:\n raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()==expected;s=raw.decode();lines=s.splitlines();print(\"SOURCE \"+str(p)+\" \"+expected)\n for n in ast.parse(raw).body:\n  if isinstance(n,ast.FunctionDef) and n.name in names:\n   print(\"FUNCTION \"+n.name+\" \"+str(n.lineno)+\"-\"+str(n.end_lineno));print(\"\\n\".join(str(i+1)+\":\"+lines[i] for i in range(n.lineno-1,n.end_lineno)))\n if p.name==\"audit.py\":\n  print(\"CLASSIFICATION SOURCE\");print(\"\\n\".join(str(i+1)+\":\"+lines[i] for i in list(range(18,27))+list(range(118,166))))\n"
+  ],
+  "env": {
+    "PATH": "/usr/bin:/bin",
+    "LANG": "C.UTF-8",
+    "TZ": "UTC",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "cwd": "/home/yanlien/Program/hypervisor/tgoskits",
+  "started_ns": 1792328990338566326,
+  "forced_stop": false,
+  "pid": 3,
+  "wait_returncode": 0,
+  "returncode": 0,
+  "ended_ns": 1792328990422092727,
+  "stdout": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0002-parser-sources/stdout",
+    "size": 33741,
+    "sha256": "177e8da8d88a45b3abb495dac9f8f593dcebf6605cec565af05bc4c7aa1db8ca"
+  },
+  "stderr": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0002-parser-sources/stderr",
+    "size": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

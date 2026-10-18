@@ -1,0 +1,53 @@
+{
+  "Joint": false,
+  "M2": false,
+  "actual_driver_wait_exit": 1,
+  "actual_root_tool_exit": 1,
+  "actual_xtask_wait_exit": null,
+  "case_id": "AB1",
+  "created_utc": "2026-10-18T13:26:30.072739+00:00",
+  "dropped": 0,
+  "exported_trace_records": 42768,
+  "goal_complete": false,
+  "incomplete": 0,
+  "later_cases_unexecuted": [
+    "AB0",
+    "0"
+  ],
+  "normal_function_passed": false,
+  "references": {
+    "README.snapshot.md": {
+      "bytes": 17947,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/notes/stage2-native-v3-failure-checkpoint-20261018-v1/README.snapshot.md",
+      "sha256": "bab4aec6faae82eb01293b5871caf1d15f46abba135443fd6e2cd036ef4fcbe8"
+    },
+    "research-progress.snapshot.md": {
+      "bytes": 28168,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/notes/stage2-native-v3-failure-checkpoint-20261018-v1/research-progress.snapshot.md",
+      "sha256": "bea330884794a7235b15a5639ceef9cdab6c1c3d38bc7a2bf2aa58663f0404aa"
+    },
+    "strict-native-cache-v3-AB1-auditor-cause-v1.json": {
+      "bytes": 56084,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-AB1-auditor-cause-v1.json",
+      "sha256": "ed4c51ed436cf7cf1673a74cbbcc02ec7c94bc16833f50187d3c297dce8b3ab8"
+    },
+    "strict-native-cache-v3-AB1-exit-cause-v1.json": {
+      "bytes": 21598,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-AB1-exit-cause-v1.json",
+      "sha256": "66212f18d135e70e198b978717f160fe9161e6354e6421539f66dc10fc23df0f"
+    },
+    "strict-native-cache-v3-AB1-failure-v1.json": {
+      "bytes": 19063,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-AB1-failure-v1.json",
+      "sha256": "133badac82f4ba3c620ea61104b5a56af3fa85d385a4bbd95066afd484e91531"
+    },
+    "strict-native-cache-v3-AB1-failure-v1.md": {
+      "bytes": 4746,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-AB1-failure-v1.md",
+      "sha256": "5b457379b22901a9d41ff2bc91c72b3e2728b0b810c0c60f4dd4413cd62805e1"
+    }
+  },
+  "release": "unknown",
+  "schema_version": 1,
+  "scope": "failure checkpoint and current documentation snapshot; not full phase2 completion"
+}

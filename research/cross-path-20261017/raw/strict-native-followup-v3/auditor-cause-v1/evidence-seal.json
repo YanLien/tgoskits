@@ -1,0 +1,154 @@
+{
+  "scope": "final read-only diagnosis evidence seal; not a full normal audit",
+  "reports": [
+    {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-AB1-auditor-cause-v1.json",
+      "bytes": 56084,
+      "sha256": "ed4c51ed436cf7cf1673a74cbbcc02ec7c94bc16833f50187d3c297dce8b3ab8"
+    },
+    {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-AB1-auditor-cause-v1.md",
+      "bytes": 4879,
+      "sha256": "98d1cf3bfaa8207c290eabe1021d87398ca3a6759fc375f58a41ae1045ec263a"
+    }
+  ],
+  "completed_command_receipts": [
+    {
+      "reference": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0001-bound-context/receipt.json",
+        "bytes": 2453,
+        "sha256": "8a1282d685c610e938c1a3ad72706b4c619a6d926404e1ada8439c8eaccefac3"
+      },
+      "actual_Popen_wait": 0
+    },
+    {
+      "reference": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0002-parser-sources/receipt.json",
+        "bytes": 2049,
+        "sha256": "90545dce74ae1174704e3f6047ae8ee820c550cc9d40c606ec8ddef05722d651"
+      },
+      "actual_Popen_wait": 0
+    },
+    {
+      "reference": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0003-pure-format-diagnosis/receipt.json",
+        "bytes": 1057,
+        "sha256": "750c6af3a9da020673ec8b4a55250655d3f6adf1623c705f6757dc64b0bcc9cb"
+      },
+      "actual_Popen_wait": 0
+    },
+    {
+      "reference": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0004-narrow-context/receipt.json",
+        "bytes": 2243,
+        "sha256": "d75c40e1d40c2847486157cc711be9b2d4be609ac51f0e0cad6046d67957d4b2"
+      },
+      "actual_Popen_wait": 0
+    },
+    {
+      "reference": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0005-bound-offline-context/receipt.json",
+        "bytes": 2309,
+        "sha256": "4a454d0b2623b08c7108ae02b25e43598e0e49dd06fb2dfd1208502c283ce46c"
+      },
+      "actual_Popen_wait": 0
+    },
+    {
+      "reference": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0006-report-input-shapes/receipt.json",
+        "bytes": 1903,
+        "sha256": "2037a8b3fe407dea5c5ebf22dc9c910940776d7551f87d23f5ad7d437fe16f92"
+      },
+      "actual_Popen_wait": 0
+    },
+    {
+      "reference": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0007-isolated-suite-classification/receipt.json",
+        "bytes": 1069,
+        "sha256": "3b4327b9173bc89c1741c7b0bdaccc453b374a4a6c8ec4c7af83a7b0338898d7"
+      },
+      "actual_Popen_wait": 0
+    },
+    {
+      "reference": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0008-write-cause-report/receipt.json",
+        "bytes": 1046,
+        "sha256": "3d9669e61dbce7f3c5db87d5ca3518c0764e5583483d7ddf7f29113147041106"
+      },
+      "actual_Popen_wait": 0
+    },
+    {
+      "reference": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0009-final-evidence-seal/receipt.json",
+        "bytes": 3285,
+        "sha256": "fdab981defb893ec585c4a7c66febbade2a26fb5c4877a573551c46ea99056ba"
+      },
+      "actual_Popen_wait": 1
+    },
+    {
+      "reference": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0010-inspect-seal-receipt-schema/receipt.json",
+        "bytes": 1473,
+        "sha256": "2599274d661ae055714987f9506dee0775d2bcd0c14b83d5d61ca8e46ac719e6"
+      },
+      "actual_Popen_wait": 0
+    }
+  ],
+  "archival_verification_note": "0009 exited 1 because its receipt checker expected bytes while the inherited runner records size. 0010 inspected the exact schema; this checker verifies both explicit historical schemas. No parser rule, candidate classification, sealed original, or result changed.",
+  "unchanged_originals": [
+    {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/audit.py",
+      "bytes": 64442,
+      "sha256": "6fa57d1bb99a9fbdb49613ffc90cb4b648aa9511465957aec25b9e58e34e76aa"
+    },
+    {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/AB1-actual-audit-v1/report.json",
+      "bytes": 59088,
+      "sha256": "1a9257ef78caf570267dcb89c60d3143cf97dd033f9460b56176347f594d0b25"
+    },
+    {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-root-final-handoff-v1.json",
+      "bytes": 5377,
+      "sha256": "cf25d62d4ff106f0e6d3315ce4e0b58ce5f4d78ac2e90b7b79fe814116e9b72f"
+    },
+    {
+      "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/capture_native.py",
+      "bytes": 33173,
+      "sha256": "61717a37b528e2e93d8cbcae1c1dafbc6249ac3417fbf0b8011b984a03a4c683"
+    }
+  ],
+  "supporting_outputs": [
+    {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/format-diagnosis.json",
+      "bytes": 24394,
+      "sha256": "b24daa8aaf936fcb65c703f91be76a784cac803c25b7b4ac0d4514a5f43788ce"
+    },
+    {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/suite-diagnosis.json",
+      "bytes": 9537,
+      "sha256": "8a44cb9a400bdc46866ec5413b410a4057f8d9a6c051fa5b3c2d05f97996f0dd"
+    },
+    {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/source-rules.json",
+      "bytes": 16183,
+      "sha256": "159f94b665f92f376ee396e54094cb59243c6f5c2028d1b6136277cc608cffeb"
+    },
+    {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/suite-candidates.raw",
+      "bytes": 456,
+      "sha256": "739235cf51ddce5add9143da1a401041341cef49ab4cc5c18f473f6069afcd26"
+    },
+    {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/host-newc-gzip-boundary.raw",
+      "bytes": 96,
+      "sha256": "f944cf0071477f21febbacdfa3635327ed82804b49272c3031e7caa5187af3b2"
+    },
+    {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/seal_evidence.py",
+      "bytes": 3515,
+      "sha256": "03b4f9d5e00f237e951dd02a52df85851d344577d42b8c7e414da309edb89e33"
+    }
+  ],
+  "normal_end_to_end_GREEN": false,
+  "full_function_passed": false
+}

@@ -1,0 +1,31 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "-c",
+    "import pathlib,json,hashlib; r=pathlib.Path(\"research/cross-path-20261017\"); out=r/\"raw/strict-native-followup-v3/auditor-cause-v1\"; refs=[];\ndef ref(p):\n b=p.read_bytes(); return {\"path\":str(p.resolve()),\"bytes\":len(b),\"sha256\":hashlib.sha256(b).hexdigest()}\nfor p in sorted((out/\"commands\").glob(\"*/receipt.json\")):\n d=json.loads(p.read_bytes()); v=d.get(\"wait_returncode\",d.get(\"actual_Popen_wait\",d.get(\"returncode\"))); assert v==0,(str(p),v)\n for stream in [\"stdout\",\"stderr\"]:\n  z=d[stream]; q=p.parent/stream\n  if not q.exists(): q=p.parent/(stream+\".log\")\n  b=q.read_bytes(); assert z[\"bytes\"]==len(b) and z[\"sha256\"]==hashlib.sha256(b).hexdigest(),(str(p),stream)\n refs.append({\"receipt\":ref(p),\"actual_Popen_wait\":v})\nassert len(refs)==8; report=r/\"results/strict-native-cache-v3-AB1-auditor-cause-v1.json\"; md=report.with_suffix(\".md\"); a=json.loads(report.read_bytes()); assert a[\"full_function_passed\"] is False and a[\"normal_end_to_end_GREEN\"] is False; assert a[\"actual_original_audit\"][\"actual_Popen_wait\"]==1; assert a[\"suite_refusal\"][\"candidate_count\"]==2; expected={r/\"raw/strict-native-phase-v3/function-audit-v1/audit.py\":\"6fa57d1bb99a9fbdb49613ffc90cb4b648aa9511465957aec25b9e58e34e76aa\",r/\"raw/strict-native-phase-v3/function-audit-v1/AB1-actual-audit-v1/report.json\":\"1a9257ef78caf570267dcb89c60d3143cf97dd033f9460b56176347f594d0b25\",r/\"raw/strict-native-phase-v3/AB1-root-final-handoff-v1.json\":\"cf25d62d4ff106f0e6d3315ce4e0b58ce5f4d78ac2e90b7b79fe814116e9b72f\",pathlib.Path(\"/tmp/crosspath-native-cache-v3-tools-jrhcn15t/capture_native.py\"):\"61717a37b528e2e93d8cbcae1c1dafbc6249ac3417fbf0b8011b984a03a4c683\"}; sealed=[]\nfor p,s in expected.items(): z=ref(p); assert z[\"sha256\"]==s; sealed.append(z)\ne={\"scope\":\"final read-only evidence seal; not a full audit\",\"reports\":[ref(report),ref(md)],\"completed_command_receipts\":refs,\"unchanged_originals\":sealed,\"normal_end_to_end_GREEN\":False,\"full_function_passed\":False}; (out/\"evidence-seal.json\").write_text(json.dumps(e,indent=2)+\"\\n\"); print(json.dumps({\"reports\":e[\"reports\"],\"completed_prior_receipts\":len(refs),\"all_actual_Popen_wait\":0,\"evidence_seal\":ref(out/\"evidence-seal.json\"),\"normal_end_to_end_GREEN\":False},indent=2))"
+  ],
+  "env": {
+    "PATH": "/usr/bin:/bin",
+    "LANG": "C.UTF-8",
+    "TZ": "UTC",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "cwd": "/home/yanlien/Program/hypervisor/tgoskits",
+  "started_ns": 1792329510429512338,
+  "forced_stop": false,
+  "pid": 3,
+  "wait_returncode": 1,
+  "returncode": 1,
+  "ended_ns": 1792329510564330327,
+  "stdout": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0009-final-evidence-seal/stdout",
+    "size": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0009-final-evidence-seal/stderr",
+    "size": 92,
+    "sha256": "7aaa4b4ba2cb7e369ec966d6af8e9ea9ad2a53ea89086859ac9229d20c3d4002"
+  }
+}

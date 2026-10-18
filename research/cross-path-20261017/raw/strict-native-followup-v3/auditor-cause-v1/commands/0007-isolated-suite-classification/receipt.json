@@ -1,0 +1,30 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/inspect_suite.py"
+  ],
+  "env": {
+    "PATH": "/usr/bin:/bin",
+    "LANG": "C.UTF-8",
+    "TZ": "UTC",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "cwd": "/home/yanlien/Program/hypervisor/tgoskits",
+  "started_ns": 1792329336873721714,
+  "forced_stop": false,
+  "pid": 3,
+  "wait_returncode": 0,
+  "returncode": 0,
+  "ended_ns": 1792329338256760521,
+  "stdout": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0007-isolated-suite-classification/stdout",
+    "size": 477,
+    "sha256": "03b4a100c62622dd49a6fabd01e78c3f36c6fcd002ed09ce358bf427ea2e2bb0"
+  },
+  "stderr": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0007-isolated-suite-classification/stderr",
+    "size": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

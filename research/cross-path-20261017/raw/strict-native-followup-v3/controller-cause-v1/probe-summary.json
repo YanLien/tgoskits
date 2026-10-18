@@ -1,0 +1,9 @@
+{
+  "all_assertions_passed": true,
+  "cargo_version_actual_wait_exit": 0,
+  "exec_child_actual_wait_exit": 23,
+  "existing_evidence_unchanged": true,
+  "host_proc_scans": 0,
+  "original_AB1_PID_read_or_signalled": false,
+  "signals_sent": []
+}

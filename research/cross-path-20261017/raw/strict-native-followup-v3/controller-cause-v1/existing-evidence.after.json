@@ -1,0 +1,303 @@
+[
+  {
+    "bytes": 2685,
+    "mode": 436,
+    "mtime_ns": 1792327421987606663,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/actual-command.json",
+    "sha256": "8e02c6165744f78da9ec661429b3c9b2ea236df94a450a81361937de90a9c0a9"
+  },
+  {
+    "bytes": 388,
+    "mode": 436,
+    "mtime_ns": 1792327432996711095,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/392f378ccedaff970bbbb29a6a14bb90738914760c397cdf852365aafb72fa4f",
+    "sha256": "392f378ccedaff970bbbb29a6a14bb90738914760c397cdf852365aafb72fa4f"
+  },
+  {
+    "bytes": 1287,
+    "mode": 436,
+    "mtime_ns": 1792327435233732247,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/3e7bce66056190d990705f723b72a9774c37e36629cf34f707ec480c69c87552",
+    "sha256": "3e7bce66056190d990705f723b72a9774c37e36629cf34f707ec480c69c87552"
+  },
+  {
+    "bytes": 874,
+    "mode": 436,
+    "mtime_ns": 1792327435253732436,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/44ed9b70a060a4e7b5fe9e305e4e5a1e85304451ba85f41db06fc592e73a582b",
+    "sha256": "44ed9b70a060a4e7b5fe9e305e4e5a1e85304451ba85f41db06fc592e73a582b"
+  },
+  {
+    "bytes": 17797682,
+    "mode": 384,
+    "mtime_ns": 1792327491263254802,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/4683cb2cefc30679221e09d4f65cc0a2c533a7bc93d2e765acc0cef8517bbf92",
+    "sha256": "4683cb2cefc30679221e09d4f65cc0a2c533a7bc93d2e765acc0cef8517bbf92"
+  },
+  {
+    "bytes": 502,
+    "mode": 436,
+    "mtime_ns": 1792327435233732247,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/58b7866531b3cfa7bda1c03cf5c3a71fa00b18fe459b52115ddfb0e7f7c1ec99",
+    "sha256": "58b7866531b3cfa7bda1c03cf5c3a71fa00b18fe459b52115ddfb0e7f7c1ec99"
+  },
+  {
+    "bytes": 3202,
+    "mode": 436,
+    "mtime_ns": 1792327432919710367,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/63a5d5a043670b162f91804ccb1219efc1d9b4b3bd46aa4ae32dc3a49ec20c30",
+    "sha256": "63a5d5a043670b162f91804ccb1219efc1d9b4b3bd46aa4ae32dc3a49ec20c30"
+  },
+  {
+    "bytes": 283054,
+    "mode": 436,
+    "mtime_ns": 1792327491981261412,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/66939117c227f224ee644ed4543b68178ceeb8c18655ff01a10db9da28fc9ad5",
+    "sha256": "66939117c227f224ee644ed4543b68178ceeb8c18655ff01a10db9da28fc9ad5"
+  },
+  {
+    "bytes": 7941312,
+    "mode": 509,
+    "mtime_ns": 1792327485780204257,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/69e75054b4fec8d41965c8a0c52d078c1a026c48295e58426375f2e4a5000366",
+    "sha256": "69e75054b4fec8d41965c8a0c52d078c1a026c48295e58426375f2e4a5000366"
+  },
+  {
+    "bytes": 45320,
+    "mode": 509,
+    "mtime_ns": 1792327432711708399,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/8e047c995362183b8cf755c4e8f5344a2e88982b9de78747fec8891f106a70c6",
+    "sha256": "8e047c995362183b8cf755c4e8f5344a2e88982b9de78747fec8891f106a70c6"
+  },
+  {
+    "bytes": 23250920,
+    "mode": 436,
+    "mtime_ns": 1792327507616404826,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/a258f321a9909851ece3a643e23b15124c66be48f7c3c8cf1078454ace87d85f",
+    "sha256": "a258f321a9909851ece3a643e23b15124c66be48f7c3c8cf1078454ace87d85f"
+  },
+  {
+    "bytes": 701752,
+    "mode": 509,
+    "mtime_ns": 1792327433698717735,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/b9db9b8fc7925bf2c18e2d9edfbd3c0ee10a5a0f57985151e2f7b0073122ffc2",
+    "sha256": "b9db9b8fc7925bf2c18e2d9edfbd3c0ee10a5a0f57985151e2f7b0073122ffc2"
+  },
+  {
+    "bytes": 24645,
+    "mode": 436,
+    "mtime_ns": 1792324765204419351,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/bcff0cfdd171f6887f549eeea39a9c20b2e18f1e5a3eac448eb59f06afb06632",
+    "sha256": "bcff0cfdd171f6887f549eeea39a9c20b2e18f1e5a3eac448eb59f06afb06632"
+  },
+  {
+    "bytes": 52558336,
+    "mode": 436,
+    "mtime_ns": 1792327435218732105,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/c5403e99b9ae7a8c60c393fb2a97e637ded3e049179bb1b2f63cf6b94dd2a61a",
+    "sha256": "c5403e99b9ae7a8c60c393fb2a97e637ded3e049179bb1b2f63cf6b94dd2a61a"
+  },
+  {
+    "bytes": 1475198,
+    "mode": 384,
+    "mtime_ns": 1792327435182731765,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/ca47218b5b9cccb5e9e46c9eba5dcf52b6e04bec8778eaafa8b08e9b4b934f25",
+    "sha256": "ca47218b5b9cccb5e9e46c9eba5dcf52b6e04bec8778eaafa8b08e9b4b934f25"
+  },
+  {
+    "bytes": 5169216,
+    "mode": 509,
+    "mtime_ns": 1792327491940261034,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/ea476689ebd75b36f2d0aa8daa5b46a542d0ae801734d21fd0f8f4240e5c0805",
+    "sha256": "ea476689ebd75b36f2d0aa8daa5b46a542d0ae801734d21fd0f8f4240e5c0805"
+  },
+  {
+    "bytes": 351713,
+    "mode": 436,
+    "mtime_ns": 1792328347770214656,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/embedded-canonical.dts",
+    "sha256": "c39c4ee9b0e209b43a3e371df51b724960ee86346c9368cf13845a527f7b5017"
+  },
+  {
+    "bytes": 1922,
+    "mode": 436,
+    "mtime_ns": 1792327435238732294,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/f25053cc3f1b21424cb1169039f34d7bfa98881ea7ae0ef90754709c3637e11a",
+    "sha256": "f25053cc3f1b21424cb1169039f34d7bfa98881ea7ae0ef90754709c3637e11a"
+  },
+  {
+    "bytes": 778880,
+    "mode": 509,
+    "mtime_ns": 1792327432696708257,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/f40c7c378cf80de6ac2cc64d6b1d1a4fbb64f7d4335141ad5d213aabaef62f93",
+    "sha256": "f40c7c378cf80de6ac2cc64d6b1d1a4fbb64f7d4335141ad5d213aabaef62f93"
+  },
+  {
+    "bytes": 283054,
+    "mode": 436,
+    "mtime_ns": 1792328347671213914,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/fit-fdt",
+    "sha256": "66939117c227f224ee644ed4543b68178ceeb8c18655ff01a10db9da28fc9ad5"
+  },
+  {
+    "bytes": 5169216,
+    "mode": 436,
+    "mtime_ns": 1792328343707184176,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/fit-kernel",
+    "sha256": "ea476689ebd75b36f2d0aa8daa5b46a542d0ae801734d21fd0f8f4240e5c0805"
+  },
+  {
+    "bytes": 17797682,
+    "mode": 436,
+    "mtime_ns": 1792328347533212878,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/fit-ramdisk",
+    "sha256": "4683cb2cefc30679221e09d4f65cc0a2c533a7bc93d2e765acc0cef8517bbf92"
+  },
+  {
+    "bytes": 351713,
+    "mode": 436,
+    "mtime_ns": 1792328347726214326,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/preset-canonical.dts",
+    "sha256": "c39c4ee9b0e209b43a3e371df51b724960ee86346c9368cf13845a527f7b5017"
+  },
+  {
+    "bytes": 17035,
+    "mode": 436,
+    "mtime_ns": 1792328348300218631,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/capture.json",
+    "sha256": "9b7004231459f32e1078b86505cbb3c73104d4c5d05862ed21fd6084c0ca7dd6"
+  },
+  {
+    "bytes": 1015,
+    "mode": 436,
+    "mtime_ns": 1792327421989606682,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/owned-child.json",
+    "sha256": "9524c47e0b4f96b0605819cb8aef8ba9bf56bc54bb1c9ce3d14611afb174cf3d"
+  },
+  {
+    "bytes": 1856,
+    "mode": 436,
+    "mtime_ns": 1792328348265218369,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/rootfs.json",
+    "sha256": "ad9f1c3306edcafa0a07c3bfd8cf600a517b2823654509c01911e1631a7f1820"
+  },
+  {
+    "bytes": 1874,
+    "mode": 436,
+    "mtime_ns": 1792328377897440272,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/run-result.json",
+    "sha256": "f6f72eb0690fab040cab7d44202c79ac2d7009f7a725f43badc2c0f954417ba6"
+  },
+  {
+    "bytes": 6496391,
+    "mode": 436,
+    "mtime_ns": 1792328347814214986,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/xtask.log",
+    "sha256": "c74a5a24106e3e59a4c03316b428f9591e5e481bce5f65a874f4231b7d10814b"
+  },
+  {
+    "bytes": 4190,
+    "mode": 436,
+    "mtime_ns": 1792327368921095054,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-root-launch.json",
+    "sha256": "61a74e6fc1e09023e548d41b41e704a813383d59d9d15ca2e830907a91fd1ee0"
+  },
+  {
+    "bytes": 2168,
+    "mode": 436,
+    "mtime_ns": 1792328377911440377,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-root-wait.json",
+    "sha256": "462277c74e6fa2f2f3a16c9084f04d7565174131a78a730816960b03aeddaec5"
+  },
+  {
+    "bytes": 5377,
+    "mode": 436,
+    "mtime_ns": 1792328634609339494,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-root-final-handoff-v1.json",
+    "sha256": "cf25d62d4ff106f0e6d3315ce4e0b58ce5f4d78ac2e90b7b79fe814116e9b72f"
+  },
+  {
+    "bytes": 396,
+    "mode": 436,
+    "mtime_ns": 1792328634600339428,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-root-supervisor-completion-v1.json",
+    "sha256": "0373b3bbfb2f9b26b00c954e7b877d2ceaf816f2b0d7490b15683769c8a2a23d"
+  },
+  {
+    "bytes": 919,
+    "mode": 436,
+    "mtime_ns": 1792328713869919265,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-host-terminal-observation-v1.json",
+    "sha256": "f79172f496e4953fc791243705d317d94047a948d447151cfab458ef612022f6"
+  },
+  {
+    "bytes": 21727,
+    "mode": 436,
+    "mtime_ns": 1792324630414457568,
+    "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/native_once.py",
+    "sha256": "8b871b1ea3cfb8a8ad8272bc7fa5ca37dc648b3efed45fe4af9ae0f374a24902"
+  },
+  {
+    "bytes": 33173,
+    "mode": 436,
+    "mtime_ns": 1792324854904815269,
+    "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/capture_native.py",
+    "sha256": "61717a37b528e2e93d8cbcae1c1dafbc6249ac3417fbf0b8011b984a03a4c683"
+  },
+  {
+    "bytes": 5547,
+    "mode": 436,
+    "mtime_ns": 1792324630415457559,
+    "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/inputs.json",
+    "sha256": "8fac8a1fb86d79a1e74bf9591bf68fa2dd88f6d261edcf0ea576dfbd6ace0060"
+  },
+  {
+    "bytes": 19347,
+    "mode": 436,
+    "mtime_ns": 1792325679081024263,
+    "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/freeze-manifest.json",
+    "sha256": "0bf9ff1cbc154583c60c6dd34688c9b498b6f63b0ef8014d1dbcec04f7ed28e8"
+  },
+  {
+    "bytes": 120,
+    "mode": 436,
+    "mtime_ns": 1792327421987606663,
+    "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/AB1.once",
+    "sha256": "3013cddf911227b5cbaa10f79a8dc91f5a67ec20a9d7e3417872f67d4e8f899e"
+  },
+  {
+    "bytes": 472,
+    "mode": 436,
+    "mtime_ns": 1792258795490850836,
+    "path": "/tmp/crosspath-native-cache-v3-src-hr23qnrs/.cargo/config.toml",
+    "sha256": "80d72b453d3d177b2d4c2ea841b352750b64cadb1ed4b36c99e3e114024bcfbd"
+  },
+  {
+    "bytes": 306,
+    "mode": 436,
+    "mtime_ns": 1792258796425852263,
+    "path": "/tmp/crosspath-native-cache-v3-src-hr23qnrs/rust-toolchain.toml",
+    "sha256": "114221115821b37cfe6ec49d8eab378d2319f7370ee69156184c7e728d276089"
+  },
+  {
+    "bytes": 319,
+    "mode": 436,
+    "mtime_ns": 1792258796589852513,
+    "path": "/tmp/crosspath-native-cache-v3-src-hr23qnrs/xtask/Cargo.toml",
+    "sha256": "ecba56faf1de1f3c49283e063de7b37d958e6a68b5731e3f50416e2b5c2ade96"
+  },
+  {
+    "bytes": 416,
+    "mode": 436,
+    "mtime_ns": 1792258796589852513,
+    "path": "/tmp/crosspath-native-cache-v3-src-hr23qnrs/xtask/src/main.rs",
+    "sha256": "af68496092e0dffa0a159942a813bd4c2caa3d155bca1516b10e1003614c6a99"
+  },
+  {
+    "bytes": 27383,
+    "mode": 436,
+    "mtime_ns": 1792258796434852277,
+    "path": "/tmp/crosspath-native-cache-v3-src-hr23qnrs/scripts/axbuild/src/context/mod.rs",
+    "sha256": "a1ffb29cfea45af4b30f9b8c57dd268db6450e9f74dd0a97508191d5a7dd8fdb"
+  }
+]

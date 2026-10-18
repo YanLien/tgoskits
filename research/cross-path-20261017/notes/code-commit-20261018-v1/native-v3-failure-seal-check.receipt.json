@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "sha256sum",
+    "-c",
+    "SHA256SUMS.strict-native-cache-v3-AB1-failure-v1"
+  ],
+  "cwd": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017",
+  "actual_Popen_wait": 0,
+  "scope": "132 exact failure evidence files only; no normal function acceptance"
+}

@@ -1,0 +1,10 @@
+{
+  "actual_command_exit_code": 0,
+  "actual_local_cargo_strace_parent_wait_exit": 0,
+  "actual_local_exec_child_parent_wait_exit": 23,
+  "command": "python3 -B tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/controller-cause-v1/local_probe.py",
+  "cwd": "/home/yanlien/Program/hypervisor",
+  "source": "Actual tool return observed by investigator, not inferred from process absence",
+  "tool": "tools.exec_command",
+  "tool_chunk": "f38982"
+}

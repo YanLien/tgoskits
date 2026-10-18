@@ -1,0 +1,31 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "-c",
+    "import pathlib,json; r=pathlib.Path(\"research/cross-path-20261017\"); out=r/\"raw/strict-native-followup-v3/auditor-cause-v1\"; f=json.loads((out/\"format-diagnosis.json\").read_bytes()); print(json.dumps(f,indent=2)[:23000]); p=r/\"raw/strict-native-phase-v3/function-audit-v1/AB1-actual-audit-v1/report.json\"; a=json.loads(p.read_bytes()); print(\"AUDIT_KEYS\",list(a)); print(\"DATA_KEYS\",list(a.get(\"data\",{}))); print(\"REPORT_TAIL\",json.dumps({k:v for k,v in a.items() if k not in [\"gates\",\"data\",\"artifacts\",\"evidence\",\"input\"]},indent=2)[:5000]); p=r/\"raw/strict-native-phase-v3/AB1-actual-audit-v1.receipt.json\"; print(\"ACTUAL_AUDIT_RECEIPT\",p.read_text()); print(\"AUDIT_SOURCE_RULES\"); lines=(r/\"raw/strict-native-phase-v3/function-audit-v1/audit.py\").read_text().splitlines();\nfor lo,hi in [(16,35),(115,165),(520,534),(540,566),(664,682)]:\n for n in range(lo,hi+1): print(str(n)+\":\"+lines[n-1])"
+  ],
+  "env": {
+    "PATH": "/usr/bin:/bin",
+    "LANG": "C.UTF-8",
+    "TZ": "UTC",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "cwd": "/home/yanlien/Program/hypervisor/tgoskits",
+  "started_ns": 1792329275232640827,
+  "forced_stop": false,
+  "pid": 3,
+  "wait_returncode": 0,
+  "returncode": 0,
+  "ended_ns": 1792329275269781452,
+  "stdout": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0006-report-input-shapes/stdout",
+    "size": 67093,
+    "sha256": "4266981d146db26885b03310bef9897431611af7a388c708c11acdb260afcad8"
+  },
+  "stderr": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0006-report-input-shapes/stderr",
+    "size": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

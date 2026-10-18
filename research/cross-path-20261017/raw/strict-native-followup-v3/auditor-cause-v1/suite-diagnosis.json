@@ -1,0 +1,260 @@
+{
+  "scope": "isolated regex classification and exact raw spans; no full audit or target success",
+  "sources": {
+    "sealed_auditor": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/audit.py",
+      "bytes": 64442,
+      "sha256": "6fa57d1bb99a9fbdb49613ffc90cb4b648aa9511465957aec25b9e58e34e76aa"
+    },
+    "original_report": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/AB1-actual-audit-v1/report.json",
+      "bytes": 59088,
+      "sha256": "1a9257ef78caf570267dcb89c60d3143cf97dd033f9460b56176347f594d0b25"
+    },
+    "raw": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/xtask.log",
+      "bytes": 6496391,
+      "sha256": "c74a5a24106e3e59a4c03316b428f9591e5e481bce5f65a874f4231b7d10814b"
+    }
+  },
+  "candidates": [
+    {
+      "line": 24,
+      "offset": 2695,
+      "bytes": 228,
+      "sha256": "c83438e2c6ba62743446b3445873b1486bb7309f41bb7c3cfef9cff3477e0283",
+      "marker": null,
+      "text": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/guest/zephyr/zephyr.dts:23.37-38.5: Warning (simple_bus_reg): /soc/interrupt-controller@8000000: simple-bus unit address format error, expected \"fe600000\"",
+      "error_classification": "unclassified-reject",
+      "requires_rejection": true,
+      "first_candidate_match": "error",
+      "first_candidate_match_text_offset": 201,
+      "raw_copy_offset": 0
+    },
+    {
+      "line": 52,
+      "offset": 5173,
+      "bytes": 228,
+      "sha256": "c83438e2c6ba62743446b3445873b1486bb7309f41bb7c3cfef9cff3477e0283",
+      "marker": null,
+      "text": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/guest/zephyr/zephyr.dts:23.37-38.5: Warning (simple_bus_reg): /soc/interrupt-controller@8000000: simple-bus unit address format error, expected \"fe600000\"",
+      "error_classification": "unclassified-reject",
+      "requires_rejection": true,
+      "first_candidate_match": "error",
+      "first_candidate_match_text_offset": 201,
+      "raw_copy_offset": 228
+    }
+  ],
+  "candidate_count": 2,
+  "exact_original_report_classifications_reproduced": true,
+  "explicit_or_protocol_failure_candidate_count": 0,
+  "unframed_nonempty_final_rows": [
+    {
+      "line": 801,
+      "offset": 62390,
+      "bytes": 45,
+      "sha256": "09ef072d36e7d67db236b19f0b35abef7813b7d6fb63dde1360eca21e5d0f88a",
+      "text": "*** Booting Zephyr OS build 32229d0b6cc6 ***"
+    },
+    {
+      "line": 803,
+      "offset": 62437,
+      "bytes": 38,
+      "sha256": "ae7ed5c17a6a15d1439576d84859c69eb98f91ef2ea15bbc71546fd321f38de7",
+      "text": "Secondary CPU core 1 (MPID:0x1) is up"
+    },
+    {
+      "line": 805,
+      "offset": 62477,
+      "bytes": 49,
+      "sha256": "96a3e38cbbbe36d879b185bf7e148e457917d49a134dbfb7c33f809d4c9b3524",
+      "text": "SOFTWARE VIRQ READY suspend vector=48 samples=32"
+    },
+    {
+      "line": 807,
+      "offset": 62528,
+      "bytes": 58,
+      "sha256": "0403c1f225e659e9f70707809c4dba99d816ccde75fee8ba6732e475321c59ef",
+      "text": "SOFTWARE VIRQ CLOCK timer_hz=24000000 counter_hz=24000000"
+    },
+    {
+      "line": 818,
+      "offset": 64221,
+      "bytes": 45,
+      "sha256": "09ef072d36e7d67db236b19f0b35abef7813b7d6fb63dde1360eca21e5d0f88a",
+      "text": "*** Booting Zephyr OS build 32229d0b6cc6 ***"
+    },
+    {
+      "line": 1098,
+      "offset": 98355,
+      "bytes": 38,
+      "sha256": "ae7ed5c17a6a15d1439576d84859c69eb98f91ef2ea15bbc71546fd321f38de7",
+      "text": "Secondary CPU core 1 (MPID:0x1) is up"
+    },
+    {
+      "line": 1100,
+      "offset": 98395,
+      "bytes": 49,
+      "sha256": "96a3e38cbbbe36d879b185bf7e148e457917d49a134dbfb7c33f809d4c9b3524",
+      "text": "SOFTWARE VIRQ READY suspend vector=48 samples=32"
+    },
+    {
+      "line": 1102,
+      "offset": 98446,
+      "bytes": 58,
+      "sha256": "0403c1f225e659e9f70707809c4dba99d816ccde75fee8ba6732e475321c59ef",
+      "text": "SOFTWARE VIRQ CLOCK timer_hz=24000000 counter_hz=24000000"
+    },
+    {
+      "line": 1104,
+      "offset": 98506,
+      "bytes": 39,
+      "sha256": "ce0eb2835f7df3b85a5c25d8657810396a3079b8f4b1cbd3447bfebc26a553f3",
+      "text": "SOFTWARE VIRQ TASKS_DRAINED samples=32"
+    },
+    {
+      "line": 1106,
+      "offset": 98547,
+      "bytes": 58,
+      "sha256": "5d4ee4eaef1344f0b04cadc014cf01d4c391d15ac3a66fe9c028e9036c9e7fcf",
+      "text": "SOFTWARE VIRQ COMPLETE streams=1 samples_each=32 total=32"
+    },
+    {
+      "line": 1197,
+      "offset": 113473,
+      "bytes": 45,
+      "sha256": "09ef072d36e7d67db236b19f0b35abef7813b7d6fb63dde1360eca21e5d0f88a",
+      "text": "*** Booting Zephyr OS build 32229d0b6cc6 ***"
+    },
+    {
+      "line": 1199,
+      "offset": 113520,
+      "bytes": 38,
+      "sha256": "ae7ed5c17a6a15d1439576d84859c69eb98f91ef2ea15bbc71546fd321f38de7",
+      "text": "Secondary CPU core 1 (MPID:0x1) is up"
+    },
+    {
+      "line": 1201,
+      "offset": 113560,
+      "bytes": 49,
+      "sha256": "96a3e38cbbbe36d879b185bf7e148e457917d49a134dbfb7c33f809d4c9b3524",
+      "text": "SOFTWARE VIRQ READY suspend vector=48 samples=32"
+    },
+    {
+      "line": 1203,
+      "offset": 113611,
+      "bytes": 58,
+      "sha256": "0403c1f225e659e9f70707809c4dba99d816ccde75fee8ba6732e475321c59ef",
+      "text": "SOFTWARE VIRQ CLOCK timer_hz=24000000 counter_hz=24000000"
+    },
+    {
+      "line": 1214,
+      "offset": 115301,
+      "bytes": 45,
+      "sha256": "09ef072d36e7d67db236b19f0b35abef7813b7d6fb63dde1360eca21e5d0f88a",
+      "text": "*** Booting Zephyr OS build 32229d0b6cc6 ***"
+    },
+    {
+      "line": 1216,
+      "offset": 115348,
+      "bytes": 38,
+      "sha256": "ae7ed5c17a6a15d1439576d84859c69eb98f91ef2ea15bbc71546fd321f38de7",
+      "text": "Secondary CPU core 1 (MPID:0x1) is up"
+    },
+    {
+      "line": 1218,
+      "offset": 115388,
+      "bytes": 49,
+      "sha256": "96a3e38cbbbe36d879b185bf7e148e457917d49a134dbfb7c33f809d4c9b3524",
+      "text": "SOFTWARE VIRQ READY suspend vector=48 samples=32"
+    },
+    {
+      "line": 1498,
+      "offset": 150050,
+      "bytes": 58,
+      "sha256": "0403c1f225e659e9f70707809c4dba99d816ccde75fee8ba6732e475321c59ef",
+      "text": "SOFTWARE VIRQ CLOCK timer_hz=24000000 counter_hz=24000000"
+    },
+    {
+      "line": 1500,
+      "offset": 150110,
+      "bytes": 39,
+      "sha256": "ce0eb2835f7df3b85a5c25d8657810396a3079b8f4b1cbd3447bfebc26a553f3",
+      "text": "SOFTWARE VIRQ TASKS_DRAINED samples=32"
+    },
+    {
+      "line": 1502,
+      "offset": 150151,
+      "bytes": 58,
+      "sha256": "5d4ee4eaef1344f0b04cadc014cf01d4c391d15ac3a66fe9c028e9036c9e7fcf",
+      "text": "SOFTWARE VIRQ COMPLETE streams=1 samples_each=32 total=32"
+    }
+  ],
+  "raw_ends_with_LF": true,
+  "raw_candidate_copy": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/suite-candidates.raw",
+    "bytes": 456,
+    "sha256": "739235cf51ddce5add9143da1a401041341cef49ab4cc5c18f473f6069afcd26"
+  },
+  "suite_marker_records": [
+    {
+      "line": 729,
+      "offset": 53736,
+      "bytes": 119,
+      "sha256": "5bb786141b7fe7bf7ee2bca5eee208f144906112c1e0746a7ea747661e47fb86",
+      "marker": "AXTEST_BEGIN",
+      "text": "AXTEST_BEGIN total=[ 44.511981 1 somehal::arch::gic::v3:292] GICv3 CPU 1 EOI mode: two_step=true"
+    },
+    {
+      "line": 50101,
+      "offset": 6496165,
+      "bytes": 107,
+      "sha256": "25893cd89642b1db1b14c5420fbfbb4629604f6f44600d2c57c76b973e2ba130",
+      "marker": "AXTEST_CASE",
+      "text": "AXTEST_CASE status=pass module=vcpu_runtime::tests name=targeted_interrupts_and_host_policy_survive_reset"
+    },
+    {
+      "line": 50102,
+      "offset": 6496272,
+      "bytes": 45,
+      "sha256": "79509f6a5dc58a54b5951dba33b97297b05f22dfde43422ca74a7b04b8f353d1",
+      "marker": "AXTEST_SUMMARY",
+      "text": "AXTEST_SUMMARY pass=1 fail=0 skip=0 total=1"
+    },
+    {
+      "line": 50103,
+      "offset": 6496317,
+      "bytes": 17,
+      "sha256": "b2e8d53f85c18e14ab41e44f9b7cf989a23ef1631dac2177ef2b502b9e77a17e",
+      "marker": "AXTEST_SUITE_OK",
+      "text": "AXTEST_SUITE_OK"
+    }
+  ],
+  "user_cache": {
+    "actual_raw_records": [
+      {
+        "line": 11,
+        "offset": 1138,
+        "bytes": 63,
+        "sha256": "a213fe1b38cdb90f43d77e485c347185b6a36081534f7dd25da046a7500ba2bd",
+        "text": "-- Cache files will be written to: /home/yanlien/.cache/zephyr"
+      }
+    ],
+    "frozen_offline_witness": {
+      "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/evidence/cache-v3-validation/zephyr-capability-cache-cause.json",
+      "bytes": 12007,
+      "sha256": "b863d65a1e58c8876f75a6554ad9591992edee5ba74cacc5e8fad53959bb434c"
+    },
+    "frozen_offline_witness_field": "actual_stdout_selects_user_cache",
+    "frozen_offline_selection": "-- Cache files will be written to: /tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache/zephyr/.cache",
+    "observed_paths_equal": false,
+    "selection_cause": "unknown; no cache or environment changes or new configuration performed",
+    "freeze": {
+      "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/freeze-manifest.json",
+      "bytes": 19347,
+      "sha256": "0bf9ff1cbc154583c60c6dd34688c9b498b6f63b0ef8014d1dbcec04f7ed28e8"
+    }
+  },
+  "normal_end_to_end_GREEN": false,
+  "full_function_passed": false
+}

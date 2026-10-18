@@ -1,0 +1,64 @@
+{
+  "artifact_chain_complete": true,
+  "cache_runtime_after": {
+    "cargo": {
+      ".global-cache": {
+        "bytes": 139264,
+        "mode": 420,
+        "sha256": "0f2337ed9f9a8addbca3583cbf84a3064d81f696c7eff3f67872cd1d9923e722"
+      },
+      ".package-cache": {
+        "bytes": 0,
+        "mode": 436,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      ".package-cache-mutate": {
+        "bytes": 0,
+        "mode": 436,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "cache_runtime_before": {
+    "cargo": {
+      ".global-cache": {
+        "bytes": 139264,
+        "mode": 420,
+        "sha256": "04d4202d99ad27b141f8db3f29136651521d8ea20f1646ddad85c3e0e0a8be93"
+      },
+      ".package-cache": {
+        "bytes": 0,
+        "mode": 436,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      ".package-cache-mutate": {
+        "bytes": 0,
+        "mode": 436,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "capture_elapsed_seconds": 6.2738550619687885,
+  "case_id": "AB1",
+  "cleanup": {
+    "owned_group_empty": null,
+    "release": "unknown"
+  },
+  "completion_state": "failed-stop-remaining",
+  "driver_return_code": 1,
+  "driver_wait_exit": null,
+  "elapsed_seconds": 955.909559555992,
+  "external_functional_audit_exit": null,
+  "full_function_passed": false,
+  "independent_board_tool_wait": null,
+  "outer_seconds": 920,
+  "outer_start": "before Popen; includes build/request/upload/run",
+  "outer_timeout": true,
+  "outer_wait_exit": null,
+  "release": "unknown",
+  "tool_errors": [
+    "outer920 elapsed; stop remaining cases; release unknown",
+    "owned cleanup refused: owned group leader argv changed"
+  ],
+  "xtask_wait_exit": null
+}

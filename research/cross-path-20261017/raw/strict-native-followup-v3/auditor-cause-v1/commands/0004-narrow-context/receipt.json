@@ -1,0 +1,31 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "-c",
+    "import pathlib,json,hashlib,re; r=pathlib.Path(\"research/cross-path-20261017\"); p=r/\"raw/strict-native-phase-v3/AB1/xtask.log\"; b=p.read_bytes(); print(\"LOG\",len(b),hashlib.sha256(b).hexdigest()); off=0; pats=re.compile(rb\"(?i)USER_CACHE|cache files will be written|CMake|Warning|simple.bus|suite|all tests|tests passed|error_candidates\"); selected=[]; lines=b.splitlines(keepends=True); print(\"FIRST90\");\nfor n,x in enumerate(lines,1):\n if n<=90 or pats.search(x):\n  rec={\"line\":n,\"offset\":off,\"bytes\":len(x),\"sha256\":hashlib.sha256(x).hexdigest(),\"text\":x.decode(\"utf-8\",\"replace\").rstrip(\"\\r\\n\")}; selected.append(rec); print(json.dumps(rec,ensure_ascii=False))\n off+=len(x)\nout=r/\"raw/strict-native-followup-v3/auditor-cause-v1\"; (out/\"suite-context.json\").write_text(json.dumps({\"log\":{\"path\":str(p),\"sha256\":hashlib.sha256(b).hexdigest(),\"bytes\":len(b)},\"records\":selected},indent=2)+\"\\n\"); paths=[pathlib.Path(\"/tmp/crosspath-native-cache-v3-tools-jrhcn15t/inputs.json\"),pathlib.Path(\"/tmp/crosspath-native-cache-v3-tools-jrhcn15t/freeze-manifest.json\")];\nfor p in paths:\n print(\"META\",str(p),p.exists());\n if p.exists():\n  b=p.read_bytes(); print(\"IDENTITY\",len(b),hashlib.sha256(b).hexdigest()); print(b.decode())"
+  ],
+  "env": {
+    "PATH": "/usr/bin:/bin",
+    "LANG": "C.UTF-8",
+    "TZ": "UTC",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "cwd": "/home/yanlien/Program/hypervisor/tgoskits",
+  "started_ns": 1792329234733350637,
+  "forced_stop": false,
+  "pid": 3,
+  "wait_returncode": 0,
+  "returncode": 0,
+  "ended_ns": 1792329235535149347,
+  "stdout": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0004-narrow-context/stdout",
+    "size": 47016,
+    "sha256": "d2c11ac5ff45457953b98465ce4e4bd72f75e9155e77a6747f996e6a9d5d9f66"
+  },
+  "stderr": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0004-narrow-context/stderr",
+    "size": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

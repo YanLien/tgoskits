@@ -1,0 +1,40 @@
+{
+  "Joint": false,
+  "M2": false,
+  "auditor_v2_implementation": "/root/native_capacity_v2_function_audit",
+  "candidate_v3_executed": false,
+  "current_free_tmp_bytes": 152330989568,
+  "evidence": {
+    "auditor_Spec": {
+      "bytes": 27907,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-function-audit-v1-spec-review-v1.json",
+      "sha256": "98737fba25ea1a1ac3fb0c2fcf1f61359e7f9625e4e9e2d23366349ae4b48560"
+    },
+    "paper": {
+      "bytes": 26637,
+      "path": "/home/yanlien/Program/hypervisor/\u8bba\u6587\u63d0\u8981.md",
+      "sha256": "8a74e63146c327b30925ef62995fd26f4daa594f004e414ef4177476a33490d9"
+    },
+    "v2_failure": {
+      "bytes": 3704,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-trace-capacity-v2-AB1-prepare-failure-v1.json",
+      "sha256": "f142c02ec9ff99d4db01cbc409cfa35ffb3933d77b0e435e3dc13c1f762044c5"
+    },
+    "v2_handoff": {
+      "bytes": 5347,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-final-handoff-v1.json",
+      "sha256": "30d2613204648b7ebd89a202ee642b725678c94c056dada23e58de34b88cdd91"
+    },
+    "v3_plan": {
+      "bytes": 11813,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/design/phase2-native-cache-topology-v3-plan.md",
+      "sha256": "5e355eb109871df9791d85953ff158dbe54b7416f615aea5a27b3d866e8eeb7d"
+    }
+  },
+  "goal_complete": false,
+  "hardware_started": 0,
+  "observed_utc": "2026-10-18T11:45:30.932926+00:00",
+  "plan_independent_review": "/root/native_cache_v3_design_review",
+  "prior8commits_pushed": true,
+  "scope": "phase2 continuation checkpoint, pre-implementation v3"
+}

@@ -1,0 +1,117 @@
+{
+  "capture": {
+    "no_child_exit_argument_or_precondition": true,
+    "unconditional_post_exit_label_lines": [
+      432,
+      434
+    ]
+  },
+  "child_wait_poll_calls": [
+    {
+      "expression": "child.poll()",
+      "line": 211,
+      "method": "poll"
+    },
+    {
+      "expression": "child.poll()",
+      "line": 216,
+      "method": "poll"
+    },
+    {
+      "expression": "child.poll()",
+      "line": 218,
+      "method": "poll"
+    },
+    {
+      "expression": "child.poll()",
+      "line": 227,
+      "method": "poll"
+    },
+    {
+      "expression": "child.poll()",
+      "line": 229,
+      "method": "poll"
+    },
+    {
+      "expression": "child.poll()",
+      "line": 232,
+      "method": "poll"
+    },
+    {
+      "expression": "child.wait(timeout=max(0.001,920-(time.monotonic()-start)))",
+      "line": 304,
+      "method": "wait"
+    },
+    {
+      "expression": "child.poll()",
+      "line": 322,
+      "method": "poll"
+    }
+  ],
+  "cleanup": {
+    "error_does_not_persist_observed_cleanup_argv": true,
+    "first_group_signal_line": 223,
+    "initial_poll_line": 216,
+    "initial_prove_line": 217,
+    "leader_argv_comparison_lines": [
+      203,
+      204
+    ],
+    "leader_argv_error_occurs_before_initial_token_check": true,
+    "signal_path_control_flow_inference": "The reported leader argv mismatch aborts the initial proof before the first killpg call. This is frozen-source reasoning, not an independently recorded signal syscall receipt.",
+    "token_check_lines": [
+      205,
+      206
+    ]
+  },
+  "project_startup": {
+    "board_stage_done_requires_result_is_ok_lines": [
+      [
+        481,
+        487
+      ],
+      [
+        509,
+        515
+      ]
+    ],
+    "board_stage_duration_is_Instant_elapsed_lines": [
+      642,
+      663
+    ],
+    "cargo_alias": "run -p tg-xtask --",
+    "cargo_alias_line": 15,
+    "main_calls": "axbuild::run().await?",
+    "raw_log_running_tg_xtask_line": 2,
+    "xtask_main_lines": [
+      5,
+      9
+    ]
+  },
+  "run_once": {
+    "Popen_lines": [
+      299,
+      300
+    ],
+    "bounded_real_wait_line": 304,
+    "capture_call_line": 333,
+    "cleanup_call_line": 314,
+    "cleanup_exception_lines": [
+      319,
+      321
+    ],
+    "first_identity_line": 301,
+    "no_child_poll_or_wait_after_line_322": true,
+    "post_cleanup_poll_line": 322,
+    "result_lines": [
+      348,
+      353
+    ],
+    "start_before_Popen_line": 295,
+    "static_verification_line": 345,
+    "timeout_lines": [
+      305,
+      307
+    ]
+  }
+}

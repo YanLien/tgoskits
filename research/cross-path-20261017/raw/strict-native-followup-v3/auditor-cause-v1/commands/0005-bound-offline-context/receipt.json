@@ -1,0 +1,31 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "-c",
+    "import pathlib,json,hashlib; base=pathlib.Path(\"/tmp/crosspath-native-cache-v3-tools-jrhcn15t\"); manifest=json.loads((base/\"freeze-manifest.json\").read_bytes()); print(\"MANIFEST\",hashlib.sha256((base/\"freeze-manifest.json\").read_bytes()).hexdigest());\nfor key in [\"evidence/cache-v3-validation/host-prepare.receipt.json\",\"evidence/cache-v3-validation/host-prepare-preconditions.json\",\"evidence/cache-v3-validation/cache-cmake-direct.receipt.json\",\"evidence/cache-v3-validation/zephyr-capability-cache-cause.json\"]:\n p=base/key; b=p.read_bytes(); expected=manifest[key]; assert len(b)==expected[\"bytes\"] and hashlib.sha256(b).hexdigest()==expected[\"sha256\"]; print(\"BOUND\",key,len(b),hashlib.sha256(b).hexdigest()); print(b.decode())\np=base/\"evidence/sources-702.json\"; s=json.loads(p.read_bytes()); print(\"SOURCE_MANIFEST_TYPE\",type(s).__name__); print(\"BUNDLE_PATHS\",[k for k in s if \"bundle\" in k or \"initramfs\" in k]); out=pathlib.Path(\"research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1\"); c=json.loads((out/\"suite-context.json\").read_bytes()); print(\"SUITE_SELECTED\",json.dumps([x for x in c[\"records\"] if x[\"line\"]>90 or \"Cache files\" in x[\"text\"]],ensure_ascii=False)); print(\"FORMAT_KEYS\",list(json.loads((out/\"format-diagnosis.json\").read_bytes())))"
+  ],
+  "env": {
+    "PATH": "/usr/bin:/bin",
+    "LANG": "C.UTF-8",
+    "TZ": "UTC",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "cwd": "/home/yanlien/Program/hypervisor/tgoskits",
+  "started_ns": 1792329251446944995,
+  "forced_stop": false,
+  "pid": 3,
+  "wait_returncode": 0,
+  "returncode": 0,
+  "ended_ns": 1792329251486235588,
+  "stdout": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0005-bound-offline-context/stdout",
+    "size": 21144,
+    "sha256": "4fab117b9fe4c222b47ea43e2d37ed4bf3486d226db0d94e2bd6f57337a8f872"
+  },
+  "stderr": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0005-bound-offline-context/stderr",
+    "size": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

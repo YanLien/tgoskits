@@ -1,0 +1,45 @@
+{
+  "lines": [
+    {
+      "line": 1,
+      "text": "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.62s"
+    },
+    {
+      "line": 2,
+      "text": "     Running `/tmp/crosspath-native-cache-v3-target-wg0fd7ru/debug/tg-xtask ktest board -p axvm --test vcpu_runtime -b orangepi-5-plus --config virtualization/axvm/tests/vcpu-runtime/frequency/build-orangepi-5-plus.toml --board-config research-inputs/strict-native-v1/board.toml --board-type BallPick-Robot --server 'http://10.3.10.60' --port 2999`"
+    },
+    {
+      "line": 310,
+      "text": "[axbuild] board run prepared artifact ..."
+    },
+    {
+      "line": 325,
+      "text": "[2026-10-18T12:44:51Z INFO  ostool::run::uboot] Waiting for U-Boot shell response (timeout: 900s)..."
+    },
+    {
+      "line": 1172,
+      "text": "VIRQ_LINUX_PHASE_ACCEPT version=2 policy=fair vm_id=1 vm_generation=2 run_generation=1 cookie=1 phase=1 b_enabled=1 slots=32 memory_chunks=256 logical_read_bytes=16777216 logical_write_bytes=16777216 planned_window_ticks=15360000 actual_snapshot_ticks=15361409 window_delta_ticks=1409 cpu_batch_delta=5978 logical_byte_delta=33554432 whole_fence_ticks=111701541 whole_cpu_batch_delta=30720 begin_request_ticks=1184377151 begin_guest_ticks=22858129 begin_observed_ticks=1186133129 end_request_ticks=1277970273 end_guest_ticks=134559670 end_observed_ticks=1298296012 first_t6_host_ticks=1234599848 last_t6_host_ticks=1249480231 production_ok=1 software_ok=1 test_clock=0 stopped=1 scope=protocol_resources trace_pending=1 M2=false Joint=false"
+    },
+    {
+      "line": 1568,
+      "text": "VIRQ_LINUX_PHASE_ACCEPT version=2 policy=fifo80 vm_id=1 vm_generation=4 run_generation=1 cookie=1 phase=1 b_enabled=1 slots=32 memory_chunks=256 logical_read_bytes=16777216 logical_write_bytes=16777216 planned_window_ticks=15360000 actual_snapshot_ticks=15360219 window_delta_ticks=219 cpu_batch_delta=5972 logical_byte_delta=33554432 whole_fence_ticks=112590023 whole_cpu_batch_delta=30720 begin_request_ticks=1417076765 begin_guest_ticks=21477092 begin_observed_ticks=1418607203 end_request_ticks=1510484548 end_guest_ticks=134067115 end_observed_ticks=1531626060 first_t6_host_ticks=1466919908 last_t6_host_ticks=1481800263 production_ok=1 software_ok=1 test_clock=0 stopped=1 scope=protocol_resources trace_pending=1 M2=false Joint=false"
+    },
+    {
+      "line": 1640,
+      "text": "VIRQ_TRACE_FROZEN records=42768 dropped=0 incomplete=0 vm_groups_retired=2"
+    },
+    {
+      "line": 50103,
+      "text": "AXTEST_SUITE_OK"
+    },
+    {
+      "line": 50104,
+      "text": "[axbuild] board run prepared artifact ... done (856.03s)"
+    }
+  ],
+  "source": {
+    "bytes": 6496391,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/xtask.log",
+    "sha256": "c74a5a24106e3e59a4c03316b428f9591e5e481bce5f65a874f4231b7d10814b"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "boot_id": "28c780ce-53d7-4ad5-a932-9a85f25b03c9",
+  "current_available": 1,
+  "current_group_members": [],
+  "current_group_observed_empty": true,
+  "current_original_pid_observation": {
+    "original_pid_absent_now": true,
+    "pid": 2280306
+  },
+  "historical_release_still_unknown": true,
+  "observed_utc": "2026-10-18T13:05:13.869986+00:00",
+  "original_child_pid": 2280306,
+  "original_child_starttime": "51072226",
+  "original_group": 2280306,
+  "original_xtask_actual_wait_still_unknown": true,
+  "pid_namespace": "pid:[4026531836]",
+  "scope": "post-exit actual-host and service observation only; does not recover original xtask Popen.wait or attest historical release",
+  "service_GET_url": "http://10.3.10.60:2999/api/v1/board-types",
+  "service_raw_sha256": "91ea18a7d54546fddb118f9da6b8393ba9818c27d090a2637a980b3316eee319",
+  "signals_sent_by_this_check": [],
+  "unreadable_stat_or_member_count": 0
+}

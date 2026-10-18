@@ -1,0 +1,1 @@
+research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0004-narrow-context/stdout:799: new blank line at EOF.

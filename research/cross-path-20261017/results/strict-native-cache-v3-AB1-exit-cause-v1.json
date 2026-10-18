@@ -1,0 +1,496 @@
+{
+  "case_id": "AB1",
+  "causal_chain": [
+    {
+      "fact": "The single original child.wait times out under outer920.",
+      "source_lines": [
+        295,
+        304,
+        307
+      ],
+      "step": 1
+    },
+    {
+      "fact": "finally calls cleanup; its initial proof rejects a live same-starttime group leader whose argv differs from the immediate startup snapshot.",
+      "source_lines": [
+        184,
+        204,
+        217,
+        314
+      ],
+      "step": 2
+    },
+    {
+      "fact": "The refusal handler stores cleanup unknown, then one final poll returns None in the observed result.",
+      "source_lines": [
+        319,
+        322
+      ],
+      "step": 3
+    },
+    {
+      "fact": "Capture and static verification proceed without collecting a later terminal result. The last None and unknown release remain.",
+      "source_lines": [
+        327,
+        345
+      ],
+      "step": 4
+    },
+    {
+      "fact": "Timeout error and cleanup error force driver_return_code1; the real Root parent and tool independently observe exit1.",
+      "source_lines": [
+        348,
+        353
+      ],
+      "step": 5
+    }
+  ],
+  "created_utc": "2026-10-18T13:15:44.401844+00:00",
+  "goal_complete": false,
+  "integrity": {
+    "Git_commands": 0,
+    "all_compared_bytes_and_metadata_unchanged": true,
+    "board_or_QEMU_starts": 0,
+    "existing_references_compared_before_after": 43,
+    "existing_reports_modified": false,
+    "failed_candidate_modified": false,
+    "source_builds": 0
+  },
+  "later_host_observation": {
+    "current_available": 1,
+    "does_not_recover_original_wait_or_historical_release": true,
+    "group_empty_at_later_observation": true,
+    "observed_utc": "2026-10-18T13:05:13.869986+00:00",
+    "original_pid_absent_now": true,
+    "scope": "post-exit actual-host and service observation only; does not recover original xtask Popen.wait or attest historical release"
+  },
+  "local_probes": {
+    "all_assertions_passed": true,
+    "cargo_invocation_difference_from_AB1": "Version probe uses explicit launcher path and isolated cwd/Cargo home/target; it does not execute xtask alias or recover historical AB1 argv.",
+    "cargo_version_actual_wait_exit": 0,
+    "frozen_function_AST_unmodified": true,
+    "host_proc_scans": 0,
+    "no_real_AB1_Popen_substitute": true,
+    "original_PID_not_observed_or_signalled": true,
+    "python_exec_actual_wait_exit": 23,
+    "scoped_Path_adapter_limitation": "Only /proc enumeration replaced with the exact new owned test PID; process stat/cmdline/environ read from the real kernel.",
+    "signals_sent": []
+  },
+  "minimal_next_step_for_Root": [
+    "Treat v3 AB1 as exhausted failed-stop; keep AB0/0 unexecuted. Preserve the frozen candidate and original evidence.",
+    "Before any new hardware candidate, validate a separate controller lifecycle design against real local owned exec transitions, terminal races, refusal and capture paths using original Popen handles.",
+    "Specify and prove the exact approved launcher/exec identity chain before authorizing any signal. Persist compared argv/executable identity and token-check outcome without disclosing the token; do not relax ownership because this mechanism is plausible.",
+    "Keep existing board/outer/cleanup/capture/lease limits. Any later original-child poll/wait evidence must remain separate from timeout failure and release; it cannot retroactively turn this AB1 into success.",
+    "A future run requires a separately reviewed/frozen/authorized candidate and fresh quota. This investigation implements no change."
+  ],
+  "not_proved": [
+    "Which executable/argv the historical AB1 leader had at cleanup, and exactly when/how it changed. Rustup exec is a supported mechanism and plausible explanation, not a recovered historical event.",
+    "Whether the historical leader still held the token at cleanup; the mismatch check occurs before that token check.",
+    "The original xtask exit code or exact exit instant, or a successful historical finalize/release.",
+    "The board/guest marker completion instant relative to the exact outer monotonic deadline; raw mtime is only write metadata.",
+    "A complete allocation of the 955.909559556s driver interval to cleanup/capture/static verification. Only capture has its own recorded duration.",
+    "Full normal-function acceptance or completion of the whole native round from guest/trace/artifact evidence alone.",
+    "Any repaired controller behavior or authorization to retry consumed AB1 or run AB0/0."
+  ],
+  "original_evidence": {
+    "board_stage_source": {
+      "bytes": 27383,
+      "path": "/tmp/crosspath-native-cache-v3-src-hr23qnrs/scripts/axbuild/src/context/mod.rs",
+      "sha256": "a1ffb29cfea45af4b30f9b8c57dd268db6450e9f74dd0a97508191d5a7dd8fdb"
+    },
+    "capture": {
+      "bytes": 17035,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/capture.json",
+      "sha256": "9b7004231459f32e1078b86505cbb3c73104d4c5d05862ed21fd6084c0ca7dd6"
+    },
+    "capture_source": {
+      "bytes": 33173,
+      "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/capture_native.py",
+      "sha256": "61717a37b528e2e93d8cbcae1c1dafbc6249ac3417fbf0b8011b984a03a4c683"
+    },
+    "cargo_alias": {
+      "bytes": 472,
+      "path": "/tmp/crosspath-native-cache-v3-src-hr23qnrs/.cargo/config.toml",
+      "sha256": "80d72b453d3d177b2d4c2ea841b352750b64cadb1ed4b36c99e3e114024bcfbd"
+    },
+    "case_marker": {
+      "bytes": 120,
+      "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/AB1.once",
+      "sha256": "3013cddf911227b5cbaa10f79a8dc91f5a67ec20a9d7e3417872f67d4e8f899e"
+    },
+    "final_handoff": {
+      "bytes": 5377,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-root-final-handoff-v1.json",
+      "sha256": "cf25d62d4ff106f0e6d3315ce4e0b58ce5f4d78ac2e90b7b79fe814116e9b72f"
+    },
+    "freeze_manifest": {
+      "bytes": 19347,
+      "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/freeze-manifest.json",
+      "sha256": "0bf9ff1cbc154583c60c6dd34688c9b498b6f63b0ef8014d1dbcec04f7ed28e8"
+    },
+    "host_observation": {
+      "bytes": 919,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-host-terminal-observation-v1.json",
+      "sha256": "f79172f496e4953fc791243705d317d94047a948d447151cfab458ef612022f6"
+    },
+    "inputs": {
+      "bytes": 5547,
+      "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/inputs.json",
+      "sha256": "8fac8a1fb86d79a1e74bf9591bf68fa2dd88f6d261edcf0ea576dfbd6ace0060"
+    },
+    "native_source": {
+      "bytes": 21727,
+      "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/native_once.py",
+      "sha256": "8b871b1ea3cfb8a8ad8272bc7fa5ca37dc648b3efed45fe4af9ae0f374a24902"
+    },
+    "owned_child": {
+      "bytes": 1015,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/owned-child.json",
+      "sha256": "9524c47e0b4f96b0605819cb8aef8ba9bf56bc54bb1c9ce3d14611afb174cf3d"
+    },
+    "root_completion": {
+      "bytes": 396,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-root-supervisor-completion-v1.json",
+      "sha256": "0373b3bbfb2f9b26b00c954e7b877d2ceaf816f2b0d7490b15683769c8a2a23d"
+    },
+    "root_launch": {
+      "bytes": 4190,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-root-launch.json",
+      "sha256": "61a74e6fc1e09023e548d41b41e704a813383d59d9d15ca2e830907a91fd1ee0"
+    },
+    "root_wait": {
+      "bytes": 2168,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-root-wait.json",
+      "sha256": "462277c74e6fa2f2f3a16c9084f04d7565174131a78a730816960b03aeddaec5"
+    },
+    "run_result": {
+      "bytes": 1874,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/run-result.json",
+      "sha256": "f6f72eb0690fab040cab7d44202c79ac2d7009f7a725f43badc2c0f954417ba6"
+    },
+    "xtask_log": {
+      "bytes": 6496391,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/xtask.log",
+      "sha256": "c74a5a24106e3e59a4c03316b428f9591e5e481bce5f65a874f4231b7d10814b"
+    },
+    "xtask_main": {
+      "bytes": 416,
+      "path": "/tmp/crosspath-native-cache-v3-src-hr23qnrs/xtask/src/main.rs",
+      "sha256": "af68496092e0dffa0a159942a813bd4c2caa3d155bca1516b10e1003614c6a99"
+    }
+  },
+  "original_terminal_facts": {
+    "actual_argv_item_count": 20,
+    "actual_driver_parent_Popen_wait_exit": 1,
+    "actual_root_tool_exit": 1,
+    "capture_artifact_chain_complete": true,
+    "capture_host_function_passed": false,
+    "case_quota_consumed": true,
+    "cleanup": {
+      "owned_group_empty": null,
+      "release": "unknown"
+    },
+    "initial_argv_equals_expected": true,
+    "initial_child_identity": {
+      "argv": [
+        "cargo",
+        "xtask",
+        "ktest",
+        "board",
+        "-p",
+        "axvm",
+        "--test",
+        "vcpu_runtime",
+        "-b",
+        "orangepi-5-plus",
+        "--config",
+        "virtualization/axvm/tests/vcpu-runtime/frequency/build-orangepi-5-plus.toml",
+        "--board-config",
+        "research-inputs/strict-native-v1/board.toml",
+        "--board-type",
+        "BallPick-Robot",
+        "--server",
+        "http://10.3.10.60",
+        "--port",
+        "2999"
+      ],
+      "expected_argv": [
+        "cargo",
+        "xtask",
+        "ktest",
+        "board",
+        "-p",
+        "axvm",
+        "--test",
+        "vcpu_runtime",
+        "-b",
+        "orangepi-5-plus",
+        "--config",
+        "virtualization/axvm/tests/vcpu-runtime/frequency/build-orangepi-5-plus.toml",
+        "--board-config",
+        "research-inputs/strict-native-v1/board.toml",
+        "--board-type",
+        "BallPick-Robot",
+        "--server",
+        "http://10.3.10.60",
+        "--port",
+        "2999"
+      ],
+      "pgid": 2280306,
+      "pid": 2280306,
+      "starttime": "51072226",
+      "state": "R"
+    },
+    "later_cases_unexecuted": [
+      "AB0",
+      "0"
+    ],
+    "outer_timeout": true,
+    "ownership_token_omitted": true,
+    "release": "unknown",
+    "root_tool_session": 77494,
+    "root_tool_terminal_chunk": "36f9ce",
+    "tool_errors": [
+      "outer920 elapsed; stop remaining cases; release unknown",
+      "owned cleanup refused: owned group leader argv changed"
+    ],
+    "whole_native_round_success": false,
+    "xtask_wait_exit": null
+  },
+  "proved": [
+    "The original Root tool and driver both exited 1. The original xtask Popen.wait did not return a terminal status within the controller budget.",
+    "The original cleanup exception reports a group leader argv mismatch; the observed replacement argv/executable was not recorded.",
+    "The frozen controller uses the immediate post-Popen argv as a later invariant. This can reject a legitimate exec that keeps PID/starttime/PGID/token.",
+    "cleanup refusal is followed by one real child.poll at native_once.py:322. There is no further explicit child.poll/wait after capture begins or before report/return.",
+    "A None at the last poll is persisted unchanged, even if the child later exits while evidence capture/static verification runs. Driver exit 1 is required by the timeout/tool_errors irrespective of a later child exit.",
+    "The post-exit capture label is unconditional and cannot certify exit when run_once enters capture with xtask_wait_exit None.",
+    "The installed cargo launcher is a symlink to rustup. A real local version-only trace shows that rustup execs the fixed toolchain cargo in the same traced process and rewrites argv[0] to the absolute cargo path.",
+    "A real newly owned Python exec child reproduced the exact frozen cleanup refusal while retaining PID/starttime/PGID/token. The parent later obtained actual exit 23 with its original Popen.wait; no signals were sent.",
+    "The final raw log has phase ACCEPT for both policies, frozen records 42768/dropped0/incomplete0, AXTEST_SUITE_OK and board stage done856.03s. These are separate from original child terminal and release evidence."
+  ],
+  "raw_evidence": {
+    "build_report.py": {
+      "bytes": 20731,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/controller-cause-v1/build_report.py",
+      "sha256": "5527f0b2701733b58ea31d8aaf121330f2f9ab4a6fd7d5c0f0b1da044d3c3633"
+    },
+    "cargo-version.execve.log": {
+      "bytes": 680,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/controller-cause-v1/cargo-version.execve.log",
+      "sha256": "d2d77aeef46c02aef8dafc5f1db61fe9b452a756b68893530c902d940eed2d38"
+    },
+    "cargo-version.receipt.json": {
+      "bytes": 2042,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/controller-cause-v1/cargo-version.receipt.json",
+      "sha256": "689b56d0e9dd94bbcfa76288bf4daf5450601323d210a1c688960f61bbf781be"
+    },
+    "cargo-version.stderr": {
+      "bytes": 0,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/controller-cause-v1/cargo-version.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "cargo-version.stdout": {
+      "bytes": 45,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/controller-cause-v1/cargo-version.stdout",
+      "sha256": "704b0cb9b31377c82366571fd795068ab776ac5c5c62a34da705f2f986a4493d"
+    },
+    "exec-child.stderr": {
+      "bytes": 0,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/controller-cause-v1/exec-child.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "exec-child.stdout": {
+      "bytes": 0,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/controller-cause-v1/exec-child.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "exec-cleanup.receipt.json": {
+      "bytes": 2389,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/controller-cause-v1/exec-cleanup.receipt.json",
+      "sha256": "54e69e96ddb0e121b106420b45238a489e2a4cd2f8549745940fbd51bf177554"
+    },
+    "existing-evidence.after.json": {
+      "bytes": 13313,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/controller-cause-v1/existing-evidence.after.json",
+      "sha256": "4917a845f0d9fd386c3b8061f698a832cb7f8f6fb910b941fcb11d50c8a8a0fb"
+    },
+    "existing-evidence.before.json": {
+      "bytes": 13313,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/controller-cause-v1/existing-evidence.before.json",
+      "sha256": "4917a845f0d9fd386c3b8061f698a832cb7f8f6fb910b941fcb11d50c8a8a0fb"
+    },
+    "local_probe.py": {
+      "bytes": 11121,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/controller-cause-v1/local_probe.py",
+      "sha256": "af32f9ff80396f6183039b2216bc901039f781abb38f2c6cc9e4059ecee656f7"
+    },
+    "original-log-excerpts.json": {
+      "bytes": 2899,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/controller-cause-v1/original-log-excerpts.json",
+      "sha256": "6b4af8643633ec11816010825768f030259ef2d55d23496ee716ec348567141f"
+    },
+    "probe-child-stage1.py": {
+      "bytes": 280,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/controller-cause-v1/probe-child-stage1.py",
+      "sha256": "fcd832ae438f66cfbb05ddbab9643ea7d3f832b1ab2c83e1d28b546517529a06"
+    },
+    "probe-child-stage2.py": {
+      "bytes": 185,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/controller-cause-v1/probe-child-stage2.py",
+      "sha256": "adaa560eb2d6cc7e88edb745ce4f2bce6cc74b26ac186a4548d3a6c635170cc5"
+    },
+    "probe-command.receipt.json": {
+      "bytes": 464,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/controller-cause-v1/probe-command.receipt.json",
+      "sha256": "2929c27e4cbdba99ad2514951c422bc90fa442d32965afd5935c87a1a5a4aad9"
+    },
+    "probe-summary.json": {
+      "bytes": 244,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/controller-cause-v1/probe-summary.json",
+      "sha256": "793f7d69f16de8c395655586b93646ae09d3f86cae440dd3e0a5dfd1122822fa"
+    },
+    "source-facts.json": {
+      "bytes": 2508,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/controller-cause-v1/source-facts.json",
+      "sha256": "39d1531d0e1a33630436552db26339a62b4a0fc82bd9aa96346ece5bac8341be"
+    }
+  },
+  "repair_implemented": false,
+  "schema_version": 1,
+  "scope": "Root cause investigation only; no repair or native rerun",
+  "source_facts": {
+    "capture": {
+      "no_child_exit_argument_or_precondition": true,
+      "unconditional_post_exit_label_lines": [
+        432,
+        434
+      ]
+    },
+    "child_wait_poll_calls": [
+      {
+        "expression": "child.poll()",
+        "line": 211,
+        "method": "poll"
+      },
+      {
+        "expression": "child.poll()",
+        "line": 216,
+        "method": "poll"
+      },
+      {
+        "expression": "child.poll()",
+        "line": 218,
+        "method": "poll"
+      },
+      {
+        "expression": "child.poll()",
+        "line": 227,
+        "method": "poll"
+      },
+      {
+        "expression": "child.poll()",
+        "line": 229,
+        "method": "poll"
+      },
+      {
+        "expression": "child.poll()",
+        "line": 232,
+        "method": "poll"
+      },
+      {
+        "expression": "child.wait(timeout=max(0.001,920-(time.monotonic()-start)))",
+        "line": 304,
+        "method": "wait"
+      },
+      {
+        "expression": "child.poll()",
+        "line": 322,
+        "method": "poll"
+      }
+    ],
+    "cleanup": {
+      "error_does_not_persist_observed_cleanup_argv": true,
+      "first_group_signal_line": 223,
+      "initial_poll_line": 216,
+      "initial_prove_line": 217,
+      "leader_argv_comparison_lines": [
+        203,
+        204
+      ],
+      "leader_argv_error_occurs_before_initial_token_check": true,
+      "signal_path_control_flow_inference": "The reported leader argv mismatch aborts the initial proof before the first killpg call. This is frozen-source reasoning, not an independently recorded signal syscall receipt.",
+      "token_check_lines": [
+        205,
+        206
+      ]
+    },
+    "project_startup": {
+      "board_stage_done_requires_result_is_ok_lines": [
+        [
+          481,
+          487
+        ],
+        [
+          509,
+          515
+        ]
+      ],
+      "board_stage_duration_is_Instant_elapsed_lines": [
+        642,
+        663
+      ],
+      "cargo_alias": "run -p tg-xtask --",
+      "cargo_alias_line": 15,
+      "main_calls": "axbuild::run().await?",
+      "raw_log_running_tg_xtask_line": 2,
+      "xtask_main_lines": [
+        5,
+        9
+      ]
+    },
+    "run_once": {
+      "Popen_lines": [
+        299,
+        300
+      ],
+      "bounded_real_wait_line": 304,
+      "capture_call_line": 333,
+      "cleanup_call_line": 314,
+      "cleanup_exception_lines": [
+        319,
+        321
+      ],
+      "first_identity_line": 301,
+      "no_child_poll_or_wait_after_line_322": true,
+      "post_cleanup_poll_line": 322,
+      "result_lines": [
+        348,
+        353
+      ],
+      "start_before_Popen_line": 295,
+      "static_verification_line": 345,
+      "timeout_lines": [
+        305,
+        307
+      ]
+    }
+  },
+  "timeline": {
+    "board_prepared_stage_reported_seconds": 856.03,
+    "capture_elapsed_seconds": 6.2738550619687885,
+    "capture_time_ns": 1792328342040272962,
+    "capture_utc": "2026-10-18T12:59:02.040272962Z",
+    "case_marker_time_ns": 1792327421988732487,
+    "case_marker_utc": "2026-10-18T12:43:41.988732487Z",
+    "driver_elapsed_seconds": 955.909559555992,
+    "marker_not_exact_monotonic_start": true,
+    "marker_plus_920_approximate_outer_deadline_utc": "2026-10-18T12:59:01.988732487Z",
+    "raw_final_mtime_ns": 1792328347814214986,
+    "raw_final_mtime_utc": "2026-10-18T12:59:07.814214986Z",
+    "raw_mtime_minus_capture_timestamp_seconds": 5.773942024,
+    "raw_mtime_scope": "File write metadata only; not an exact guest/board execution or process-exit timestamp.",
+    "remaining_time_after_920_and_capture_seconds": 29.63570449402323,
+    "unallocated_elapsed_scope": "Includes cleanup, static verification and overhead; no per-stage timing exists, so do not attribute it solely to cleanup or wait."
+  },
+  "verdict": "CONTROLLER_ARGV_IDENTITY_AND_TERMINAL_COLLECTION_GAP_CONFIRMED; HISTORICAL_EXEC_TARGET_AND_XTASK_EXIT_UNKNOWN"
+}

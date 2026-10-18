@@ -1,0 +1,33 @@
+{
+  "actual_Popen_wait": 1,
+  "argv": [
+    "/usr/bin/python3",
+    "-B",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/audit.py",
+    "--handoff",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-root-final-handoff-v1.json",
+    "--handoff-sha256",
+    "cf25d62d4ff106f0e6d3315ce4e0b58ce5f4d78ac2e90b7b79fe814116e9b72f",
+    "--output-dir",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/AB1-actual-audit-v1"
+  ],
+  "cwd": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017",
+  "ended_unix_ns": 1792328673214633472,
+  "environment": {
+    "LANG": "C.UTF-8",
+    "PATH": "/usr/bin:/bin",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "TZ": "UTC"
+  },
+  "forced_stop": false,
+  "pid": 3,
+  "started_unix_ns": 1792328669624643432,
+  "stderr": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stdout": {
+    "bytes": 389,
+    "sha256": "b5bc6ff2cf74687b5e59852391396839b1c0f02572e45995e1029ab846b5b145"
+  }
+}

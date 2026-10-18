@@ -1,0 +1,649 @@
+{
+  "scope": "pure format diagnosis only; not a normal audit or target success",
+  "handoff": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-root-final-handoff-v1.json",
+    "sha256": "cf25d62d4ff106f0e6d3315ce4e0b58ce5f4d78ac2e90b7b79fe814116e9b72f"
+  },
+  "sources": {
+    "sealed_auditor": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/audit.py",
+      "bytes": 64442,
+      "sha256": "6fa57d1bb99a9fbdb49613ffc90cb4b648aa9511465957aec25b9e58e34e76aa",
+      "selected": {
+        "AuditError": {
+          "line": 31,
+          "end_line": 32
+        },
+        "need": {
+          "line": 35,
+          "end_line": 37
+        },
+        "newc": {
+          "line": 540,
+          "end_line": 566
+        },
+        "fdt": {
+          "line": 569,
+          "end_line": 609
+        }
+      }
+    },
+    "approved_capture": {
+      "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/capture_native.py",
+      "bytes": 33173,
+      "sha256": "61717a37b528e2e93d8cbcae1c1dafbc6249ac3417fbf0b8011b984a03a4c683",
+      "selected": {
+        "parse_newc": {
+          "line": 86,
+          "end_line": 131
+        },
+        "_newc_entries": {
+          "line": 296,
+          "end_line": 340
+        },
+        "newc_members": {
+          "line": 343,
+          "end_line": 345
+        }
+      }
+    }
+  },
+  "saved_artifacts": {
+    "guest_dtb": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/3e7bce66056190d990705f723b72a9774c37e36629cf34f707ec480c69c87552",
+      "bytes": 1287,
+      "sha256": "3e7bce66056190d990705f723b72a9774c37e36629cf34f707ec480c69c87552",
+      "verified": true
+    },
+    "guest_rootfs": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/ca47218b5b9cccb5e9e46c9eba5dcf52b6e04bec8778eaafa8b08e9b4b934f25",
+      "bytes": 1475198,
+      "sha256": "ca47218b5b9cccb5e9e46c9eba5dcf52b6e04bec8778eaafa8b08e9b4b934f25",
+      "verified": true
+    },
+    "host_bin": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/ea476689ebd75b36f2d0aa8daa5b46a542d0ae801734d21fd0f8f4240e5c0805",
+      "bytes": 5169216,
+      "sha256": "ea476689ebd75b36f2d0aa8daa5b46a542d0ae801734d21fd0f8f4240e5c0805",
+      "verified": true
+    },
+    "host_elf": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/69e75054b4fec8d41965c8a0c52d078c1a026c48295e58426375f2e4a5000366",
+      "bytes": 7941312,
+      "sha256": "69e75054b4fec8d41965c8a0c52d078c1a026c48295e58426375f2e4a5000366",
+      "verified": true
+    },
+    "host_fit": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/a258f321a9909851ece3a643e23b15124c66be48f7c3c8cf1078454ace87d85f",
+      "bytes": 23250920,
+      "sha256": "a258f321a9909851ece3a643e23b15124c66be48f7c3c8cf1078454ace87d85f",
+      "verified": true
+    },
+    "host_initramfs": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/4683cb2cefc30679221e09d4f65cc0a2c533a7bc93d2e765acc0cef8517bbf92",
+      "bytes": 17797682,
+      "sha256": "4683cb2cefc30679221e09d4f65cc0a2c533a7bc93d2e765acc0cef8517bbf92",
+      "verified": true
+    },
+    "host_preset_dtb": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/66939117c227f224ee644ed4543b68178ceeb8c18655ff01a10db9da28fc9ad5",
+      "bytes": 283054,
+      "sha256": "66939117c227f224ee644ed4543b68178ceeb8c18655ff01a10db9da28fc9ad5",
+      "verified": true
+    },
+    "linux_build_json": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/f25053cc3f1b21424cb1169039f34d7bfa98881ea7ae0ef90754709c3637e11a",
+      "bytes": 1922,
+      "sha256": "f25053cc3f1b21424cb1169039f34d7bfa98881ea7ae0ef90754709c3637e11a",
+      "verified": true
+    },
+    "linux_kernel": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/c5403e99b9ae7a8c60c393fb2a97e637ded3e049179bb1b2f63cf6b94dd2a61a",
+      "bytes": 52558336,
+      "sha256": "c5403e99b9ae7a8c60c393fb2a97e637ded3e049179bb1b2f63cf6b94dd2a61a",
+      "verified": true
+    },
+    "linux_vm_config": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/58b7866531b3cfa7bda1c03cf5c3a71fa00b18fe459b52115ddfb0e7f7c1ec99",
+      "bytes": 502,
+      "sha256": "58b7866531b3cfa7bda1c03cf5c3a71fa00b18fe459b52115ddfb0e7f7c1ec99",
+      "verified": true
+    },
+    "resources": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/44ed9b70a060a4e7b5fe9e305e4e5a1e85304451ba85f41db06fc592e73a582b",
+      "bytes": 874,
+      "sha256": "44ed9b70a060a4e7b5fe9e305e4e5a1e85304451ba85f41db06fc592e73a582b",
+      "verified": true
+    },
+    "rt_bin": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/8e047c995362183b8cf755c4e8f5344a2e88982b9de78747fec8891f106a70c6",
+      "bytes": 45320,
+      "sha256": "8e047c995362183b8cf755c4e8f5344a2e88982b9de78747fec8891f106a70c6",
+      "verified": true
+    },
+    "rt_dtb": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/63a5d5a043670b162f91804ccb1219efc1d9b4b3bd46aa4ae32dc3a49ec20c30",
+      "bytes": 3202,
+      "sha256": "63a5d5a043670b162f91804ccb1219efc1d9b4b3bd46aa4ae32dc3a49ec20c30",
+      "verified": true
+    },
+    "rt_elf": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/f40c7c378cf80de6ac2cc64d6b1d1a4fbb64f7d4335141ad5d213aabaef62f93",
+      "bytes": 778880,
+      "sha256": "f40c7c378cf80de6ac2cc64d6b1d1a4fbb64f7d4335141ad5d213aabaef62f93",
+      "verified": true
+    },
+    "rt_vm_config": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/392f378ccedaff970bbbb29a6a14bb90738914760c397cdf852365aafb72fa4f",
+      "bytes": 388,
+      "sha256": "392f378ccedaff970bbbb29a6a14bb90738914760c397cdf852365aafb72fa4f",
+      "verified": true
+    },
+    "worker": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/b9db9b8fc7925bf2c18e2d9edfbd3c0ee10a5a0f57985151e2f7b0073122ffc2",
+      "bytes": 701752,
+      "sha256": "b9db9b8fc7925bf2c18e2d9edfbd3c0ee10a5a0f57985151e2f7b0073122ffc2",
+      "verified": true
+    },
+    "zephyr_config": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/bcff0cfdd171f6887f549eeea39a9c20b2e18f1e5a3eac448eb59f06afb06632",
+      "bytes": 24645,
+      "sha256": "bcff0cfdd171f6887f549eeea39a9c20b2e18f1e5a3eac448eb59f06afb06632",
+      "verified": true
+    }
+  },
+  "fit_default": "/configurations/config-ostool",
+  "fit_ramdisk_node": "/images/ramdisk",
+  "fit_ramdisk_bytes_equal_saved_host_initramfs": true,
+  "host": {
+    "reference": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/4683cb2cefc30679221e09d4f65cc0a2c533a7bc93d2e765acc0cef8517bbf92",
+      "bytes": 17797682,
+      "sha256": "4683cb2cefc30679221e09d4f65cc0a2c533a7bc93d2e765acc0cef8517bbf92"
+    },
+    "sealed_auditor_whole": {
+      "accepted": false,
+      "error": "AuditError: newc trailer/tail"
+    },
+    "approved_capture_whole": {
+      "accepted": true,
+      "members": 15,
+      "member_names": [
+        ".",
+        "guest",
+        "guest/builtin",
+        "guest/builtin/configs",
+        "guest/builtin/configs/vm-1.toml",
+        "guest/builtin/configs/vm-2.toml",
+        "guest/builtin/images",
+        "guest/builtin/images/3e7bce66056190d990705f723b72a9774c37e36629cf34f707ec480c69c87552",
+        "guest/builtin/images/63a5d5a043670b162f91804ccb1219efc1d9b4b3bd46aa4ae32dc3a49ec20c30",
+        "guest/builtin/images/8e047c995362183b8cf755c4e8f5344a2e88982b9de78747fec8891f106a70c6",
+        "guest/builtin/images/c5403e99b9ae7a8c60c393fb2a97e637ded3e049179bb1b2f63cf6b94dd2a61a",
+        "guest/builtin/images/ca47218b5b9cccb5e9e46c9eba5dcf52b6e04bec8778eaafa8b08e9b4b934f25",
+        "guest/builtin/symbols",
+        "tests",
+        "tests/vcpu-runtime.toml"
+      ]
+    },
+    "container_segments": [
+      {
+        "kind": "newc-archive",
+        "domain": "saved Host initramfs raw bytes",
+        "offset": 0,
+        "bytes": 1364,
+        "sha256": "cf93dbf7f5603b71eb385cca63ec146cb5307edf473e3bc86ebf9fc5abccf560",
+        "members": [
+          {
+            "name": ".",
+            "header_offset": 0,
+            "mode": 16877,
+            "bytes": 0,
+            "payload_offset": 112,
+            "end_offset": 112
+          },
+          {
+            "name": "tests",
+            "header_offset": 112,
+            "mode": 16893,
+            "bytes": 0,
+            "payload_offset": 228,
+            "end_offset": 228
+          },
+          {
+            "name": "tests/vcpu-runtime.toml",
+            "header_offset": 228,
+            "mode": 33204,
+            "bytes": 874,
+            "payload_offset": 364,
+            "end_offset": 1240
+          },
+          {
+            "name": "TRAILER!!!",
+            "header_offset": 1240,
+            "mode": 0,
+            "bytes": 0,
+            "payload_offset": 1364,
+            "end_offset": 1364
+          }
+        ],
+        "trailer": {
+          "name": "TRAILER!!!",
+          "header_offset": 1240,
+          "mode": 0,
+          "bytes": 0,
+          "payload_offset": 1364,
+          "end_offset": 1364
+        },
+        "trailer_header_ascii": "07070100000004000000000000000000000000000000010000000000000000000000000000000000000000000000000000000b00000000",
+        "trailer_name_hex": "545241494c455221212100",
+        "bytes_after_archive": 17796318,
+        "first_nonzero_after": 1364,
+        "boundary_hex": "303030303030303030623030303030303030545241494c4552212121000000001f8b08000000000000ffecbd0d7c54d5993ffedc7b27c910228424402460ee245821859af764aa989b0414abae1ad2d6555b6632194ce4352f60403413a04a4d",
+        "sealed_auditor_single_archive": {
+          "accepted": true,
+          "members": 3,
+          "member_names": [
+            ".",
+            "tests",
+            "tests/vcpu-runtime.toml"
+          ],
+          "regular": [
+            "tests/vcpu-runtime.toml"
+          ]
+        },
+        "approved_capture_single_archive": {
+          "accepted": true,
+          "members": 3,
+          "member_names": [
+            ".",
+            "tests",
+            "tests/vcpu-runtime.toml"
+          ],
+          "regular": null
+        }
+      },
+      {
+        "kind": "gzip-member",
+        "domain": "saved Host initramfs raw bytes",
+        "offset": 1364,
+        "bytes": 17796318,
+        "first_bytes_hex": "1f8b08000000000000ffecbd0d7c54d5993ffedc7b27c910228424402460ee24",
+        "sha256": "f9813773a53469be6dd920192afc4ac609ef08c1b7cc62527ac2533368bb0aec",
+        "inflated_bytes": 54086784,
+        "inflated_sha256": "897ad17cb79996e96709cca04e83e4d99afa8072e2aadb934dfeca3ca8431bdc",
+        "children": [
+          {
+            "kind": "newc-archive",
+            "domain": "inflated gzip at saved Host initramfs raw bytes:1364",
+            "offset": 0,
+            "bytes": 54086784,
+            "sha256": "897ad17cb79996e96709cca04e83e4d99afa8072e2aadb934dfeca3ca8431bdc",
+            "members": [
+              {
+                "name": ".",
+                "header_offset": 0,
+                "mode": 16877,
+                "bytes": 0,
+                "payload_offset": 112,
+                "end_offset": 112
+              },
+              {
+                "name": "guest",
+                "header_offset": 112,
+                "mode": 16893,
+                "bytes": 0,
+                "payload_offset": 228,
+                "end_offset": 228
+              },
+              {
+                "name": "guest/builtin",
+                "header_offset": 228,
+                "mode": 16893,
+                "bytes": 0,
+                "payload_offset": 352,
+                "end_offset": 352
+              },
+              {
+                "name": "guest/builtin/configs",
+                "header_offset": 352,
+                "mode": 16893,
+                "bytes": 0,
+                "payload_offset": 484,
+                "end_offset": 484
+              },
+              {
+                "name": "guest/builtin/configs/vm-1.toml",
+                "header_offset": 484,
+                "mode": 33204,
+                "bytes": 739,
+                "payload_offset": 628,
+                "end_offset": 1368
+              },
+              {
+                "name": "guest/builtin/configs/vm-2.toml",
+                "header_offset": 1368,
+                "mode": 33204,
+                "bytes": 554,
+                "payload_offset": 1512,
+                "end_offset": 2068
+              },
+              {
+                "name": "guest/builtin/images",
+                "header_offset": 2068,
+                "mode": 16893,
+                "bytes": 0,
+                "payload_offset": 2200,
+                "end_offset": 2200
+              },
+              {
+                "name": "guest/builtin/images/3e7bce66056190d990705f723b72a9774c37e36629cf34f707ec480c69c87552",
+                "header_offset": 2200,
+                "mode": 33204,
+                "bytes": 1287,
+                "payload_offset": 2396,
+                "end_offset": 3684
+              },
+              {
+                "name": "guest/builtin/images/63a5d5a043670b162f91804ccb1219efc1d9b4b3bd46aa4ae32dc3a49ec20c30",
+                "header_offset": 3684,
+                "mode": 33204,
+                "bytes": 3202,
+                "payload_offset": 3880,
+                "end_offset": 7084
+              },
+              {
+                "name": "guest/builtin/images/8e047c995362183b8cf755c4e8f5344a2e88982b9de78747fec8891f106a70c6",
+                "header_offset": 7084,
+                "mode": 33277,
+                "bytes": 45320,
+                "payload_offset": 7280,
+                "end_offset": 52600
+              },
+              {
+                "name": "guest/builtin/images/c5403e99b9ae7a8c60c393fb2a97e637ded3e049179bb1b2f63cf6b94dd2a61a",
+                "header_offset": 52600,
+                "mode": 33204,
+                "bytes": 52558336,
+                "payload_offset": 52796,
+                "end_offset": 52611132
+              },
+              {
+                "name": "guest/builtin/images/ca47218b5b9cccb5e9e46c9eba5dcf52b6e04bec8778eaafa8b08e9b4b934f25",
+                "header_offset": 52611132,
+                "mode": 33152,
+                "bytes": 1475198,
+                "payload_offset": 52611328,
+                "end_offset": 54086528
+              },
+              {
+                "name": "guest/builtin/symbols",
+                "header_offset": 54086528,
+                "mode": 16893,
+                "bytes": 0,
+                "payload_offset": 54086660,
+                "end_offset": 54086660
+              },
+              {
+                "name": "TRAILER!!!",
+                "header_offset": 54086660,
+                "mode": 0,
+                "bytes": 0,
+                "payload_offset": 54086784,
+                "end_offset": 54086784
+              }
+            ],
+            "trailer": {
+              "name": "TRAILER!!!",
+              "header_offset": 54086660,
+              "mode": 0,
+              "bytes": 0,
+              "payload_offset": 54086784,
+              "end_offset": 54086784
+            },
+            "trailer_header_ascii": "0707010000000e000000000000000000000000000000010000000000000000000000000000000000000000000000000000000b00000000",
+            "trailer_name_hex": "545241494c455221212100",
+            "bytes_after_archive": 0,
+            "first_nonzero_after": null,
+            "boundary_hex": "303030303030303030623030303030303030545241494c455221212100000000",
+            "sealed_auditor_single_archive": {
+              "accepted": true,
+              "members": 13,
+              "member_names": [
+                ".",
+                "guest",
+                "guest/builtin",
+                "guest/builtin/configs",
+                "guest/builtin/configs/vm-1.toml",
+                "guest/builtin/configs/vm-2.toml",
+                "guest/builtin/images",
+                "guest/builtin/images/3e7bce66056190d990705f723b72a9774c37e36629cf34f707ec480c69c87552",
+                "guest/builtin/images/63a5d5a043670b162f91804ccb1219efc1d9b4b3bd46aa4ae32dc3a49ec20c30",
+                "guest/builtin/images/8e047c995362183b8cf755c4e8f5344a2e88982b9de78747fec8891f106a70c6",
+                "guest/builtin/images/c5403e99b9ae7a8c60c393fb2a97e637ded3e049179bb1b2f63cf6b94dd2a61a",
+                "guest/builtin/images/ca47218b5b9cccb5e9e46c9eba5dcf52b6e04bec8778eaafa8b08e9b4b934f25",
+                "guest/builtin/symbols"
+              ],
+              "regular": [
+                "guest/builtin/configs/vm-1.toml",
+                "guest/builtin/configs/vm-2.toml",
+                "guest/builtin/images/3e7bce66056190d990705f723b72a9774c37e36629cf34f707ec480c69c87552",
+                "guest/builtin/images/63a5d5a043670b162f91804ccb1219efc1d9b4b3bd46aa4ae32dc3a49ec20c30",
+                "guest/builtin/images/8e047c995362183b8cf755c4e8f5344a2e88982b9de78747fec8891f106a70c6",
+                "guest/builtin/images/c5403e99b9ae7a8c60c393fb2a97e637ded3e049179bb1b2f63cf6b94dd2a61a",
+                "guest/builtin/images/ca47218b5b9cccb5e9e46c9eba5dcf52b6e04bec8778eaafa8b08e9b4b934f25"
+              ]
+            },
+            "approved_capture_single_archive": {
+              "accepted": true,
+              "members": 13,
+              "member_names": [
+                ".",
+                "guest",
+                "guest/builtin",
+                "guest/builtin/configs",
+                "guest/builtin/configs/vm-1.toml",
+                "guest/builtin/configs/vm-2.toml",
+                "guest/builtin/images",
+                "guest/builtin/images/3e7bce66056190d990705f723b72a9774c37e36629cf34f707ec480c69c87552",
+                "guest/builtin/images/63a5d5a043670b162f91804ccb1219efc1d9b4b3bd46aa4ae32dc3a49ec20c30",
+                "guest/builtin/images/8e047c995362183b8cf755c4e8f5344a2e88982b9de78747fec8891f106a70c6",
+                "guest/builtin/images/c5403e99b9ae7a8c60c393fb2a97e637ded3e049179bb1b2f63cf6b94dd2a61a",
+                "guest/builtin/images/ca47218b5b9cccb5e9e46c9eba5dcf52b6e04bec8778eaafa8b08e9b4b934f25",
+                "guest/builtin/symbols"
+              ],
+              "regular": null
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "guest_rootfs": {
+    "reference": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/ca47218b5b9cccb5e9e46c9eba5dcf52b6e04bec8778eaafa8b08e9b4b934f25",
+      "bytes": 1475198,
+      "sha256": "ca47218b5b9cccb5e9e46c9eba5dcf52b6e04bec8778eaafa8b08e9b4b934f25"
+    },
+    "inflated_bytes": 2940408,
+    "inflated_sha256": "f2c8b68e9aa99a5a05cc70d86315b9625c3134e95694ff685e76ed0befc06e43",
+    "sealed_auditor": {
+      "accepted": true,
+      "members": 9,
+      "member_names": [
+        ".",
+        "bin",
+        "bin/busybox",
+        "bin/ordinary-load",
+        "dev",
+        "init",
+        "proc",
+        "sys",
+        "tmp"
+      ],
+      "regular": [
+        "bin/busybox",
+        "bin/ordinary-load",
+        "init"
+      ]
+    },
+    "approved_capture": {
+      "accepted": true,
+      "members": 9,
+      "member_names": [
+        ".",
+        "bin",
+        "bin/busybox",
+        "bin/ordinary-load",
+        "dev",
+        "init",
+        "proc",
+        "sys",
+        "tmp"
+      ],
+      "regular": null
+    },
+    "container_segments": [
+      {
+        "kind": "newc-archive",
+        "domain": "inflated Guest rootfs",
+        "offset": 0,
+        "bytes": 2940408,
+        "sha256": "f2c8b68e9aa99a5a05cc70d86315b9625c3134e95694ff685e76ed0befc06e43",
+        "members": [
+          {
+            "name": ".",
+            "header_offset": 0,
+            "mode": 16877,
+            "bytes": 0,
+            "payload_offset": 112,
+            "end_offset": 112
+          },
+          {
+            "name": "bin",
+            "header_offset": 112,
+            "mode": 16893,
+            "bytes": 0,
+            "payload_offset": 228,
+            "end_offset": 228
+          },
+          {
+            "name": "bin/busybox",
+            "header_offset": 228,
+            "mode": 33277,
+            "bytes": 2237080,
+            "payload_offset": 352,
+            "end_offset": 2237432
+          },
+          {
+            "name": "bin/ordinary-load",
+            "header_offset": 2237432,
+            "mode": 33261,
+            "bytes": 701752,
+            "payload_offset": 2237560,
+            "end_offset": 2939312
+          },
+          {
+            "name": "dev",
+            "header_offset": 2939312,
+            "mode": 16893,
+            "bytes": 0,
+            "payload_offset": 2939428,
+            "end_offset": 2939428
+          },
+          {
+            "name": "init",
+            "header_offset": 2939428,
+            "mode": 33261,
+            "bytes": 390,
+            "payload_offset": 2939544,
+            "end_offset": 2939936
+          },
+          {
+            "name": "proc",
+            "header_offset": 2939936,
+            "mode": 16893,
+            "bytes": 0,
+            "payload_offset": 2940052,
+            "end_offset": 2940052
+          },
+          {
+            "name": "sys",
+            "header_offset": 2940052,
+            "mode": 16893,
+            "bytes": 0,
+            "payload_offset": 2940168,
+            "end_offset": 2940168
+          },
+          {
+            "name": "tmp",
+            "header_offset": 2940168,
+            "mode": 16893,
+            "bytes": 0,
+            "payload_offset": 2940284,
+            "end_offset": 2940284
+          },
+          {
+            "name": "TRAILER!!!",
+            "header_offset": 2940284,
+            "mode": 0,
+            "bytes": 0,
+            "payload_offset": 2940408,
+            "end_offset": 2940408
+          }
+        ],
+        "trailer": {
+          "name": "TRAILER!!!",
+          "header_offset": 2940284,
+          "mode": 0,
+          "bytes": 0,
+          "payload_offset": 2940408,
+          "end_offset": 2940408
+        },
+        "trailer_header_ascii": "0707010000000a000000000000000000000000000000010000000000000000000000000000000000000000000000000000000b00000000",
+        "trailer_name_hex": "545241494c455221212100",
+        "bytes_after_archive": 0,
+        "first_nonzero_after": null,
+        "boundary_hex": "303030303030303030623030303030303030545241494c455221212100000000",
+        "sealed_auditor_single_archive": {
+          "accepted": true,
+          "members": 9,
+          "member_names": [
+            ".",
+            "bin",
+            "bin/busybox",
+            "bin/ordinary-load",
+            "dev",
+            "init",
+            "proc",
+            "sys",
+            "tmp"
+          ],
+          "regular": [
+            "bin/busybox",
+            "bin/ordinary-load",
+            "init"
+          ]
+        },
+        "approved_capture_single_archive": {
+          "accepted": true,
+          "members": 9,
+          "member_names": [
+            ".",
+            "bin",
+            "bin/busybox",
+            "bin/ordinary-load",
+            "dev",
+            "init",
+            "proc",
+            "sys",
+            "tmp"
+          ],
+          "regular": null
+        }
+      }
+    ]
+  },
+  "normal_end_to_end_GREEN": false,
+  "full_function_passed": false
+}

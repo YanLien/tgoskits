@@ -1,0 +1,109 @@
+{
+  "argv": [
+    "cargo",
+    "xtask",
+    "ktest",
+    "board",
+    "-p",
+    "axvm",
+    "--test",
+    "vcpu_runtime",
+    "-b",
+    "orangepi-5-plus",
+    "--config",
+    "virtualization/axvm/tests/vcpu-runtime/frequency/build-orangepi-5-plus.toml",
+    "--board-config",
+    "research-inputs/strict-native-v1/board.toml",
+    "--board-type",
+    "BallPick-Robot",
+    "--server",
+    "http://10.3.10.60",
+    "--port",
+    "2999"
+  ],
+  "cache_runtime_state": {
+    "cargo": {
+      ".global-cache": {
+        "bytes": 139264,
+        "mode": 420,
+        "sha256": "04d4202d99ad27b141f8db3f29136651521d8ea20f1646ddad85c3e0e0a8be93"
+      },
+      ".package-cache": {
+        "bytes": 0,
+        "mode": 436,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      ".package-cache-mutate": {
+        "bytes": 0,
+        "mode": 436,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "candidate_manifest_sha256": "0bf9ff1cbc154583c60c6dd34688c9b498b6f63b0ef8014d1dbcec04f7ed28e8",
+  "case_id": "AB1",
+  "environment": {
+    "AXBUILD_TARGET_DIR": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru",
+    "CARGO_HOME": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/cargo",
+    "CARGO_NET_OFFLINE": "true",
+    "CARGO_TARGET_DIR": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru",
+    "CCACHE_DIR": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/ccache",
+    "GIT_OPTIONAL_LOCKS": "0",
+    "HOME": "/home/yanlien",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PATH": "/home/yanlien/.cargo/bin:/usr/local/bin:/usr/bin:/bin",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "RUSTUP_HOME": "/home/yanlien/.rustup",
+    "RUST_LOG": "info,uboot_shell=debug",
+    "VIRQ_CACHE_DIR": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache",
+    "VIRQ_EXPLICIT_DTB": "1",
+    "VIRQ_FREQUENCY_REQUEST": "enabled",
+    "VIRQ_GIC_LAYOUT": "rk3588",
+    "VIRQ_HOST_LOAD": "linux_memory",
+    "VIRQ_IRQ_CONTEXT": "current_el",
+    "VIRQ_IRQ_PRESSURE": "sgi",
+    "VIRQ_IRQ_PRESSURE_BURST": "2",
+    "VIRQ_IRQ_PRESSURE_PERIOD_US": "2000",
+    "VIRQ_IRQ_SERVICE": "off",
+    "VIRQ_LINUX_BASE_PROFILE": "registry-v0.0.14",
+    "VIRQ_LINUX_CC": "/usr/bin/aarch64-linux-gnu-gcc",
+    "VIRQ_LINUX_FENCES": "1",
+    "VIRQ_LINUX_HOST_CPU": "3",
+    "VIRQ_LINUX_INITRAMFS_BASE": "/home/yanlien/Program/hypervisor/tgoskits/target/research-assets/images/initramfs-aarch64-busybox.cpio.gz/initramfs-aarch64-busybox.cpio.gz",
+    "VIRQ_LINUX_KERNEL": "/home/yanlien/Program/hypervisor/tgoskits/target/research-assets/images/qemu-aarch64/linux/linux-qemu",
+    "VIRQ_LINUX_MEMORY_BYTES": "16777216",
+    "VIRQ_LINUX_MEMORY_EVERY": "1",
+    "VIRQ_LINUX_PHASE": "1",
+    "VIRQ_LINUX_PHASE_B": "1",
+    "VIRQ_LINUX_PHASE_OFFSET": "1",
+    "VIRQ_LINUX_PHASE_TEST_CLOCK": "0",
+    "VIRQ_PERIOD_US": "20000",
+    "VIRQ_RECORDING": "on",
+    "VIRQ_SAMPLES": "32",
+    "VIRQ_SERVICE_PLACEMENT": "cpu0",
+    "VIRQ_SOURCE": "physical_timer_ppi",
+    "VIRQ_TASK": "1",
+    "VIRQ_TASK_DEADLINE_US": "10000",
+    "VIRQ_TASK_ROUNDS": "4096",
+    "VIRQ_TASK_WAIT": "blocked",
+    "VIRQ_THERMAL_REQUEST": "enabled"
+  },
+  "host_preflight": {
+    "path": "raw/strict-native-phase-v3/AB1-host-preflight-v1.json",
+    "sha256": "3b9557467f3689f46564179cdf611b0e519e3fd3d6821752ef7008c3c76276c1"
+  },
+  "inputs_sha256": "8fac8a1fb86d79a1e74bf9591bf68fa2dd88f6d261edcf0ea576dfbd6ace0060",
+  "limits": {
+    "board_seconds": 900,
+    "capture_seconds": 30,
+    "cleanup_seconds": 10,
+    "max_artifact_versions_per_path": 4,
+    "max_capture_bytes": 536870912,
+    "outer_seconds": 920
+  },
+  "ordinary_manifest_sha256": "f4bd9bb6dadd056e35faa2b3243a1be410a588f531f6bceb7d71c89e520e3c86",
+  "primary_delivery_sha256": "fe7b8cd40aa21855eaaaedfb0ed92022eac37eed329dc51b06352710d4525bb7",
+  "schema_version": 1,
+  "source_702_sha256": "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb"
+}

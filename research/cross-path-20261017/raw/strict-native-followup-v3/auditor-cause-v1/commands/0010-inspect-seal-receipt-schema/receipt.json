@@ -1,0 +1,31 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "-c",
+    "import pathlib,json; out=pathlib.Path(\"research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands\");\nfor name in [\"0001-bound-context\",\"0008-write-cause-report\",\"0009-final-evidence-seal\"]:\n p=out/name/\"receipt.json\"; d=json.loads(p.read_bytes()); print(name,json.dumps({k:v for k,v in d.items() if k in [\"stdout\",\"stderr\",\"wait_returncode\",\"returncode\",\"actual_Popen_wait\"]},indent=2)); print(\"FILES\",[x.name for x in p.parent.iterdir()])"
+  ],
+  "env": {
+    "PATH": "/usr/bin:/bin",
+    "LANG": "C.UTF-8",
+    "TZ": "UTC",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "cwd": "/home/yanlien/Program/hypervisor/tgoskits",
+  "started_ns": 1792329527730650808,
+  "forced_stop": false,
+  "pid": 3,
+  "wait_returncode": 0,
+  "returncode": 0,
+  "ended_ns": 1792329527772743160,
+  "stdout": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0010-inspect-seal-receipt-schema/stdout",
+    "size": 2064,
+    "sha256": "dd4eff7a2e8ef1b2ab185883d33876d06c6ef38368a8e799eea127f718e9214a"
+  },
+  "stderr": {
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0010-inspect-seal-receipt-schema/stderr",
+    "size": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

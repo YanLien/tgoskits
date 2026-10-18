@@ -1,0 +1,1203 @@
+{
+  "schema_version": 1,
+  "scope": "read-only diagnosis of two AB1 auditor refusals; no implementation, full audit, hardware rerun, or acceptance",
+  "case_id": "AB1",
+  "normal_end_to_end_GREEN": false,
+  "full_function_passed": false,
+  "actual_original_audit": {
+    "reference": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/AB1-actual-audit-v1/report.json",
+      "bytes": 59088,
+      "sha256": "1a9257ef78caf570267dcb89c60d3143cf97dd033f9460b56176347f594d0b25"
+    },
+    "receipt": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-actual-audit-v1.receipt.json",
+      "bytes": 1186,
+      "sha256": "cc3d3e6a3eba6348a759671847ee4d7f5a4c4fd58817612fe9fb448c358b2ced"
+    },
+    "actual_Popen_wait": 1,
+    "result_preserved": true,
+    "failed_gates": [
+      "same-run-launch-wait-completion-binding",
+      "full-suite-no-additional-failure-or-tail",
+      "actual-artifact-use-chain",
+      "actual-exits-and-frozen-explicit-release"
+    ]
+  },
+  "bound_inputs": {
+    "final_handoff": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-root-final-handoff-v1.json",
+      "bytes": 5377,
+      "sha256": "cf25d62d4ff106f0e6d3315ce4e0b58ce5f4d78ac2e90b7b79fe814116e9b72f"
+    },
+    "capture": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/capture.json",
+      "bytes": 17035,
+      "sha256": "9b7004231459f32e1078b86505cbb3c73104d4c5d05862ed21fd6084c0ca7dd6"
+    },
+    "raw": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/xtask.log",
+      "bytes": 6496391,
+      "sha256": "c74a5a24106e3e59a4c03316b428f9591e5e481bce5f65a874f4231b7d10814b"
+    },
+    "sealed_sources": {
+      "sealed_auditor": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/audit.py",
+        "bytes": 64442,
+        "sha256": "6fa57d1bb99a9fbdb49613ffc90cb4b648aa9511465957aec25b9e58e34e76aa",
+        "selected": {
+          "AuditError": {
+            "line": 31,
+            "end_line": 32
+          },
+          "need": {
+            "line": 35,
+            "end_line": 37
+          },
+          "newc": {
+            "line": 540,
+            "end_line": 566
+          },
+          "fdt": {
+            "line": 569,
+            "end_line": 609
+          }
+        }
+      },
+      "approved_capture": {
+        "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/capture_native.py",
+        "bytes": 33173,
+        "sha256": "61717a37b528e2e93d8cbcae1c1dafbc6249ac3417fbf0b8011b984a03a4c683",
+        "selected": {
+          "parse_newc": {
+            "line": 86,
+            "end_line": 131
+          },
+          "_newc_entries": {
+            "line": 296,
+            "end_line": 340
+          },
+          "newc_members": {
+            "line": 343,
+            "end_line": 345
+          }
+        }
+      }
+    },
+    "saved_artifacts": {
+      "guest_dtb": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/3e7bce66056190d990705f723b72a9774c37e36629cf34f707ec480c69c87552",
+        "bytes": 1287,
+        "sha256": "3e7bce66056190d990705f723b72a9774c37e36629cf34f707ec480c69c87552",
+        "verified": true
+      },
+      "guest_rootfs": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/ca47218b5b9cccb5e9e46c9eba5dcf52b6e04bec8778eaafa8b08e9b4b934f25",
+        "bytes": 1475198,
+        "sha256": "ca47218b5b9cccb5e9e46c9eba5dcf52b6e04bec8778eaafa8b08e9b4b934f25",
+        "verified": true
+      },
+      "host_bin": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/ea476689ebd75b36f2d0aa8daa5b46a542d0ae801734d21fd0f8f4240e5c0805",
+        "bytes": 5169216,
+        "sha256": "ea476689ebd75b36f2d0aa8daa5b46a542d0ae801734d21fd0f8f4240e5c0805",
+        "verified": true
+      },
+      "host_elf": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/69e75054b4fec8d41965c8a0c52d078c1a026c48295e58426375f2e4a5000366",
+        "bytes": 7941312,
+        "sha256": "69e75054b4fec8d41965c8a0c52d078c1a026c48295e58426375f2e4a5000366",
+        "verified": true
+      },
+      "host_fit": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/a258f321a9909851ece3a643e23b15124c66be48f7c3c8cf1078454ace87d85f",
+        "bytes": 23250920,
+        "sha256": "a258f321a9909851ece3a643e23b15124c66be48f7c3c8cf1078454ace87d85f",
+        "verified": true
+      },
+      "host_initramfs": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/4683cb2cefc30679221e09d4f65cc0a2c533a7bc93d2e765acc0cef8517bbf92",
+        "bytes": 17797682,
+        "sha256": "4683cb2cefc30679221e09d4f65cc0a2c533a7bc93d2e765acc0cef8517bbf92",
+        "verified": true
+      },
+      "host_preset_dtb": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/66939117c227f224ee644ed4543b68178ceeb8c18655ff01a10db9da28fc9ad5",
+        "bytes": 283054,
+        "sha256": "66939117c227f224ee644ed4543b68178ceeb8c18655ff01a10db9da28fc9ad5",
+        "verified": true
+      },
+      "linux_build_json": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/f25053cc3f1b21424cb1169039f34d7bfa98881ea7ae0ef90754709c3637e11a",
+        "bytes": 1922,
+        "sha256": "f25053cc3f1b21424cb1169039f34d7bfa98881ea7ae0ef90754709c3637e11a",
+        "verified": true
+      },
+      "linux_kernel": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/c5403e99b9ae7a8c60c393fb2a97e637ded3e049179bb1b2f63cf6b94dd2a61a",
+        "bytes": 52558336,
+        "sha256": "c5403e99b9ae7a8c60c393fb2a97e637ded3e049179bb1b2f63cf6b94dd2a61a",
+        "verified": true
+      },
+      "linux_vm_config": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/58b7866531b3cfa7bda1c03cf5c3a71fa00b18fe459b52115ddfb0e7f7c1ec99",
+        "bytes": 502,
+        "sha256": "58b7866531b3cfa7bda1c03cf5c3a71fa00b18fe459b52115ddfb0e7f7c1ec99",
+        "verified": true
+      },
+      "resources": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/44ed9b70a060a4e7b5fe9e305e4e5a1e85304451ba85f41db06fc592e73a582b",
+        "bytes": 874,
+        "sha256": "44ed9b70a060a4e7b5fe9e305e4e5a1e85304451ba85f41db06fc592e73a582b",
+        "verified": true
+      },
+      "rt_bin": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/8e047c995362183b8cf755c4e8f5344a2e88982b9de78747fec8891f106a70c6",
+        "bytes": 45320,
+        "sha256": "8e047c995362183b8cf755c4e8f5344a2e88982b9de78747fec8891f106a70c6",
+        "verified": true
+      },
+      "rt_dtb": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/63a5d5a043670b162f91804ccb1219efc1d9b4b3bd46aa4ae32dc3a49ec20c30",
+        "bytes": 3202,
+        "sha256": "63a5d5a043670b162f91804ccb1219efc1d9b4b3bd46aa4ae32dc3a49ec20c30",
+        "verified": true
+      },
+      "rt_elf": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/f40c7c378cf80de6ac2cc64d6b1d1a4fbb64f7d4335141ad5d213aabaef62f93",
+        "bytes": 778880,
+        "sha256": "f40c7c378cf80de6ac2cc64d6b1d1a4fbb64f7d4335141ad5d213aabaef62f93",
+        "verified": true
+      },
+      "rt_vm_config": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/392f378ccedaff970bbbb29a6a14bb90738914760c397cdf852365aafb72fa4f",
+        "bytes": 388,
+        "sha256": "392f378ccedaff970bbbb29a6a14bb90738914760c397cdf852365aafb72fa4f",
+        "verified": true
+      },
+      "worker": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/b9db9b8fc7925bf2c18e2d9edfbd3c0ee10a5a0f57985151e2f7b0073122ffc2",
+        "bytes": 701752,
+        "sha256": "b9db9b8fc7925bf2c18e2d9edfbd3c0ee10a5a0f57985151e2f7b0073122ffc2",
+        "verified": true
+      },
+      "zephyr_config": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/bcff0cfdd171f6887f549eeea39a9c20b2e18f1e5a3eac448eb59f06afb06632",
+        "bytes": 24645,
+        "sha256": "bcff0cfdd171f6887f549eeea39a9c20b2e18f1e5a3eac448eb59f06afb06632",
+        "verified": true
+      }
+    }
+  },
+  "artifact_refusal": {
+    "conclusion": "The sealed auditor is incompatible with the approved Host append-newc/gzip container. The observed boundary is not arbitrary junk or a malformed single archive.",
+    "formal_error": "AuditError: newc trailer/tail",
+    "actual_callsite": {
+      "source": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/audit.py",
+        "bytes": 64442,
+        "sha256": "6fa57d1bb99a9fbdb49613ffc90cb4b648aa9511465957aec25b9e58e34e76aa",
+        "selected": {
+          "AuditError": {
+            "line": 31,
+            "end_line": 32
+          },
+          "need": {
+            "line": 35,
+            "end_line": 37
+          },
+          "newc": {
+            "line": 540,
+            "end_line": 566
+          },
+          "fdt": {
+            "line": 569,
+            "end_line": 609
+          }
+        }
+      },
+      "line": 668,
+      "expression": "host, _ = newc(components['ramdisk'])"
+    },
+    "failing_rule": {
+      "line": 557,
+      "expression": "need(not size and not mode and not any(raw[pos:]), 'newc trailer/tail')",
+      "trailer_mode": 0,
+      "trailer_payload_bytes": 0,
+      "post_trailer_position": 1364,
+      "any_remaining_nonzero": true,
+      "first_remaining_nonzero_offset": 1364,
+      "first_remaining_bytes_hex": "1f8b08000000000000ff"
+    },
+    "fit_default": "/configurations/config-ostool",
+    "fit_ramdisk_node": "/images/ramdisk",
+    "fit_ramdisk_equals_saved_host_initramfs": true,
+    "host_container": {
+      "reference": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/4683cb2cefc30679221e09d4f65cc0a2c533a7bc93d2e765acc0cef8517bbf92",
+        "bytes": 17797682,
+        "sha256": "4683cb2cefc30679221e09d4f65cc0a2c533a7bc93d2e765acc0cef8517bbf92"
+      },
+      "total_bytes": 17797682,
+      "format": "raw newc resource archive [0,1364), then gzip member [1364,17797682) containing a second newc archive",
+      "segments": [
+        {
+          "kind": "newc-archive",
+          "domain": "saved Host initramfs raw bytes",
+          "offset": 0,
+          "bytes": 1364,
+          "sha256": "cf93dbf7f5603b71eb385cca63ec146cb5307edf473e3bc86ebf9fc5abccf560",
+          "members": [
+            {
+              "name": ".",
+              "header_offset": 0,
+              "mode": 16877,
+              "bytes": 0,
+              "payload_offset": 112,
+              "end_offset": 112
+            },
+            {
+              "name": "tests",
+              "header_offset": 112,
+              "mode": 16893,
+              "bytes": 0,
+              "payload_offset": 228,
+              "end_offset": 228
+            },
+            {
+              "name": "tests/vcpu-runtime.toml",
+              "header_offset": 228,
+              "mode": 33204,
+              "bytes": 874,
+              "payload_offset": 364,
+              "end_offset": 1240
+            },
+            {
+              "name": "TRAILER!!!",
+              "header_offset": 1240,
+              "mode": 0,
+              "bytes": 0,
+              "payload_offset": 1364,
+              "end_offset": 1364
+            }
+          ],
+          "trailer": {
+            "name": "TRAILER!!!",
+            "header_offset": 1240,
+            "mode": 0,
+            "bytes": 0,
+            "payload_offset": 1364,
+            "end_offset": 1364
+          },
+          "trailer_header_ascii": "07070100000004000000000000000000000000000000010000000000000000000000000000000000000000000000000000000b00000000",
+          "trailer_name_hex": "545241494c455221212100",
+          "bytes_after_archive": 17796318,
+          "first_nonzero_after": 1364,
+          "boundary_hex": "303030303030303030623030303030303030545241494c4552212121000000001f8b08000000000000ffecbd0d7c54d5993ffedc7b27c910228424402460ee245821859af764aa989b0414abae1ad2d6555b6632194ce4352f60403413a04a4d",
+          "sealed_auditor_single_archive": {
+            "accepted": true,
+            "members": 3,
+            "member_names": [
+              ".",
+              "tests",
+              "tests/vcpu-runtime.toml"
+            ],
+            "regular": [
+              "tests/vcpu-runtime.toml"
+            ]
+          },
+          "approved_capture_single_archive": {
+            "accepted": true,
+            "members": 3,
+            "member_names": [
+              ".",
+              "tests",
+              "tests/vcpu-runtime.toml"
+            ],
+            "regular": null
+          }
+        },
+        {
+          "kind": "gzip-member",
+          "domain": "saved Host initramfs raw bytes",
+          "offset": 1364,
+          "bytes": 17796318,
+          "first_bytes_hex": "1f8b08000000000000ffecbd0d7c54d5993ffedc7b27c910228424402460ee24",
+          "sha256": "f9813773a53469be6dd920192afc4ac609ef08c1b7cc62527ac2533368bb0aec",
+          "inflated_bytes": 54086784,
+          "inflated_sha256": "897ad17cb79996e96709cca04e83e4d99afa8072e2aadb934dfeca3ca8431bdc",
+          "children": [
+            {
+              "kind": "newc-archive",
+              "domain": "inflated gzip at saved Host initramfs raw bytes:1364",
+              "offset": 0,
+              "bytes": 54086784,
+              "sha256": "897ad17cb79996e96709cca04e83e4d99afa8072e2aadb934dfeca3ca8431bdc",
+              "members": [
+                {
+                  "name": ".",
+                  "header_offset": 0,
+                  "mode": 16877,
+                  "bytes": 0,
+                  "payload_offset": 112,
+                  "end_offset": 112
+                },
+                {
+                  "name": "guest",
+                  "header_offset": 112,
+                  "mode": 16893,
+                  "bytes": 0,
+                  "payload_offset": 228,
+                  "end_offset": 228
+                },
+                {
+                  "name": "guest/builtin",
+                  "header_offset": 228,
+                  "mode": 16893,
+                  "bytes": 0,
+                  "payload_offset": 352,
+                  "end_offset": 352
+                },
+                {
+                  "name": "guest/builtin/configs",
+                  "header_offset": 352,
+                  "mode": 16893,
+                  "bytes": 0,
+                  "payload_offset": 484,
+                  "end_offset": 484
+                },
+                {
+                  "name": "guest/builtin/configs/vm-1.toml",
+                  "header_offset": 484,
+                  "mode": 33204,
+                  "bytes": 739,
+                  "payload_offset": 628,
+                  "end_offset": 1368
+                },
+                {
+                  "name": "guest/builtin/configs/vm-2.toml",
+                  "header_offset": 1368,
+                  "mode": 33204,
+                  "bytes": 554,
+                  "payload_offset": 1512,
+                  "end_offset": 2068
+                },
+                {
+                  "name": "guest/builtin/images",
+                  "header_offset": 2068,
+                  "mode": 16893,
+                  "bytes": 0,
+                  "payload_offset": 2200,
+                  "end_offset": 2200
+                },
+                {
+                  "name": "guest/builtin/images/3e7bce66056190d990705f723b72a9774c37e36629cf34f707ec480c69c87552",
+                  "header_offset": 2200,
+                  "mode": 33204,
+                  "bytes": 1287,
+                  "payload_offset": 2396,
+                  "end_offset": 3684
+                },
+                {
+                  "name": "guest/builtin/images/63a5d5a043670b162f91804ccb1219efc1d9b4b3bd46aa4ae32dc3a49ec20c30",
+                  "header_offset": 3684,
+                  "mode": 33204,
+                  "bytes": 3202,
+                  "payload_offset": 3880,
+                  "end_offset": 7084
+                },
+                {
+                  "name": "guest/builtin/images/8e047c995362183b8cf755c4e8f5344a2e88982b9de78747fec8891f106a70c6",
+                  "header_offset": 7084,
+                  "mode": 33277,
+                  "bytes": 45320,
+                  "payload_offset": 7280,
+                  "end_offset": 52600
+                },
+                {
+                  "name": "guest/builtin/images/c5403e99b9ae7a8c60c393fb2a97e637ded3e049179bb1b2f63cf6b94dd2a61a",
+                  "header_offset": 52600,
+                  "mode": 33204,
+                  "bytes": 52558336,
+                  "payload_offset": 52796,
+                  "end_offset": 52611132
+                },
+                {
+                  "name": "guest/builtin/images/ca47218b5b9cccb5e9e46c9eba5dcf52b6e04bec8778eaafa8b08e9b4b934f25",
+                  "header_offset": 52611132,
+                  "mode": 33152,
+                  "bytes": 1475198,
+                  "payload_offset": 52611328,
+                  "end_offset": 54086528
+                },
+                {
+                  "name": "guest/builtin/symbols",
+                  "header_offset": 54086528,
+                  "mode": 16893,
+                  "bytes": 0,
+                  "payload_offset": 54086660,
+                  "end_offset": 54086660
+                },
+                {
+                  "name": "TRAILER!!!",
+                  "header_offset": 54086660,
+                  "mode": 0,
+                  "bytes": 0,
+                  "payload_offset": 54086784,
+                  "end_offset": 54086784
+                }
+              ],
+              "trailer": {
+                "name": "TRAILER!!!",
+                "header_offset": 54086660,
+                "mode": 0,
+                "bytes": 0,
+                "payload_offset": 54086784,
+                "end_offset": 54086784
+              },
+              "trailer_header_ascii": "0707010000000e000000000000000000000000000000010000000000000000000000000000000000000000000000000000000b00000000",
+              "trailer_name_hex": "545241494c455221212100",
+              "bytes_after_archive": 0,
+              "first_nonzero_after": null,
+              "boundary_hex": "303030303030303030623030303030303030545241494c455221212100000000",
+              "sealed_auditor_single_archive": {
+                "accepted": true,
+                "members": 13,
+                "member_names": [
+                  ".",
+                  "guest",
+                  "guest/builtin",
+                  "guest/builtin/configs",
+                  "guest/builtin/configs/vm-1.toml",
+                  "guest/builtin/configs/vm-2.toml",
+                  "guest/builtin/images",
+                  "guest/builtin/images/3e7bce66056190d990705f723b72a9774c37e36629cf34f707ec480c69c87552",
+                  "guest/builtin/images/63a5d5a043670b162f91804ccb1219efc1d9b4b3bd46aa4ae32dc3a49ec20c30",
+                  "guest/builtin/images/8e047c995362183b8cf755c4e8f5344a2e88982b9de78747fec8891f106a70c6",
+                  "guest/builtin/images/c5403e99b9ae7a8c60c393fb2a97e637ded3e049179bb1b2f63cf6b94dd2a61a",
+                  "guest/builtin/images/ca47218b5b9cccb5e9e46c9eba5dcf52b6e04bec8778eaafa8b08e9b4b934f25",
+                  "guest/builtin/symbols"
+                ],
+                "regular": [
+                  "guest/builtin/configs/vm-1.toml",
+                  "guest/builtin/configs/vm-2.toml",
+                  "guest/builtin/images/3e7bce66056190d990705f723b72a9774c37e36629cf34f707ec480c69c87552",
+                  "guest/builtin/images/63a5d5a043670b162f91804ccb1219efc1d9b4b3bd46aa4ae32dc3a49ec20c30",
+                  "guest/builtin/images/8e047c995362183b8cf755c4e8f5344a2e88982b9de78747fec8891f106a70c6",
+                  "guest/builtin/images/c5403e99b9ae7a8c60c393fb2a97e637ded3e049179bb1b2f63cf6b94dd2a61a",
+                  "guest/builtin/images/ca47218b5b9cccb5e9e46c9eba5dcf52b6e04bec8778eaafa8b08e9b4b934f25"
+                ]
+              },
+              "approved_capture_single_archive": {
+                "accepted": true,
+                "members": 13,
+                "member_names": [
+                  ".",
+                  "guest",
+                  "guest/builtin",
+                  "guest/builtin/configs",
+                  "guest/builtin/configs/vm-1.toml",
+                  "guest/builtin/configs/vm-2.toml",
+                  "guest/builtin/images",
+                  "guest/builtin/images/3e7bce66056190d990705f723b72a9774c37e36629cf34f707ec480c69c87552",
+                  "guest/builtin/images/63a5d5a043670b162f91804ccb1219efc1d9b4b3bd46aa4ae32dc3a49ec20c30",
+                  "guest/builtin/images/8e047c995362183b8cf755c4e8f5344a2e88982b9de78747fec8891f106a70c6",
+                  "guest/builtin/images/c5403e99b9ae7a8c60c393fb2a97e637ded3e049179bb1b2f63cf6b94dd2a61a",
+                  "guest/builtin/images/ca47218b5b9cccb5e9e46c9eba5dcf52b6e04bec8778eaafa8b08e9b4b934f25",
+                  "guest/builtin/symbols"
+                ],
+                "regular": null
+              }
+            }
+          ]
+        }
+      ],
+      "whole_sealed_auditor": {
+        "accepted": false,
+        "error": "AuditError: newc trailer/tail"
+      },
+      "whole_approved_capture": {
+        "accepted": true,
+        "members": 15,
+        "member_names": [
+          ".",
+          "guest",
+          "guest/builtin",
+          "guest/builtin/configs",
+          "guest/builtin/configs/vm-1.toml",
+          "guest/builtin/configs/vm-2.toml",
+          "guest/builtin/images",
+          "guest/builtin/images/3e7bce66056190d990705f723b72a9774c37e36629cf34f707ec480c69c87552",
+          "guest/builtin/images/63a5d5a043670b162f91804ccb1219efc1d9b4b3bd46aa4ae32dc3a49ec20c30",
+          "guest/builtin/images/8e047c995362183b8cf755c4e8f5344a2e88982b9de78747fec8891f106a70c6",
+          "guest/builtin/images/c5403e99b9ae7a8c60c393fb2a97e637ded3e049179bb1b2f63cf6b94dd2a61a",
+          "guest/builtin/images/ca47218b5b9cccb5e9e46c9eba5dcf52b6e04bec8778eaafa8b08e9b4b934f25",
+          "guest/builtin/symbols",
+          "tests",
+          "tests/vcpu-runtime.toml"
+        ]
+      },
+      "duplicate_name": ".",
+      "duplicate_kind": "matching empty directory; approved merger permits this and rejects other duplicate payloads",
+      "boundary": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/host-newc-gzip-boundary.raw",
+        "bytes": 96,
+        "sha256": "f944cf0071477f21febbacdfa3635327ed82804b49272c3031e7caa5187af3b2",
+        "source_path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/4683cb2cefc30679221e09d4f65cc0a2c533a7bc93d2e765acc0cef8517bbf92",
+        "source_sha256": "4683cb2cefc30679221e09d4f65cc0a2c533a7bc93d2e765acc0cef8517bbf92",
+        "source_offset": 1332,
+        "source_end_exclusive": 1428,
+        "hex": "303030303030303030623030303030303030545241494c4552212121000000001f8b08000000000000ffecbd0d7c54d5993ffedc7b27c910228424402460ee245821859af764aa989b0414abae1ad2d6555b6632194ce4352f60403413a04a4d"
+      }
+    },
+    "approved_capture_contract": {
+      "source": {
+        "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/capture_native.py",
+        "bytes": 33173,
+        "sha256": "61717a37b528e2e93d8cbcae1c1dafbc6249ac3417fbf0b8011b984a03a4c683",
+        "selected": {
+          "parse_newc": {
+            "line": 86,
+            "end_line": 131
+          },
+          "_newc_entries": {
+            "line": 296,
+            "end_line": 340
+          },
+          "newc_members": {
+            "line": 343,
+            "end_line": 345
+          }
+        }
+      },
+      "strict_single_archive_lines": [
+        86,
+        131
+      ],
+      "host_container_lines": [
+        296,
+        345
+      ],
+      "behavior": "Consumes bounded raw archives and gzip members, requires gzip EOF, recursively parses inflated archives, and permits duplicate paths only for matching empty directories.",
+      "host_callsite_line": 486,
+      "guest_rootfs_strict_callsite_line": 506,
+      "original_capture_artifact_chain_complete": true,
+      "original_capture_errors": []
+    },
+    "guest_rootfs": {
+      "reference": {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1/artifacts/ca47218b5b9cccb5e9e46c9eba5dcf52b6e04bec8778eaafa8b08e9b4b934f25",
+        "bytes": 1475198,
+        "sha256": "ca47218b5b9cccb5e9e46c9eba5dcf52b6e04bec8778eaafa8b08e9b4b934f25"
+      },
+      "inflated_bytes": 2940408,
+      "inflated_sha256": "f2c8b68e9aa99a5a05cc70d86315b9625c3134e95694ff685e76ed0befc06e43",
+      "sealed_auditor": {
+        "accepted": true,
+        "members": 9,
+        "member_names": [
+          ".",
+          "bin",
+          "bin/busybox",
+          "bin/ordinary-load",
+          "dev",
+          "init",
+          "proc",
+          "sys",
+          "tmp"
+        ],
+        "regular": [
+          "bin/busybox",
+          "bin/ordinary-load",
+          "init"
+        ]
+      },
+      "approved_capture": {
+        "accepted": true,
+        "members": 9,
+        "member_names": [
+          ".",
+          "bin",
+          "bin/busybox",
+          "bin/ordinary-load",
+          "dev",
+          "init",
+          "proc",
+          "sys",
+          "tmp"
+        ],
+        "regular": null
+      },
+      "container_segments": [
+        {
+          "kind": "newc-archive",
+          "domain": "inflated Guest rootfs",
+          "offset": 0,
+          "bytes": 2940408,
+          "sha256": "f2c8b68e9aa99a5a05cc70d86315b9625c3134e95694ff685e76ed0befc06e43",
+          "members": [
+            {
+              "name": ".",
+              "header_offset": 0,
+              "mode": 16877,
+              "bytes": 0,
+              "payload_offset": 112,
+              "end_offset": 112
+            },
+            {
+              "name": "bin",
+              "header_offset": 112,
+              "mode": 16893,
+              "bytes": 0,
+              "payload_offset": 228,
+              "end_offset": 228
+            },
+            {
+              "name": "bin/busybox",
+              "header_offset": 228,
+              "mode": 33277,
+              "bytes": 2237080,
+              "payload_offset": 352,
+              "end_offset": 2237432
+            },
+            {
+              "name": "bin/ordinary-load",
+              "header_offset": 2237432,
+              "mode": 33261,
+              "bytes": 701752,
+              "payload_offset": 2237560,
+              "end_offset": 2939312
+            },
+            {
+              "name": "dev",
+              "header_offset": 2939312,
+              "mode": 16893,
+              "bytes": 0,
+              "payload_offset": 2939428,
+              "end_offset": 2939428
+            },
+            {
+              "name": "init",
+              "header_offset": 2939428,
+              "mode": 33261,
+              "bytes": 390,
+              "payload_offset": 2939544,
+              "end_offset": 2939936
+            },
+            {
+              "name": "proc",
+              "header_offset": 2939936,
+              "mode": 16893,
+              "bytes": 0,
+              "payload_offset": 2940052,
+              "end_offset": 2940052
+            },
+            {
+              "name": "sys",
+              "header_offset": 2940052,
+              "mode": 16893,
+              "bytes": 0,
+              "payload_offset": 2940168,
+              "end_offset": 2940168
+            },
+            {
+              "name": "tmp",
+              "header_offset": 2940168,
+              "mode": 16893,
+              "bytes": 0,
+              "payload_offset": 2940284,
+              "end_offset": 2940284
+            },
+            {
+              "name": "TRAILER!!!",
+              "header_offset": 2940284,
+              "mode": 0,
+              "bytes": 0,
+              "payload_offset": 2940408,
+              "end_offset": 2940408
+            }
+          ],
+          "trailer": {
+            "name": "TRAILER!!!",
+            "header_offset": 2940284,
+            "mode": 0,
+            "bytes": 0,
+            "payload_offset": 2940408,
+            "end_offset": 2940408
+          },
+          "trailer_header_ascii": "0707010000000a000000000000000000000000000000010000000000000000000000000000000000000000000000000000000b00000000",
+          "trailer_name_hex": "545241494c455221212100",
+          "bytes_after_archive": 0,
+          "first_nonzero_after": null,
+          "boundary_hex": "303030303030303030623030303030303030545241494c455221212100000000",
+          "sealed_auditor_single_archive": {
+            "accepted": true,
+            "members": 9,
+            "member_names": [
+              ".",
+              "bin",
+              "bin/busybox",
+              "bin/ordinary-load",
+              "dev",
+              "init",
+              "proc",
+              "sys",
+              "tmp"
+            ],
+            "regular": [
+              "bin/busybox",
+              "bin/ordinary-load",
+              "init"
+            ]
+          },
+          "approved_capture_single_archive": {
+            "accepted": true,
+            "members": 9,
+            "member_names": [
+              ".",
+              "bin",
+              "bin/busybox",
+              "bin/ordinary-load",
+              "dev",
+              "init",
+              "proc",
+              "sys",
+              "tmp"
+            ],
+            "regular": null
+          }
+        }
+      ]
+    },
+    "scope_limit": "Only exact saved format/decomposition and parser compatibility were reprobed. Other saved artifacts were SHA/size verified, not a rerun of the full use-chain gate."
+  },
+  "suite_refusal": {
+    "conclusion": "Exactly two DTS simple_bus_reg Warning lines contain the standalone word error; both become unclassified-reject under the sealed generic candidate rule.",
+    "formal_error": "AuditError: failure/diagnostic/unclassified error candidate or unframed final bytes observed",
+    "source": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/audit.py",
+      "bytes": 64442,
+      "sha256": "6fa57d1bb99a9fbdb49613ffc90cb4b648aa9511465957aec25b9e58e34e76aa"
+    },
+    "candidate_regex_line": 24,
+    "classification_lines": [
+      124,
+      138
+    ],
+    "retention_lines": [
+      156,
+      161
+    ],
+    "rejecting_gate_line": 525,
+    "candidate_count": 2,
+    "candidates": [
+      {
+        "line": 24,
+        "offset": 2695,
+        "bytes": 228,
+        "sha256": "c83438e2c6ba62743446b3445873b1486bb7309f41bb7c3cfef9cff3477e0283",
+        "marker": null,
+        "text": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/guest/zephyr/zephyr.dts:23.37-38.5: Warning (simple_bus_reg): /soc/interrupt-controller@8000000: simple-bus unit address format error, expected \"fe600000\"",
+        "error_classification": "unclassified-reject",
+        "requires_rejection": true,
+        "first_candidate_match": "error",
+        "first_candidate_match_text_offset": 201,
+        "raw_copy_offset": 0
+      },
+      {
+        "line": 52,
+        "offset": 5173,
+        "bytes": 228,
+        "sha256": "c83438e2c6ba62743446b3445873b1486bb7309f41bb7c3cfef9cff3477e0283",
+        "marker": null,
+        "text": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/guest/zephyr/zephyr.dts:23.37-38.5: Warning (simple_bus_reg): /soc/interrupt-controller@8000000: simple-bus unit address format error, expected \"fe600000\"",
+        "error_classification": "unclassified-reject",
+        "requires_rejection": true,
+        "first_candidate_match": "error",
+        "first_candidate_match_text_offset": 201,
+        "raw_copy_offset": 228
+      }
+    ],
+    "raw_candidate_copy": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/suite-candidates.raw",
+      "bytes": 456,
+      "sha256": "739235cf51ddce5add9143da1a401041341cef49ab4cc5c18f473f6069afcd26"
+    },
+    "candidate_match": {
+      "word": "error",
+      "text_offset": 201,
+      "source_raw_offsets": [
+        2896,
+        5374
+      ],
+      "bytes": 5
+    },
+    "explicit_or_protocol_failure_candidate_count": 0,
+    "unframed_nonempty_final_rows": [
+      {
+        "line": 801,
+        "offset": 62390,
+        "bytes": 45,
+        "sha256": "09ef072d36e7d67db236b19f0b35abef7813b7d6fb63dde1360eca21e5d0f88a",
+        "text": "*** Booting Zephyr OS build 32229d0b6cc6 ***"
+      },
+      {
+        "line": 803,
+        "offset": 62437,
+        "bytes": 38,
+        "sha256": "ae7ed5c17a6a15d1439576d84859c69eb98f91ef2ea15bbc71546fd321f38de7",
+        "text": "Secondary CPU core 1 (MPID:0x1) is up"
+      },
+      {
+        "line": 805,
+        "offset": 62477,
+        "bytes": 49,
+        "sha256": "96a3e38cbbbe36d879b185bf7e148e457917d49a134dbfb7c33f809d4c9b3524",
+        "text": "SOFTWARE VIRQ READY suspend vector=48 samples=32"
+      },
+      {
+        "line": 807,
+        "offset": 62528,
+        "bytes": 58,
+        "sha256": "0403c1f225e659e9f70707809c4dba99d816ccde75fee8ba6732e475321c59ef",
+        "text": "SOFTWARE VIRQ CLOCK timer_hz=24000000 counter_hz=24000000"
+      },
+      {
+        "line": 818,
+        "offset": 64221,
+        "bytes": 45,
+        "sha256": "09ef072d36e7d67db236b19f0b35abef7813b7d6fb63dde1360eca21e5d0f88a",
+        "text": "*** Booting Zephyr OS build 32229d0b6cc6 ***"
+      },
+      {
+        "line": 1098,
+        "offset": 98355,
+        "bytes": 38,
+        "sha256": "ae7ed5c17a6a15d1439576d84859c69eb98f91ef2ea15bbc71546fd321f38de7",
+        "text": "Secondary CPU core 1 (MPID:0x1) is up"
+      },
+      {
+        "line": 1100,
+        "offset": 98395,
+        "bytes": 49,
+        "sha256": "96a3e38cbbbe36d879b185bf7e148e457917d49a134dbfb7c33f809d4c9b3524",
+        "text": "SOFTWARE VIRQ READY suspend vector=48 samples=32"
+      },
+      {
+        "line": 1102,
+        "offset": 98446,
+        "bytes": 58,
+        "sha256": "0403c1f225e659e9f70707809c4dba99d816ccde75fee8ba6732e475321c59ef",
+        "text": "SOFTWARE VIRQ CLOCK timer_hz=24000000 counter_hz=24000000"
+      },
+      {
+        "line": 1104,
+        "offset": 98506,
+        "bytes": 39,
+        "sha256": "ce0eb2835f7df3b85a5c25d8657810396a3079b8f4b1cbd3447bfebc26a553f3",
+        "text": "SOFTWARE VIRQ TASKS_DRAINED samples=32"
+      },
+      {
+        "line": 1106,
+        "offset": 98547,
+        "bytes": 58,
+        "sha256": "5d4ee4eaef1344f0b04cadc014cf01d4c391d15ac3a66fe9c028e9036c9e7fcf",
+        "text": "SOFTWARE VIRQ COMPLETE streams=1 samples_each=32 total=32"
+      },
+      {
+        "line": 1197,
+        "offset": 113473,
+        "bytes": 45,
+        "sha256": "09ef072d36e7d67db236b19f0b35abef7813b7d6fb63dde1360eca21e5d0f88a",
+        "text": "*** Booting Zephyr OS build 32229d0b6cc6 ***"
+      },
+      {
+        "line": 1199,
+        "offset": 113520,
+        "bytes": 38,
+        "sha256": "ae7ed5c17a6a15d1439576d84859c69eb98f91ef2ea15bbc71546fd321f38de7",
+        "text": "Secondary CPU core 1 (MPID:0x1) is up"
+      },
+      {
+        "line": 1201,
+        "offset": 113560,
+        "bytes": 49,
+        "sha256": "96a3e38cbbbe36d879b185bf7e148e457917d49a134dbfb7c33f809d4c9b3524",
+        "text": "SOFTWARE VIRQ READY suspend vector=48 samples=32"
+      },
+      {
+        "line": 1203,
+        "offset": 113611,
+        "bytes": 58,
+        "sha256": "0403c1f225e659e9f70707809c4dba99d816ccde75fee8ba6732e475321c59ef",
+        "text": "SOFTWARE VIRQ CLOCK timer_hz=24000000 counter_hz=24000000"
+      },
+      {
+        "line": 1214,
+        "offset": 115301,
+        "bytes": 45,
+        "sha256": "09ef072d36e7d67db236b19f0b35abef7813b7d6fb63dde1360eca21e5d0f88a",
+        "text": "*** Booting Zephyr OS build 32229d0b6cc6 ***"
+      },
+      {
+        "line": 1216,
+        "offset": 115348,
+        "bytes": 38,
+        "sha256": "ae7ed5c17a6a15d1439576d84859c69eb98f91ef2ea15bbc71546fd321f38de7",
+        "text": "Secondary CPU core 1 (MPID:0x1) is up"
+      },
+      {
+        "line": 1218,
+        "offset": 115388,
+        "bytes": 49,
+        "sha256": "96a3e38cbbbe36d879b185bf7e148e457917d49a134dbfb7c33f809d4c9b3524",
+        "text": "SOFTWARE VIRQ READY suspend vector=48 samples=32"
+      },
+      {
+        "line": 1498,
+        "offset": 150050,
+        "bytes": 58,
+        "sha256": "0403c1f225e659e9f70707809c4dba99d816ccde75fee8ba6732e475321c59ef",
+        "text": "SOFTWARE VIRQ CLOCK timer_hz=24000000 counter_hz=24000000"
+      },
+      {
+        "line": 1500,
+        "offset": 150110,
+        "bytes": 39,
+        "sha256": "ce0eb2835f7df3b85a5c25d8657810396a3079b8f4b1cbd3447bfebc26a553f3",
+        "text": "SOFTWARE VIRQ TASKS_DRAINED samples=32"
+      },
+      {
+        "line": 1502,
+        "offset": 150151,
+        "bytes": 58,
+        "sha256": "5d4ee4eaef1344f0b04cadc014cf01d4c391d15ac3a66fe9c028e9036c9e7fcf",
+        "text": "SOFTWARE VIRQ COMPLETE streams=1 samples_each=32 total=32"
+      }
+    ],
+    "suite_marker_records": [
+      {
+        "line": 729,
+        "offset": 53736,
+        "bytes": 119,
+        "sha256": "5bb786141b7fe7bf7ee2bca5eee208f144906112c1e0746a7ea747661e47fb86",
+        "marker": "AXTEST_BEGIN",
+        "text": "AXTEST_BEGIN total=[ 44.511981 1 somehal::arch::gic::v3:292] GICv3 CPU 1 EOI mode: two_step=true"
+      },
+      {
+        "line": 50101,
+        "offset": 6496165,
+        "bytes": 107,
+        "sha256": "25893cd89642b1db1b14c5420fbfbb4629604f6f44600d2c57c76b973e2ba130",
+        "marker": "AXTEST_CASE",
+        "text": "AXTEST_CASE status=pass module=vcpu_runtime::tests name=targeted_interrupts_and_host_policy_survive_reset"
+      },
+      {
+        "line": 50102,
+        "offset": 6496272,
+        "bytes": 45,
+        "sha256": "79509f6a5dc58a54b5951dba33b97297b05f22dfde43422ca74a7b04b8f353d1",
+        "marker": "AXTEST_SUMMARY",
+        "text": "AXTEST_SUMMARY pass=1 fail=0 skip=0 total=1"
+      },
+      {
+        "line": 50103,
+        "offset": 6496317,
+        "bytes": 17,
+        "sha256": "b2e8d53f85c18e14ab41e44f9b7cf989a23ef1631dac2177ef2b502b9e77a17e",
+        "marker": "AXTEST_SUITE_OK",
+        "text": "AXTEST_SUITE_OK"
+      }
+    ],
+    "semantic_boundary": "Observed severity is Warning (simple_bus_reg), emitted around Zephyr DTS generation/linking. This is neither a CMake failure flag nor a compiler fatal-error line. The investigation does not determine whether the DTS mismatch itself is acceptable hardware configuration.",
+    "suite_pass_does_not_override_whole_run_failure": true
+  },
+  "user_cache": {
+    "actual_raw_records": [
+      {
+        "line": 11,
+        "offset": 1138,
+        "bytes": 63,
+        "sha256": "a213fe1b38cdb90f43d77e485c347185b6a36081534f7dd25da046a7500ba2bd",
+        "text": "-- Cache files will be written to: /home/yanlien/.cache/zephyr"
+      }
+    ],
+    "frozen_offline_witness": {
+      "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/evidence/cache-v3-validation/zephyr-capability-cache-cause.json",
+      "bytes": 12007,
+      "sha256": "b863d65a1e58c8876f75a6554ad9591992edee5ba74cacc5e8fad53959bb434c"
+    },
+    "frozen_offline_witness_field": "actual_stdout_selects_user_cache",
+    "frozen_offline_selection": "-- Cache files will be written to: /tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache/zephyr/.cache",
+    "observed_paths_equal": false,
+    "selection_cause": "unknown; no cache or environment changes or new configuration performed",
+    "freeze": {
+      "path": "/tmp/crosspath-native-cache-v3-tools-jrhcn15t/freeze-manifest.json",
+      "bytes": 19347,
+      "sha256": "0bf9ff1cbc154583c60c6dd34688c9b498b6f63b0ef8014d1dbcec04f7ed28e8"
+    }
+  },
+  "minimal_proposals_not_implemented": {
+    "host_container": "Add a source-bound Host container reader for the already approved raw-newc/gzip append format. Keep strict per-archive trailer/name/type/hardlink checks, gzip EOF/tail checks, duplicate conflict checks, and exact payload identity checks. Keep Guest rootfs on the strict single-archive path.",
+    "suite_classification": "If separately approved, classify only the evidenced DTS simple_bus_reg Warning grammar in its build-output context as a retained build warning. Do not allow all Warning lines or silently discard unknown errors; preserve raw spans and non-error classification.",
+    "required_negative_checks": [
+      "Host: truncated header/name/payload/trailer; nonzero or malformed trailer; arbitrary inter-archive tail; truncated/invalid gzip; unsupported next magic; duplicate regular payload or incompatible duplicate directory; expected payload identity mismatch.",
+      "Suite: known failure markers, nonzero errors/dropped/incomplete, Error:/error: or fatal tool diagnostics, changed/unknown warning prose containing error, and truncated LINUX_PHA tail must continue to reject.",
+      "Same saved failed AB1 must remain a full failure while xtask wait is null and explicit release unknown; AB0/0 remain unexecuted."
+    ],
+    "approval_or_new_implementation_requested": false
+  },
+  "performed": [
+    "Verified exact final handoff, original audit report, sealed auditor, frozen capture, raw log, and freeze-bound offline witness bytes.",
+    "Streamed SHA/size verification of all 17 accurately saved artifacts; selected actual FIT default ramdisk and compared every ramdisk byte with saved Host initramfs.",
+    "AST-extracted only pure format functions from exact sealed sources; called those functions on exact actual Host, bounded real internal archives, and Guest rootfs bytes.",
+    "Ran isolated immutable regex rules over exact raw log; reproduced the original two candidate classifications and retained exact candidate bytes, offsets, and original suite marker spans.",
+    "Compared actual raw Cache files selection with the exact field in the freeze-bound offline causal witness.",
+    "Recorded seven completed diagnostic commands as real Popen waits with exact argv/env/stdout/stderr. Report-generation and final sealing receipts reside in the same commands directory."
+  ],
+  "not_performed_or_unknown": [
+    "No implementation or sealed report changes; no full audit/tests/build/ready/Git/board/network/proc/signal command; no cache/source scan or modification.",
+    "No proof of complete artifact-use-chain PASS from these isolated probes; no new complete normal-function GREEN.",
+    "USER_CACHE selection cause and resulting mutation scope are unknown in this investigation; no attempt to reconcile or modify them.",
+    "Controller timeout/cleanup/xtask-wait/release cause is outside this task and remains delegated independently.",
+    "AB0 and 0 were not run; Host/M2/Joint/overall goal completion is not asserted."
+  ],
+  "evidence": {
+    "format_diagnosis": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/format-diagnosis.json",
+      "bytes": 24394,
+      "sha256": "b24daa8aaf936fcb65c703f91be76a784cac803c25b7b4ac0d4514a5f43788ce"
+    },
+    "suite_diagnosis": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/suite-diagnosis.json",
+      "bytes": 9537,
+      "sha256": "8a44cb9a400bdc46866ec5413b410a4057f8d9a6c051fa5b3c2d05f97996f0dd"
+    },
+    "source_rules": {
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/source-rules.json",
+      "bytes": 16183,
+      "sha256": "159f94b665f92f376ee396e54094cb59243c6f5c2028d1b6136277cc608cffeb"
+    },
+    "scripts": [
+      {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/run_command.py",
+        "bytes": 1889,
+        "sha256": "a37f8a26838081d8fb1190bfe832e3469b0747f6bf28a1f19047f826f04646a0"
+      },
+      {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/inspect_formats.py",
+        "bytes": 7561,
+        "sha256": "8ff5f228de64086aca4070ee98621a472c91c1782434557a55ee0fca58cdd080"
+      },
+      {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/inspect_suite.py",
+        "bytes": 7445,
+        "sha256": "b9353ef20c6b8bc05ce175fd83f659d8a378435cff1564590682146a71d7fdc8"
+      },
+      {
+        "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/write_report.py",
+        "bytes": 15755,
+        "sha256": "86a79f6f885ad6215539f26e1f3b228d1f63894ac61105a35e47b8923b256227"
+      }
+    ],
+    "completed_diagnostic_command_receipts": [
+      {
+        "reference": {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0001-bound-context/receipt.json",
+          "bytes": 2453,
+          "sha256": "8a1282d685c610e938c1a3ad72706b4c619a6d926404e1ada8439c8eaccefac3"
+        },
+        "actual_Popen_wait": 0,
+        "argv": [
+          "python3",
+          "-B",
+          "-c",
+          "from pathlib import Path\nimport json,hashlib,ast\nR=Path('research/cross-path-20261017');base=R/'raw/strict-native-followup-v3/auditor-cause-v1'\np=Path('/home/yanlien/.agents/skills/superpowers/systematic-debugging/SKILL.md');print(p.read_text())\nrefs=[(R/'raw/strict-native-phase-v3/AB1-root-final-handoff-v1.json','cf25d62d4ff106f0e6d3315ce4e0b58ce5f4d78ac2e90b7b79fe814116e9b72f'),(R/'raw/strict-native-phase-v3/function-audit-v1/AB1-actual-audit-v1/report.json','1a9257ef78caf570267dcb89c60d3143cf97dd033f9460b56176347f594d0b25')]\ndocs=[]\nfor p,expected in refs:\n raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()==expected;docs.append(json.loads(raw));print('BOUND '+str(p)+' '+expected)\nh,r=docs;print('HANDOFF');print(json.dumps(h,indent=2));print('FAILED GATES');print(json.dumps([g for g in r['gates'] if not g['passed']],indent=2));print('ERROR CANDIDATES');print(json.dumps(r['error_candidates'],indent=2));print('EXPLICIT');print(json.dumps(r['explicit_failures'],indent=2));print('PARTIAL');print(json.dumps(r['protocol_partial_tails'],indent=2));print('CAPTURE');ref=h['files']['capture'];raw=Path(ref['path']).read_bytes();assert len(raw)==ref['bytes'] and hashlib.sha256(raw).hexdigest()==ref['sha256'];capture=json.loads(raw);print(json.dumps({k:v for k,v in capture.items() if k!='host_markers'},indent=2))\nold=R/'raw/strict-native-phase-v3/function-audit-v1/run_command.py';raw=old.read_bytes()\nwith (base/'run_command.py').open('xb') as out:out.write(raw)\n"
+        ]
+      },
+      {
+        "reference": {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0002-parser-sources/receipt.json",
+          "bytes": 2049,
+          "sha256": "90545dce74ae1174704e3f6047ae8ee820c550cc9d40c606ec8ddef05722d651"
+        },
+        "actual_Popen_wait": 0,
+        "argv": [
+          "python3",
+          "-B",
+          "-c",
+          "from pathlib import Path;import hashlib,ast,json;ps=[(Path(\"research/cross-path-20261017/raw/strict-native-phase-v3/function-audit-v1/audit.py\"),\"6fa57d1bb99a9fbdb49613ffc90cb4b648aa9511465957aec25b9e58e34e76aa\",{\"newc\",\"validate_artifacts\",\"validate_suite\"}),(Path(\"/tmp/crosspath-native-cache-v3-tools-jrhcn15t/capture_native.py\"),\"61717a37b528e2e93d8cbcae1c1dafbc6249ac3417fbf0b8011b984a03a4c683\",{\"parse_newc\",\"_newc_entries\",\"newc_members\",\"verify_rootfs\",\"capture_native\"})];\nfor p,expected,names in ps:\n raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()==expected;s=raw.decode();lines=s.splitlines();print(\"SOURCE \"+str(p)+\" \"+expected)\n for n in ast.parse(raw).body:\n  if isinstance(n,ast.FunctionDef) and n.name in names:\n   print(\"FUNCTION \"+n.name+\" \"+str(n.lineno)+\"-\"+str(n.end_lineno));print(\"\\n\".join(str(i+1)+\":\"+lines[i] for i in range(n.lineno-1,n.end_lineno)))\n if p.name==\"audit.py\":\n  print(\"CLASSIFICATION SOURCE\");print(\"\\n\".join(str(i+1)+\":\"+lines[i] for i in list(range(18,27))+list(range(118,166))))\n"
+        ]
+      },
+      {
+        "reference": {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0003-pure-format-diagnosis/receipt.json",
+          "bytes": 1057,
+          "sha256": "750c6af3a9da020673ec8b4a55250655d3f6adf1623c705f6757dc64b0bcc9cb"
+        },
+        "actual_Popen_wait": 0,
+        "argv": [
+          "python3",
+          "-B",
+          "research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/inspect_formats.py"
+        ]
+      },
+      {
+        "reference": {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0004-narrow-context/receipt.json",
+          "bytes": 2243,
+          "sha256": "d75c40e1d40c2847486157cc711be9b2d4be609ac51f0e0cad6046d67957d4b2"
+        },
+        "actual_Popen_wait": 0,
+        "argv": [
+          "python3",
+          "-B",
+          "-c",
+          "import pathlib,json,hashlib,re; r=pathlib.Path(\"research/cross-path-20261017\"); p=r/\"raw/strict-native-phase-v3/AB1/xtask.log\"; b=p.read_bytes(); print(\"LOG\",len(b),hashlib.sha256(b).hexdigest()); off=0; pats=re.compile(rb\"(?i)USER_CACHE|cache files will be written|CMake|Warning|simple.bus|suite|all tests|tests passed|error_candidates\"); selected=[]; lines=b.splitlines(keepends=True); print(\"FIRST90\");\nfor n,x in enumerate(lines,1):\n if n<=90 or pats.search(x):\n  rec={\"line\":n,\"offset\":off,\"bytes\":len(x),\"sha256\":hashlib.sha256(x).hexdigest(),\"text\":x.decode(\"utf-8\",\"replace\").rstrip(\"\\r\\n\")}; selected.append(rec); print(json.dumps(rec,ensure_ascii=False))\n off+=len(x)\nout=r/\"raw/strict-native-followup-v3/auditor-cause-v1\"; (out/\"suite-context.json\").write_text(json.dumps({\"log\":{\"path\":str(p),\"sha256\":hashlib.sha256(b).hexdigest(),\"bytes\":len(b)},\"records\":selected},indent=2)+\"\\n\"); paths=[pathlib.Path(\"/tmp/crosspath-native-cache-v3-tools-jrhcn15t/inputs.json\"),pathlib.Path(\"/tmp/crosspath-native-cache-v3-tools-jrhcn15t/freeze-manifest.json\")];\nfor p in paths:\n print(\"META\",str(p),p.exists());\n if p.exists():\n  b=p.read_bytes(); print(\"IDENTITY\",len(b),hashlib.sha256(b).hexdigest()); print(b.decode())"
+        ]
+      },
+      {
+        "reference": {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0005-bound-offline-context/receipt.json",
+          "bytes": 2309,
+          "sha256": "4a454d0b2623b08c7108ae02b25e43598e0e49dd06fb2dfd1208502c283ce46c"
+        },
+        "actual_Popen_wait": 0,
+        "argv": [
+          "python3",
+          "-B",
+          "-c",
+          "import pathlib,json,hashlib; base=pathlib.Path(\"/tmp/crosspath-native-cache-v3-tools-jrhcn15t\"); manifest=json.loads((base/\"freeze-manifest.json\").read_bytes()); print(\"MANIFEST\",hashlib.sha256((base/\"freeze-manifest.json\").read_bytes()).hexdigest());\nfor key in [\"evidence/cache-v3-validation/host-prepare.receipt.json\",\"evidence/cache-v3-validation/host-prepare-preconditions.json\",\"evidence/cache-v3-validation/cache-cmake-direct.receipt.json\",\"evidence/cache-v3-validation/zephyr-capability-cache-cause.json\"]:\n p=base/key; b=p.read_bytes(); expected=manifest[key]; assert len(b)==expected[\"bytes\"] and hashlib.sha256(b).hexdigest()==expected[\"sha256\"]; print(\"BOUND\",key,len(b),hashlib.sha256(b).hexdigest()); print(b.decode())\np=base/\"evidence/sources-702.json\"; s=json.loads(p.read_bytes()); print(\"SOURCE_MANIFEST_TYPE\",type(s).__name__); print(\"BUNDLE_PATHS\",[k for k in s if \"bundle\" in k or \"initramfs\" in k]); out=pathlib.Path(\"research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1\"); c=json.loads((out/\"suite-context.json\").read_bytes()); print(\"SUITE_SELECTED\",json.dumps([x for x in c[\"records\"] if x[\"line\"]>90 or \"Cache files\" in x[\"text\"]],ensure_ascii=False)); print(\"FORMAT_KEYS\",list(json.loads((out/\"format-diagnosis.json\").read_bytes())))"
+        ]
+      },
+      {
+        "reference": {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0006-report-input-shapes/receipt.json",
+          "bytes": 1903,
+          "sha256": "2037a8b3fe407dea5c5ebf22dc9c910940776d7551f87d23f5ad7d437fe16f92"
+        },
+        "actual_Popen_wait": 0,
+        "argv": [
+          "python3",
+          "-B",
+          "-c",
+          "import pathlib,json; r=pathlib.Path(\"research/cross-path-20261017\"); out=r/\"raw/strict-native-followup-v3/auditor-cause-v1\"; f=json.loads((out/\"format-diagnosis.json\").read_bytes()); print(json.dumps(f,indent=2)[:23000]); p=r/\"raw/strict-native-phase-v3/function-audit-v1/AB1-actual-audit-v1/report.json\"; a=json.loads(p.read_bytes()); print(\"AUDIT_KEYS\",list(a)); print(\"DATA_KEYS\",list(a.get(\"data\",{}))); print(\"REPORT_TAIL\",json.dumps({k:v for k,v in a.items() if k not in [\"gates\",\"data\",\"artifacts\",\"evidence\",\"input\"]},indent=2)[:5000]); p=r/\"raw/strict-native-phase-v3/AB1-actual-audit-v1.receipt.json\"; print(\"ACTUAL_AUDIT_RECEIPT\",p.read_text()); print(\"AUDIT_SOURCE_RULES\"); lines=(r/\"raw/strict-native-phase-v3/function-audit-v1/audit.py\").read_text().splitlines();\nfor lo,hi in [(16,35),(115,165),(520,534),(540,566),(664,682)]:\n for n in range(lo,hi+1): print(str(n)+\":\"+lines[n-1])"
+        ]
+      },
+      {
+        "reference": {
+          "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands/0007-isolated-suite-classification/receipt.json",
+          "bytes": 1069,
+          "sha256": "3b4327b9173bc89c1741c7b0bdaccc453b374a4a6c8ec4c7af83a7b0338898d7"
+        },
+        "actual_Popen_wait": 0,
+        "argv": [
+          "python3",
+          "-B",
+          "research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/inspect_suite.py"
+        ]
+      }
+    ],
+    "command_receipts_directory": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-followup-v3/auditor-cause-v1/commands"
+  }
+}

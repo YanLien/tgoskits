@@ -1,0 +1,667 @@
+{
+  "log": {
+    "path": "research/cross-path-20261017/raw/strict-native-phase-v3/AB1/xtask.log",
+    "sha256": "c74a5a24106e3e59a4c03316b428f9591e5e481bce5f65a874f4231b7d10814b",
+    "bytes": 6496391
+  },
+  "records": [
+    {
+      "line": 1,
+      "offset": 0,
+      "bytes": 72,
+      "sha256": "dccad65a474a0e64d7c677fc96c87f30265067841005a793f4d82605fea6fe77",
+      "text": "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.62s"
+    },
+    {
+      "line": 2,
+      "offset": 72,
+      "bytes": 349,
+      "sha256": "f526f375a713ccdbc0589b617e673c1f8ca5462c5f5a433cd1fb2026835e8621",
+      "text": "     Running `/tmp/crosspath-native-cache-v3-target-wg0fd7ru/debug/tg-xtask ktest board -p axvm --test vcpu_runtime -b orangepi-5-plus --config virtualization/axvm/tests/vcpu-runtime/frequency/build-orangepi-5-plus.toml --board-config research-inputs/strict-native-v1/board.toml --board-type BallPick-Robot --server 'http://10.3.10.60' --port 2999`"
+    },
+    {
+      "line": 3,
+      "offset": 421,
+      "bytes": 106,
+      "sha256": "d58e872418080d55df39dc0d37b94fe8ef8935551be451a4d0c669824f30cdef",
+      "text": "[2026-10-18T12:43:42Z INFO  axbuild::context] Workspace root: /tmp/crosspath-native-cache-v3-src-hr23qnrs"
+    },
+    {
+      "line": 4,
+      "offset": 527,
+      "bytes": 117,
+      "sha256": "3158fd8ec10b727b9a68d1f05b88e0c1afde04156d3db8679390cc367293b412",
+      "text": "[2026-10-18T12:43:42Z INFO  axbuild::context] Cargo target directory: /tmp/crosspath-native-cache-v3-target-wg0fd7ru"
+    },
+    {
+      "line": 5,
+      "offset": 644,
+      "bytes": 96,
+      "sha256": "2b30a7d7f66e1c1647770e35f931bdf0bff6cfcaa0be95af42f33d7f30225138",
+      "text": "Using build config: virtualization/axvm/tests/vcpu-runtime/frequency/build-orangepi-5-plus.toml"
+    },
+    {
+      "line": 6,
+      "offset": 740,
+      "bytes": 32,
+      "sha256": "6d13a520462397710236a23d3d100866618e1533e2c61f22e5bad1801ee8e98e",
+      "text": "prepare case resources: python3"
+    },
+    {
+      "line": 7,
+      "offset": 772,
+      "bytes": 46,
+      "sha256": "87e7e3328c813445707b81b660ef694d8a94c98e86451237ea9b058fbb7a33fc",
+      "text": "Loading Zephyr default modules (Zephyr base)."
+    },
+    {
+      "line": 8,
+      "offset": 818,
+      "bytes": 98,
+      "sha256": "ca023870b40b4ebf83c9f422f9f0be678ae518b776c5f993364519ff1e718291",
+      "text": "-- Application: /tmp/crosspath-native-cache-v3-src-hr23qnrs/virtualization/axvm/tests/guests/virq"
+    },
+    {
+      "line": 9,
+      "offset": 916,
+      "bytes": 24,
+      "sha256": "c087757b7e20d518f07bd82babd2f676b93bd0bfc2761bdd3ce211e724dc0241",
+      "text": "-- CMake version: 4.4.3"
+    },
+    {
+      "line": 10,
+      "offset": 940,
+      "bytes": 198,
+      "sha256": "85a0bb3143411d139fffaba966a3db78f08dcfc8c8322c318c740a56c44109da",
+      "text": "-- Found Python3: /tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache/venv/bin/python3 (found suitable version \"3.12.3\", minimum required is \"3.10\") found components: Interpreter"
+    },
+    {
+      "line": 11,
+      "offset": 1138,
+      "bytes": 63,
+      "sha256": "a213fe1b38cdb90f43d77e485c347185b6a36081534f7dd25da046a7500ba2bd",
+      "text": "-- Cache files will be written to: /home/yanlien/.cache/zephyr"
+    },
+    {
+      "line": 12,
+      "offset": 1201,
+      "bytes": 106,
+      "sha256": "6d093ff0e8ba8ac4532fd85b02568aa351b379bc355990c61a1dba76b18e5f7f",
+      "text": "-- Zephyr version: 4.1.99 (/tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache/zephyr)"
+    },
+    {
+      "line": 13,
+      "offset": 1307,
+      "bytes": 59,
+      "sha256": "5a03b44568a9b2f15aee3bc250636011fa60717bd66efd1c25d1d6383b619907",
+      "text": "-- Board: qemu_cortex_a53, qualifiers: qemu_cortex_a53/smp"
+    },
+    {
+      "line": 14,
+      "offset": 1366,
+      "bytes": 184,
+      "sha256": "8314b3fe84537f28b8fc8a121db2e721cacc2dc5a02850c564c517f86e40e588",
+      "text": "-- Found toolchain: cross-compile (/tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache/toolchain/gcc-arm-10.3-2021.07-x86_64-aarch64-none-elf/bin/aarch64-none-elf-)"
+    },
+    {
+      "line": 15,
+      "offset": 1550,
+      "bytes": 89,
+      "sha256": "ebaedbc159af3df8bf34e6667dcd4783751745dc5d95bcb5e36c73c9af74ecd9",
+      "text": "-- Found Dtc: /usr/bin/dtc (found suitable version \"1.7.0\", minimum required is \"1.4.6\")"
+    },
+    {
+      "line": 16,
+      "offset": 1639,
+      "bytes": 161,
+      "sha256": "862a94689af9048381302c36ae1dfc204bda76db5be083a44fe9b3cf98a14780",
+      "text": "-- Found BOARD.dts: /tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache/zephyr/boards/qemu/cortex_a53/qemu_cortex_a53_qemu_cortex_a53_smp.dts"
+    },
+    {
+      "line": 17,
+      "offset": 1800,
+      "bytes": 126,
+      "sha256": "fde4886d74e3f80556f44a4a398e3a1b43420251fc86f64789ab4511d49f356d",
+      "text": "-- Found devicetree overlay: /tmp/crosspath-native-cache-v3-src-hr23qnrs/virtualization/axvm/tests/guests/virq/rk3588.overlay"
+    },
+    {
+      "line": 18,
+      "offset": 1926,
+      "bytes": 103,
+      "sha256": "3eb587b7ad5ea45a0e38df828ef185257a3ab5697a997d23e93ed9cf1a3df9e3",
+      "text": "unit address and first address in 'reg' (0xfe600000) don't match for /soc/interrupt-controller@8000000"
+    },
+    {
+      "line": 19,
+      "offset": 2029,
+      "bytes": 115,
+      "sha256": "bae941ee0366b8658a20e1e7482789cfeb95726738012ab4ba12aa6debf64e78",
+      "text": "unit address and first address in 'reg' (0xfe640000) don't match for /soc/interrupt-controller@8000000/its@8080000"
+    },
+    {
+      "line": 20,
+      "offset": 2144,
+      "bytes": 122,
+      "sha256": "79646fb5636784476f9357420bf835aee460ac9e1babf57b44713f031df682b5",
+      "text": "-- Generated zephyr.dts: /tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/guest/zephyr/zephyr.dts"
+    },
+    {
+      "line": 21,
+      "offset": 2266,
+      "bytes": 123,
+      "sha256": "ac67f0e0c2054d6ddc226b8f7a7dca376b0419c6dfd6e1ea1b8ee356fc909436",
+      "text": "-- Generated pickled edt: /tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/guest/zephyr/edt.pickle"
+    },
+    {
+      "line": 22,
+      "offset": 2389,
+      "bytes": 171,
+      "sha256": "465cdf47caa266e24b77c80f7ce8413ee030d18830f210f49cb7dc26f3105d50",
+      "text": "-- Generated devicetree_generated.h: /tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/guest/zephyr/include/generated/zephyr/devicetree_generated.h"
+    },
+    {
+      "line": 23,
+      "offset": 2560,
+      "bytes": 135,
+      "sha256": "7b16d5f45f20897fa83b1a88b1226b2dd446072ea453898f3b1f6368b9bcbcd5",
+      "text": "-- Including generated dts.cmake file: /tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/guest/zephyr/dts.cmake"
+    },
+    {
+      "line": 24,
+      "offset": 2695,
+      "bytes": 228,
+      "sha256": "c83438e2c6ba62743446b3445873b1486bb7309f41bb7c3cfef9cff3477e0283",
+      "text": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/guest/zephyr/zephyr.dts:23.37-38.5: Warning (simple_bus_reg): /soc/interrupt-controller@8000000: simple-bus unit address format error, expected \"fe600000\""
+    },
+    {
+      "line": 25,
+      "offset": 2923,
+      "bytes": 94,
+      "sha256": "0e505fe7e7b549356c12ee5aa89ba16c2418dc1aabc5211d49dbdd24852c203d",
+      "text": "Parsing /tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache/zephyr/Kconfig"
+    },
+    {
+      "line": 26,
+      "offset": 3017,
+      "bytes": 117,
+      "sha256": "0a056fada3d542134d516cca66de151adf1951b548a30230d9e26b0559184f15",
+      "text": "Loaded configuration '/tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/guest/zephyr/.config'"
+    },
+    {
+      "line": 27,
+      "offset": 3134,
+      "bytes": 126,
+      "sha256": "8004913bba10041a04c876dd8575c59ab08e9dabc94af8ecc5331460c7d25698",
+      "text": "No change to configuration in '/tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/guest/zephyr/.config'"
+    },
+    {
+      "line": 28,
+      "offset": 3260,
+      "bytes": 155,
+      "sha256": "3c7b0f1a2b0edc6cd44b6b59ddb2205f1e81705e13e4754c8d470bdf2ed1b6d1",
+      "text": "No change to Kconfig header in '/tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/guest/zephyr/include/generated/zephyr/autoconf.h'"
+    },
+    {
+      "line": 29,
+      "offset": 3415,
+      "bytes": 161,
+      "sha256": "4183355f5acca181083e3750925e12dd23fa075366fb3850bf00497ee39cd419",
+      "text": "-- Found sysroot: /tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache/toolchain/gcc-arm-10.3-2021.07-x86_64-aarch64-none-elf/aarch64-none-elf"
+    },
+    {
+      "line": 30,
+      "offset": 3576,
+      "bytes": 195,
+      "sha256": "8e68a47513fe8c4c9d4319570da34c9091068895c779504e0d8ed5347c2ad742",
+      "text": "-- Found GnuLd: /tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache/toolchain/gcc-arm-10.3-2021.07-x86_64-aarch64-none-elf/aarch64-none-elf/bin/ld.bfd (found version \"2.36.1\")"
+    },
+    {
+      "line": 31,
+      "offset": 3771,
+      "bytes": 47,
+      "sha256": "1fae73e91b1a21b820a79bc9bf549931988ec0a82910586d30cdb374449ee04f",
+      "text": "-- The C compiler identification is GNU 10.3.1"
+    },
+    {
+      "line": 32,
+      "offset": 3818,
+      "bytes": 49,
+      "sha256": "a93698a808f09b1f37a0101a06655b42d09fba28fb3076698f4c555ea0b0291b",
+      "text": "-- The CXX compiler identification is GNU 10.3.1"
+    },
+    {
+      "line": 33,
+      "offset": 3867,
+      "bytes": 42,
+      "sha256": "4a9f282b15204118aa7d7ea1f4cd0d86f993341765aa2b6b530cb033201887b6",
+      "text": "-- The ASM compiler identification is GNU"
+    },
+    {
+      "line": 34,
+      "offset": 3909,
+      "bytes": 171,
+      "sha256": "debbf8865f15739c0d73c835fbbe07a7f890bf4dd7c7deedac47f790c9f8c988",
+      "text": "-- Found assembler: /tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache/toolchain/gcc-arm-10.3-2021.07-x86_64-aarch64-none-elf/bin/aarch64-none-elf-gcc"
+    },
+    {
+      "line": 35,
+      "offset": 4080,
+      "bytes": 27,
+      "sha256": "6814104922f69b3d8c78cf3a321cac2dcdf4fe7b99a89e00fe182d3d1015dcd5",
+      "text": "-- Configuring done (7.0s)"
+    },
+    {
+      "line": 36,
+      "offset": 4107,
+      "bytes": 26,
+      "sha256": "adc3899b10247643c2c9f3792361ffac0f99805905506bda3bc868ba66123551",
+      "text": "-- Generating done (0.1s)"
+    },
+    {
+      "line": 37,
+      "offset": 4133,
+      "bytes": 116,
+      "sha256": "b56105cc61f604b22ef51d72114e04ab9931918b95f1d00e7859912a4b8efbdc",
+      "text": "-- Build files have been written to: /tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/guest"
+    },
+    {
+      "line": 38,
+      "offset": 4249,
+      "bytes": 80,
+      "sha256": "21a1aba08cfe766be598a4931d27b20a98e8ad6aa88b61754c276d3d38717323",
+      "text": "[1/10] Generating misc/generated/syscalls.json, misc/generated/struct_tags.json"
+    },
+    {
+      "line": 39,
+      "offset": 4329,
+      "bytes": 58,
+      "sha256": "ef0d18ceaa02b9d7ca6c97504ee3db85540abde303dfe2132802bceff43b00cc",
+      "text": "[2/9] Building C object CMakeFiles/app.dir/src/main.c.obj"
+    },
+    {
+      "line": 40,
+      "offset": 4387,
+      "bytes": 44,
+      "sha256": "405bdc1f25fa9b4bdabbf1883cc6568599b5074273f948d8cfd22c47d60132fe",
+      "text": "[3/9] Linking C static library app/libapp.a"
+    },
+    {
+      "line": 41,
+      "offset": 4431,
+      "bytes": 40,
+      "sha256": "e652069c99ef131b6c8fca4a0ff5c2019b03eb35a4eca82eb4b3a2dd549c232f",
+      "text": "[4/9] Generating linker_zephyr_pre0.cmd"
+    },
+    {
+      "line": 42,
+      "offset": 4471,
+      "bytes": 116,
+      "sha256": "70dc245041f4af6e9998fed33bc78985e2d4b431da6d8006bafd91b8b95568ba",
+      "text": "[5/9] Linking C executable zephyr/zephyr_pre0.elf; Logical command for additional byproducts on target: zephyr_pre0"
+    },
+    {
+      "line": 43,
+      "offset": 4587,
+      "bytes": 28,
+      "sha256": "2963f3eb95b01a80dbad968bc423ab15f672178787b0b9663434e4b1edefe843",
+      "text": "[6/9] Generating linker.cmd"
+    },
+    {
+      "line": 44,
+      "offset": 4615,
+      "bytes": 67,
+      "sha256": "5f79b2a2ee6767ce697d672136662c4696b8e5cad0a1fa38939822c5c8a33945",
+      "text": "[7/9] Generating isr_tables.c, isr_tables_vt.ld, isr_tables_swi.ld"
+    },
+    {
+      "line": 45,
+      "offset": 4682,
+      "bytes": 76,
+      "sha256": "f53d265ae84d13fd5cfc9ba3abbe5d287a3e38c0166e5f4b7a6fdb1edd2a6c5c",
+      "text": "[8/9] Building C object zephyr/CMakeFiles/zephyr_final.dir/isr_tables.c.obj"
+    },
+    {
+      "line": 46,
+      "offset": 4758,
+      "bytes": 45,
+      "sha256": "0d90dea081a544bedc00a576c82f17fc9281a5a5993acb74165bb4e32b1d2cec",
+      "text": "[9/9] Linking C executable zephyr/zephyr.elf"
+    },
+    {
+      "line": 47,
+      "offset": 4803,
+      "bytes": 56,
+      "sha256": "02671eaa9b310dda48a41c9902e12d0ba90ab51daea063b58fb2ae4e93913aed",
+      "text": "Memory region         Used Size  Region Size  %age Used"
+    },
+    {
+      "line": 48,
+      "offset": 4859,
+      "bytes": 56,
+      "sha256": "d03b9b0899a3c81f95297b55b0e55ebc5674bcd5f947bc311bf3c7f8c0d3b66d",
+      "text": "           FLASH:          0 GB        64 MB      0.00%"
+    },
+    {
+      "line": 49,
+      "offset": 4915,
+      "bytes": 56,
+      "sha256": "4d66bffa4af4803f818f364d04f66325c9e57a92489ff7b11af8897170cee37a",
+      "text": "             RAM:        368 KB       128 MB      0.28%"
+    },
+    {
+      "line": 50,
+      "offset": 4971,
+      "bytes": 56,
+      "sha256": "d18df8562d283e66104f235c5b4b03c747113426568cdb39e992d89b7369a739",
+      "text": "        IDT_LIST:          0 GB        32 KB      0.00%"
+    },
+    {
+      "line": 51,
+      "offset": 5027,
+      "bytes": 146,
+      "sha256": "e24f09ef6c001535ca2de6212379815f98356498344666028244cf38d2927b6a",
+      "text": "Generating files from /tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/guest/zephyr/zephyr.elf for board: qemu_cortex_a53"
+    },
+    {
+      "line": 52,
+      "offset": 5173,
+      "bytes": 228,
+      "sha256": "c83438e2c6ba62743446b3445873b1486bb7309f41bb7c3cfef9cff3477e0283",
+      "text": "/tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/guest/zephyr/zephyr.dts:23.37-38.5: Warning (simple_bus_reg): /soc/interrupt-controller@8000000: simple-bus unit address format error, expected \"fe600000\""
+    },
+    {
+      "line": 53,
+      "offset": 5401,
+      "bytes": 72,
+      "sha256": "c2ccae29be8ebbd8973f3201e5f6646ec32bdad22fe9c3866ff8d1618ed74896",
+      "text": "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.37s"
+    },
+    {
+      "line": 54,
+      "offset": 5473,
+      "bytes": 301,
+      "sha256": "5b64b392d42aeb569e77404444e61720760e74732968fcee016c6c75bd19ebf5",
+      "text": "     Running `/tmp/crosspath-native-cache-v3-target-wg0fd7ru/debug/tg-xtask image pack-initramfs /tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/linux/linux-root-vfpq6t_3 /tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/linux/initramfs.cpio.gz --gzip`"
+    },
+    {
+      "line": 55,
+      "offset": 5774,
+      "bytes": 106,
+      "sha256": "f7cb0c62ef21ef7d6662e36cbc2de3b179776583a7dfbef7c99495c4973211b6",
+      "text": "[2026-10-18T12:43:54Z INFO  axbuild::context] Workspace root: /tmp/crosspath-native-cache-v3-src-hr23qnrs"
+    },
+    {
+      "line": 56,
+      "offset": 5880,
+      "bytes": 117,
+      "sha256": "e69c7372d65cfe137c62689906d9be422edb75faef7a45777377262623e965d7",
+      "text": "[2026-10-18T12:43:54Z INFO  axbuild::context] Cargo target directory: /tmp/crosspath-native-cache-v3-target-wg0fd7ru"
+    },
+    {
+      "line": 57,
+      "offset": 5997,
+      "bytes": 113,
+      "sha256": "e8bbdb5aece7780e2ba232c234ea515e74fb8eaafa6f71557d7951f9eea25dae",
+      "text": "host initramfs: /tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/linux/initramfs.cpio.gz"
+    },
+    {
+      "line": 58,
+      "offset": 6110,
+      "bytes": 278,
+      "sha256": "99b501e62fdb41f6e43a962cc0a55c15d3748c2f27da3d87855a5c718ceb9542",
+      "text": "[virq] CROSS_COMPILE=/tmp/crosspath-native-cache-v3-tools-jrhcn15t/cache/vcpu-runtime-cache/toolchain/gcc-arm-10.3-2021.07-x86_64-aarch64-none-elf/bin/aarch64-none-elf- aarch64-none-elf-gcc (GNU Toolchain for the A-profile Architecture 10.3-2021.07 (arm-10.29)) 10.3.1 20210621"
+    },
+    {
+      "line": 59,
+      "offset": 6388,
+      "bytes": 91,
+      "sha256": "1b8907ba98c6ce39f8b69f634c339c721ef07d3a85d4a032342b5033e23543e8",
+      "text": "[virq] zephyr=32229d0b6cc60a1906307311b8e79ec483ad1e88 entry=0x400010e8 mailbox=0x40014fa0"
+    },
+    {
+      "line": 60,
+      "offset": 6479,
+      "bytes": 98,
+      "sha256": "3650e700a7dc736ec81a1c3bef8afb5e2727efc444bc183c6fb583f07ab0eb8d",
+      "text": "[virq] vm config /tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/vm.toml"
+    },
+    {
+      "line": 61,
+      "offset": 6577,
+      "bytes": 129,
+      "sha256": "bf706eb226a7581400e8b2358730ee155e3cd63e24c0a23da34f6384ffbbcc1f",
+      "text": "[virq] test resources /tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/axvm/vcpu-runtime/resources/tests/vcpu-runtime.toml"
+    },
+    {
+      "line": 62,
+      "offset": 6706,
+      "bytes": 185,
+      "sha256": "22f2f44cd085a681a0e369858ba32b6bbe4d4783e4de3e34ab55a9c9e12d1e74",
+      "text": "[axbuild] cargo build package=axvm target=scripts/targets/std/pie/aarch64-unknown-linux-musl.json config=virtualization/axvm/tests/vcpu-runtime/frequency/build-orangepi-5-plus.toml ..."
+    },
+    {
+      "line": 63,
+      "offset": 6891,
+      "bytes": 130,
+      "sha256": "f2c58d9fc35a729f8f639f6e8999acfa0f1de53d73cd47a94886bf8b9496ad4a",
+      "text": "sh -c /tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/std/prebuild/prebuild-aarch64-unknown-linux-musl-d9c6657e259d9333.sh"
+    },
+    {
+      "line": 64,
+      "offset": 7021,
+      "bytes": 52,
+      "sha256": "8a3f3718a3d2fb5f395db8b5a7f03b22b9b1f5fcfe6d5398379bff2cfa0cae79",
+      "text": "AR_aarch64_unknown_linux_musl=aarch64-linux-musl-ar"
+    },
+    {
+      "line": 65,
+      "offset": 7073,
+      "bytes": 16,
+      "sha256": "59c47915796060edc7c6add713744c8c88e5e625f3c520693685304cee4883f4",
+      "text": "AX_ARCH=aarch64"
+    },
+    {
+      "line": 66,
+      "offset": 7089,
+      "bytes": 12,
+      "sha256": "e9b355a67c6a241fe7f560fd3c5ee8a5ff90b608b558cc116d1d9e5274d18a65",
+      "text": "AX_LOG=info"
+    },
+    {
+      "line": 67,
+      "offset": 7101,
+      "bytes": 41,
+      "sha256": "112e45b5325b05251ae6b30db95087fca420752a64ac37d175e0d46386947771",
+      "text": "AX_TARGET=aarch64-unknown-none-softfloat"
+    },
+    {
+      "line": 68,
+      "offset": 7142,
+      "bytes": 37,
+      "sha256": "458fc697477b237afdadb09356d7b58eb7a27d26bb5a3a09ec927b98369751ec",
+      "text": "CARGO_UNSTABLE_JSON_TARGET_SPEC=true"
+    },
+    {
+      "line": 69,
+      "offset": 7179,
+      "bytes": 52,
+      "sha256": "7a15c912903f33afb72c117153a98f64f7ececf9e158027b8506309e9d238d96",
+      "text": "CC_aarch64_unknown_linux_musl=aarch64-linux-musl-cc"
+    },
+    {
+      "line": 70,
+      "offset": 7231,
+      "bytes": 75,
+      "sha256": "790b36f0c9f8d98e14192b209001e9d4baf1f546cb61bad5f4c9ba1a25be34ff",
+      "text": "CFLAGS_aarch64_unknown_linux_musl=-mgeneral-regs-only -fno-stack-protector"
+    },
+    {
+      "line": 71,
+      "offset": 7306,
+      "bytes": 77,
+      "sha256": "a11bf946fdc94932ef495b29b3c5bd12e680db42bbe947359b96e8a137264401",
+      "text": "CXXFLAGS_aarch64_unknown_linux_musl=-mgeneral-regs-only -fno-stack-protector"
+    },
+    {
+      "line": 72,
+      "offset": 7383,
+      "bytes": 6,
+      "sha256": "6bf0f8d82ebd016eff7959c589140bfb62c9e04bd6d9eeb7346f751b575c3f06",
+      "text": "SMP=4"
+    },
+    {
+      "line": 73,
+      "offset": 7389,
+      "bytes": 592,
+      "sha256": "d53d2a53172d036df2abd16eff889d7deb4c717360702eb1574fa984425fe958",
+      "text": "cargo build --config /tmp/crosspath-native-cache-v3-target-wg0fd7ru/axbuild/std/config/fe92d0ac778c7e60/config-aarch64-unknown-linux-musl-dynamic.toml -p axvm --test vcpu_runtime --target scripts/targets/std/pie/aarch64-unknown-linux-musl.json -Z unstable-options --target-dir /tmp/crosspath-native-cache-v3-target-wg0fd7ru --features ax-std/smp,axtest-frequency,axtest-thermal,axtest,tls,log/release_max_level_info -Z json-target-spec --config target.\"aarch64-unknown-linux-musl\".rustflags=[\"--cfg\", \"axtest\", \"--check-cfg\", \"cfg(axtest)\"] --release --message-format json-render-diagnostics"
+    },
+    {
+      "line": 74,
+      "offset": 7981,
+      "bytes": 184,
+      "sha256": "7481a228d94886247db85303d7ac3267bcfd57d8e43144088dc1802bfcf7d396",
+      "text": "   Compiling compiler_builtins v0.1.160 (/home/yanlien/.rustup/toolchains/nightly-2026-09-04-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/compiler-builtins/compiler-builtins)"
+    },
+    {
+      "line": 75,
+      "offset": 8165,
+      "bytes": 138,
+      "sha256": "691b959691765ba2d38b9aad8eda0bf9338c476be625b3a83341f1e3412edb8a",
+      "text": "   Compiling core v0.0.0 (/home/yanlien/.rustup/toolchains/nightly-2026-09-04-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core)"
+    },
+    {
+      "line": 76,
+      "offset": 8303,
+      "bytes": 27,
+      "sha256": "3d006c9e38e8524fe70ac65be8c7ff0e0937a4442c26e792ee93c368c727acfc",
+      "text": "   Compiling libc v0.2.189"
+    },
+    {
+      "line": 77,
+      "offset": 8330,
+      "bytes": 136,
+      "sha256": "bb7e68f46064589be0ebb5c13cd642746d984d6b8649dfa4787d874a2e6ce17d",
+      "text": "   Compiling std v0.0.0 (/home/yanlien/.rustup/toolchains/nightly-2026-09-04-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std)"
+    },
+    {
+      "line": 78,
+      "offset": 8466,
+      "bytes": 34,
+      "sha256": "addd064340711e3457e6cb34b2683aa7936c6e801e0e63e4c99e27dd803d454e",
+      "text": "   Compiling proc-macro2 v1.0.107"
+    },
+    {
+      "line": 79,
+      "offset": 8500,
+      "bytes": 27,
+      "sha256": "26457e6a2ccfa23dfe9881c7426b1b095e6e0b79e7b5f3e6849710673f220800",
+      "text": "   Compiling quote v1.0.47"
+    },
+    {
+      "line": 80,
+      "offset": 8527,
+      "bytes": 35,
+      "sha256": "0bc15d4832fd092dc6e3ed63c8923e597a6a1f58c9b75fecfd95be1961d7e05b",
+      "text": "   Compiling unicode-ident v1.0.26"
+    },
+    {
+      "line": 81,
+      "offset": 8562,
+      "bytes": 31,
+      "sha256": "3efa2e16b7b236c8ad9f398d9a64ec482d6d28064e86dd9c03ed7c34eafb6371",
+      "text": "   Compiling thiserror v2.0.21"
+    },
+    {
+      "line": 82,
+      "offset": 8593,
+      "bytes": 42,
+      "sha256": "b76c1b9f3eba2f5ea07d404a3a283f0db8b17a4555087725a74ec0a141c5051d",
+      "text": "   Compiling unicode-segmentation v1.13.3"
+    },
+    {
+      "line": 83,
+      "offset": 8635,
+      "bytes": 29,
+      "sha256": "336a564c5515c745d65eb2e7d9eea3339b566324987b0dd6bfe8c56189d70f87",
+      "text": "   Compiling heapless v0.9.3"
+    },
+    {
+      "line": 84,
+      "offset": 8664,
+      "bytes": 27,
+      "sha256": "7d78692afd25e23a2fffca0c2ea1eab635a0984780854b5f3332858f7e9b87cd",
+      "text": "   Compiling paste v1.0.15"
+    },
+    {
+      "line": 85,
+      "offset": 8691,
+      "bytes": 28,
+      "sha256": "ffdceabbf4109b7ff482b71789373a6ed5f59f8f160e7ea623143018a2cb3ad2",
+      "text": "   Compiling autocfg v1.5.1"
+    },
+    {
+      "line": 86,
+      "offset": 8719,
+      "bytes": 28,
+      "sha256": "ac1ec537809439d26eaa0a927c2f478282052e2d5f2aa5aa9cb9165f600df406",
+      "text": "   Compiling semver v1.0.28"
+    },
+    {
+      "line": 87,
+      "offset": 8747,
+      "bytes": 32,
+      "sha256": "a49fded472bf940b7b62d23e0b91b6944c1e596e7d76db94fc0d7cab0ed0740c",
+      "text": "   Compiling unicode-xid v0.2.6"
+    },
+    {
+      "line": 88,
+      "offset": 8779,
+      "bytes": 31,
+      "sha256": "d29391078d49e4f68c3ea2857e2ca90202d33793d375f00280db74dc46e2bc34",
+      "text": "   Compiling once_cell v1.21.4"
+    },
+    {
+      "line": 89,
+      "offset": 8810,
+      "bytes": 91,
+      "sha256": "327fcefb51ae3f08ee4685f0bb0a4e0b5d874ca6ab1f206c7577430d4956f190",
+      "text": "   Compiling ax-cpu v0.10.3 (/tmp/crosspath-native-cache-v3-src-hr23qnrs/components/axcpu)"
+    },
+    {
+      "line": 90,
+      "offset": 8901,
+      "bytes": 31,
+      "sha256": "9dc593cfd7504d461a143032e46a7275dca61f8639f1dff39c9b40a4ba54d4f7",
+      "text": "   Compiling ident_case v1.0.1"
+    },
+    {
+      "line": 299,
+      "offset": 22275,
+      "bytes": 236,
+      "sha256": "028d0cb7c91eb73cc68401d2f2ace3e179165f18d6d2ed802575faeadc0cb5f8",
+      "text": "warning: the following packages contain code that will be rejected by a future version of Rust: core v0.0.0 (/home/yanlien/.rustup/toolchains/nightly-2026-09-04-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core), memchr v2.8.3"
+    },
+    {
+      "line": 443,
+      "offset": 33471,
+      "bytes": 91,
+      "sha256": "809e712499029c450ac1478041a5afd50019a34e89d119e4ed73938b751bdedf",
+      "text": "[2026-10-18T12:45:01Z DEBUG uboot_shell] $ Warning: eth_rtl8169 MAC addresses don't match:"
+    },
+    {
+      "line": 447,
+      "offset": 33772,
+      "bytes": 91,
+      "sha256": "809e712499029c450ac1478041a5afd50019a34e89d119e4ed73938b751bdedf",
+      "text": "[2026-10-18T12:45:01Z DEBUG uboot_shell] $ Warning: eth_rtl8169 MAC addresses don't match:"
+    },
+    {
+      "line": 50103,
+      "offset": 6496317,
+      "bytes": 17,
+      "sha256": "b2e8d53f85c18e14ab41e44f9b7cf989a23ef1631dac2177ef2b502b9e77a17e",
+      "text": "AXTEST_SUITE_OK"
+    }
+  ]
+}

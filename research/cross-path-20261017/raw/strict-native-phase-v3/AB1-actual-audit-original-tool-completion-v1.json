@@ -1,0 +1,13 @@
+{
+  "actual_unified_exec_exit": 1,
+  "auditor_child_wait_receipt": {
+    "bytes": 1186,
+    "mode": 436,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v3/AB1-actual-audit-v1.receipt.json",
+    "sha256": "cc3d3e6a3eba6348a759671847ee4d7f5a4c4fd58817612fe9fb448c358b2ced"
+  },
+  "completion_tool_chunk": "9be3c5",
+  "observed_utc": "2026-10-18T13:16:49.838398+00:00",
+  "original_unified_exec_session": 42886,
+  "scope": "original exact audit tool completion; separate from auditor child Popen wait receipt"
+}

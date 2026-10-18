@@ -1,0 +1,21 @@
+{
+  "all_checks_passed": true,
+  "all_local_markdown_links_resolve": true,
+  "original_ownership_token_absent_from_new_artifacts": true,
+  "original_references_rehashed_unchanged": 43,
+  "references_checked": 34,
+  "repair_implemented": false,
+  "results": [
+    {
+      "bytes": 21598,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-AB1-exit-cause-v1.json",
+      "sha256": "66212f18d135e70e198b978717f160fe9161e6354e6421539f66dc10fc23df0f"
+    },
+    {
+      "bytes": 5566,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-cache-v3-AB1-exit-cause-v1.md",
+      "sha256": "838fe924a162128a38517b1410b472effd5f76a7580b563e540338ebc96f6b62"
+    }
+  ],
+  "scope": "Report/evidence verification only; no new process experiment"
+}
