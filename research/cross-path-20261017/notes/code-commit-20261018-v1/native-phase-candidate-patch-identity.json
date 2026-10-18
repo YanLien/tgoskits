@@ -1,0 +1,165 @@
+{
+  "scope": "code snapshot of previously reviewed offline normal702 candidate; no implementation edits or new runtime result",
+  "before_frozen_source_count": 696,
+  "before_plan_sha256": "b3f1a63d273f4ff918bcd8dbd5acd30ee1fa9d18e56b70b24ee07ac6863fb0c5",
+  "after_source_count": 702,
+  "after_source_manifest_sha256": "9e2fe24f40d95cf54390ad476d89c8162e2bfba9e257966a4a2cb3b9c31b918f",
+  "patch_sha256": "25684ad10f348ad9bfe07a4eb054cfac83b3a4bf9fdd9ca8fdf77e8f7f359192",
+  "files": [
+    {
+      "path": "virtualization/axvm/src/arch/aarch64/vm.rs",
+      "before_sha256": "c7068e8d294a6d146e6f36a9bd445b75426abedb704a5591c6df3b8d29e5dd58",
+      "after_sha256": "a5143b61631dffcdf6804e499a36d337dd08f2f2cd17d23e1bf89bf34d551e95",
+      "after_bytes": 7990
+    },
+    {
+      "path": "virtualization/axvm/src/control/observations.rs",
+      "before_sha256": "0dda5aaba78d7d408805608670db4e2ce5dd358d9032717f3495d059f15b8e2c",
+      "after_sha256": "6ab6cb60c042b4990472aa7017d66cfaa3802bfddd82f277479fc1386d23ee81",
+      "after_bytes": 4304
+    },
+    {
+      "path": "virtualization/axvm/src/guest_counter.rs",
+      "before_sha256": null,
+      "after_sha256": "4de09749e7c1db3a1d547ce504aa293bf8fc3c3ae6f9d497103662231c95bb6c",
+      "after_bytes": 2217
+    },
+    {
+      "path": "virtualization/axvm/src/lib.rs",
+      "before_sha256": "65f34457252720e2bc74010570c3bd69113ffcf65d6fde40347f7b32981e48d7",
+      "after_sha256": "86eb3ccc5bdcb46a46a32d8ba1b28c0726fe1d897fe229f3a88003cda61c2e7d",
+      "after_bytes": 4038
+    },
+    {
+      "path": "virtualization/axvm/src/manager.rs",
+      "before_sha256": "0bdb72e99f84230e4c96d7f07f297cfbc6b9d5d5fd06e4c1b0b1d9902e873ac2",
+      "after_sha256": "0f1d6e9778196bf9456eb84011e9d923153acefcdc66c3bdeb8eebbc5a75bb69",
+      "after_bytes": 66790
+    },
+    {
+      "path": "virtualization/axvm/src/vm/mod.rs",
+      "before_sha256": "a21f939008706801e2db5936e66519ccee9c9c36d26dc8c184c778e6f387298c",
+      "after_sha256": "7026f1abe24102585a8ad46d6ce5c18453e30cb6a78b6323b9e2331a977b8f0f",
+      "after_bytes": 16160
+    },
+    {
+      "path": "virtualization/axvm/src/vm/prepare.rs",
+      "before_sha256": "04e476acdbd2e56b31a5be41eee700c45119128b9cfcb54b1423a6c0dd238509",
+      "after_sha256": "59ccf8939889dedc1c6475f98d3d760f9321b859262c5547313b051ea9a2798f",
+      "after_bytes": 2209
+    },
+    {
+      "path": "virtualization/axvm/tests/guests/linux-load/README.md",
+      "before_sha256": "0dcc5e63c6c8975a84e2855d715a6022ce17e665ba57e47b8c4d29436c8458fb",
+      "after_sha256": "c1d707f7e583403b03c4eb14ee9477356e428e4700768a1df7d10c0367c63f63",
+      "after_bytes": 28341
+    },
+    {
+      "path": "virtualization/axvm/tests/guests/linux-load/phase.c",
+      "before_sha256": null,
+      "after_sha256": "c09a42adf6e58ab692a0a76222d2814108b4f4e9889aef2f4b3cb46c369a776a",
+      "after_bytes": 16072
+    },
+    {
+      "path": "virtualization/axvm/tests/guests/linux-load/phase.h",
+      "before_sha256": null,
+      "after_sha256": "0148526cb38f3c5ef5fa5e9d28e756b152a3da31d974df50024ecaa58da9635a",
+      "after_bytes": 1783
+    },
+    {
+      "path": "virtualization/axvm/tests/guests/linux-load/prepare.py",
+      "before_sha256": "7b132f48d8d7989a4f6255d30cb91556d3c720490311b8c0a553acd865eeba87",
+      "after_sha256": "7bbe3e3c5a05227c9e53dee7c2ff0b3a95a1739706023b9b9497caa2e11f1b84",
+      "after_bytes": 10030
+    },
+    {
+      "path": "virtualization/axvm/tests/guests/linux-load/verify-native-phase.py",
+      "before_sha256": null,
+      "after_sha256": "c29cce43852ec2016f735af82b55410d63acebf866766275bffd36d98af7317b",
+      "after_bytes": 35913
+    },
+    {
+      "path": "virtualization/axvm/tests/guests/linux-load/workload.c",
+      "before_sha256": "2ae0573f663ab265e6ddd0b3c3363cb42e633b3119aceb7a2c653d45e51caa3e",
+      "after_sha256": "c54eb8aa52e345ac4cf6dd42ce6567d1765bc77aa498ff7d05c317e9b47e14f2",
+      "after_bytes": 9643
+    },
+    {
+      "path": "virtualization/axvm/tests/guests/virq/prepare.py",
+      "before_sha256": "435d3eaa297d3a1773b84d9f628bb46ad4f44b31bf54597d37aaecfeccefa6db",
+      "after_sha256": "5f0be0c95dfd7e20001a99a0f12a4f2ca338d764e25a0c8c6f3d08088fdbe490",
+      "after_bytes": 27918
+    },
+    {
+      "path": "virtualization/axvm/tests/support/clock.rs",
+      "before_sha256": "4690d32ed45cb8cc04905974e270fd4041c61e02e9d4c99812def60809e03057",
+      "after_sha256": "58d4c016b73577d24edc7473780aa138170aa5c3021c70ff027b39e47dac75c8",
+      "after_bytes": 4319
+    },
+    {
+      "path": "virtualization/axvm/tests/support/irq_pressure.rs",
+      "before_sha256": "b168aebb67f4059130d1fd2216f77f7c204e003f50bbec4fc2cccdff96e15067",
+      "after_sha256": "b43a9617ddf259e363455c5e58220811cda4da359993b7283d0234f9bdd300c8",
+      "after_bytes": 15303
+    },
+    {
+      "path": "virtualization/axvm/tests/support/linux.rs",
+      "before_sha256": "013b141cc0e0cb536af529aac4bdf8055eb5c3695933986a94a1ab832bdf0e89",
+      "after_sha256": "f08bb53c4311f6b7664cb4eb8671b703a59149e5d0b518294f71ee36e8edaeda",
+      "after_bytes": 29220
+    },
+    {
+      "path": "virtualization/axvm/tests/support/linux_phase.rs",
+      "before_sha256": null,
+      "after_sha256": "11b270191001c8076af05ea21da2d133437955cfc6900ab88f90f2eea4185d1b",
+      "after_bytes": 34310
+    },
+    {
+      "path": "virtualization/axvm/tests/support/linux_phase_transport.rs",
+      "before_sha256": null,
+      "after_sha256": "50bb27f406e4c55dffae9b50e269e7119645606ea0e383450e8d00e49e9c125d",
+      "after_bytes": 8937
+    },
+    {
+      "path": "virtualization/axvm/tests/support/mod.rs",
+      "before_sha256": "8efe143597d9d3b8624562ddfae28a62c1d221655c3687e48050be14fe144b44",
+      "after_sha256": "19f9e7394d888c7bdedd340dcead25e542b1f19489283ebf3006d98684f2f1c4",
+      "after_bytes": 17760
+    },
+    {
+      "path": "virtualization/axvm/tests/support/periodic.rs",
+      "before_sha256": "4a81b9d0f77de4f20cd9e62379cb7a2bd7d92280d46ac6cc86fd4158d21722b6",
+      "after_sha256": "23b506aea810ec5685230761180296017d58f5fb75edfdaab77ff55357748c5d",
+      "after_bytes": 8482
+    },
+    {
+      "path": "virtualization/axvm/tests/support/task_completion.rs",
+      "before_sha256": "85a6ad9a54db543fee7c0902f15ef2d384d66909c3d1463e18bcf075e9da0117",
+      "after_sha256": "c8e018737cf11dd2919f411b067724a5739921b5f2dbd6c681e7a2983ac31679",
+      "after_bytes": 4632
+    },
+    {
+      "path": "virtualization/axvm/tests/vcpu_runtime.rs",
+      "before_sha256": "e19a4c04e3cf5813aec1c5df7f1a4729967ddd59944de195872d4740fe644711",
+      "after_sha256": "ce3c367d9041df79f0a4443bfc08ec6a854973a75c7815390af1f7c66fe292e5",
+      "after_bytes": 56137
+    }
+  ],
+  "offline_acceptance": "results/phase2-strict-native-task1-offline-acceptance-v2.json",
+  "actual_AB1": "results/strict-native-phase-v1-AB1-actual-review-state-v1.json",
+  "normal_function_passed": false,
+  "original_trace_dropped": 19839,
+  "M2": false,
+  "Joint": false,
+  "goal_complete": false,
+  "capacity_v2_not_included": true,
+  "initial_patch_sha256": "7a860352465f1942731a1cf647389ac24095bebc34b703458bfc49ded145074f",
+  "first_reconstruction_failure": {
+    "tool_chunk": "5c30ed",
+    "tool_exit": 1,
+    "git_apply_check_child_actual_Popen_wait": 1,
+    "reason": "new Git diff headers lacked new file mode; dev/null treated as existing input; no reviewed source or main tree changed",
+    "initial_patch_preserved": "native-phase-candidate-initial.patch",
+    "correction": "add accurate Git new-file mode metadata for six additions"
+  }
+}

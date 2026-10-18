@@ -1,0 +1,35 @@
+{
+  "observed_utc": "2026-10-18T10:35:16.969476+00:00",
+  "scope": "ordinary source-patch reconstruction only; no Git state or runtime change",
+  "patch_sha256": "25684ad10f348ad9bfe07a4eb054cfac83b3a4bf9fdd9ca8fdf77e8f7f359192",
+  "source_members": 702,
+  "every_reconstructed_member_matches_reviewed_normal702": true,
+  "receipts": [
+    {
+      "argv": [
+        "git",
+        "apply",
+        "--check",
+        "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/patches/strict-native-phase-v1-candidate.patch"
+      ],
+      "cwd": "/tmp/crosspath-native-phase-v1-patch-check-82m3lyj4",
+      "actual_Popen_wait": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "apply",
+        "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/patches/strict-native-phase-v1-candidate.patch"
+      ],
+      "cwd": "/tmp/crosspath-native-phase-v1-patch-check-82m3lyj4",
+      "actual_Popen_wait": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "main_source_modified": false,
+  "hardware_started": 0,
+  "normal_function_passed": false
+}
