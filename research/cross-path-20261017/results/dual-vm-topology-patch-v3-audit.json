@@ -1,0 +1,88 @@
+{
+  "captured_utc": "2026-10-17T18:56:01.712907+00:00",
+  "scope": "Isolated topology implementation and explicitly revised offline entry classification",
+  "files": {
+    "virtualization/axvm/tests/vcpu_runtime.rs": {
+      "before_sha256": "8072046b6425745616a8c9ed5d7ff77160c43b5c5593f2ad832a1dbee9d41afc",
+      "after_sha256": "e19a4c04e3cf5813aec1c5df7f1a4729967ddd59944de195872d4740fe644711"
+    },
+    "virtualization/axvm/tests/support/linux.rs": {
+      "before_sha256": "8357626f8746c67a83ffa218b6b066baa0c472d831c38a1c3a5679de52cc729c",
+      "after_sha256": "013b141cc0e0cb536af529aac4bdf8055eb5c3695933986a94a1ab832bdf0e89"
+    },
+    "virtualization/axvm/tests/analysis/test_virq_linux_fence_analysis.py": {
+      "before_sha256": "dff5f1ea59a23970c5cf8331c20b6fa2e99435deaf9ddcd5383a8ebc36a521d4",
+      "after_sha256": "bed24f5f995f6f02f00ee6e73b070411540a64772ff97df1cf76f207e1a587e6"
+    },
+    "virtualization/axvm/tests/analysis/analyze_virq_load.py": {
+      "before_sha256": "816ea54b0341e9d34148010475de83cae41338189c4b9fe2ce704710908b0fc7",
+      "after_sha256": "b84ed6a303f084a4a9f48625cb475c605969d76b55e4921cb35e775b989a507c"
+    },
+    "virtualization/axvm/tests/analysis/test_virq_load_analysis.py": {
+      "before_sha256": "8b5e0b87f9e8f9cba661437affee24b06389a4c4b6062faf5ab4364d17ffac50",
+      "after_sha256": "aa308f1cb99358b77f6cc2417f291d3c95ddd64ac43e6d6107ce3a13f988ff05"
+    },
+    "virtualization/axvm/tests/guests/guest_firmware.py": {
+      "before_sha256": "bc1bbff531270f89ebd24c1e65c421a357be1592cabc2281248086edf0cd025e",
+      "after_sha256": "1f1a59e60aee39bb1c1c4eeece63e5e8c12c2edefcaee80a684760dedd362744"
+    },
+    "virtualization/axvm/tests/guests/virq/prepare.py": {
+      "before_sha256": "c6eaaccedff5146259ec76335f7d089784c033de8e97ac634b3ff10b7dc098db",
+      "after_sha256": "435d3eaa297d3a1773b84d9f628bb46ad4f44b31bf54597d37aaecfeccefa6db"
+    },
+    "virtualization/axvm/tests/guests/linux-load/prepare.py": {
+      "before_sha256": "b59f024d2251836fd08b27d9ebd85890b07f9d47a152d2c35c1340a2562c2a68",
+      "after_sha256": "7b132f48d8d7989a4f6255d30cb91556d3c720490311b8c0a553acd865eeba87"
+    },
+    "virtualization/axvm/tests/guests/linux-load/README.md": {
+      "before_sha256": "57ef8002414352781734b90cc6981a5689e6e0304f3374ed6dc0fa7026a3d7d5",
+      "after_sha256": "0dcc5e63c6c8975a84e2855d715a6022ce17e665ba57e47b8c4d29436c8458fb"
+    },
+    "virtualization/axvm/tests/guests/virq/README.md": {
+      "before_sha256": "96b728d9b58a9ba8e4e02668b10cd927b4306e28fc993ff753b866698c83d2c4",
+      "after_sha256": "3e53c9a514cb50b6ed3f86b9202e4c7517da4fc55d7e0ada9527f95a20204528"
+    },
+    "virtualization/axvm/tests/vcpu-runtime/README.md": {
+      "before_sha256": "1e4f46e806f96258cccf4055b39f54fff602e554194245c388fdf1a13e321e6b",
+      "after_sha256": "15ea9c673cb4f0f88ee9fcd8ffb5961629e8e3cd757ad2576cd5789ec85e1932"
+    },
+    "virtualization/axvm/tests/analysis/analyze_virq_physical.py": {
+      "before_sha256": "149c3d9e8c6a625301b7d7d6f253872604e43b94397522851470ad9cebd91fe5",
+      "after_sha256": "3981397323bd3c7bf82c7a185cf3d0604236927cee8e477b9bf0a4b066feb289"
+    },
+    "virtualization/axvm/tests/analysis/test_virq_physical_analysis.py": {
+      "before_sha256": "16fe07b6ca40932be355b5d60168a638a85a044c4cf0ec689dd1254df0afcaf0",
+      "after_sha256": "67a37245727b6c6c36dab2636e5aa608bae0d6a85d6217dca2ee607e08514197"
+    }
+  },
+  "patch_sha256": "a05a96b8dac003696dddb15785fbe9437eddb1091dbd59ae1e706851a9558f52",
+  "before_archive_sha256": "8b316dffce9b08f98aa0ca394d2558053ec0a9c0cc0e2c8cd09b8228e307f637",
+  "source_archive_sha256": "eefd8d6fc1494fb8af6ec4fe6f32ab7d59a99f0edd189d8f860229734cc81b88",
+  "source_manifest_sha256": "d637c659dd595b954854bafa15b0094f95d2b024cf0bb376fcf4d2605811f877",
+  "isolated_apply_byte_match": true,
+  "main_application_performed": false,
+  "hardware_verified": false,
+  "host_guest_measurement_source_unchanged_from_executed_v2": true,
+  "cold_analysis_changes_from_v2": [
+    "virtualization/axvm/tests/analysis/analyze_virq_physical.py",
+    "virtualization/axvm/tests/analysis/test_virq_physical_analysis.py"
+  ],
+  "analysis_tests_passed": 43,
+  "analysis_full_log_sha256": "3ae3555960db144f6c8ae306c28860ea9dd3ab75fe10cd700eebbed7b0ff5181",
+  "rust_changed_since_29_clippy_passes": false,
+  "clippy_checks_passed": 29,
+  "clippy_log_sha256": "e96a042824ecb83c5a55ae90e9949993fa3bcaf7a33e47e88643c59914bad74d",
+  "independent_plan_review": "approved including blocked gate and prefix ownership proof",
+  "independent_code_review": "approved; exact two-file analysis increment reviewed",
+  "original_v2_accepted_runs": 3,
+  "original_v2_fourth_rejection_preserved": true,
+  "reanalysis_version": 3,
+  "reanalysis_runs": 4,
+  "reanalysis_task_observations": 256,
+  "reanalysis_unique_stage_chains": 255,
+  "reanalysis_summary_sha256": "9670ab1a582e30aa8730f1e069cba700bd27c15879e9d762d1f7529283c94f35",
+  "remaining_validation": [
+    "Native CPU3/CPU1 topology validation after original primary cohort and seal reach terminal",
+    "Measurement-version and whole-window throughput scope before any performance comparison"
+  ]
+}

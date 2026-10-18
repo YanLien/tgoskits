@@ -1,0 +1,50 @@
+{
+  "captured_utc": "2026-10-17T19:29:21.627989+00:00",
+  "scope": "Actual cached Linux kernel and base initramfs bytes, checked against accepted build metadata; not Linux source or firmware binary attestation",
+  "cohort": "factorial-recovery",
+  "accepted_builds_checked": 23,
+  "inputs": {
+    "linux.kernel": {
+      "original_path": "target/research-assets/images/qemu-aarch64/linux/linux-qemu",
+      "sha256": "c5403e99b9ae7a8c60c393fb2a97e637ded3e049179bb1b2f63cf6b94dd2a61a",
+      "bytes": 52558336,
+      "build_metadata_field": "kernel_sha256"
+    },
+    "base-initramfs.cpio.gz": {
+      "original_path": "target/research-assets/images/initramfs-aarch64-busybox.cpio.gz/initramfs-aarch64-busybox.cpio.gz",
+      "sha256": "a6fe2ed7dace805e29b65c5dbee766e1c13449b162664faaf65f1775c630aa5b",
+      "bytes": 19567536,
+      "build_metadata_field": "base_initramfs_sha256"
+    }
+  },
+  "runs": [
+    "factorial-recovery-board-b01-b-32",
+    "factorial-recovery-board-b01-ab-32",
+    "factorial-recovery-board-b01-a-32",
+    "factorial-recovery-board-b01-0-32",
+    "factorial-recovery-board-b02-0-32",
+    "factorial-recovery-board-b02-a-32",
+    "factorial-recovery-board-b02-ab-32",
+    "factorial-recovery-board-b02-b-32",
+    "factorial-recovery-board-b03-b-32",
+    "factorial-recovery-board-b03-ab-32",
+    "factorial-recovery-board-b03-a-32",
+    "factorial-recovery-board-b03-0-32",
+    "factorial-recovery-board-b04-ab-32",
+    "factorial-recovery-board-b04-0-32",
+    "factorial-recovery-board-b04-b-32",
+    "factorial-recovery-board-b04-a-32",
+    "factorial-recovery-board-b05-0-32",
+    "factorial-recovery-board-b05-a-32",
+    "factorial-recovery-board-b05-ab-32",
+    "factorial-recovery-board-b05-b-32",
+    "factorial-recovery-board-b06-a-32",
+    "factorial-recovery-board-b06-b-32",
+    "factorial-recovery-board-b06-0-32"
+  ],
+  "offline_analysis_requires_these_binaries": false,
+  "limitations": [
+    "This snapshot does not package all build toolchains or dependency source caches",
+    "The workload-specific generated initramfs is separately bound by each boot metadata and packaged Host input"
+  ]
+}

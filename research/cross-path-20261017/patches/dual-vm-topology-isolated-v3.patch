@@ -1,0 +1,926 @@
+--- a/virtualization/axvm/tests/vcpu_runtime.rs
++++ b/virtualization/axvm/tests/vcpu_runtime.rs
+@@ -314,6 +314,20 @@
+         !linux_fences || matches!(scenario, "linux_cpu" | "linux_memory"),
+         "Linux fences require a Linux peer"
+     );
++    let linux_host_cpu = match resource.get("linux_host_cpu") {
++        None => 3,
++        Some(value) => usize::try_from(
++            value
++                .as_integer()
++                .context("Linux Host CPU must be an integer")?,
++        )
++        .context("negative Linux Host CPU")?,
++    };
++    ensure!(
++        matches!(linux_host_cpu, 1 | 3)
++            && (linux_host_cpu == 3 || matches!(scenario, "linux_cpu" | "linux_memory")),
++        "invalid Linux Host CPU or missing Linux peer"
++    );
+     if matches!(scenario, "linux_cpu" | "linux_memory") {
+         println!(
+             "VIRQ_LINUX_FENCE_CONFIG version=1 mode={} clock=monotonic_raw",
+@@ -327,10 +341,19 @@
+         );
+         ensure!(
+             ax_std::os::arceos::task::sched::cpu_topology_len()? >= 4,
+-            "Linux peer needs CPU3"
+-        );
+-        println!(
+-            "VIRQ_LINUX_CONFIG vm=1 vcpu=0 host_cpu=3 guest_cpu=0 workload={} \
++            "Linux measurement requires the four-CPU fixture"
++        );
++        ensure!(
++            linux_host_cpu != 1
++                || (resource
++                    .get("explicit_dtb_enabled")
++                    .and_then(toml::Value::as_bool)
++                    == Some(true)
++                    && task.is_some_and(task_completion::Config::is_blocked)),
++            "Linux CPU1 sharing requires explicit Guest firmware and blocked tasks"
++        );
++        println!(
++            "VIRQ_LINUX_CONFIG vm=1 vcpu=0 host_cpu={linux_host_cpu} guest_cpu=0 workload={} \
+              batch_iterations=8192 report_batches=256",
+             if linux_memory.is_some() {
+                 "memory"
+@@ -414,7 +437,8 @@
+                 ],
+                 |fixtures| {
+                     let [fixture, peer] = fixtures;
+-                    let mut progress = linux::Progress::start(peer, linux_memory, linux_fences)?;
++                    let mut progress =
++                        linux::Progress::start(peer, linux_memory, linux_fences, linux_host_cpu)?;
+                     ensure!(
+                         fixture.vm.snapshot().description.bsp_entry.as_usize() == entry,
+                         "guest entry disagrees with the prepared ELF"
+@@ -743,7 +767,7 @@
+     let mut witness_report = None;
+     let mut timings = Vec::with_capacity(samples as usize);
+     let mut task_samples = Vec::with_capacity(if task.is_some() { samples as usize } else { 0 });
+-    let physical = if source_kind == "physical_timer_ppi" {
++    let mut physical = if source_kind == "physical_timer_ppi" {
+         Some(physical::PhysicalTimer::start(
+             interrupt.clone(),
+             usize::from(guest_running),
+@@ -751,7 +775,7 @@
+     } else {
+         None
+     };
+-    let rtc = if source_kind == "pl031_spi" {
++    let mut rtc = if source_kind == "pl031_spi" {
+         ensure!(resource_unused_rtc()?, "Guest RTC/counter driver is active");
+         Some(rtc_spi::RtcSpi::start(interrupt.clone())?)
+     } else {
+@@ -886,7 +910,54 @@
+         task.is_some_and(task_completion::Config::is_blocked) || idle_vcpu_returns == 0,
+         "non-target vCPU left suspend after its final acknowledgement"
+     );
+-    let linux_end = if let Some((peer, progress)) = linux.as_mut() {
++    let shared_linux = linux
++        .as_ref()
++        .is_some_and(|(_, progress)| progress.host_cpu() == 1);
++    let linux_end = if shared_linux {
++        ensure!(
++            task_samples.len() == samples as usize,
++            "shared-core handoff requires every completed task"
++        );
++        // After its last task the Guest spins to answer the after probes. Its
++        // FIFO owner must park before the normal Linux owner can reply End.
++        // Retire physical producers first; SGI pressure still covers End.
++        if let Some(source) = physical.take() {
++            source.finish(policy_name, samples)?;
++        }
++        if let Some(source) = rtc.take() {
++            source.finish(policy_name, samples)?;
++        }
++        let last_task_observed = task_samples
++            .iter()
++            .map(|sample| sample.observed)
++            .max()
++            .context("shared-core handoff has no completed task")?;
++        let pause_requested = clock::host_ticks();
++        fixture
++            .vm
++            .pause()?
++            .wait()
++            .context("pause after all tasks")?;
++        let paused = clock::host_ticks();
++        let (peer, progress) = linux.as_mut().context("shared Linux disappeared")?;
++        let end = progress.end_window(peer)?;
++        progress.finish(peer, policy_name, linux_start, end)?;
++        let linux_retired = clock::host_ticks();
++        fixture
++            .vm
++            .resume()?
++            .wait()
++            .context("resume after Linux End")?;
++        let resumed = clock::host_ticks();
++        fixture.check_policy(policy, 2)?;
++        println!(
++            "VIRQ_LINUX_HANDOFF policy={policy_name} protocol=pause_after_tasks host_cpu=1 \
++             last_task_observed_ticks={last_task_observed} \
++             pause_requested_ticks={pause_requested} paused_ticks={paused} \
++             linux_retired_ticks={linux_retired} resumed_ticks={resumed}"
++        );
++        end
++    } else if let Some((peer, progress)) = linux.as_mut() {
+         progress.end_window(peer)?
+     } else {
+         0
+@@ -946,7 +1017,7 @@
+             u8::from(enabled)
+         );
+     }
+-    if let Some((peer, progress)) = linux.as_mut() {
++    if !shared_linux && let Some((peer, progress)) = linux.as_mut() {
+         progress.finish(peer, policy_name, linux_start, linux_end)?;
+     }
+     for (index, (before, after)) in linux_samples.iter().enumerate() {
+--- a/virtualization/axvm/tests/support/linux.rs
++++ b/virtualization/axvm/tests/support/linux.rs
+@@ -65,6 +65,7 @@
+ 
+ #[derive(Default)]
+ pub struct Progress {
++    host_cpu: usize,
+     offset: usize,
+     ready: bool,
+     batches: u64,
+@@ -76,16 +77,30 @@
+ }
+ 
+ impl Progress {
++    pub fn host_cpu(&self) -> usize {
++        self.host_cpu
++    }
++
+     pub fn start(
+         fixture: &mut Fixture,
+         memory: Option<MemoryConfig>,
+         fences: bool,
++        host_cpu: usize,
+     ) -> Result<Self> {
++        ensure!(matches!(host_cpu, 1 | 3), "invalid Linux Host CPU");
++        let snapshot = fixture.vm.snapshot();
++        ensure!(
++            snapshot.vcpu.len() == 1
++                && snapshot.vcpu[0].id == 0
++                && snapshot.vcpu[0].phys_cpu_set == Some(1usize << host_cpu),
++            "Linux vCPU affinity disagrees with its measurement configuration"
++        );
+         fixture.vm.start()?.wait()?;
+         fixture.wait(Duration::from_secs(120), |snapshot, _| {
+             snapshot.state == VmStatus::Running && snapshot.cpu.running_vcpu_count == 1
+         })?;
+         let mut progress = Self {
++            host_cpu,
+             memory,
+             fences: fence::Fences::new(fences),
+             ..Self::default()
+@@ -101,7 +116,7 @@
+         }
+         fixture.check_policy(SchedulePolicy::default(), 1)?;
+         println!(
+-            "VIRQ_LINUX_BOOT vm=1 vcpu=0 host_cpu=3 guest_cpu=0 batches={}",
++            "VIRQ_LINUX_BOOT vm=1 vcpu=0 host_cpu={host_cpu} guest_cpu=0 batches={}",
+             progress.batches
+         );
+         Ok(progress)
+@@ -255,10 +270,10 @@
+         );
+         self.fences.finish(policy)?;
+         println!(
+-            "VIRQ_LINUX_SUMMARY policy={policy} vm=1 vcpu=0 host_cpu=3 guest_cpu=0 \
++            "VIRQ_LINUX_SUMMARY policy={policy} vm=1 vcpu=0 host_cpu={} guest_cpu=0 \
+              start_batches={start} end_batches={end} final_batches={} checksum={} reports={} \
+              batch_iterations=8192 report_batches=256 stopped=1",
+-            self.batches, self.checksum, self.reports
++            self.host_cpu, self.batches, self.checksum, self.reports
+         );
+         if let Some(config) = self.memory {
+             let (batches, bytes, checksum) = config.expected(self.batches)?;
+--- a/virtualization/axvm/tests/analysis/test_virq_linux_fence_analysis.py
++++ b/virtualization/axvm/tests/analysis/test_virq_linux_fence_analysis.py
+@@ -11,7 +11,7 @@
+ 
+ def fixture(memory=False, coarse_zero=False):
+     size, every = (1056768, 3) if memory else (0, 1)
+-    source = linux_memory_fixture() if memory else linux_fixture()
++    source = linux_memory_fixture(policy_span=4000000) if memory else linux_fixture(policy_span=4000000)
+     source = source.replace('LINUX_LOAD_READY version=1', 'LINUX_LOAD_READY version=2')
+     if coarse_zero:
+         source = source.replace('end_batches=512', 'end_batches=256').replace('after_batches=512', 'after_batches=256')
+@@ -30,7 +30,8 @@
+     for line in source.splitlines():
+         if line.startswith('VIRQ_LINUX_SUMMARY'):
+             policy = re.search(r'policy=(\w+)', line)[1]
+-            lines.append(f'VIRQ_LINUX_FENCE_SUMMARY policy={policy} begin_batches=281 end_batches={end_count} begin_ns=1000000 end_ns=3000000 begin_request_ticks=999900 begin_observed_ticks=1000100 end_request_ticks=2999900 end_observed_ticks=3000100 frequency_hz=1000000000 stopped=1')
++            offset = 0 if policy == 'fair' else 4000000
++            lines.append(f'VIRQ_LINUX_FENCE_SUMMARY policy={policy} begin_batches=281 end_batches={end_count} begin_ns=1000000 end_ns=3000000 begin_request_ticks={offset+999900} begin_observed_ticks={offset+1000100} end_request_ticks={offset+2999900} end_observed_ticks={offset+3000100} frequency_hz=1000000000 stopped=1')
+         lines.append(line)
+         if line.startswith('LINUX_MEMORY_READY') or (not memory and line.startswith('LINUX_LOAD_READY')):
+             lines.append(f'LINUX_FENCE_READY version=1 clock=monotonic_raw resolution_ns=1 working_set_bytes={size} every_batches={every}')
+@@ -62,7 +63,8 @@
+                             expected = (((300 if zero else 533)+2)//3-(281+2)//3)*65536
+                             self.assertEqual(state['logical_read_bytes'], expected)
+                             self.assertEqual(state['logical_write_bytes'], expected)
+-                        verify_fence_window(report, policy, 1000200, 2999800, 1000000000)
++                        offset = 0 if policy == 'fair' else 4000000
++                        verify_fence_window(report, policy, offset+1000200, offset+2999800, 1000000000)
+         # End can precede the next complete serial report; no unreported tail is guessed.
+         log = re.sub(r'^LINUX_LOAD_PROGRESS batches=768.*\n', '', fixture(), flags=re.M)
+         log = log.replace(f'final_batches=768 checksum={checksum_after(768*8192)} reports=3',
+@@ -111,7 +113,7 @@
+                                (1000200, 2999800, 100000000)):
+             with self.assertRaises(ValueError):
+                 verify_fence_window(result, 'fair', start, end, hz)
+-        pressure = pressure_clock_fixture().replace('window_end_ticks=2000000', 'window_end_ticks=4000000')
++        pressure = pressure_clock_fixture(policy_stride=4000000, window_duration=4000000)
+         validate_load(log + pressure)
+         # This pressure still covers the task interval but misses the Begin request.
+         with self.assertRaises(ValueError):
+--- a/virtualization/axvm/tests/analysis/analyze_virq_load.py
++++ b/virtualization/axvm/tests/analysis/analyze_virq_load.py
+@@ -10,7 +10,7 @@
+ from analyze_virq_host import measurement_count
+ from analyze_virq_irq_pressure import validate_pressure, verify_window
+ from analyze_virq_linux_fence import validate_fences, verify_fence_window
+-from analyze_virq_isr import analyze as analyze_isr
++from analyze_virq_isr import analyze as analyze_isr, isr_records
+ from analyze_virq_ready import analyze as analyze_ready
+ from analyze_virq_runtime import EVENT, parse
+ from analyze_virq_services import analyze as analyze_services
+@@ -35,13 +35,13 @@
+     r"final_batches=(\d+) read_bytes=(\d+) write_bytes=(\d+) checksum=(\d+) "
+     r"verified_words=(\d+) mismatch_words=(\d+) wrong_cpu=(\d+) joined=(\d+)"
+ )
+-LINUX_CONFIG = re.compile(r"VIRQ_LINUX_CONFIG vm=1 vcpu=0 host_cpu=3 guest_cpu=0 workload=(cpu|memory) batch_iterations=8192 report_batches=256")
++LINUX_CONFIG = re.compile(r"VIRQ_LINUX_CONFIG vm=1 vcpu=0 host_cpu=([13]) guest_cpu=0 workload=(cpu|memory) batch_iterations=8192 report_batches=256")
+ LINUX_MEMORY_CONFIG = re.compile(r"VIRQ_LINUX_MEMORY_CONFIG working_set_bytes=(\d+) every_batches=(\d+) chunk_words=8192")
+ LINUX_MEMORY_READY = re.compile(r"LINUX_MEMORY_READY version=1 working_set_bytes=(\d+) every_batches=(\d+) chunk_words=8192")
+ LINUX_MEMORY_SUMMARY = re.compile(r"VIRQ_LINUX_MEMORY_SUMMARY policy=(fair|fifo80) working_set_bytes=(\d+) every_batches=(\d+) final_memory_batches=(\d+) read_bytes=(\d+) write_bytes=(\d+) checksum=(\d+) stopped=1")
+-LINUX_BOOT = re.compile(r"VIRQ_LINUX_BOOT vm=1 vcpu=0 host_cpu=3 guest_cpu=0 batches=(\d+)")
++LINUX_BOOT = re.compile(r"VIRQ_LINUX_BOOT vm=1 vcpu=0 host_cpu=([13]) guest_cpu=0 batches=(\d+)")
+ LINUX_SUMMARY = re.compile(
+-    r"VIRQ_LINUX_SUMMARY policy=(fair|fifo80) vm=1 vcpu=0 host_cpu=3 guest_cpu=0 "
++    r"VIRQ_LINUX_SUMMARY policy=(fair|fifo80) vm=1 vcpu=0 host_cpu=([13]) guest_cpu=0 "
+     r"start_batches=(\d+) end_batches=(\d+) final_batches=(\d+) checksum=(\d+) reports=(\d+) "
+     r"batch_iterations=8192 report_batches=256 stopped=1"
+ )
+@@ -118,13 +118,50 @@
+     return scenario, reports, windows
+ 
+ 
++def linux_host_windows(log, fences, sample_count):
++    """Use causal fence windows, or the complete critical Host observations."""
++    if fences['mode'] == 'serial':
++        return {policy: dict(start_ticks=state['begin_request_ticks'],
++                             end_ticks=state['end_observed_ticks'], source='linux_fences')
++                for policy, state in fences['policies'].items()}
++    observations = isr_records(log)
++    expected = [(policy, sample) for policy in ('fair', 'fifo80') for sample in range(1, sample_count+1)]
++    if [(row['policy'], row['sample']) for row in observations] != expected:
++        raise ValueError('Linux residency needs complete per-policy Host measurement windows')
++    tasks = None
++    if 'VIRQ_TASK_SAMPLE' in log:
++        # Reuse the grammar after the task -> physical -> load import cycle has initialized.
++        from analyze_virq_task import TASK
++        tasks = parse(log, 'VIRQ_TASK_SAMPLE', TASK)
++        if [(row[0], int(row[1])) for row in tasks] != expected:
++            raise ValueError('Linux residency needs all task completion observations')
++    from analyze_virq_periodic import protocol
++    periodic = protocol(log)
++    windows = {}
++    for policy in ('fair', 'fifo80'):
++        selected = [row for row in observations if row['policy'] == policy]
++        start = min(row['submit_ticks'] for row in selected)
++        end = max(row['observed_ticks'] for row in selected)
++        if periodic is not None:
++            start = min(row[1] for row in periodic['policies'][policy]['releases'])
++        if tasks is not None:
++            end = max(end, max(int(row[-1]) for row in tasks if row[0] == policy))
++        if not 0 < start < end:
++            raise ValueError('Linux Host measurement window is invalid')
++        windows[policy] = dict(start_ticks=start, end_ticks=end,
++                               source='critical_task_observation' if tasks is not None else 'critical_isr_observation')
++    return windows
++
++
+ def validate_linux(log, sample_count, scenario):
+     """Check complete serial reports and independent runtime ownership evidence."""
+     mode = 'memory' if scenario == 'linux_memory' else 'cpu'
+     fences = validate_fences(log)
+     enabled = fences['mode'] == 'serial'
+-    if parse(log, "VIRQ_LINUX_CONFIG", LINUX_CONFIG) != [(mode,)]:
++    selected = parse(log, "VIRQ_LINUX_CONFIG", LINUX_CONFIG)
++    if len(selected) != 1 or selected[0][1] != mode:
+         raise ValueError("Linux guest needs one explicit workload configuration")
++    host_cpu = selected[0][0]
+     configs = parse(log, 'VIRQ_LINUX_MEMORY_CONFIG', LINUX_MEMORY_CONFIG)
+     memory_summaries = parse(log, 'VIRQ_LINUX_MEMORY_SUMMARY', LINUX_MEMORY_SUMMARY)
+     if mode == 'memory':
+@@ -140,6 +177,8 @@
+     samples = parse(log, "VIRQ_LINUX_SAMPLE", LINUX_SAMPLE)
+     if len(boots) != 2 or [s[0] for s in summaries] != ["fair", "fifo80"]:
+         raise ValueError("missing or reordered Linux guest completion evidence")
++    if any(boot[0] != host_cpu for boot in boots) or any(summary[1] != host_cpu for summary in summaries):
++        raise ValueError("Linux placement declarations disagree")
+     if len(parse(log, "VIRQ_VM_GROUP_RETIRED", VM_RETIRED)) != 2:
+         raise ValueError("both VM groups must be retired")
+     # A new boot resets the serial recurrence. A completion must close exactly
+@@ -177,13 +216,15 @@
+             batches, checksum = count, value
+         elif "VIRQ_LINUX_BOOT" in line:
+             match = LINUX_BOOT.fullmatch(line.strip())
+-            if not active or match is None or int(match[1]) != batches or not batches:
++            if not active or match is None or match[1] != host_cpu or int(match[2]) != batches or not batches:
+                 raise ValueError("Linux boot marker does not match observed progress")
+         elif "VIRQ_LINUX_SUMMARY" in line:
+             match = LINUX_SUMMARY.fullmatch(line.strip())
+             if not active or match is None:
+                 raise ValueError("Linux completion has no active stream")
+-            policy, start, end, final, value, reports = match.groups()
++            policy, cpu, start, end, final, value, reports = match.groups()
++            if cpu != host_cpu:
++                raise ValueError("Linux completion placement disagrees with configuration")
+             start, end, final, value, reports = map(int, (start, end, final, value, reports))
+             valid_window = (0 < start <= end <= final if enabled else 0 < start < end <= final)
+             if (final, value, reports) != (batches, checksum, batches // 256) or not valid_window:
+@@ -207,34 +248,55 @@
+             retired_count += 1
+     if active or not retired or closed != ["fair", "fifo80"]:
+         raise ValueError("Linux guest stream is incomplete")
+-    # Thread generations bind the CPU3 execution observations to VM1/vCPU0;
++    # Thread generations bind the selected CPU observations to VM1/vCPU0;
+     # Guest sched_getcpu()=0 alone cannot establish Host residency.
+     events = parse(log, "VIRQ_RUNTIME ", EVENT)
+     bindings = [e for e in events if e[3] == "Binding" and e[5] == "1"]
+     threads = {int(e[4]) for e in bindings}
+-    if len(threads) != 2 or any(e[0] != "3" or e[6] != "0" for e in bindings):
++    if len(bindings) != 2 or len(threads) != 2 or any(e[0] != host_cpu or e[6] != "0" for e in bindings):
+         raise ValueError("Linux guest needs one vCPU generation per policy")
+-    for thread in threads:
++    host_windows = linux_host_windows(log, fences, sample_count)
++    generations = {}
++    key = lambda event: (int(event[2]), int(event[1]))
++    previous_stop = None
++    for policy, binding in zip(('fair', 'fifo80'), sorted(bindings, key=key)):
++        thread = int(binding[4])
+         owned = [e for e in events if int(e[4]) == thread and e[3] in ("Running", "Stopped", "GuestEntryBoundary")]
+-        if {e[3] for e in owned} != {"Running", "Stopped", "GuestEntryBoundary"} or any(e[0] != "3" for e in owned):
+-            raise ValueError("Linux guest execution or retirement left Host CPU3")
+-        if max(owned, key=lambda e: (int(e[2]), int(e[1])))[3] != "Stopped":
++        if {e[3] for e in owned} != {"Running", "Stopped", "GuestEntryBoundary"} or any(e[0] != host_cpu for e in owned):
++            raise ValueError("Linux guest execution or retirement left its selected Host CPU")
++        running = min((event for event in owned if event[3] == 'Running'), key=key)
++        entry = min((event for event in owned if event[3] == 'GuestEntryBoundary'), key=key)
++        stopped = max(owned, key=key)
++        if stopped[3] != "Stopped":
+             raise ValueError("Linux vCPU generation was not stopped")
++        if not key(running) <= key(binding) < key(entry) < key(stopped):
++            raise ValueError('Linux generation Binding, entry or retirement order is invalid')
++        if previous_stop is not None and key(running) <= previous_stop:
++            raise ValueError('Linux policy generations overlap or reuse a lifecycle')
++        window = host_windows[policy]
++        if not int(entry[2]) <= window['start_ticks'] <= window['end_ticks'] <= int(stopped[2]):
++            raise ValueError('Linux generation does not cover its policy Host measurement window')
++        previous_stop = key(stopped)
++        generations[policy] = dict(thread=thread, first_running_ticks=int(running[2]),
++                                   binding_ticks=int(binding[2]), first_entry_ticks=int(entry[2]),
++                                   stopped_ticks=int(stopped[2]), host_window=window,
++                                   time_window_verified=True)
+     reports, windows = {}, {}
+     for boot, fields in zip(boots, summaries):
+         policy = fields[0]
+-        start, end, final, checksum, count = map(int, fields[1:])
+-        if not 0 < int(boot[0]) <= start or any(n % 256 for n in (start, end, final)):
++        start, end, final, checksum, count = map(int, fields[2:])
++        if not 0 < int(boot[1]) <= start or any(n % 256 for n in (start, end, final)):
+             raise ValueError("Linux startup or report-boundary count is invalid")
+         selected, progress = sample_windows(samples, policy, start, end, sample_count)
+         if any(n % 256 for row in selected.values() for n in row.values()):
+             raise ValueError("Linux sample uses an unreported counter value")
+         windows.update(selected)
+-        reports[policy] = dict(kind="linux_guest_cpu", vm=1, vcpu=0, host_cpu=3,
+-            guest_cpu=0, pre_rt_start_batches=int(boot[0]), start_batches=start, end_batches=end,
++        reports[policy] = dict(kind="linux_guest_cpu", vm=1, vcpu=0, host_cpu=int(host_cpu),
++            guest_cpu=0, pre_rt_start_batches=int(boot[1]), start_batches=start, end_batches=end,
+             final_reported_batches=final, checksum=checksum, reports=count, stopped=True,
+             interval_reported_iterations=(end-start)*8192, samples_with_progress=progress,
+             samples_without_observed_progress=sample_count-progress)
++        reports[policy]['runtime_observation'] = generations[policy]
+         if enabled:
+             reports[policy]['fenced_throughput'] = fences['policies'][policy]
+         if mode == 'memory':
+@@ -328,7 +390,7 @@
+     return rows, dict(scenario=scenario, loads=loads, ready=ready, clocks=clocks,
+                      service_placement=service_placement, irq_pressure=pressure, linux_fences=fences,
+                      limitations=[
+-                         ("A separate virtualized Linux VM executes on Host CPU3; this does not establish shared-CPU or hardware memory interference." if scenario in ("linux_cpu", "linux_memory") else "Host workload only; noncritical VM interference remains untested."),
++                         (f"A separate virtualized Linux VM executes on Host CPU{loads['fair']['host_cpu']}; placement alone does not establish hardware memory interference." if scenario in ("linux_cpu", "linux_memory") else "Host workload only; noncritical VM interference remains untested."),
+                          "Linux counters are complete serial-observed reports, not exact ISR overlap, unreported final work, or DRAM traffic.",
+                          "Per-sample work observations lie inside submit-to-ack observation windows, not necessarily before Guest ISR.",
+                          "Batch-boundary CPU checks supplement affinity, not instruction-level residency measurement.",
+--- a/virtualization/axvm/tests/analysis/test_virq_load_analysis.py
++++ b/virtualization/axvm/tests/analysis/test_virq_load_analysis.py
+@@ -2,7 +2,13 @@
+ 
+ import unittest
+ import re
++import importlib.util
++import os
++from pathlib import Path
++import tempfile
++import tomllib
+ from functools import lru_cache
++from unittest.mock import patch
+ 
+ from analyze_virq_load import analyze, checksum_after, validate_load
+ from test_virq_ready_analysis import fixture as ready_fixture
+@@ -24,47 +30,55 @@
+     return "\n".join(lines)+"\n"
+ 
+ 
+-def linux_fixture():
++def linux_fixture(host_cpu=3, policy_span=1000000, include_isr=True):
+     lines = ["VIRQ_CONTROLLER cpu=0", "VIRQ_SCENARIO name=linux_cpu",
+-             "VIRQ_LINUX_CONFIG vm=1 vcpu=0 host_cpu=3 guest_cpu=0 workload=cpu batch_iterations=8192 report_batches=256"]
++             f"VIRQ_LINUX_CONFIG vm=1 vcpu=0 host_cpu={host_cpu} guest_cpu=0 workload=cpu batch_iterations=8192 report_batches=256"]
+     sequence = 0
+     for thread, policy in enumerate(("fair", "fifo80"), 10):
++        origin = (thread - 10) * policy_span
+         lines.append("LINUX_LOAD_READY version=1 guest_cpu=0 batch_iterations=8192 report_batches=256")
+         for count in (256, 512, 768):
+             lines.append(f"LINUX_LOAD_PROGRESS batches={count} checksum={checksum_after(count*8192)} guest_cpu=0")
+             if count == 256:
+-                lines.append("VIRQ_LINUX_BOOT vm=1 vcpu=0 host_cpu=3 guest_cpu=0 batches=256")
+-        lines.append(f"VIRQ_LINUX_SUMMARY policy={policy} vm=1 vcpu=0 host_cpu=3 guest_cpu=0 start_batches=256 end_batches=512 final_batches=768 checksum={checksum_after(768*8192)} reports=3 batch_iterations=8192 report_batches=256 stopped=1")
++                lines.append(f"VIRQ_LINUX_BOOT vm=1 vcpu=0 host_cpu={host_cpu} guest_cpu=0 batches=256")
++        lines.append(f"VIRQ_LINUX_SUMMARY policy={policy} vm=1 vcpu=0 host_cpu={host_cpu} guest_cpu=0 start_batches=256 end_batches=512 final_batches=768 checksum={checksum_after(768*8192)} reports=3 batch_iterations=8192 report_batches=256 stopped=1")
+         for sample in range(1, 301):
+             after = 512 if sample == 300 else 256
+             lines.append(f"VIRQ_LINUX_SAMPLE policy={policy} sample={sample} before_batches=256 after_batches={after}")
+         lines.append("VIRQ_VM_GROUP_RETIRED count=2 empty=1")
+-        for kind, v0 in (("Binding", 1), ("Running", 0), ("GuestEntryBoundary", 0), ("Stopped", 0)):
+-            lines.append(f"VIRQ_RUNTIME cpu=3 sequence={sequence} ticks={sequence} kind={kind} thread={thread} value0={v0} value1=0")
++        for kind, v0, ticks in (("Running", 0, origin+100), ("Binding", 1, origin+200),
++                                ("GuestEntryBoundary", 0, origin+300), ("Stopped", 0, origin+policy_span-1)):
++            lines.append(f"VIRQ_RUNTIME cpu={host_cpu} sequence={sequence} ticks={ticks} kind={kind} thread={thread} value0={v0} value1=0")
+             sequence += 1
++        if include_isr:
++            for sample in range(1, 301):
++                submitted = origin + policy_span//4 + sample*100
++                lines.append(f'VIRQ_ISR_SAMPLE policy={policy} sample={sample} submit_ticks={submitted} guest_ticks={submitted+1} observed_ticks={submitted+2} frequency_hz=1000000000')
+     return "\n".join(lines)+"\n"
+ 
+ 
+-def pressure_clock_fixture():
++def pressure_clock_fixture(policy_stride=0, window_duration=2000000):
+     lines = ['VIRQ_IRQ_PRESSURE_CONFIG mode=sgi intid=15 sender_cpu=2 target_cpu=0 period_us=100 period_ticks=100000 burst=1 rounds=64 limit=4096 frequency_hz=1000000000']
+-    for policy in ('fair', 'fifo80'):
++    for number, policy in enumerate(('fair', 'fifo80')):
++        origin = number * policy_stride
+         for sequence, due in ((1, 100), (2, 100100)):
++            due += origin
+             value = sequence
+             for _ in range(64):
+                 value = (value * 6364136223846793005 + 1) % (1 << 64)
+             lines.append(f'VIRQ_IRQ_PRESSURE_EVENT policy={policy} sequence={sequence} scheduled_ticks={due} sent_ticks={due+1} handler_start_ticks={due+2} handler_end_ticks={due+3} observed_ticks={due+4} checksum={value} intid=15 sender_cpu=2 target_cpu=0')
+-        lines.append(f'VIRQ_IRQ_PRESSURE_SUMMARY policy={policy} sent=2 handled=2 errors=0 start_count=1 end_count=2 window_start_ticks=1000 window_end_ticks=2000000 skipped_periods=0 joined=1 retired=1')
++        lines.append(f'VIRQ_IRQ_PRESSURE_SUMMARY policy={policy} sent=2 handled=2 errors=0 start_count=1 end_count=2 window_start_ticks={origin+1000} window_end_ticks={origin+window_duration} skipped_periods=0 joined=1 retired=1')
+     return '\n'.join(lines) + '\n'
+ 
+ 
+ def pressure_measurement(pressure):
+-    log = ready_fixture()+linux_fixture()+pressure
++    log = ready_fixture()+linux_fixture(include_isr=False)+pressure
+     records = sum(line.startswith('VIRQ_RUNTIME ') for line in log.splitlines())
+     return re.sub(r'VIRQ_RUNTIME_SUMMARY records=\d+', f'VIRQ_RUNTIME_SUMMARY records={records}', log)
+ 
+ 
+ @lru_cache(maxsize=1)
+-def linux_memory_fixture():
++def linux_memory_fixture(policy_span=1000000):
+     size, every = 1056768, 3
+     values = list(range(size // 8))
+     cursor, checksum, accesses = 0, 0, 0
+@@ -78,7 +92,7 @@
+             accesses += 1
+         expected[count] = (accesses // 8192, accesses * 16, checksum)
+     lines = []
+-    for line in linux_fixture().splitlines():
++    for line in linux_fixture(policy_span=policy_span).splitlines():
+         line = line.replace('name=linux_cpu', 'name=linux_memory').replace('workload=cpu', 'workload=memory')
+         lines.append(line)
+         if line.startswith('VIRQ_LINUX_CONFIG '):
+@@ -97,6 +111,31 @@
+ 
+ 
+ class LoadAnalysis(unittest.TestCase):
++    def test_linux_topology_preparation_binds_the_host_resource_to_an_admitted_configuration(self):
++        path = Path(__file__).resolve().parents[1] / 'guests/virq/prepare.py'
++        spec = importlib.util.spec_from_file_location('virq_topology_prepare', path)
++        prepare = importlib.util.module_from_spec(spec)
++        spec.loader.exec_module(prepare)
++        environment = dict(VIRQ_HOST_LOAD='linux_cpu', VIRQ_SOURCE='physical_timer_ppi',
++                           VIRQ_SERVICE_PLACEMENT='cpu0', VIRQ_IRQ_CONTEXT='current_el',
++                           VIRQ_TASK='1', VIRQ_TASK_WAIT='blocked', VIRQ_EXPLICIT_DTB='1')
++        for host_cpu in (1, 3):
++            with tempfile.TemporaryDirectory() as directory, patch.dict(os.environ, {
++                    **environment, 'VIRQ_LINUX_HOST_CPU': str(host_cpu)}, clear=True):
++                fixture = prepare.write_test_resources(Path(directory), 0x40000000, 0x40010000)
++                resource = tomllib.loads(fixture.read_text())
++                self.assertIn('linux_host_cpu', resource,
++                              'the selected Linux Host CPU must be exported to the Host resource')
++                self.assertEqual(resource['linux_host_cpu'], host_cpu)
++        for changes in ({'VIRQ_LINUX_HOST_CPU': '2'}, {'VIRQ_LINUX_HOST_CPU': '01'},
++                        {'VIRQ_LINUX_HOST_CPU': '-1'}, {'VIRQ_LINUX_HOST_CPU': '１'},
++                        {'VIRQ_EXPLICIT_DTB': '0'}, {'VIRQ_TASK_WAIT': 'spin'},
++                        {'VIRQ_TASK': '0'}, {'VIRQ_HOST_LOAD': 'baseline'}):
++            with self.subTest(changes=changes), tempfile.TemporaryDirectory() as directory:
++                with patch.dict(os.environ, {**environment, 'VIRQ_LINUX_HOST_CPU': '1', **changes}, clear=True):
++                    with self.assertRaises(ValueError):
++                        prepare.write_test_resources(Path(directory), 0x40000000, 0x40010000)
++
+     def test_measured_work_is_joined_to_all_samples_with_zero_progress_windows_retained(self):
+         # Independently apply the recurrence to check the fast arithmetic.
+         expected = 1
+@@ -118,6 +157,14 @@
+         self.assertEqual(guests["fair"]["interval_reported_iterations"], 256*8192)
+         self.assertEqual(len(windows), 600)
+         self.assertEqual(windows[("fair", 1)]["load_window_batches"], 0)
++        for host_cpu in (1, 3):
++            try:
++                _, guests, windows = validate_load(linux_fixture(host_cpu))
++            except ValueError as error:
++                self.fail(f"a fully observed Linux topology on CPU{host_cpu} was rejected: {error}")
++            self.assertEqual(len(windows), 600)
++            self.assertEqual(guests['fair']['host_cpu'], host_cpu)
++            self.assertEqual(guests['fifo80']['host_cpu'], host_cpu)
+         scenario, guests, windows = validate_load(linux_memory_fixture())
+         self.assertEqual(scenario, 'linux_memory')
+         self.assertEqual(guests['fair']['interval_logical_read_bytes'], 85 * 65536)
+@@ -169,6 +216,29 @@
+         ):
+             with self.subTest(linux=invalid[-80:]), self.assertRaises(ValueError):
+                 validate_load(invalid)
++        shared = linux_fixture(1)
++        for invalid in (
++            shared.replace('VIRQ_LINUX_CONFIG vm=1 vcpu=0 host_cpu=1',
++                           'VIRQ_LINUX_CONFIG vm=1 vcpu=0 host_cpu=3', 1),
++            shared.replace('VIRQ_LINUX_BOOT vm=1 vcpu=0 host_cpu=1',
++                           'VIRQ_LINUX_BOOT vm=1 vcpu=0 host_cpu=3', 1),
++            shared.replace('policy=fair vm=1 vcpu=0 host_cpu=1',
++                           'policy=fair vm=1 vcpu=0 host_cpu=3', 1),
++            shared.replace('VIRQ_RUNTIME cpu=1 sequence=1',
++                           'VIRQ_RUNTIME cpu=3 sequence=1', 1),
++            shared.replace('thread=11', 'thread=10'),
++            shared.replace('kind=Binding thread=10 value0=1 value1=0',
++                           'kind=Binding thread=10 value0=1 value1=1', 1),
++            shared.replace('host_cpu=1', 'host_cpu=2'),
++            re.sub(r'(VIRQ_RUNTIME .*?ticks=)(\d+)',
++                   lambda match: match[1]+str(int(match[2])+10**15), shared),
++            shared.replace('kind=Binding thread=10 value0=1', 'kind=GuestEntryBoundary thread=10 value0=0')
++                  .replace('kind=GuestEntryBoundary thread=10 value0=0 value1=0\nVIRQ_RUNTIME cpu=1 sequence=3',
++                           'kind=Binding thread=10 value0=1 value1=0\nVIRQ_RUNTIME cpu=1 sequence=3'),
++            re.sub(r'^VIRQ_ISR_SAMPLE.*\n', '', shared, flags=re.M),
++        ):
++            with self.subTest(topology=invalid[-100:]), self.assertRaises(ValueError):
++                validate_load(invalid)
+         memory = linux_memory_fixture()
+         for invalid in (
+             memory.replace('LINUX_MEMORY_READY version=1', 'LINUX_MEMORY_READY version=2', 1),
+--- a/virtualization/axvm/tests/guests/guest_firmware.py
++++ b/virtualization/axvm/tests/guests/guest_firmware.py
+@@ -17,3 +17,21 @@
+     if value == 'rk3588' and not explicit_enabled():
+         raise ValueError('RK3588 GIC layout requires explicit Guest firmware')
+     return value
++
++
++def linux_host_cpu():
++    """Select an admitted Linux placement without changing its Guest CPU id."""
++    value = os.environ.get('VIRQ_LINUX_HOST_CPU', '3')
++    if value not in ('1', '3'):
++        raise ValueError('VIRQ_LINUX_HOST_CPU must be 1 or 3')
++    if value == '1' and not (
++        explicit_enabled()
++        and os.environ.get('VIRQ_HOST_LOAD') in ('linux_cpu', 'linux_memory')
++        and os.environ.get('VIRQ_TASK') == '1'
++        and os.environ.get('VIRQ_TASK_WAIT') == 'blocked'
++        and os.environ.get('VIRQ_SOURCE') in ('physical_timer_ppi', 'pl031_spi')
++        and os.environ.get('VIRQ_IRQ_CONTEXT', 'current_el') == 'current_el'
++        and os.environ.get('VIRQ_SERVICE_PLACEMENT') == 'cpu0'
++    ):
++        raise ValueError('Linux CPU1 sharing requires explicit firmware, blocked dual-VM tasks, current-EL physical IRQs and CPU0 services')
++    return int(value)
+--- a/virtualization/axvm/tests/guests/virq/prepare.py
++++ b/virtualization/axvm/tests/guests/virq/prepare.py
+@@ -27,7 +27,7 @@
+ from typing import Sequence
+ 
+ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+-from guest_firmware import explicit_enabled, gic_layout
++from guest_firmware import explicit_enabled, gic_layout, linux_host_cpu
+ 
+ ZEPHYR_REVISION = "32229d0b6cc60a1906307311b8e79ec483ad1e88"
+ ZEPHYR_REPOSITORY = "https://github.com/zephyrproject-rtos/zephyr"
+@@ -424,6 +424,7 @@
+ 
+ def write_test_resources(output: Path, entry: int, mailbox: int) -> Path:
+     """Write the initramfs fixture read by the `vcpu_runtime` axtest target."""
++    linux_cpu = linux_host_cpu()
+     recording = os.environ.get("VIRQ_RECORDING", "on")
+     if recording not in ("on", "off"):
+         raise ValueError("VIRQ_RECORDING must be on or off")
+@@ -509,6 +510,7 @@
+ linux_memory_bytes = {linux_memory_bytes}
+ linux_memory_every = {linux_memory_every}
+ linux_fences_enabled = {str(linux_fences_enabled).lower()}
++linux_host_cpu = {linux_cpu}
+ explicit_dtb_enabled = {str(explicit_enabled()).lower()}
+ guest_gic_layout = "{gic_layout()}"
+ service_placement = "{service_placement}"
+@@ -540,6 +542,7 @@
+ def main() -> int:
+     args = parse_args()
+     sample_count()  # Reject invalid scale before toolchain setup or any build.
++    linux_host_cpu()
+     if args.linux_peer != (os.environ.get("VIRQ_HOST_LOAD", "baseline") in ("linux_cpu", "linux_memory")):
+         raise ValueError("Linux load requires matching Linux peer runtime configuration")
+     cache = (args.cache_dir or default_cache()).resolve()
+--- a/virtualization/axvm/tests/guests/linux-load/prepare.py
++++ b/virtualization/axvm/tests/guests/linux-load/prepare.py
+@@ -14,7 +14,7 @@
+ import tempfile
+ 
+ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+-from guest_firmware import explicit_enabled, gic_layout
++from guest_firmware import explicit_enabled, gic_layout, linux_host_cpu
+ 
+ KERNEL_SHA = 'c5403e99b9ae7a8c60c393fb2a97e637ded3e049179bb1b2f63cf6b94dd2a61a'
+ BASE_SHA = 'f71e2d9dd7ef4019de3880347c2896eb8507ceebb3b442b941d909954ccdc6eb'
+@@ -103,6 +103,7 @@
+     parser = argparse.ArgumentParser(description=__doc__)
+     parser.add_argument('--output', required=True, type=Path)
+     args = parser.parse_args()
++    host_cpu = linux_host_cpu()
+     memory_bytes, memory_every = memory_settings()
+     fences = fences_enabled()
+     explicit = explicit_enabled()
+@@ -143,13 +144,13 @@
+         subprocess.run(['cargo','xtask','image','pack-initramfs',str(root),str(output/'initramfs.cpio.gz'),'--gzip'],check=True)
+     shutil.copyfile(kernel, output/'linux.kernel')
+     firmware = ''
+-    affinity = 'phys_cpu_ids = [3]'
++    affinity = f'phys_cpu_ids = [{host_cpu}]'
+     if explicit:
+         subprocess.run(['dtc', '-I', 'dts', '-O', 'dtb', '-o', str(output/'machine.dtb'),
+                         str(Path(__file__).with_name('machine-rk3588.dts' if gic_layout() == 'rk3588'
+                                                     else 'machine.dts'))], check=True)
+         firmware = 'dtb_path = "machine.dtb"\n'
+-        affinity = 'phys_cpu_ids = [0]\nphys_cpu_sets = [8]'
++        affinity = f'phys_cpu_ids = [0]\nphys_cpu_sets = [{1 << host_cpu}]'
+     (output/'vm.toml').write_text(f'''[base]
+ id = 1
+ name = "linux-ordinary-{'memory' if memory_bytes else 'cpu'}"
+@@ -172,7 +173,7 @@
+ ''')
+     (output/'build.json').write_text(json.dumps(dict(command=command,compiler_version=compiler_version,
+         working_set_bytes=memory_bytes,memory_every_batches=memory_every,fences_enabled=fences,
+-        explicit_dtb=explicit,
++        explicit_dtb=explicit,host_cpu=host_cpu,
+         guest_gic_layout=gic_layout(),
+         dtb_sha256=hashlib.sha256((output/'machine.dtb').read_bytes()).hexdigest() if explicit else None,
+         kernel_sha256=KERNEL_SHA,base_profile=profile,base_initramfs_sha256=base_sha,
+--- a/virtualization/axvm/tests/guests/linux-load/README.md
++++ b/virtualization/axvm/tests/guests/linux-load/README.md
+@@ -44,7 +44,11 @@
+   --qemu-config virtualization/axvm/tests/vcpu-runtime/linux/qemu-aarch64.toml
+ ```
+ 
+-Host 具有四个 pCPU：控制与 PL031 源/服务在 CPU0，实时目标在 CPU1，Linux 单 vCPU 固定 CPU3，Guest 逻辑 CPU 为 0。硬件源是此 QEMU 夹具的 Host-owned SPI34，再转发到实时 Guest vector48；不能据此认定已实现真实非关键中断压力 A。
++Host 具有四个 pCPU：控制与 PL031 源/服务在 CPU0，实时目标在 CPU1，Linux 单 vCPU 默认位于 CPU3，Guest 逻辑 CPU 为 0。硬件源是此 QEMU 夹具的 Host-owned SPI34，再转发到实时 Guest vector48；不能据此认定已实现真实非关键中断压力 A。
++
++`VIRQ_LINUX_HOST_CPU` 仅接受 1 或 3，默认 3。设为 1 时，必须同时使用 `VIRQ_EXPLICIT_DTB=1`、`VIRQ_TASK=1`、`VIRQ_TASK_WAIT=blocked`、当前 EL 物理中断源、Linux 双 VM 场景及 CPU0 服务。`guest_firmware.linux_host_cpu()` 统一选择，`prepare.py` 保持 Guest CPU0 并输出 Host 掩码 `1 << cpu`、构建元数据和 Host 资源；`support/linux.rs::Progress::start()` 核对 vCPU 配置掩码，离线分析再核对实际线程代际的运行与退休 CPU。设回 3 可恢复独立核配置。共享与独立配置须使用不同运行身份，不能混入同一个固定拓扑的性能队列；配置生成成功也不代表真板共享运行已经验证。
++
++`analyze_virq_load.validate_linux()` 按同 CPU 的 ticks/sequence 验证启动 Running→Binding→GuestEntryBoundary→最终 Stopped，并要求每策略唯一代际覆盖各自 Host 围栏窗口。无围栏的完整旧日志从计划释放或提交覆盖到 Host 任务完成观察；无任务旧日志使用 ISR 观察，缺少 Host 时间依据则拒绝。runtime 记录可集中输出，不能用日志行位置代替策略时间窗，也不要求持续运行的代际在窗口内重新产生 Running 边界。
+ 
+ ### 2.2 结果边界
+ 
+--- a/virtualization/axvm/tests/guests/virq/README.md
++++ b/virtualization/axvm/tests/guests/virq/README.md
+@@ -101,6 +101,8 @@
+ 
+ `linux_cpu`场景另外调用相邻`linux-load/prepare.py`，验证固定Linux kernel与BusyBox基底SHA，用CROSS_COMPILE静态构建CPU工作程序，经原生`cargo xtask image pack-initramfs`打包。单独Linux资源位于生成输出的linux/目录，仅linux运行配置捆绑它；Zephyr的计数、mailbox与ISR协议保持不变。
+ 
++Linux 对照的 Host CPU 由共同入口 `guest_firmware.linux_host_cpu()` 读取 `VIRQ_LINUX_HOST_CPU`，默认 3，也可在显式 Guest DTB、blocked 双 VM 任务、当前 EL 物理源和 CPU0 服务条件下选择 1。`write_test_resources()` 将相同选择写入 `linux_host_cpu`，Linux 准备脚本将其写入 VM 掩码与 `build.json`；不支持的选择在工具链准备前拒绝。关键 Guest 的两个 vCPU 掩码保持 `[1,2]`，不改变 IRQ 或设备协议。
++
+ ## 4. 线程任务完成测量
+ 
+ VIRQ_TASK=1 在原 consumer_entry 中启用可校验线程任务，以 task_start_ticks/task_end_ticks 记录 ISR 之后的 T6。默认 VIRQ_TASK=0 保留原 Guest 行为和 48+16N 字节布局。
+--- a/virtualization/axvm/tests/vcpu-runtime/README.md
++++ b/virtualization/axvm/tests/vcpu-runtime/README.md
+@@ -222,7 +222,15 @@
+ 
+ ## 16. 普通Linux VM计算场景
+ 
+-`VIRQ_HOST_LOAD=linux_cpu`使用同一VmManager同时拥有Linux VM1与实时VM2，控制/源/服务CPU0、实时目标CPU1、Linux单vCPU固定CPU3；Linux使用virtualized、分配RAM和空passthrough，用户程序有连续批次/checksum协议。使用`vcpu-runtime/linux/`下的四核8GiB build/QEMU/资源配置，并显式提供已校验的VIRQ_LINUX_KERNEL和VIRQ_LINUX_INITRAMFS_BASE路径。默认单VM资源配置不捆绑Linux。
++`VIRQ_HOST_LOAD=linux_cpu`使用同一VmManager同时拥有Linux VM1与实时VM2，控制/源/服务CPU0、实时目标CPU1、Linux单vCPU默认位于CPU3；Linux使用virtualized、分配RAM和空passthrough，用户程序有连续批次/checksum协议。使用`vcpu-runtime/linux/`下的四核8GiB build/QEMU/资源配置，并显式提供已校验的VIRQ_LINUX_KERNEL和VIRQ_LINUX_INITRAMFS_BASE路径。默认单VM资源配置不捆绑Linux。
++
++设置 `VIRQ_LINUX_HOST_CPU=1` 可准备 Linux 与关键 vCPU 共享 CPU1 的对照，须同时满足显式 Guest DTB、blocked 任务、当前 EL 物理源和 CPU0 服务；默认值 3 保留独立核配置。Host 资源 `linux_host_cpu`、VM 掩码、启动与完成声明必须一致，`Progress::start()` 和 `analyze_virq_load.validate_linux()` 分别核对配置及真实运行代际/驻留；缺少旧资源字段仅兼容旧默认 CPU3。共享配置不放宽任务答案、围栏、追踪丢失或 VM 退休检查，严格阶段关联歧义仍保留分母。
++
++共享 CPU1 时，末任务结束后关键 Guest 会忙等以回答后校时；FIFO 下此时 Linux 无法回复 End 围栏。夹具在全部 T6 已观察且关键物理源同步退休后暂停关键 VM，取得 Linux End 回复并 stop/join Linux，再恢复同一代际完成原后校时与自然退出；SGI 压力持续到 End 回复之后。`VIRQ_LINUX_HANDOFF` 记录末任务观察及暂停、退休、恢复时刻，调度策略不变。Linux 围栏吞吐窗口包含暂停交接和无竞争结束尾段，不能解释为纯任务并发吞吐或协同优化收益；CPU3 保留原结束顺序。
++
++`VIRQ_IRQ_CONTEXT=current_el` 选择 CPU0 作为跨核物理源，并不保证每次 IRQ 都打断 Host：blocked 任务的正常 SMP 活动也可让 VM2/vCPU0 在 CPU0 进入 Guest。实际入口按 `HostIrqEntry` 的 current/lower-EL 类别分别报告；跨核 lower-EL 需要唯一 blocked 声明及同 CPU 的唯一活跃 VM2/vCPU0 owner、Binding 和当前 Running 段内的先行 Entry，不能复用已 Stopped 段的旧边界。同 tick 用该 CPU 的 sequence 排序，Binding 与 Running 均须先于 Entry，但首 Running 可早于 Binding。`analyze_virq_physical` 保存源 owner 身份及请求配置/实际 mixed 分类；TimerSync 只在实际 lower-EL 路径有值，其他路径保持 null。旧测量与新分析版本分别保存，不改写既有拒绝或原始日志。
++
++逐策略代际以 Host ticks 关联围栏或完整任务观察窗口，并检查同 CPU 的 Running→Binding→GuestEntryBoundary→最终 Stopped 关系；首 Running 可以早于 `run_owner()` 内的 Binding。集中导出的 runtime 行不决定其所属策略，窗口外或交叉的代际不能作为干扰已在预期 CPU 施加的证据。
+ 
+ Guest逻辑CPU0不是Host CPU0。Linux串口进度在实时计时窗外排空，按8192次/批、256批/报告核验，不能作精确DRAM流量或单条ISR内的工作计数。采样与后校准后以Host stop停止Linux，再导出实时数据；全部服务销毁/join后才freeze。保留有界追踪和溢出失败，不把QEMU通过当作实板瓶颈或吞吐收益。
+ 
+--- a/virtualization/axvm/tests/analysis/analyze_virq_physical.py
++++ b/virtualization/axvm/tests/analysis/analyze_virq_physical.py
+@@ -19,6 +19,34 @@
+ RTC_ARM = re.compile(r"VIRQ_RTC_ARM policy=(fair|fifo80) sample=(\d+) match_seconds=(\d+) intid=(\d+) cpu=(\d+)")
+ RTC_SUMMARY = re.compile(r"VIRQ_RTC_SUMMARY policy=(fair|fifo80) intid=(\d+) cpu=(\d+) handled=(\d+) errors=(\d+) retired=(\d+) restored_mr=0 imsc=0 ris=0 mis=0")
+ RTC_CONFIG = re.compile(r"VIRQ_RTC_CONFIG base=0x9010000 intid=34 cpu=0 target_cpu=1 initial_mr=0 imsc=0 ris=0 mis=0")
++
++
++def cross_core_source_owner(events, entry):
++    """Prove the non-target Guest owned the interrupted CPU's current run segment."""
++    position = lambda event: (event["ticks"], event["sequence"])
++    latest = {}
++    for event in events:
++        if (event["cpu"] == entry["cpu"] and position(event) < position(entry)
++                and event["kind"] in ("Running", "Stopped")):
++            latest[event["thread"]] = event
++    active = [event for event in latest.values() if event["kind"] == "Running"]
++    if len(active) != 1:
++        raise ValueError("cross-core low-EL entry needs exactly one active source owner")
++    running = active[0]
++    binding = next(event for event in events
++                   if event["kind"] == "Binding" and event["thread"] == running["thread"])
++    if (binding["cpu"] != entry["cpu"]
++            or (binding["value0"], binding["value1"]) != (2, 0)):
++        raise ValueError("cross-core low-EL entry has the wrong source VM/vCPU/CPU")
++    # The first Running can precede run_owner's Binding. Both must precede
++    # an Entry in the current segment, rather than an earlier parked segment.
++    boundary = [event for event in events
++                if event["cpu"] == entry["cpu"] and event["thread"] == running["thread"]
++                and event["kind"] == "GuestEntryBoundary"
++                and max(position(binding), position(running)) < position(event) < position(entry)]
++    if not boundary:
++        raise ValueError("cross-core low-EL entry has no Entry in its current Running segment")
++    return running["thread"], binding["value0"], binding["value1"]
+ 
+ 
+ def analyze(log):
+@@ -69,10 +97,17 @@
+     if any(tuple(map(int, s[1:])) != (intid, source_cpu, sample_count, 0, 1) for s in summaries):
+         raise ValueError("physical source count, errors or retirement mismatch")
+     entries = [e for e in events if e["kind"] == "HostIrqEntry"]
+-    allowed = (1, 2) if guest_running else (1,)
+     if len(entries) != sample_count * 2 or any((e["cpu"], e["thread"], e["value0"]) != (source_cpu, 0, intid)
+-                                 or e["value1"] not in allowed for e in entries):
++                                 or e["value1"] not in (1, 2) for e in entries):
+         raise ValueError("expected the declared number of complete, correctly classified physical IRQ entries")
++    cross_core_lower = not guest_running and any(e["value1"] == 2 for e in entries)
++    if cross_core_lower:
++        # Reuse the task grammar after module initialization, as the Linux
++        # window validator does; this declaration never replaces owner proof.
++        from analyze_virq_task import CONFIG as TASK_CONFIG, marked_records
++        tasks = marked_records(log, "VIRQ_TASK_CONFIG", TASK_CONFIG)
++        if len(tasks) != 1 or tasks[0][1] != "blocked":
++            raise ValueError("cross-core low-EL entry requires one explicit blocked-task declaration")
+     bindings = {e["thread"]: (e["value0"], e["value1"]) for e in events if e["kind"] == "Binding"}
+     if any(e["kind"] in ("Running", "GuestEntryBoundary") and bindings.get(e["thread"]) == (2, 1)
+            and e["cpu"] != target_cpu for e in events):
+@@ -103,12 +138,16 @@
+                  and bindings[e["thread"]] == (2, 1) and entry["ticks"] <= e["ticks"] <= high]
+         if len(kicks) != 1 or kicks[0]["ticks"] > low or kicks[0]["cpu"] != source_cpu:
+             raise ValueError("no unique certainly post-entry, pre-ISR interrupt publication")
+-        if entry["value1"] == 2:
++        source_owner = (None, None, None)
++        if entry["value1"] == 2 and not guest_running:
++            source_owner = cross_core_source_owner(events, entry)
++        elif entry["value1"] == 2:
+             history = [e for e in events if e["thread"] == kicks[0]["thread"]
+                        and e["kind"] in ("Running", "Stopped") and e["ticks"] <= entry["ticks"]]
+             previous = max(history, key=lambda e: e["ticks"], default=None)
+             if previous is None or previous["kind"] != "Running" or previous["cpu"] != source_cpu:
+                 raise ValueError("low-EL entry has no running target vCPU provenance")
++            source_owner = kicks[0]["thread"], 2, 1
+         hz = clock["frequency_hz"]
+         row = dict(load_by_sample[(policy, index)])
+         row.update(sample)
+@@ -117,6 +156,8 @@
+         row.update(irq_entry_ticks=entry["ticks"],
+                    irq_entry_context="lower_el_pre_iar" if entry["value1"] == 2 else "current_el_callback",
+                    irq_entry_sequence=entry["sequence"], irq_kick_ticks=kicks[0]["ticks"],
++                   irq_source_thread=source_owner[0], irq_source_vm=source_owner[1],
++                   irq_source_vcpu=source_owner[2],
+                    intid=intid, irq_cpu=source_cpu,
+                    arm_to_entry_ns=(entry["ticks"]-start)*1e9/hz,
+                    entry_to_kick_ns=(kicks[0]["ticks"]-entry["ticks"])*1e9/hz,
+@@ -158,7 +199,10 @@
+             intervals_ns={field: stats([r[field] for r in group]) for field in (
+                 "arm_to_entry_ns", "deadline_to_entry_ns", "entry_to_kick_ns",
+                 "entry_to_c_isr_lower_ns", "entry_to_c_isr_upper_ns") if field in group[0]})
+-    return rows, dict(source=source_kind, execution_context="guest_running" if guest_running else "current_el",
++    return rows, dict(source=source_kind,
++                      requested_irq_context="guest_running" if guest_running else "current_el",
++                      execution_context="guest_running" if guest_running else "mixed" if cross_core_lower else "current_el",
++                      entry_origin_contract_version=2,
+                       target_cpu=target_cpu, source_cpu=source_cpu, policies=policies,
+                       runtime=runtime, load_and_ready=loaded,
+                       limitations=[
+@@ -166,6 +210,7 @@
+                           ("This is a host-owned QEMU peripheral SPI forwarded to vector48, not pin-arrival latency or device passthrough. RTC seconds are not host comparator deadlines." if rtc else
+                            "This is an internal physical timer PPI, not external device SPI or pin-arrival latency."),
+                           "Entry origins remain classified per sample and in stratified summaries; neither point is vector-first-instruction or pin arrival.",
++                          "The current_el profile selects CPU0 as source; blocked SMP activity can produce low-EL entries with a verified VM2/vCPU0 owner.",
+                           "Guest-running uses CPU1 PPI, busy target Guest and CPU2 services; its source/controller topology differs from the cross-core suspend case.",
+                           ("One outstanding immediate RTC alarm at a time is not a periodic interrupt-rate experiment." if rtc else
+                            "One outstanding 1ms comparator deadline at a time is not a periodic 1kHz throughput experiment."),
+--- a/virtualization/axvm/tests/analysis/test_virq_physical_analysis.py
++++ b/virtualization/axvm/tests/analysis/test_virq_physical_analysis.py
+@@ -71,6 +71,28 @@
+     return "\n".join(lines)+"\n"
+ 
+ 
++def cross_core_mixed_fixture(owner_events):
++    lines, events = [
++        "VIRQ_TASK_CONFIG protocol=1 rounds=4096 relative_deadline_ns=100 wait_mode=blocked"
++    ], list(owner_events)
++    for line in fixture().splitlines():
++        match = EVENT.fullmatch(line)
++        if match:
++            cpu, _, ticks, kind, thread, a, b = match.groups()
++            cpu, ticks, thread, a, b = map(int, (cpu, ticks, thread, a, b))
++            if kind == "HostIrqEntry" and ticks == 10101:
++                b = 2
++            events.append((ticks, 2, cpu, kind, thread, a, b))
++        elif not SUMMARY.fullmatch(line):
++            lines.append(line)
++    counts = Counter()
++    for ticks, _, cpu, kind, thread, a, b in sorted(events):
++        lines.append(f"VIRQ_RUNTIME cpu={cpu} sequence={counts[cpu]} ticks={ticks} kind={kind} thread={thread} value0={a} value1={b}")
++        counts[cpu] += 1
++    lines.append(f"VIRQ_RUNTIME_SUMMARY records={len(events)} dropped=0 incomplete=0")
++    return "\n".join(lines)+"\n"
++
++
+ class PhysicalAnalysis(unittest.TestCase):
+     def test_declared_scale_controls_all_completeness_gates(self):
+         lines, events = ["VIRQ_MEASUREMENT samples_per_policy=299"], []
+@@ -153,6 +175,48 @@
+                     valid.replace("mode=cpu2", "mode=unrestricted")):
+             with self.assertRaises(ValueError):
+                 analyze(bad)
++        # CPU0 can be in the non-target Guest while CPU1 remains the target.
++        binding = (9900, 0, 0, "Binding", 200, 2, 0)
++        running = (10000, 0, 0, "Running", 200, 0, 0)
++        entry = (10100, 0, 0, "GuestEntryBoundary", 200, 0, 0)
++        stopped = (10102, 0, 0, "Stopped", 200, 0, 0)
++        owners = [binding, running, entry, stopped]
++        mixed = cross_core_mixed_fixture(owners)
++        rows, report = analyze(mixed)
++        self.assertEqual(report["execution_context"], "mixed")
++        self.assertEqual(report["policies"]["fair"]["irq_entry_context_counts"],
++                         {"lower_el_pre_iar": 1, "current_el_callback": 299})
++        self.assertEqual(rows[0]["irq_source_thread"], 200)
++        self.assertEqual((rows[0]["irq_source_vm"], rows[0]["irq_source_vcpu"]), (2, 0))
++        self.assertTrue(all(row["irq_source_thread"] is None for row in rows[1:]))
++        # Same-tick source order is established by the one CPU's sequence.
++        boundary = (10101, 1, *entry[2:])
++        self.assertEqual(len(analyze(cross_core_mixed_fixture(
++            [binding, running, boundary, stopped]))[0]), 600)
++        self.assertEqual(len(analyze(cross_core_mixed_fixture(
++            [(10001, 0, *binding[2:]), running, entry, stopped]))[0]), 600)
++        invalid_owners = (
++            [running, entry, stopped], [binding, entry, stopped],
++            [binding, running, stopped],
++            [(10102, 0, *binding[2:]), running, entry, stopped],
++            [(9900, 0, 1, *binding[3:]), running, entry, stopped],
++            [(*binding[:5], 1, 0), running, entry, stopped],
++            [binding, running, (9999, 0, *entry[2:]), stopped],
++            [binding, running, (10101, 3, *entry[2:]), stopped],
++            [binding, running, entry, (10101, 1, *stopped[2:])],
++            [binding, running, (10040, 0, *entry[2:]),
++             (10050, 0, *stopped[2:]), (10090, 0, *running[2:]), stopped],
++            owners+[(9901, 0, 0, "Binding", 201, 2, 0),
++                    (10001, 0, 0, "Running", 201, 0, 0)],
++        )
++        for source_events in invalid_owners:
++            with self.assertRaises(ValueError):
++                analyze(cross_core_mixed_fixture(source_events))
++        for invalid in (mixed.replace("wait_mode=blocked", "wait_mode=spin"),
++                        mixed.replace(" wait_mode=blocked", ""),
++                        mixed+mixed.splitlines()[0]+"\n"):
++            with self.assertRaises(ValueError):
++                analyze(invalid)
+ 
+     def test_timer_arm_and_irq_entry_are_distinct_calibrated_observation_points(self):
+         rows, report = analyze(fixture())
