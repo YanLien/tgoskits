@@ -1,0 +1,209 @@
+{
+  "actions": {
+    "Git_writes": false,
+    "build_fmt_clippy_QEMU_board": false,
+    "existing_files_modified": false,
+    "forbidden_three_tmp_roots_accessed": false,
+    "full_35_702_cache_96_rehash": false,
+    "new_outputs_under": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/design-review-v2",
+    "proc_signal_formal_analysis": false
+  },
+  "assessment": [
+    {
+      "decision": "PASS",
+      "evidence": "旧cache不改，普通文件模式和symlink目标保留，改变只限新副本实际入口及关联metadata；保存每个旧/新SHA、mode、准确diff、历史前缀及理由。其余命中须说明性质，不能全目录替换。",
+      "id": "R1",
+      "topic": "重定位范围和可追溯性"
+    },
+    {
+      "decision": "PASS",
+      "evidence": "新计划要求prefix、模块和实际binary归新cache，再执行生产使用的cmake脚本入口。已读真实cmake模块按distribution.files定位binary并由_program_exit/os.execl调用；要求保存该实现可把sys.prefix/module/BIN_DIR证据与直接入口关联。系统Python链接可解析到/usr/bin且另记身份，避免把系统解释器误称新venv独立binary。",
+      "id": "R2",
+      "topic": "真实入口而非路径回读"
+    },
+    {
+      "decision": "PASS",
+      "evidence": "重定位后生成完整Cargo/VIRQ cache manifest，允许Cargo bookkeeping保留before/after。fmt/Clippy后再次核701、Cargo.lock及完整普通树，不能借新manifest接纳额外实现变化。后续改动仍需新身份和审阅。",
+      "id": "R3",
+      "topic": "冻结顺序和构建副作用"
+    },
+    {
+      "decision": "PASS",
+      "evidence": "实际Spec/Quality均decision=PASS、blockers=[]，Quality准确绑定Spec和final tool；Root accepted=true准确绑定两审及同一工具。三份审批SHA与计划文字一致。接受范围仍仅offline post-exit捕获修订，原正常功能false/releaseunknown和M2/Joint/goal未变。",
+      "id": "R4",
+      "topic": "捕获修订当前批准"
+    },
+    {
+      "decision": "PASS",
+      "evidence": "新计划Task2全文与旧版逐字节相同；Task1保留仅CAPACITY/comment变化、其他701不变、格式化/项目Clippy、source/approval真实拒绝和新输入身份门。controller仅改输出根，捕获器必须与已批准副本同字节。Root处理的Git授权不改实验身份或硬件前置。",
+      "id": "R5",
+      "topic": "其余原不变量"
+    }
+  ],
+  "blockers": [],
+  "capture_approval_chain": {
+    "Quality": {
+      "bytes": 22284,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-fit-capture-repair-quality-review-v1.json",
+      "sha256": "745cef5a7bfd243a0686abd1e27d11594d60554cef7ef867ac808f530c0084af"
+    },
+    "Quality_decision": "PASS",
+    "Root": {
+      "bytes": 23316,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-fit-capture-repair-root-acceptance-v1.json",
+      "sha256": "5245d7a61f00710a6e11bb7adf0fc3e9c64a0432aa4ccecfd71931207707a1dc"
+    },
+    "Root_accepted": true,
+    "Spec": {
+      "bytes": 31462,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-fit-capture-repair-spec-review-v1.json",
+      "sha256": "9eb529c4ed59975c59a282d3e76c6279f2eaf255dee0246f1431cddf6ff3d9e6"
+    },
+    "Spec_decision": "PASS",
+    "final_tool_sha256": "e1e573ed9ecd8a1dd77c80d6a06fff3739e4fa8114815cc2b6b5c826206a14b2",
+    "scope": "offline capture repair only; no normal-function or hardware approval"
+  },
+  "decision": "PASS",
+  "design_decision": "PASS_INHERITED",
+  "execution_boundary": {
+    "Task1_candidate_approved": false,
+    "Task1_implementation_performed": false,
+    "hardware_approval": false,
+    "next_required": "新实施者离线准备Task1；交付后先Spec后Quality及Root独立复制复验；随后硬件仍逐项Root鲜批准",
+    "unchanged_hardware_limits": "AB1→AB0→0各最多一次；900/920秒、cleanup10、capture30、512MiB；失败/不完整/本次releaseunknown停余项"
+  },
+  "fresh_verification": {
+    "actual_Popen_wait_exit": 0,
+    "execution": {
+      "bytes": 1253,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/design-review-v2/check.execution.json",
+      "sha256": "167ebc5ad29efece005567ce77d91027ccf05c0999c6c59f54f31641c7ae23cd"
+    },
+    "local_check": {
+      "bytes": 4669,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/design-review-v2/local-checks.json",
+      "sha256": "df5c875fa417718d4b661bb58f2b3a508776ea6a27cbed8e5aaae4e225f5f054"
+    },
+    "plan_diff": {
+      "bytes": 7713,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/design-review-v2/plan-v1-to-v2.patch",
+      "sha256": "d7b5a860b7b497bd1536f6602d7db56f38c77cba39bdea0c11f49959a66eb3f2"
+    }
+  },
+  "inherited_conclusions": {
+    "scope": "继承首轮已确认判断；本轮不重新执行容量/串口计算或35输入hash，不扩大证据范围",
+    "source": {
+      "bytes": 21359,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-trace-capacity-v2-design-plan-review-v1.json",
+      "sha256": "12fac4fdce35713bbea4564be40cccca4a30aec61666cc5e183a53c25f1abf46"
+    },
+    "topics": [
+      "有界65536容量选择",
+      "槽/冻结副本内存和串口预算量级",
+      "loss/retirement/原子序/热路径不变",
+      "controller一次输出根变化的适用性",
+      "最少充分测试、旧失败/主96保持",
+      "旧release与新可用性证据区分"
+    ]
+  },
+  "limitations": [
+    "通过的是计划，不是已完成缓存迁移或新容量功能。",
+    "新venv局部真实执行、fmt/Clippy及全701/cache/source身份核验由Task1实施者完成。",
+    "本轮没有硬件启动额度或正常功能、开销、正式相位分析结论。"
+  ],
+  "new_blockers": [],
+  "plan_decision": "PASS",
+  "preserved_state": {
+    "Joint": false,
+    "M2": false,
+    "goal_complete": false,
+    "new_normal_function_passed": false,
+    "old_AB0_and_0": "未执行",
+    "old_AB1_failed": true,
+    "old_release": "unknown"
+  },
+  "prior_plan_retained": {
+    "bytes": 5795,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/design/phase2-native-trace-capacity-v2-plan.md",
+    "sha256": "c93b2359e0c4c418bdd9ae1dd9847314881783bc2be0e138ec149714a8c7d83b"
+  },
+  "prior_review": {
+    "bytes": 21359,
+    "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-trace-capacity-v2-design-plan-review-v1.json",
+    "sha256": "12fac4fdce35713bbea4564be40cccca4a30aec61666cc5e183a53c25f1abf46"
+  },
+  "resolved_findings": [
+    {
+      "acceptance": "真实新venv Python在-B及清除PYTHONPATH/PYTHONHOME下报告sys.executable/sys.prefix/cmake.__file__/CMAKE_BIN_DIR及binary SHA；模块、venv prefix、CMake binary必须落于新cache。随后真实新venv/bin/cmake --version，绑定shebang、模块binary选择代码和Popen.wait；路径仍归旧cache即停止冻结。",
+      "decision": "RESOLVED_IN_PLAN",
+      "evidence": "计划1.1/1.2先引用1.3，再冻结新manifest。1.3规定只在新copy扫描venv/bin、pyvenv.cfg和激活metadata的当前及原workspace历史前缀，逐项最小重定位，保持symlink目标及宿主Python身份，禁止修改vendor算法/site-packages逻辑/ELF或任意二进制。",
+      "id": "P2-CACHE-RELOCATION",
+      "not_yet_implemented_or_runtime_proven": true
+    }
+  ],
+  "reviewed_documents": {
+    "design": {
+      "bytes": 4791,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/design/phase2-native-trace-capacity-v2-design.md",
+      "sha256": "5dbf286e5275dde7f8553de3785835b246f8df6ef7ad2b2e010bbe9357bb3ccd"
+    },
+    "plan_v2": {
+      "bytes": 8655,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/design/phase2-native-trace-capacity-v2-plan-v2.md",
+      "sha256": "54a43488604d56ea9bf02b5cdf06d1ab9b6d8bceb4248f91504c00e491534e27"
+    }
+  },
+  "reviewed_utc": "2026-10-18T10:23:29.992859+00:00",
+  "schema_version": 1,
+  "scope": "独立复审容量v2计划v2全文，设计延续首轮PASS；通过只覆盖设计及计划可实施性",
+  "selected_current_identities": [
+    {
+      "bytes": 4791,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/design/phase2-native-trace-capacity-v2-design.md",
+      "sha256": "5dbf286e5275dde7f8553de3785835b246f8df6ef7ad2b2e010bbe9357bb3ccd"
+    },
+    {
+      "bytes": 5795,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/design/phase2-native-trace-capacity-v2-plan.md",
+      "sha256": "c93b2359e0c4c418bdd9ae1dd9847314881783bc2be0e138ec149714a8c7d83b"
+    },
+    {
+      "bytes": 8655,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/design/phase2-native-trace-capacity-v2-plan-v2.md",
+      "sha256": "54a43488604d56ea9bf02b5cdf06d1ab9b6d8bceb4248f91504c00e491534e27"
+    },
+    {
+      "bytes": 21359,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-trace-capacity-v2-design-plan-review-v1.json",
+      "sha256": "12fac4fdce35713bbea4564be40cccca4a30aec61666cc5e183a53c25f1abf46"
+    },
+    {
+      "bytes": 31462,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-fit-capture-repair-spec-review-v1.json",
+      "sha256": "9eb529c4ed59975c59a282d3e76c6279f2eaf255dee0246f1431cddf6ff3d9e6"
+    },
+    {
+      "bytes": 22284,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-fit-capture-repair-quality-review-v1.json",
+      "sha256": "745cef5a7bfd243a0686abd1e27d11594d60554cef7ef867ac808f530c0084af"
+    },
+    {
+      "bytes": 23316,
+      "path": "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/results/strict-native-fit-capture-repair-root-acceptance-v1.json",
+      "sha256": "5245d7a61f00710a6e11bb7adf0fc3e9c64a0432aa4ccecfd71931207707a1dc"
+    },
+    {
+      "bytes": 2081,
+      "path": "/tmp/strict-native-phase-tools-kevemo32/cache/vcpu-runtime-cache/venv/lib/python3.12/site-packages/cmake/__init__.py",
+      "sha256": "d8ea7563f5f6c99804344a4305a12057e59b353791a0c76fe916df5c36a4de4e"
+    }
+  ],
+  "skills": [
+    "orthome-verification",
+    "test-quality",
+    "rust-code-quality",
+    "rust-concurrency-safety",
+    "markdown-doc-writer",
+    "verification-before-completion"
+  ]
+}
