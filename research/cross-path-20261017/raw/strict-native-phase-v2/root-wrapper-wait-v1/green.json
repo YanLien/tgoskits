@@ -1,0 +1,43 @@
+{
+  "checks": [
+    {
+      "driver_receipt_wait": 7,
+      "fault": "identity",
+      "local_parent_cleanup": [
+        {
+          "actual_parent_cleanup_wait": 7,
+          "pid": 4
+        }
+      ],
+      "passed": true,
+      "preserved_error": "injected identity receipt error",
+      "wait_inside_actual_wrapper_block": [
+        {
+          "actual_Popen_wait": 7,
+          "pid": 4
+        }
+      ]
+    },
+    {
+      "driver_receipt_wait": 7,
+      "fault": "launch-save",
+      "local_parent_cleanup": [
+        {
+          "actual_parent_cleanup_wait": 7,
+          "pid": 5
+        }
+      ],
+      "passed": true,
+      "preserved_error": "injected launch save error",
+      "wait_inside_actual_wrapper_block": [
+        {
+          "actual_Popen_wait": 7,
+          "pid": 5
+        }
+      ]
+    }
+  ],
+  "passed": true,
+  "scope": "only extracted actual Popen block; real local child exits 7; no hardware/controller/board behavior claimed",
+  "wrapper_sha256": "74806ad5a84b3078cd6afe88438a6ba3a9c242724f09f68222f0c355a1acfc0e"
+}

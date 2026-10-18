@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "/usr/bin/python3",
+    "-B",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/root-wrapper-wait-v1/check.py",
+    "--wrapper",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/root-wrapper-wait-v1/wrapper-before-fix.py.txt",
+    "--output",
+    "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/root-wrapper-wait-v1/red.json"
+  ],
+  "actual_Popen_wait": 1,
+  "completed_ns": 1792322365972461783
+}

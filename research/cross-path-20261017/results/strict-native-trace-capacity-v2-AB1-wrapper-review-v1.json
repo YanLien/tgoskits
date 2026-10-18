@@ -1,0 +1,156 @@
+{
+  "Root_Task1_acceptance": {
+    "path": "results/strict-native-trace-capacity-v2-task1-root-acceptance-v1.json",
+    "sha256": "1539cd651b743fc85377bfd8fcce11531b1ce2b0f907bb4dddfaf8920cb0c9b5"
+  },
+  "acceptance_boundary": "Offline wrapper review PASS only; not hardware approval, current host/service proof, board functional evidence, or capacity repair proof. Task1 conclusion and historical reports unchanged.",
+  "blockers": [],
+  "decision": "PASS",
+  "evidence_sha256": {
+    "raw/strict-native-phase-v2/AB1-launch-supervisor.py": "74806ad5a84b3078cd6afe88438a6ba3a9c242724f09f68222f0c355a1acfc0e",
+    "raw/strict-native-phase-v2/root-wrapper-wait-v1/check.py": "a6f1a9dfe6a497dbb37c681c30fda1c93340aa69a0fb89abe2e15ec65ab9aeb2",
+    "raw/strict-native-phase-v2/root-wrapper-wait-v1/green.json": "30e2721ef7f91f33c739b9586b0276eb7b61b5adcb8b3ce7fa55c2acb824dec6",
+    "raw/strict-native-phase-v2/root-wrapper-wait-v1/green.receipt.json": "ba7a700634abc4d44c7f8a1228b2088a4ad025e7a6bfd2369c7ef7cc322cd970",
+    "raw/strict-native-phase-v2/root-wrapper-wait-v1/green.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "raw/strict-native-phase-v2/root-wrapper-wait-v1/green.stdout": "6c5e487ba893c830f91e0aa96de92aefd9881b6cf5898368f597a3159fa6ca90",
+    "raw/strict-native-phase-v2/root-wrapper-wait-v1/red.json": "019bb21659e91097fb39cc96dea61b43f88b93e06413445244209f7d5ee8cef1",
+    "raw/strict-native-phase-v2/root-wrapper-wait-v1/red.receipt.json": "1adbdc82ad6708cd51790dfa6eb3714506819da0b28d37adc716464f5067be3c",
+    "raw/strict-native-phase-v2/root-wrapper-wait-v1/red.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "raw/strict-native-phase-v2/root-wrapper-wait-v1/red.stdout": "c6d21a945dcb96ac629600d25c9750684a8625b75e782c388f236b1a1e56b0d9",
+    "raw/strict-native-phase-v2/root-wrapper-wait-v1/wrapper-before-fix.py.txt": "1ba5948de6e40503ed5ee4a78f91139edf442b4dcd9829677e3c94c12cb5d9f2",
+    "raw/strict-native-phase-v2/task1/root-copy-v1/result.json": "fd7b17949239c026bf113119e7c8381fca82d6a537784caf30b81d95886c608f",
+    "raw/strict-native-phase-v2/task1/root-copy-v1/target-metadata.after.json": "4c3d3aa7150f2f601b79a0f7479bd03be8f04db2ac87272360eff0072b41339f",
+    "results/strict-native-trace-capacity-v2-task1-root-acceptance-v1.json": "1539cd651b743fc85377bfd8fcce11531b1ce2b0f907bb4dddfaf8920cb0c9b5"
+  },
+  "hardware_authorized": false,
+  "hardware_started_by_reviewer": 0,
+  "initial_review": {
+    "decision": "BLOCKED",
+    "finding": "Original lines167–177 could skip child.wait when identity, launch-save or sha raised after successful Popen; driver might remain active. Root-copy metadata also needed an exact accepted reference. The initial finding is preserved, not backfilled as PASS.",
+    "snapshot": "raw/strict-native-phase-v2/root-wrapper-wait-v1/wrapper-before-fix.py.txt",
+    "wrapper_sha256": "1ba5948de6e40503ed5ee4a78f91139edf442b4dcd9829677e3c94c12cb5d9f2"
+  },
+  "local_regression_review": {
+    "green": {
+      "cases": [
+        {
+          "driver_receipt_wait": 7,
+          "fault": "identity",
+          "local_parent_cleanup": [
+            {
+              "actual_parent_cleanup_wait": 7,
+              "pid": 4
+            }
+          ],
+          "passed": true,
+          "preserved_error": "injected identity receipt error",
+          "wait_inside_actual_wrapper_block": [
+            {
+              "actual_Popen_wait": 7,
+              "pid": 4
+            }
+          ]
+        },
+        {
+          "driver_receipt_wait": 7,
+          "fault": "launch-save",
+          "local_parent_cleanup": [
+            {
+              "actual_parent_cleanup_wait": 7,
+              "pid": 5
+            }
+          ],
+          "passed": true,
+          "preserved_error": "injected launch save error",
+          "wait_inside_actual_wrapper_block": [
+            {
+              "actual_Popen_wait": 7,
+              "pid": 5
+            }
+          ]
+        }
+      ],
+      "checker_actual_Popen_wait": 0,
+      "source_sha256": "74806ad5a84b3078cd6afe88438a6ba3a9c242724f09f68222f0c355a1acfc0e"
+    },
+    "method": "AST提取实际wrapper的唯一Popen With块；Popen代理返回真实subprocess.Popen对象，wait观察器调用保存的真实bound wait。仅identity和launch-save注入OSError；本地Python真实exit7，外部父最终reap。它验证的是实际块异常路径，不是硬件或旧cleanup矩阵。",
+    "red": {
+      "cases": [
+        {
+          "driver_receipt_wait": null,
+          "fault": "identity",
+          "local_parent_cleanup": [
+            {
+              "actual_parent_cleanup_wait": 7,
+              "pid": 4
+            }
+          ],
+          "passed": false,
+          "preserved_error": "injected identity receipt error",
+          "wait_inside_actual_wrapper_block": []
+        },
+        {
+          "driver_receipt_wait": null,
+          "fault": "launch-save",
+          "local_parent_cleanup": [
+            {
+              "actual_parent_cleanup_wait": 7,
+              "pid": 5
+            }
+          ],
+          "passed": false,
+          "preserved_error": "injected launch save error",
+          "wait_inside_actual_wrapper_block": []
+        }
+      ],
+      "checker_actual_Popen_wait": 1,
+      "source_sha256": "1ba5948de6e40503ed5ee4a78f91139edf442b4dcd9829677e3c94c12cb5d9f2"
+    },
+    "reviewer_reran_tests": false,
+    "source": "raw/strict-native-phase-v2/root-wrapper-wait-v1/check.py",
+    "stderr_empty": true,
+    "stdout_matches_saved_report": true
+  },
+  "observed_utc": "2026-10-18T11:21:22.871657+00:00",
+  "resolved_findings": [
+    {
+      "evidence": "Popen成功后identity/save/sha及driver_pid记录均位于try中，finally对同一真实child调用wait并记实际返回；原异常在wait返回后继续传播到外层error收据，不会因收据失败跳过等待。",
+      "id": "WRAPPER-OWNED-WAIT",
+      "lines": "171–185",
+      "result": "PASS"
+    },
+    {
+      "evidence": "Root接纳现已含evidence.Root_copy_metadata相对R路径及准确SHA；wrapper既复核所有evidence SHA，又要求该路径等于Root_copy结果同目录target-metadata.after.json，再次核SHA后读取期望metadata。已现时核接纳和这两项引用。",
+      "id": "WRAPPER-METADATA-BINDING",
+      "lines": "68–90",
+      "result": "PASS"
+    }
+  ],
+  "review_execution": {
+    "Task1_report_modified": false,
+    "Task1_revalidated": false,
+    "build_run": 0,
+    "git_writes": 0,
+    "network": 0,
+    "new_implementation_or_constant_tests": false,
+    "proc_read": 0,
+    "ready_run": 0,
+    "signals_sent": 0,
+    "test_rerun": 0,
+    "wrapper_run": 0
+  },
+  "schema_version": 1,
+  "scope": "capacity v2 Root AB1 successor wrapper offline review; follow-up limited to two fixes and existing local regression evidence",
+  "unchanged_prior_review": {
+    "bookkeeping": "approval still derives cache_runtime_state from Root-copy actual_ready.static",
+    "budgets": "frozen900/920/10/30sec inputs/controller untouched",
+    "host_freshness": "witness stays immediately before driver; frozen controller still rejects outside0..60sec after full static/primary readiness; no expiry extension",
+    "new_paths_and_four_SHA": "previously reviewed exact v2 inputs; two-fix diff did not change them",
+    "one_shot": "case/output/once and exclusive receipt guards retained; one direct driver Popen",
+    "service": "one bounded read-only default GET snapshot; no reservation/release"
+  },
+  "wrapper": {
+    "path": "raw/strict-native-phase-v2/AB1-launch-supervisor.py",
+    "sha256": "74806ad5a84b3078cd6afe88438a6ba3a9c242724f09f68222f0c355a1acfc0e"
+  }
+}
