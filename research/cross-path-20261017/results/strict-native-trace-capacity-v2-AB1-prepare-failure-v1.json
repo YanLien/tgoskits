@@ -1,0 +1,88 @@
+{
+  "Joint": false,
+  "M2": false,
+  "Trace_observed": false,
+  "actual_driver_Popen_wait": 1,
+  "actual_root_unified_exec_exit": 1,
+  "actual_xtask_Popen_wait": 1,
+  "artifact_chain_complete": false,
+  "capacity_zero_loss_proven": false,
+  "case_id": "AB1",
+  "causal_proof": "independent temporary copy of the same25 Git files: revparse128 -> add only empty refs directory -> revparse0 at exact pinned32229d0b6cc60a1906307311b8e79ec483ad1e88 and status clean. Original candidate remains unmodified and rejects128.",
+  "created_utc": "2026-10-18T11:29:38.427159+00:00",
+  "evidence": {
+    "capture": {
+      "bytes": 618,
+      "path": "raw/strict-native-phase-v2/AB1/capture.json",
+      "sha256": "8bbc740841eb5d59ea0936551647277946ade96da12c5d8c89afd2980aa8270a"
+    },
+    "causal_proof": {
+      "bytes": 2583,
+      "path": "raw/strict-native-phase-v2/zephyr-git-readonly-diagnosis-v1/empty-refs-causal-proof.json",
+      "sha256": "e7bcc1abdb06708a1c365a333bc66c3a5bc047319e02d911d5404b627eb671eb"
+    },
+    "copy_implementation": {
+      "bytes": 26653,
+      "path": "raw/strict-native-phase-v2/task1/prepare.py",
+      "sha256": "91addd35f174cbe465bdc7ecf43e846a964fe6a298425dbd5d418c1993a43fa2"
+    },
+    "git_reproduction": {
+      "bytes": 2586,
+      "path": "raw/strict-native-phase-v2/zephyr-git-readonly-diagnosis-v1/diagnosis.json",
+      "sha256": "56cabc46fbb8bf366fa424043bb4d27b747ca0b5df3293613e7921cf3228fa86"
+    },
+    "handoff": {
+      "bytes": 5347,
+      "path": "raw/strict-native-phase-v2/AB1-root-final-handoff-v1.json",
+      "sha256": "30d2613204648b7ebd89a202ee642b725678c94c056dada23e58de34b88cdd91"
+    },
+    "raw": {
+      "bytes": 2283,
+      "path": "raw/strict-native-phase-v2/AB1/xtask.log",
+      "sha256": "61b7be0f9809b04a574c57f0ca5411f3ad15f28e92825c4fbf9f6b20034788e1"
+    },
+    "root_completion": {
+      "bytes": 407,
+      "path": "raw/strict-native-phase-v2/AB1-root-supervisor-completion-v1.json",
+      "sha256": "0dcd33d8b741190b959cc90c34fbc15cb4362147f1fbda32aa6eb00fce4de95f"
+    },
+    "root_wait": {
+      "bytes": 2166,
+      "path": "raw/strict-native-phase-v2/AB1-root-wait.json",
+      "sha256": "821155a848d38653eab2fe9c240db35240ca088280305c40bbbc9aacd677d9ff"
+    },
+    "run_result": {
+      "bytes": 1828,
+      "path": "raw/strict-native-phase-v2/AB1/run-result.json",
+      "sha256": "b69e27dab4491a467830da92a63840ab73bc396baf94704b9065d88639490aa8"
+    }
+  },
+  "failure_stage": "host_prepare: ensure_zephyr_source -> verify_zephyr_source -> git rev-parse HEAD",
+  "first_error_exit": 128,
+  "forced_signals": [],
+  "goal_complete": false,
+  "independent_actual_failure_review_complete": false,
+  "later_cases": {
+    "0": "NOT_EXECUTED",
+    "AB0": "NOT_EXECUTED"
+  },
+  "measurement_candidate": "strict-native-capacity-v2",
+  "missing_metadata_directories": {
+    "branches": 509,
+    "objects/info": 509,
+    "refs": 509,
+    "refs/heads": 509,
+    "refs/tags": 509
+  },
+  "next": "Prepare a separately identified successor preserving required cache directory topology and prove real pinned Git/clean-tree/production entry before any new target approval. Preserve failed v2 and original v1.",
+  "normal_function_passed": false,
+  "offline_acceptance_coverage_gap": "file/symlink identity and venv relocation proof did not cover empty Git directory topology or production Zephyr verification",
+  "owned_group_empty": true,
+  "release": "unknown",
+  "root_cause": "file-only manifest copy omitted empty Git refs directories; .git/refs is required for repository recognition",
+  "same_candidate_retry": false,
+  "schema_version": 1,
+  "state": "final_failed",
+  "target_Guest_observed": false,
+  "v2_quota_consumed": true
+}

@@ -1,0 +1,31 @@
+{
+  "boot_id": "28c780ce-53d7-4ad5-a932-9a85f25b03c9",
+  "candidate_manifest_sha256": "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9",
+  "case_id": "AB1",
+  "conflicts": [],
+  "host_namespace_verified": true,
+  "no_competing_target_or_board_tools": true,
+  "observed_unix": 1792322586.64903,
+  "observed_utc": "2026-10-18T11:23:06.649032+00:00",
+  "observer": {
+    "argv": [
+      "/usr/bin/python3",
+      "-B",
+      "research/cross-path-20261017/raw/strict-native-phase-v2/AB1-launch-supervisor.py",
+      "--acceptance-sha256",
+      "1539cd651b743fc85377bfd8fcce11531b1ce2b0f907bb4dddfaf8920cb0c9b5"
+    ],
+    "pgid": 2246621,
+    "pid": 2246621,
+    "starttime": "50588445",
+    "state": "R"
+  },
+  "pid_namespace": "pid:[4026531836]",
+  "protected_controller_pid": 1666583,
+  "relevant_tools_inspected": 0,
+  "schema_version": 1,
+  "scope": "actual-host snapshot; no board allocation or signal",
+  "target": "/tmp/crosspath-native-capacity-v2-target-j4ca0hcp",
+  "tmp_available_bytes": 152444833792,
+  "unknown": []
+}

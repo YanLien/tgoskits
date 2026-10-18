@@ -1,0 +1,14 @@
+{
+  "artifact_chain_complete": false,
+  "artifacts": {},
+  "boot_before_identity_verified": false,
+  "capture_phase": "post-exit",
+  "capture_time_ns": 1792322628237360906,
+  "errors": [
+    "expected one actual kernel path in log"
+  ],
+  "host_function_passed": false,
+  "host_markers": [],
+  "normal_function_audit_required": true,
+  "normal_function_audit_scope": "two policies/32 tasks/32 slots/2 snapshots, raw DATA/R/ACCEPT, known answer/counter generation, strict timing, retirement, pressure off-or-cover/skip0, B zero accesses when off, global zero drops and complete suite; no offset/overlap/IAB analysis"
+}

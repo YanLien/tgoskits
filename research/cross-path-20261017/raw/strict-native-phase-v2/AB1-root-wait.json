@@ -1,0 +1,56 @@
+{
+  "case_id": "AB1",
+  "case_marker_present": true,
+  "driver": {
+    "argv": [
+      "/usr/bin/python3",
+      "-B",
+      "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/native_once.py",
+      "--run",
+      "AB1",
+      "--approved-manifest",
+      "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9",
+      "--approval",
+      "/home/yanlien/Program/hypervisor/tgoskits/research/cross-path-20261017/raw/strict-native-phase-v2/AB1-root-approval-v1.json",
+      "--approval-sha256",
+      "683d3be29859ce8b8b9734106687b084a92a870f0db1d47783206d81ee6a6f0f",
+      "--source-manifest-sha",
+      "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb"
+    ],
+    "pgid": 2246622,
+    "pid": 2246622,
+    "starttime": "50588692",
+    "state": "R"
+  },
+  "driver_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "driver_pid_from_Popen": 2246622,
+  "driver_wait_exit": 1,
+  "finished_utc": "2026-10-18T11:24:15.382449+00:00",
+  "hardware_owned_by": "unchanged frozen native_once.py only",
+  "launch_sha256": "cb56c12f473c0bcaa476a56da81cb5749bea99362053cbbfe3a2c6e2a03bdc2c",
+  "offline_acceptance_sha256": "1539cd651b743fc85377bfd8fcce11531b1ce2b0f907bb4dddfaf8920cb0c9b5",
+  "output_present": true,
+  "run_result_sha256": "b69e27dab4491a467830da92a63840ab73bc396baf94704b9065d88639490aa8",
+  "schema_version": 1,
+  "started_utc": "2026-10-18T11:23:04.261956+00:00",
+  "supervisor": {
+    "argv": [
+      "/usr/bin/python3",
+      "-B",
+      "research/cross-path-20261017/raw/strict-native-phase-v2/AB1-launch-supervisor.py",
+      "--acceptance-sha256",
+      "1539cd651b743fc85377bfd8fcce11531b1ce2b0f907bb4dddfaf8920cb0c9b5"
+    ],
+    "pgid": 2246621,
+    "pid": 2246621,
+    "starttime": "50588445",
+    "state": "R"
+  },
+  "supervisor_source_sha256": "74806ad5a84b3078cd6afe88438a6ba3a9c242724f09f68222f0c355a1acfc0e",
+  "target_metadata_before": {
+    "entries": 30941,
+    "metadata_sha256": "b123dee2a254cca42cc1471660e59880c32848b134e5b2624b81c689ce50454e"
+  },
+  "target_preexisting_for_verified_clippy": true,
+  "wait_method": "subprocess.Popen.wait on this parent's original direct child"
+}

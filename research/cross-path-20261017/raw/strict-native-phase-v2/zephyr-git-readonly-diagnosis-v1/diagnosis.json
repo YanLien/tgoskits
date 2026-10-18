@@ -1,0 +1,85 @@
+{
+  "manifest_git_metadata_members": 25,
+  "manifest_selected": {
+    "zephyr/.git/HEAD": {
+      "bytes": 41,
+      "mode": 436,
+      "sha256": "83fb7475ff07c63b6aa89731ffab903dc52d0fef1f769d101bf46889a8d9f127"
+    },
+    "zephyr/.git/config": {
+      "bytes": 207,
+      "mode": 436,
+      "sha256": "97d69878ee9f53720203ce306843d7900cfd5f7e56b9a08f524cccd7e46d92e6"
+    }
+  },
+  "new_and_parent": [
+    {
+      "cache": "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache",
+      "commands": [
+        {
+          "actual_Popen_wait": 128,
+          "argv": [
+            "git",
+            "-C",
+            "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/zephyr",
+            "rev-parse",
+            "HEAD"
+          ],
+          "stderr": "fatal: not a git repository (or any of the parent directories): .git\n",
+          "stdout": ""
+        },
+        {
+          "actual_Popen_wait": 128,
+          "argv": [
+            "git",
+            "-C",
+            "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/zephyr",
+            "rev-parse",
+            "--show-toplevel"
+          ],
+          "stderr": "fatal: not a git repository (or any of the parent directories): .git\n",
+          "stdout": ""
+        }
+      ],
+      "git_metadata_exists": true,
+      "git_metadata_is_symlink": false,
+      "metadata_mode": 509,
+      "metadata_type": "directory"
+    },
+    {
+      "cache": "/tmp/strict-native-phase-tools-kevemo32/cache/vcpu-runtime-cache",
+      "commands": [
+        {
+          "actual_Popen_wait": 0,
+          "argv": [
+            "git",
+            "-C",
+            "/tmp/strict-native-phase-tools-kevemo32/cache/vcpu-runtime-cache/zephyr",
+            "rev-parse",
+            "HEAD"
+          ],
+          "stderr": "",
+          "stdout": "32229d0b6cc60a1906307311b8e79ec483ad1e88\n"
+        },
+        {
+          "actual_Popen_wait": 0,
+          "argv": [
+            "git",
+            "-C",
+            "/tmp/strict-native-phase-tools-kevemo32/cache/vcpu-runtime-cache/zephyr",
+            "rev-parse",
+            "--show-toplevel"
+          ],
+          "stderr": "",
+          "stdout": "/tmp/strict-native-phase-tools-kevemo32/cache/vcpu-runtime-cache/zephyr\n"
+        }
+      ],
+      "git_metadata_exists": true,
+      "git_metadata_is_symlink": false,
+      "metadata_mode": 509,
+      "metadata_type": "directory"
+    }
+  ],
+  "scope": "exact read-only Git entry reproduction, no cache/source modification or board request",
+  "time_ns": 1792322750997558968
+}

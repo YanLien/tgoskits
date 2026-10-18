@@ -1,0 +1,25 @@
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.63s
+     Running `/tmp/crosspath-native-capacity-v2-target-j4ca0hcp/debug/tg-xtask ktest board -p axvm --test vcpu_runtime -b orangepi-5-plus --config virtualization/axvm/tests/vcpu-runtime/frequency/build-orangepi-5-plus.toml --board-config research-inputs/strict-native-v1/board.toml --board-type BallPick-Robot --server 'http://10.3.10.60' --port 2999`
+[2026-10-18T11:23:47Z INFO  axbuild::context] Workspace root: /tmp/crosspath-native-capacity-v2-src-z2au9vz8
+[2026-10-18T11:23:47Z INFO  axbuild::context] Cargo target directory: /tmp/crosspath-native-capacity-v2-target-j4ca0hcp
+Using build config: virtualization/axvm/tests/vcpu-runtime/frequency/build-orangepi-5-plus.toml
+prepare case resources: python3
+Traceback (most recent call last):
+  File "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/virtualization/axvm/tests/guests/virq/prepare.py", line 603, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/virtualization/axvm/tests/guests/virq/prepare.py", line 575, in main
+    zephyr_base = ensure_zephyr_source(cache, args.zephyr_base.resolve() if args.zephyr_base else None)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/virtualization/axvm/tests/guests/virq/prepare.py", line 235, in ensure_zephyr_source
+    verify_zephyr_source(source)
+  File "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/virtualization/axvm/tests/guests/virq/prepare.py", line 215, in verify_zephyr_source
+    revision = git(source, "rev-parse", "HEAD").strip()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/crosspath-native-capacity-v2-src-z2au9vz8/virtualization/axvm/tests/guests/virq/prepare.py", line 178, in git
+    return subprocess.run(
+           ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['git', '-C', '/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/zephyr', 'rev-parse', 'HEAD']' returned non-zero exit status 128.
+Error: host_prepare `python3` failed with status exit status: 1

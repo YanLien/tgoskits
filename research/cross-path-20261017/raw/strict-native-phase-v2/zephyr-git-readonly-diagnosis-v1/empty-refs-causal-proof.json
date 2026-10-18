@@ -1,0 +1,76 @@
+{
+  "all_metadata_file_bytes_unchanged": true,
+  "commands": [
+    {
+      "actual_Popen_wait": 128,
+      "argv": [
+        "git",
+        "--git-dir",
+        "/tmp/crosspath-zephyr-git-topology-proof-ijhd1is6/git-metadata",
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "temporary-metadata-before",
+      "stderr": "fatal: not a git repository: '/tmp/crosspath-zephyr-git-topology-proof-ijhd1is6/git-metadata'\n",
+      "stdout": ""
+    },
+    {
+      "actual_Popen_wait": 0,
+      "argv": [
+        "git",
+        "--git-dir",
+        "/tmp/crosspath-zephyr-git-topology-proof-ijhd1is6/git-metadata",
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "temporary-metadata-after-only-empty-refs-added",
+      "stderr": "",
+      "stdout": "32229d0b6cc60a1906307311b8e79ec483ad1e88\n"
+    },
+    {
+      "actual_Popen_wait": 0,
+      "argv": [
+        "git",
+        "--git-dir",
+        "/tmp/crosspath-zephyr-git-topology-proof-ijhd1is6/git-metadata",
+        "--work-tree",
+        "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/zephyr",
+        "status",
+        "--porcelain"
+      ],
+      "label": "temporary-metadata-against-real-read-only-worktree",
+      "stderr": "",
+      "stdout": ""
+    },
+    {
+      "actual_Popen_wait": 128,
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/cache/vcpu-runtime-cache/zephyr",
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "original-frozen-v2-remains-unmodified",
+      "stderr": "fatal: not a git repository (or any of the parent directories): .git\n",
+      "stdout": ""
+    }
+  ],
+  "copied_metadata_bytes": 101764595,
+  "copied_metadata_files": 25,
+  "current_frozen_v2_git_still_rejects": true,
+  "missing_parent_directory_topology": {
+    "branches": 509,
+    "objects/info": 509,
+    "refs": 509,
+    "refs/heads": 509,
+    "refs/tags": 509
+  },
+  "only_mutation": "add empty refs directory in independent temporary metadata copy",
+  "passed": true,
+  "root_cause": "copy_manifest reproduced only files/symlinks and omitted the empty .git/refs hierarchy; Git requires refs directory to recognize the checkout even with detached HEAD. Existing flat file/cache checks did not cover empty-directory topology.",
+  "scope": "causal build-environment Git topology proof only; no source/cache/hardware modification; no normal Host or capacity proof",
+  "temporary_git_directory": "/tmp/crosspath-zephyr-git-topology-proof-ijhd1is6/git-metadata",
+  "time_ns": 1792322915907861198,
+  "v2_quota_not_retried": true
+}

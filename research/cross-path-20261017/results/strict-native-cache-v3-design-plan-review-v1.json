@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "review_kind": "independent_design_and_plan_review",
+  "decision": "PASS",
+  "scope": "仅审阅 cache topology v3 计划及必要精准源码；允许进入既授权的 Task1 离线实施，实施及真板准入仍须各自证据",
+  "reviewed_plan": {
+    "path": "design/phase2-native-cache-topology-v3-plan.md",
+    "bytes": 11813,
+    "sha256": "5e355eb109871df9791d85953ff158dbe54b7416f615aea5a27b3d866e8eeb7d"
+  },
+  "blockers": [],
+  "required_plan_revisions": [],
+  "continuation_user_confirmation_required": false,
+  "implementation_accepted": false,
+  "hardware_authorized_by_this_review": false,
+  "hardware_started_by_reviewer": 0,
+  "qemu_started_by_reviewer": 0,
+  "normal_host_validation": false,
+  "capacity_zero_loss_proven": false,
+  "M2": false,
+  "Joint": false,
+  "goal_complete": false,
+  "review_execution": {
+    "method": "只读精准文本、已存收据及选定文件身份核对；仅新建本次 JSON/Markdown 审阅报告",
+    "commands_used": ["cat", "sed", "rg", "python3 for explicit file reads, JSON parsing and selected SHA256"],
+    "build_ready_test_commands_executed": false,
+    "git_commands_executed": false,
+    "proc_inspection_or_signals_executed": false,
+    "network_requests_executed": false,
+    "full_cache_source_or_primary96_scan_executed": false,
+    "prior_materials_modified": false,
+    "evidence_boundary": "历史执行结果来自保存的真实收据，本审阅未重新执行。PASS 绑定指定计划字节，不是 v3 实现、host_prepare 或正常端到端已通过。"
+  },
+  "instructions_read": [
+    "AGENTS.md",
+    "/home/yanlien/.codex/skills/orthome-verification/SKILL.md",
+    ".agents/skills/test-quality/SKILL.md",
+    ".agents/skills/markdown-doc-writer/SKILL.md",
+    "/home/yanlien/.agents/skills/superpowers/verification-before-completion/SKILL.md"
+  ],
+  "checks": [
+    {
+      "id": "CACHE-CAUSAL-SCOPE",
+      "result": "PASS",
+      "plan_lines": [17, 19, 25],
+      "finding": "copy_manifest 仅枚举文件和 symlink、以父目录重建树，确实没有空目录语义。保存的因果实验在独立元数据副本保持 25 份 Git 文件不变，仅增加 refs 后真实 rev-parse 从 128 变为 0，固定 revision 且真实 worktree status 为空；原失败 cache 仍拒绝。计划将此限定为构建环境缺陷，保留 v2 失败及已消耗额度。",
+      "source_anchors": ["raw/strict-native-phase-v2/task1/prepare.py::inventory/copy_manifest", "raw/strict-native-phase-v2/zephyr-git-readonly-diagnosis-v1/empty-refs-causal-proof.json"],
+      "implementation_acceptance": "只写新候选；固定 Rust、压力协议及 250us/4ms 判据保持 v2；v2 marker、失败原件及原 cache 不改。"
+    },
+    {
+      "id": "CACHE-DIRECTORY-IDENTITY",
+      "result": "PASS",
+      "plan_lines": [25, 43, 45, 54, 55],
+      "finding": "copytree(symlinks=True) 保留真实目录并通过 copystat 复制目录模式，能够消除原文件复制器丢空目录的问题。新 manifest 按两份原 cache manifest 分组，记录根 '.' 和所有非 symlink 目录的相对路径及 S_IMODE；集合、类型、模式精确比较，可覆盖缺目录、额外目录及 symlink 替代。现有批准文件/symlink 和四种 Cargo bookkeeping 例外继续约束实际输入。",
+      "source_anchors": ["/usr/lib/python3.12/shutil.py::_copytree/copytree", "/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/capture_native.py::verify_static, lines 208-262"],
+      "implementation_acceptance": "在现有 os.walk 收集目录身份，先核目录再 hash 该 cache 大文件；完整校验规范化路径、真实 root/目录类型、0775 等准确模式，保留原 symlink 校验，不把目录新增为 runtime 例外。五项恢复目录的观察来源为原正常父 cache /tmp/strict-native-phase-tools-kevemo32/cache/vcpu-runtime-cache/zephyr/.git，而不是本已缺目录的容量 v2 副本。"
+    },
+    {
+      "id": "ENTRY-RELOCATION",
+      "result": "PASS",
+      "plan_lines": [56, 57],
+      "finding": "真实 build_guest 直接执行 venv/bin/cmake，因此文件存在不能替代新入口实际使用证明。计划沿用已审阅的 13 项 bin/pyvenv.cfg 元数据替换范围，并要求新 Python prefix、cmake 模块、CMAKE_BIN_DIR、实际 binary 及直接 cmake 入口归属新 cache，绑定真实 wait。生产 Git 固定 revision/clean-tree 校验保持。",
+      "source_anchors": ["父 source virtualization/axvm/tests/guests/virq/prepare.py::ensure_python_runtime/build_guest/verify_zephyr_source", "raw/strict-native-phase-v2/task1/cache-relocation.json"],
+      "implementation_acceptance": "逐项保存替换前后 diff/mode/SHA 及实际进程收据，清除 PYTHONPATH/PYTHONHOME；vendor、site-packages 算法、ELF、系统 Python symlink 及所有其他 cache 字节保持父身份。"
+    },
+    {
+      "id": "REAL-HOST-PREPARE-BOUNDARY",
+      "result": "PASS",
+      "plan_lines": [61, 63, 64],
+      "finding": "ktest::run_board 先 prepare_guest_builds，再 app.build，最后 board_prepared_elf；run_host_prepare 直接 argv、cwd=workspace、显式 AXBUILD_TARGET_DIR 且等待非零拒绝。实际控制侧 guest-builds.toml 的 arceos_build_configs 为空，host_prepare 为 python3 virtualization/axvm/tests/guests/virq/prepare.py --linux-peer。该 Python main 负责 Zephyr、dtc 和 Linux worker/rootfs/config；Linux 准备内部用 cargo xtask image pack-initramfs。精准读取的路径没有 Axvisor 构建、板卡申请或 QEMU 启动调用。",
+      "source_anchors": ["scripts/axbuild/src/ktest/mod.rs::run_board, lines 563-674", "scripts/axbuild/src/axvisor/test/guest_build.rs::prepare/run_host_prepare, lines 34-124", "父 source research-inputs/strict-native-v1/guest-builds.toml", "父 source virtualization/axvm/tests/guests/virq/prepare.py::main", "父 source virtualization/axvm/tests/guests/linux-load/prepare.py::main"],
+      "implementation_acceptance": "在新 source 以准确 AB1 白名单环境及独占 target 跑完整同一 argv；保存真正父 Popen.wait 和全部资源/worker 身份。前置核实准备好 venv、Zephyr、工具链与固定资产，阻止缺输入时的安装/clone/download 路径；出现下载、意外 cache/source 变化或 300 秒超时则停止并保留首错。仅 Git 或 cmake --version 成功不能验收完整准备。"
+    },
+    {
+      "id": "INHERITED-RUST-VALIDATION",
+      "result": "PASS",
+      "plan_lines": [35, 65, 71],
+      "finding": "继承范围明确限于父普通树/Rust/Cargo.lock 不变的既有 Rust 验证；保存收据确认 cargo fmt -p axvm 实际 wait0，项目 cargo xtask clippy --package axvm 实际 wait0，真实 stdout 汇总 29 passed/0 failed/0 skipped。cache 目录及 Python 捕获工具变化没有新增 Rust 行为，重跑全矩阵不能替代新目录/真实入口证据。",
+      "source_anchors": ["raw/strict-native-phase-v2/task1/cargo-fmt.receipt.json", "raw/strict-native-phase-v2/task1/cargo-xtask-clippy.receipt.json", "raw/strict-native-phase-v2/task1/cargo-xtask-clippy.stdout, lines 97-98"],
+      "implementation_acceptance": "v3 准确普通树清单及 702 SHA 必须等于父；字段明示未在 v3 重跑。新 capture SHA、目录语义、入口证明及 host_prepare 不能继承旧批准；目标完整构建仍由后续一次 cargo xtask 在原 920 秒预算内完成。"
+    },
+    {
+      "id": "NEGATIVE-FREEZE-ORDER",
+      "result": "PASS",
+      "plan_lines": [67, 71, 72, 73, 74],
+      "finding": "新门的缺陷敏感度使用真实 verify_static/check-ready 入口和实际暂存 cache，针对空 refs 层级的缺失要求目录门明确拒绝；冻结检查位于现有 verify_static 的末尾，允许该局部反例在最终 freeze 前先行失败。随后恢复准确目录/模式，再生成最终完整身份及 freeze，最终 ready0 在冻结之后执行，顺序可实施。",
+      "source_anchors": ["/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/capture_native.py::verify_static, lines 185-267", "design/phase2-native-cache-topology-v3-plan.md::3.2/3.3"],
+      "implementation_acceptance": "负例先持有准确的暂存目录预期；若移除 refs，需连同其空 heads/tags 子层级恢复。绑定负例输入及目录门具体错误/真实 wait，不能把缺最终 freeze 或其他文件错误算作新门 RED。恢复文件身份后才生成最终清单；最终冻结执行根不可用于破坏性负例。"
+    },
+    {
+      "id": "OWNERSHIP-AND-ROOT-COPY",
+      "result": "PASS",
+      "plan_lines": [64, 66, 74, 82],
+      "finding": "计划复用原 start_new_session+唯一 token+准确进程身份的 cleanup10 边界，不扩展旧进程信号权限。Root 新副本只复制工具，真实只读 ready 后以单一执行根门拒绝正式执行，要求无 marker/target 写入。successor wrapper 要保留已审阅实际 child.wait 的 finally 及准确 Root_copy_metadata 路径/SHA 绑定；准备产生的 target 必须按真实新 metadata 接纳。",
+      "source_anchors": ["/tmp/crosspath-native-capacity-v2-tools-ksjtks3x/native_once.py::cleanup_owned/run", "raw/strict-native-phase-v2/AB1-launch-supervisor.py, lines 68-90 and 171-185", "results/strict-native-trace-capacity-v2-AB1-wrapper-review-v1.json"],
+      "implementation_acceptance": "新 host_prepare 控制子进程同样实际 wait；未知清理结果保持未知。Spec→Quality→Rootcopy 后记录实际 ready 和副本 refusal 收据，不用旧空 target 假设。"
+    },
+    {
+      "id": "ONE-SHOT-AND-AUDITOR-ADMISSION",
+      "result": "PASS",
+      "plan_lines": [78, 82, 84],
+      "finding": "新版本按独立准确 freeze/inputs/source 工具身份登记，不给失败 v2 续额度。正式 AB1 仍包含本次 build/request/upload/run 的 board900/outer920，cleanup10/capture30/512MiB、host witness60 均保持。最近真实 ready 的 Cargo runtime 状态进入 approval。外部 auditor 三项 Spec 阻断须在新副本修复并双审；正常正路径尚缺时允许由本次真实 AB1 提供，不能预先宣称 GREEN。",
+      "source_anchors": ["父 tools inputs.json::limits/cache_policy/cases", "design/phase2-strict-native-verification-path-plan.md::3.1/3.2", "design/phase2-native-cache-topology-v3-plan.md::4.1"],
+      "implementation_acceptance": "Root 当前无竞争/服务 witness 及准确输入复核后仅 AB1 一次；完整正常判定、工件使用链、真实退出/释放及 Spec→Quality 后才 AB0，再 0。任一失败、未完成、审计拒绝或 release unknown 均停止余项，同候选无重试。"
+    },
+    {
+      "id": "RESEARCH-AND-DELIVERY-BOUNDARY",
+      "result": "PASS",
+      "plan_lines": [88, 92, 96, 100],
+      "finding": "三项真板后才进入 legacy 生命周期和后续开销/相位/随机重复研究；M2/Joint、严格 WCET/WCRT、PMU/带宽能力均未由准备报告扩大。新修复按精确验收文件交付，保留既有 8 提交、旧论文/封存/失败证据和当前无关修改。",
+      "source_anchors": ["design/phase2-native-cache-topology-v3-plan.md::4.2/5"],
+      "implementation_acceptance": "本环境修复不新增录制器模型或常量矩阵测试。新目录门的真实局部 RED/最终 ready GREEN 与生产准备证据足以覆盖新增环境风险；正常 Host/容量仍须真实完整功能证据。"
+    }
+  ],
+  "pending_execution_gates": [
+    "新的普通源、cache、target 和工具尚未由本审阅实施或接纳。",
+    "真实新 Git/venv/cmake/完整 host_prepare、目录门 RED、最终完整目录/文件身份及 ready0 待取证。",
+    "新 capture 与控制器最小差异及全部最终身份须独立 Spec→Quality、Root 工具副本验收。",
+    "外部正常审计器修复的 Spec→Quality 和真实正常端到端正路径仍是 Task2 条件；本审阅不补造其 GREEN。",
+    "真实 AB1 的完整正常功能/退出/工件链/释放及双审未取得前，AB0/0 继续未执行。"
+  ],
+  "selected_evidence": {
+    "v2_final_handoff": {"path": "raw/strict-native-phase-v2/AB1-root-final-handoff-v1.json", "bytes": 5347, "sha256": "30d2613204648b7ebd89a202ee642b725678c94c056dada23e58de34b88cdd91"},
+    "v2_prepare_failure": {"path": "results/strict-native-trace-capacity-v2-AB1-prepare-failure-v1.json", "bytes": 3704, "sha256": "f142c02ec9ff99d4db01cbc409cfa35ffb3933d77b0e435e3dc13c1f762044c5"},
+    "empty_refs_causal_proof": {"path": "raw/strict-native-phase-v2/zephyr-git-readonly-diagnosis-v1/empty-refs-causal-proof.json", "bytes": 2583, "sha256": "e7bcc1abdb06708a1c365a333bc66c3a5bc047319e02d911d5404b627eb671eb"},
+    "cargo_fmt_receipt": {"path": "raw/strict-native-phase-v2/task1/cargo-fmt.receipt.json", "bytes": 2642, "sha256": "fd7c0f142cd3bb7cce30cc58d51b39bbe733d5efdcd296b766a0c8257be99013"},
+    "cargo_xtask_clippy_receipt": {"path": "raw/strict-native-phase-v2/task1/cargo-xtask-clippy.receipt.json", "bytes": 2675, "sha256": "852c7fbfafb5f0f04b756a4c9176d8a7b723e0b885c6faa3f22cf9d1b0715bc0"},
+    "cargo_xtask_clippy_stdout": {"path": "raw/strict-native-phase-v2/task1/cargo-xtask-clippy.stdout", "bytes": 22292, "sha256": "4ee12b4cdcb25e8e6cb6d61b72109805507ff1cc9d7d0ca076eefe3a5cf058d4"},
+    "parent_venv_relocation": {"path": "raw/strict-native-phase-v2/task1/cache-relocation.json", "bytes": 17097, "sha256": "1c11fe7b7df3a873d30392e4bbd7f14968758a0247a55ee3fe6f9c1d7b67f7fc"},
+    "reviewed_successor_wrapper_parent": {"path": "raw/strict-native-phase-v2/AB1-launch-supervisor.py", "bytes": 11341, "sha256": "74806ad5a84b3078cd6afe88438a6ba3a9c242724f09f68222f0c355a1acfc0e"}
+  },
+  "source_binding": {
+    "root": "/tmp/crosspath-native-capacity-v2-src-z2au9vz8",
+    "ordinary_manifest_sha256_as_frozen": "f4bd9bb6dadd056e35faa2b3243a1be410a588f531f6bceb7d71c89e520e3c86",
+    "source702_sha256_as_frozen": "0f46afeee8f3dfb28408072480969a0791051e3546671ea29da42925318064eb",
+    "parent_tools_freeze_sha256_as_recorded": "6d830c616cf8a3e0a958369b1719ed0e5d91800076afb78c38d46cc6d28280d9",
+    "selected_current_file_sha256": {
+      "scripts/axbuild/src/ktest/mod.rs": "0a45bb6cac9bb7e36c58ff0c9ba1039a3ab956352af6a03c7546f010a4216ba3",
+      "scripts/axbuild/src/axvisor/test/guest_build.rs": "975582c9f8042fa7f0b56f7ca840031b405b40973a09b6f3213ce1a80b2bc14d",
+      "research-inputs/strict-native-v1/guest-builds.toml": "5c010cdfa7053666b7d2eb2a326d68c45b6905295c919d1277b782ad885050a2",
+      "virtualization/axvm/tests/guests/virq/prepare.py": "5f0be0c95dfd7e20001a99a0f12a4f2ca338d764e25a0c8c6f3d08088fdbe490",
+      "virtualization/axvm/tests/guests/linux-load/prepare.py": "7bbe3e3c5a05227c9e53dee7c2ff0b3a95a1739706023b9b9497caa2e11f1b84"
+    },
+    "workspace_comparison": "两份 xtask Rust 文件与当前仓库逐文件 SHA 相同；virq/prepare.py 当前仓库 SHA 为 435d3eaa297d3a1773b84d9f628bb46ad4f44b31bf54597d37aaecfeccefa6db，与候选父源不同，因此 Python 行为结论以本节冻结父副本的实际源码为准。未全扫普通树或 cache。"
+  }
+}

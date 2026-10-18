@@ -1,0 +1,8 @@
+{
+  "original_unified_exec_session": 15037,
+  "initial_tool_chunk": "10ddab",
+  "initial_tool_result": "running; no completion yet",
+  "initial_exit_code": null,
+  "observer_unix_ns": 1792322601326856178,
+  "supervisor_source_sha256": "74806ad5a84b3078cd6afe88438a6ba3a9c242724f09f68222f0c355a1acfc0e"
+}
